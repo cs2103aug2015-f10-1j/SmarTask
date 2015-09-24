@@ -10,37 +10,37 @@ import java.util.*;
 
 public class Command {
 	public enum Type {
-        ADD, DELETE, VIEW, EXIT, INVALID
-    }
-	
+		ADD, DELETE, VIEW, EXIT, INVALID
+	}
+
 	private Type type;
 	private ArrayList<String> taskInput;
 	private String taskTitle;
 	private String taskLabel;
 	private String taskDetail;
 	private String taskTime;
-    
-    public Command(Type type) {
-    	this.setTaskInput(new ArrayList<String>());
-    	this.type = type;
-    }
 
-    public Type getCommandType() {
-        return type;
-    }
-    
-    // ================================================================
-    // "Add" command methods
-    // ================================================================
+	public Command(Type type) {
+		this.setTaskInput(new ArrayList<String>());
+		this.type = type;
+	}
+
+	public Type getCommandType() {
+		return type;
+	}
+
+	// ================================================================
+	// "Add" command methods
+	// ================================================================
 
 	public String getTaskTitle() {
 		return taskTitle;
 	}
-	
+
 	public String getTaskLabel() {
 		return taskLabel;
 	}
-	
+
 	public String getTaskDetail() {
 		return taskDetail;
 	}
@@ -48,19 +48,19 @@ public class Command {
 	public String getTaskTime() {
 		return taskTime;
 	}
-	
+
 	public ArrayList<String> getTaskInput() {
 		return taskInput;
 	}
-	
+
 	public void setTaskInput(ArrayList<String> taskInput) {
 		this.taskInput = taskInput;
 	}
-	
+
 	public void setTaskTitle(String taskTitle) {
 		this.taskTitle = taskTitle;
 	}
-	
+
 	public void setTaskLabel(String taskLabel) {
 		this.taskLabel = taskLabel;
 	}
@@ -73,14 +73,14 @@ public class Command {
 		this.taskTime = taskTime;
 	}
 
-    // ================================================================
-    // TO DO: "Delete" command methods
-    // ================================================================
-    
-    
-    // ================================================================
-    // TO DO: "View" command methods
-    // ================================================================
+	// ================================================================
+	// TO DO: "Delete" command methods
+	// ================================================================
 
-    
+
+	// ================================================================
+	// TO DO: "View" command methods
+	// ================================================================
+
+
 }
