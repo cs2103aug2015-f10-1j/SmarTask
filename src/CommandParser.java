@@ -128,9 +128,13 @@ public class CommandParser {
 class ParserTest {
 	public static void main(String[] args) {
 		CommandParser parser = new CommandParser();
-		Command command = parser.parse("add <Finish Project> <CS2103> <Integrate components between Logic and Parser> <1500 30/09/15>");
+		String userInput = "add <Finish Project> <CS2103> <Integrate components between Logic and Parser> <1500 30/09/15>";
+		Command command = parser.parse(userInput);
 		System.out.println(
-				"Command: " + command.getCommandType() + "\nTitle: " + command.getTaskTitle() + "\nLabel: " + command.getTaskLabel() + "\nDetail: " +
-						command.getTaskDetail() + "\nTime: " + command.getTaskTime());
+		"Command: " + command.getCommandType() + 
+		"\nTitle: " + command.getTaskTitle() + 
+		"\nLabel: " + command.getTaskLabel() + 
+		"\nDetail: " + command.getTaskDetail() + 
+		"\nTime: " + command.getTaskTime());
 	}
 }
