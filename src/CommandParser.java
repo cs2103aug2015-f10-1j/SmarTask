@@ -2,8 +2,8 @@ import java.util.*;
 
 /**
  * CommandParser parses user's input to create Command objects that have the
- * appropriate fields initialised. For example, the "view" command requires the
- * authorName field to be initialised.
+ * appropriate fields initialised. For example, the "add" command requires the
+ * taskTitle, taskLabel, taskDetail and taskTime field to be initialised.
  * 
  * @author Bobby Lin
  *
