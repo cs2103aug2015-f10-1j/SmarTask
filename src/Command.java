@@ -19,6 +19,7 @@ public class Command {
 	private String taskLabel;
 	private String taskDetail;
 	private String taskTime;
+	private int taskNumber;
 
 	public Command(Type type) {
 		this.setTaskInput(new ArrayList<String>());
@@ -74,9 +75,16 @@ public class Command {
 	}
 
 	// ================================================================
-	// TO DO: "Delete" command methods
+	// "Delete" command methods
 	// ================================================================
+	
+	public int getTaskNumber() {
+		return taskNumber;
+	}
 
+	public void setTaskNumber(int taskNumber) {
+		this.taskNumber = taskNumber;
+	}
 
 	// ================================================================
 	// TO DO: "View" command methods
