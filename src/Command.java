@@ -9,86 +9,86 @@ import java.util.*;
  */
 
 public class Command {
-	public enum Type {
-		ADD, DELETE, VIEW, EXIT, INVALID
-	}
+    public enum Type {
+        ADD, DELETE, VIEW, EXIT, INVALID
+    }
 
-	private Type type;
-	private ArrayList<String> taskInput;
-	private String taskTitle;
-	private String taskLabel;
-	private String taskDetail;
-	private String taskTime;
-	private int taskNumber;
+    private Type type;
+    private ArrayList<String> taskInput;
+    private String taskTitle;
+    private String taskLabel;
+    private String taskDetail;
+    private String taskTime;
+    private int taskNumber;
 
-	public Command(Type type) {
-		this.setTaskInput(new ArrayList<String>());
-		this.type = type;
-	}
+    public Command(Type type) {
+        this.setTaskInput(new ArrayList<String>());
+        this.type = type;
+    }
 
-	public Type getCommandType() {
-		return type;
-	}
+    public Type getCommandType() {
+        return type;
+    }
 
-	// ================================================================
-	// "Add" command methods
-	// ================================================================
+    // ================================================================
+    // "Add" command methods
+    // ================================================================
 
-	public String getTaskTitle() {
-		return taskTitle;
-	}
+    public String getTaskTitle() {
+        return taskTitle;
+    }
 
-	public String getTaskLabel() {
-		return taskLabel;
-	}
+    public String getTaskLabel() {
+        return taskLabel;
+    }
 
-	public String getTaskDetail() {
-		return taskDetail;
-	}
+    public String getTaskDetail() {
+        return taskDetail;
+    }
 
-	public String getTaskTime() {
-		return taskTime;
-	}
+    public String getTaskTime() {
+        return taskTime;
+    }
 
-	public ArrayList<String> getTaskInput() {
-		return taskInput;
-	}
+    public ArrayList<String> getTaskInput() {
+        return taskInput;
+    }
 
-	public void setTaskInput(ArrayList<String> taskInput) {
-		this.taskInput = taskInput;
-	}
+    public void setTaskInput(ArrayList<String> taskInput) {
+        this.taskInput = taskInput;
+    }
 
-	public void setTaskTitle(String taskTitle) {
-		this.taskTitle = taskTitle;
-	}
+    public void setTaskTitle(String taskTitle) {
+        this.taskTitle = taskTitle;
+    }
 
-	public void setTaskLabel(String taskLabel) {
-		this.taskLabel = taskLabel;
-	}
+    public void setTaskLabel(String taskLabel) {
+        this.taskLabel = taskLabel;
+    }
 
-	public void setTaskDetail(String taskDetail) {
-		this.taskDetail = taskDetail;
-	}
+    public void setTaskDetail(String taskDetail) {
+        this.taskDetail = taskDetail;
+    }
 
-	public void setTaskTime(String taskTime) {
-		this.taskTime = taskTime;
-	}
+    public void setTaskTime(String taskTime) {
+        this.taskTime = taskTime;
+    }
 
-	// ================================================================
-	// "Delete" command methods
-	// ================================================================
-	
-	public int getTaskNumber() {
-		return taskNumber;
-	}
+    // ================================================================
+    // "Delete" command methods
+    // ================================================================
 
-	public void setTaskNumber(int taskNumber) {
-		this.taskNumber = taskNumber;
-	}
+    public int getTaskNumber() {
+        return taskNumber;
+    }
 
-	// ================================================================
-	// TO DO: "View" command methods
-	// ================================================================
+    public void setTaskNumber(int taskNumber) {
+        this.taskNumber = taskNumber;
+    }
+
+    // ================================================================
+    // TO DO: "View" command methods
+    // ================================================================
 
 
 }
