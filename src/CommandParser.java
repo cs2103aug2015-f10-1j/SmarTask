@@ -102,11 +102,13 @@ public class CommandParser {
     }
 
     // ================================================================
-    // TO DO: Create display command method
+    // TO DO: Create view task command method
     // ================================================================
 
     private Command initViewCommand(ArrayList<String> arguments) {
-        return new Command(Command.Type.VIEW);
+        Command command = new Command(Command.Type.VIEW);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_PARAM_COMMAND)));
+        return command;
     }
 
     // ================================================================
@@ -125,14 +127,4 @@ public class CommandParser {
         return new Command(Command.Type.INVALID);
     }
 
-}
-
-// Example on how to use CommandParser Class
-class ParserTest {
-    public static void main(String[] args) {
-        CommandParser parser = new CommandParser();
-        String userInput = "delete <1500 30/09/15> <1>";
-        Command command = parser.parse(userInput);
-        System.out.println("Command: " + command.getCommandType() + "\nTime: " + command.getTaskTime() + "\nNumber: " + command.getTaskNumber());
-    }
 }
