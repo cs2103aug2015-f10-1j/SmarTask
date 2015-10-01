@@ -21,9 +21,11 @@ public class CommandParser {
     private static final String USER_COMMAND_DELETE = "delete";
     private static final String USER_COMMAND_VIEW = "view";
     private static final String USER_COMMAND_EXIT = "exit";
+    
 
     public CommandParser() {
     }
+   
 
     public Command parse(String userInput) {
         Command command;
