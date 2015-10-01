@@ -64,6 +64,8 @@ public class GUI extends Application {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			
 			public void handle(ActionEvent e) {
+				String command = userInputField.getText();
+				Logic.executeCommand(command);
 				actionTarget.setFill(Color.FIREBRICK);
 				actionTarget.setText("Command has been entered");
 			}
