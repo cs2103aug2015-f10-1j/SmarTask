@@ -25,7 +25,7 @@ public class Logic {
 			displayMessage = addTask(command);
 			break;
 		case DELETE :
-		//	deleteTask(command);
+			displayMessage = deleteTask(command);
 			break;
 		case VIEW :
 		//	viewTask (command);
@@ -54,6 +54,18 @@ public class Logic {
 		return message;
 		
 	}
+	
+	// ================================================================
+    // "Delete" command methods
+    // ================================================================
+	
+	private String deleteTask(Command com){
+		String message = "";
+		
+		return message;
+	}
+	
+	
 	
 	// ================================================================
     // "show to user" command methods
