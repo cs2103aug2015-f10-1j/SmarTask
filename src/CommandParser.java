@@ -22,16 +22,13 @@ public class CommandParser {
     private static final String USER_COMMAND_VIEW = "view";
     private static final String USER_COMMAND_EXIT = "exit";
     
-    private static Command command;
 
     public CommandParser() {
     }
-    public static Command getCommand(){
-    	return command;
-    }
+   
 
     public Command parse(String userInput) {
-       // Command command;
+        Command command;
         ArrayList<String> parameters = splitString(userInput);
         String userCommand = getUserCommand(parameters);
         ArrayList<String> arguments = getUserArguments(parameters);
