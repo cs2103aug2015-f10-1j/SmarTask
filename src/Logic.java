@@ -1,9 +1,13 @@
+import java.io.FileNotFoundException;
 import java.util.*;
+
+
 public class Logic {
 	private CommandParser commandParser;
 	//private Storage storage;
 	private ArrayList <String> taskList ;
 	private Command targetTask;
+	Storage storage = new Storage (); 
 	
 	private static final String ADD = "add";
     private static final String DELETE = "delete";
@@ -16,7 +20,7 @@ public class Logic {
 		taskList = new ArrayList <String>();
 	}
 	
-	public void executeCommand (String userInput){
+	public void executeCommand (String userInput) throws FileNotFoundException{
 		String displayMessage = "";
 		Command command = commandParser.parse(userInput);
 		switch (command.getCommandType()){
@@ -44,13 +48,14 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 	
-	private String addTask(Command com){
+	@SuppressWarnings("static-access")
+	private String addTask(Command com) throws FileNotFoundException{
 		String message;
 		message = ADD+ com.getTaskTitle() + "successful!";
 		String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
 		               com.getTaskDetail() + " " + com.getTaskTime();
 		taskList.add(detailStored);
-		
+		storage.saveToFile();
 		return message;
 		
 	}
@@ -61,7 +66,8 @@ public class Logic {
 	
 	private String deleteTask(Command com){
 		String message = "";
-		
+		message = DELETE +" "+com.getTaskTitle() + " successful!";
+		taskList.remove(com.getTaskNumber());
 		return message;
 	}
 	
