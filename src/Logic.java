@@ -1,8 +1,9 @@
+import java.io.IOException;
 import java.util.*;
 public class Logic {
-	private CommandParser commandParser;
+	private static CommandParser commandParser;
 	//private Storage storage;
-	private ArrayList <String> taskList ;
+	private static ArrayList <String> taskList ;
 	private Command targetTask;
 	
 	private static final String ADD = "add";
@@ -10,13 +11,20 @@ public class Logic {
     private static final String VIEW = "view";
     private static final String EXIT = "exit";
     
+	public static void main(String[] args) throws IOException {
+		Scanner sc = new Scanner(System.in);
+		String userCommand = sc.nextLine();
+		executeCommand(userCommand);
+	}
+	
+	
 	
 	public Logic (){
 		commandParser = new CommandParser();
 		taskList = new ArrayList <String>();
 	}
 	
-	public void executeCommand (String userInput){
+	public static void executeCommand (String userInput){
 		String displayMessage = "";
 		Command command = commandParser.parse(userInput);
 		switch (command.getCommandType()){
@@ -44,7 +52,7 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 	
-	private String addTask(Command com){
+	private static String addTask(Command com){
 		String message;
 		message = ADD+ com.getTaskTitle() + "successful!";
 		String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
@@ -58,7 +66,7 @@ public class Logic {
 	// ================================================================
     // "show to user" command methods
     // ================================================================
-	private void showToUser(String message){
+	private static void showToUser(String message){
 		System.out.println(message);
 	}
 	
