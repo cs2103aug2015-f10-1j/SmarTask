@@ -19,10 +19,8 @@ public class Logic {
         taskList = new ArrayList <String>();
     }
 
-    public static void executeCommand (String userInput) throws FileNotFoundException{
+    public void executeCommand (String userInput) throws FileNotFoundException{
         String displayMessage = "";
-        taskList = new ArrayList <String>();
-        commandParser = new CommandParser();
         Command command = commandParser.parse(userInput);
         switch (command.getCommandType()){
 
