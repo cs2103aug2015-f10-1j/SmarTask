@@ -18,14 +18,14 @@ public class CommandParser {
     private static final String REGEX_WHITESPACES = " ";
 
     private static final String USER_COMMAND_ADD = "add";
+    private static final String USER_COMMAND_ADDRECURRENCE = "addrc";
     private static final String USER_COMMAND_DELETE = "delete";
+    private static final String USER_COMMAND_DELETERECURRENCE = "deleterc";
     private static final String USER_COMMAND_VIEW = "view";
     private static final String USER_COMMAND_EXIT = "exit";
-    
 
     public CommandParser() {
     }
-   
 
     public Command parse(String userInput) {
         Command command;
@@ -37,19 +37,27 @@ public class CommandParser {
             case USER_COMMAND_ADD :
                 command = initAddCommand(arguments);
                 break;
-    
+
+            case USER_COMMAND_ADDRECURRENCE :
+                command = initAddRecurrenceCommand(arguments);
+                break;
+
             case USER_COMMAND_DELETE :
+                command = initDeleteRecurrenceCommand(arguments);
+                break;
+
+            case USER_COMMAND_DELETERECURRENCE :
                 command = initDeleteCommand(arguments);
                 break;
-    
+
             case USER_COMMAND_VIEW :
                 command = initViewCommand(arguments);
                 break;
-    
+
             case USER_COMMAND_EXIT :
                 command = initExitCommand();
                 break;
-    
+
             default :
                 command = initInvalidCommand();
         }
@@ -93,12 +101,36 @@ public class CommandParser {
     }
 
     // ================================================================
+    // Create add recurrence command method
+    // ================================================================
+
+    private Command initAddRecurrenceCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.ADDRECURRENCE);
+        command.setTaskTitle(arguments.get(POSITION_PARAM_COMMAND));
+        command.setTaskLabel(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        command.setTaskDetail(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+        command.setRecurringPeriod(arguments.get(POSITION_THIRD_PARAM_ARGUMENT));
+        return command;
+    }
+
+    // ================================================================
     // Create delete command method
     // ================================================================
 
     private Command initDeleteCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.DELETE);
         command.setTaskTime(arguments.get(POSITION_PARAM_COMMAND));
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_FIRST_PARAM_ARGUMENT)));
+        return command;
+    }
+
+    // ================================================================
+    // Create delete command method
+    // ================================================================
+
+    private Command initDeleteRecurrenceCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.DELETERECURRENCE);
+        command.setRecurringPeriod(arguments.get(POSITION_PARAM_COMMAND));
         command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_FIRST_PARAM_ARGUMENT)));
         return command;
     }
