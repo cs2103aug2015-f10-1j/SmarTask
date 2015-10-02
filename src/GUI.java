@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -65,7 +67,12 @@ public class GUI extends Application {
 			
 			public void handle(ActionEvent e) {
 				String userCommand = userInputField.getText();
-				Logic.executeCommand(userCommand);
+				try {
+                    Logic.executeCommand(userCommand);
+                } catch (FileNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
 				actionTarget.setFill(Color.FIREBRICK);
 				actionTarget.setText("Command has been entered");
 			}
