@@ -33,7 +33,7 @@ public class Command {
     }
 
     // ================================================================
-    // Getters method
+    // Getters method to support Logic methods
     // ================================================================
 
     public String getTaskTitle() {
@@ -69,7 +69,7 @@ public class Command {
     }
 
     // ================================================================
-    // Setters method
+    // Setters method to support CommandParser methods
     // ================================================================
 
     public void setTaskInput(ArrayList<String> taskInput) {
