@@ -1,9 +1,13 @@
+import java.io.FileNotFoundException;
 import java.util.*;
+
+
 public class Logic {
-	private CommandParser commandParser;
+	private static CommandParser commandParser;
 	//private Storage storage;
-	private ArrayList <String> taskList ;
+	private static ArrayList <String> taskList ;
 	private Command targetTask;
+	static Storage storage; 
 	
 	private static final String ADD = "add";
     private static final String DELETE = "delete";
@@ -16,8 +20,9 @@ public class Logic {
 		taskList = new ArrayList <String>();
 	}
 	
-	public void executeCommand (String userInput){
+	public static void executeCommand (String userInput) throws FileNotFoundException{
 		String displayMessage = "";
+		commandParser = new CommandParser();
 		Command command = commandParser.parse(userInput);
 		switch (command.getCommandType()){
 		
@@ -25,7 +30,7 @@ public class Logic {
 			displayMessage = addTask(command);
 			break;
 		case DELETE :
-		//	deleteTask(command);
+			displayMessage = deleteTask(command);
 			break;
 		case VIEW :
 		//	viewTask (command);
@@ -44,21 +49,36 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 	
-	private String addTask(Command com){
+	@SuppressWarnings("static-access")
+	private static String addTask(Command com) throws FileNotFoundException{
 		String message;
+		storage = new Storage();
 		message = ADD+ com.getTaskTitle() + "successful!";
 		String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
 		               com.getTaskDetail() + " " + com.getTaskTime();
 		taskList.add(detailStored);
-		
+		storage.saveToFile();
 		return message;
 		
 	}
 	
 	// ================================================================
+    // "Delete" command methods
+    // ================================================================
+	
+	private static String deleteTask(Command com){
+		String message = "";
+		message = DELETE +" "+com.getTaskTitle() + " successful!";
+		taskList.remove(com.getTaskNumber());
+		return message;
+	}
+	
+	
+	
+	// ================================================================
     // "show to user" command methods
     // ================================================================
-	private void showToUser(String message){
+	private static void showToUser(String message){
 		System.out.println(message);
 	}
 	
