@@ -71,8 +71,7 @@ public class GUI extends Application {
                 String userCommand = userInputField.getText();
                 try {
                     logic.executeCommand(userCommand);
-                } 
-                catch (FileNotFoundException e1) {
+                } catch (FileNotFoundException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }

@@ -19,24 +19,23 @@ public class Logic {
         taskList = new ArrayList <String>();
     }
 
-    public void executeCommand (String userInput) throws FileNotFoundException{
+    public static void executeCommand (String userInput) throws FileNotFoundException{
         String displayMessage = "";
         Command command = commandParser.parse(userInput);
         switch (command.getCommandType()){
-
-        case ADD : 
-            displayMessage = addTask(command);
-            break;
-        case DELETE :
-            displayMessage = deleteTask(command);
-            break;
-        case VIEW :
-            //	viewTask (command);
-            break;
-        case EXIT :
-            break;
-        default :
-            // return Command.Type.INVALID;
+            case ADD : 
+                displayMessage = addTask(command);
+                break;
+            case DELETE :
+                displayMessage = deleteTask(command);
+                break;
+            case VIEW :
+                //	viewTask (command);
+                break;
+            case EXIT :
+                break;
+            default :
+                // return Command.Type.INVALID;
         }
         showToUser(displayMessage);
 
