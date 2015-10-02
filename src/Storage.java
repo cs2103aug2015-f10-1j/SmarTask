@@ -23,7 +23,7 @@ public final class Storage {
 		}
 	}
 	
-	private static void saveToFile() throws FileNotFoundException {
+	static void saveToFile() throws FileNotFoundException {
 		try {
 			FileWriter fileW = new FileWriter(file);
 			BufferedWriter buffW = new BufferedWriter(fileW);

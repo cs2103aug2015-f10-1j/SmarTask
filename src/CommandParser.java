@@ -34,24 +34,24 @@ public class CommandParser {
         ArrayList<String> arguments = getUserArguments(parameters);
 
         switch (userCommand.toLowerCase()) {
-        case USER_COMMAND_ADD :
-            command = initAddCommand(arguments);
-            break;
-
-        case USER_COMMAND_DELETE :
-            command = initDeleteCommand(arguments);
-            break;
-
-        case USER_COMMAND_VIEW :
-            command = initViewCommand(arguments);
-            break;
-
-        case USER_COMMAND_EXIT :
-            command = initExitCommand();
-            break;
-
-        default :
-            command = initInvalidCommand();
+            case USER_COMMAND_ADD :
+                command = initAddCommand(arguments);
+                break;
+    
+            case USER_COMMAND_DELETE :
+                command = initDeleteCommand(arguments);
+                break;
+    
+            case USER_COMMAND_VIEW :
+                command = initViewCommand(arguments);
+                break;
+    
+            case USER_COMMAND_EXIT :
+                command = initExitCommand();
+                break;
+    
+            default :
+                command = initInvalidCommand();
         }
         return command;
     }
@@ -104,7 +104,7 @@ public class CommandParser {
     }
 
     // ================================================================
-    // TO DO: Create view task command method
+    // Create view task command method
     // ================================================================
 
     private Command initViewCommand(ArrayList<String> arguments) {
