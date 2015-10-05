@@ -1,12 +1,16 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -33,10 +37,14 @@ public class GUI extends Application {
         launch(args);
     }
 
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+    	Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+    	
         primaryStage.setTitle("SmarTask Main Window");
+        primaryStage.setScene(new Scene(root, 1050, 700));
         primaryStage.show();
-
+        
+        /*
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -53,6 +61,9 @@ public class GUI extends Application {
 
         TextField userInputField = new TextField();
         grid.add(userInputField, 0, 4);
+        
+        TextArea userReturnField = new TextArea();
+        grid.add(userReturnField, 0, 8);
 
         Button btn = new Button("Enter");
         HBox hbBtn = new HBox(10);
@@ -80,7 +91,8 @@ public class GUI extends Application {
             }
         });
 
-        Scene scene = new Scene(grid, 700, 600);
+        Scene scene = new Scene(grid, 650, 600);
         primaryStage.setScene(scene);
+        */
     }
 }

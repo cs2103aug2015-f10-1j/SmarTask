@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1047.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextArea layoutX="14.0" layoutY="451.0" prefHeight="191.0" prefWidth="1020.0" />
+      <TextArea layoutX="10.0" layoutY="8.0" prefHeight="431.0" prefWidth="707.0" text="Welcome to SmarTask!&#10;&#10;In case you need a refresher, type &quot;help&quot; to get a list of all the&#10;SmarTask commands." />
+      <TextArea layoutX="733.0" layoutY="14.0" prefHeight="424.0" prefWidth="304.0" text="Today's Task&#10;&#10;1. 0800 Wake Up&#10;2. 0900 Breakfast" />
+      <Text layoutX="899.0" layoutY="681.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Task Added!" wrappingWidth="134.2734375" />
+   </children>
+</Pane>
