@@ -194,25 +194,3 @@ public class CommandParser {
     // ================================================================
     
 }
-
-class CommanParserTest {
-    
-    public static void main(String[] args) {
-        CommandParser test = new CommandParser();
-        Command cmd = test.parse("add <meeting with team-mates> <1800 091015>");
-        System.out.println(cmd.getCommandType() + " " + cmd.getTaskTitle() + " " + cmd.getTaskTime());
-        
-        Command cmd1 = test.parse("add <testing program component> <1400 091015>");
-        System.out.println(cmd1.getCommandType() + " " + cmd1.getTaskTitle() + " " + cmd1.getTaskTime());
-        
-        Command cmd2 = test.parse("view <091015>");
-        System.out.println(cmd2.getCommandType() + " " + cmd2.getTaskTime());
-        
-        Command cmd3 = test.parse("update <2> <meeting to test demo> <081015>");
-        System.out.println(cmd3.getCommandType() + " " + cmd3.getTaskNumber() + " " + cmd3.getTaskTitle() +" " + cmd3.getTaskTime());
-        
-        Command cmd4 = test.parse("complete <1> <081015>");
-        System.out.println(cmd4.getCommandType() + " " + cmd4.getTaskNumber() + " " + cmd4.getTaskTime());
-        
-    }
-}
