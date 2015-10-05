@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Command {
     public enum Type {
-        ADD, ADDRECURRENCE, DELETE, DELETERECURRENCE,VIEW, EXIT, INVALID
+        ADD, ADDRECURRENCE, DELETE, DELETERECURRENCE, UPDATE, COMPLETE, VIEW, EXIT, INVALID
     }
 
     private Type type;

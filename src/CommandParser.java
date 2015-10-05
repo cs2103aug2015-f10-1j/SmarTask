@@ -10,18 +10,19 @@ import java.util.*;
  */
 
 public class CommandParser {
-    private static final int POSITION_PARAM_COMMAND = 0;
+    private static final int POSITION_ZERO_PARAM_ARGUMENT = 0;
     private static final int POSITION_FIRST_PARAM_ARGUMENT = 1;
     private static final int POSITION_SECOND_PARAM_ARGUMENT = 2;
-    private static final int POSITION_THIRD_PARAM_ARGUMENT = 3;
 
     private static final String REGEX_WHITESPACES = " ";
-
+    
     private static final String USER_COMMAND_ADD = "add";
     private static final String USER_COMMAND_ADDRECURRENCE = "addrc";
     private static final String USER_COMMAND_DELETE = "delete";
     private static final String USER_COMMAND_DELETERECURRENCE = "deleterc";
+    private static final String USER_COMMAND_UPDATE = "update";
     private static final String USER_COMMAND_VIEW = "view";
+    private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
 
     public CommandParser() {
@@ -51,7 +52,15 @@ public class CommandParser {
                 break;
 
             case USER_COMMAND_VIEW :
-                command = initViewCommand(arguments);
+                command = initViewDateCommand(arguments);
+                break;
+                
+            case USER_COMMAND_UPDATE :
+                command = initUpdateCommand(arguments);
+                break;
+                
+            case USER_COMMAND_COMPLETE :
+                command = initCompleteCommand(arguments);
                 break;
 
             case USER_COMMAND_EXIT :
@@ -84,7 +93,7 @@ public class CommandParser {
     }
 
     private String getUserCommand(ArrayList<String> parameters) {
-        return parameters.get(POSITION_PARAM_COMMAND);
+        return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
     }
 
     // ================================================================
@@ -93,10 +102,8 @@ public class CommandParser {
 
     private Command initAddCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.ADD);
-        command.setTaskTitle(arguments.get(POSITION_PARAM_COMMAND));
-        command.setTaskLabel(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        command.setTaskDetail(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
-        command.setTaskTime(arguments.get(POSITION_THIRD_PARAM_ARGUMENT));
+        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
@@ -106,10 +113,8 @@ public class CommandParser {
 
     private Command initAddRecurrenceCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.ADDRECURRENCE);
-        command.setTaskTitle(arguments.get(POSITION_PARAM_COMMAND));
-        command.setTaskLabel(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        command.setTaskDetail(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
-        command.setRecurringPeriod(arguments.get(POSITION_THIRD_PARAM_ARGUMENT));
+        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
@@ -119,32 +124,55 @@ public class CommandParser {
 
     private Command initDeleteCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.DELETE);
-        command.setTaskTime(arguments.get(POSITION_PARAM_COMMAND));
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_FIRST_PARAM_ARGUMENT)));
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
     // ================================================================
-    // Create delete command method
+    // Create delete recurrence command method
     // ================================================================
 
     private Command initDeleteRecurrenceCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.DELETERECURRENCE);
-        command.setRecurringPeriod(arguments.get(POSITION_PARAM_COMMAND));
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_FIRST_PARAM_ARGUMENT)));
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
     // ================================================================
-    // Create view task command method
+    // Create view all tasks of a day command method
     // ================================================================
 
-    private Command initViewCommand(ArrayList<String> arguments) {
+    private Command initViewDateCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.VIEW);
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_PARAM_COMMAND)));
+        command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
         return command;
     }
-
+    
+    // ================================================================
+    // Create update command method
+    // ================================================================
+    
+    private Command initUpdateCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.UPDATE);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+        return command;
+    }
+    
+    // ================================================================
+    // Create complete command method
+    // ================================================================
+    
+    private Command initCompleteCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.COMPLETE);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return command;
+    }
+    
     // ================================================================
     // Create exit command method
     // ================================================================
@@ -160,19 +188,31 @@ public class CommandParser {
     private Command initInvalidCommand() {
         return new Command(Command.Type.INVALID);
     }
-
-    // ================================================================
-    // TO DO: Create update command method
-    // ================================================================
-    
     
     // ================================================================
     // TO DO: Create search command method
     // ================================================================
     
-    
-    // ================================================================
-    // TO DO: Create complete command method
-    // ================================================================
+}
 
+class CommanParserTest {
+    
+    public static void main(String[] args) {
+        CommandParser test = new CommandParser();
+        Command cmd = test.parse("add <meeting with team-mates> <1800 091015>");
+        System.out.println(cmd.getCommandType() + " " + cmd.getTaskTitle() + " " + cmd.getTaskTime());
+        
+        Command cmd1 = test.parse("add <testing program component> <1400 091015>");
+        System.out.println(cmd1.getCommandType() + " " + cmd1.getTaskTitle() + " " + cmd1.getTaskTime());
+        
+        Command cmd2 = test.parse("view <091015>");
+        System.out.println(cmd2.getCommandType() + " " + cmd2.getTaskTime());
+        
+        Command cmd3 = test.parse("update <2> <meeting to test demo> <081015>");
+        System.out.println(cmd3.getCommandType() + " " + cmd3.getTaskNumber() + " " + cmd3.getTaskTitle() +" " + cmd3.getTaskTime());
+        
+        Command cmd4 = test.parse("complete <1> <081015>");
+        System.out.println(cmd4.getCommandType() + " " + cmd4.getTaskNumber() + " " + cmd4.getTaskTime());
+        
+    }
 }
