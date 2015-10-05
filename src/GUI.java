@@ -43,8 +43,13 @@ public class GUI extends Application {
         primaryStage.setTitle("SmarTask Main Window");
         primaryStage.setScene(new Scene(root, 1050, 700));
         primaryStage.show();
-        
-        /*
+    }
+    
+    public void secondStart(Stage primaryStage) {
+    	
+        primaryStage.setTitle("SmarTask Main Window");
+        primaryStage.show();
+    	
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -93,6 +98,5 @@ public class GUI extends Application {
 
         Scene scene = new Scene(grid, 650, 600);
         primaryStage.setScene(scene);
-        */
     }
 }
