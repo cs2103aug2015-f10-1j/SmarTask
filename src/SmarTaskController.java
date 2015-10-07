@@ -14,11 +14,10 @@ import javafx.scene.input.KeyEvent;
 
 public class SmarTaskController implements Initializable {
   
-	@FXML
-	private TextArea mainWindow;    //Value injected by FXML Loader
-	private TextArea displayWindow;	//Value injected by FXMLoader
-	private TextArea taskWindow;    //Value injected by FXMLoader
-	private TextField inputWindow;   //Value injected by FXMLoader
+	@FXML private TextArea mainWindow;    //Value injected by FXML Loader
+	@FXML private TextArea displayWindow;	//Value injected by FXMLoader
+	@FXML private TextArea taskWindow;    //Value injected by FXMLoader
+	@FXML private TextField inputWindow;   //Value injected by FXMLoader
 	
 	@Override
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -31,17 +30,15 @@ public class SmarTaskController implements Initializable {
 	@FXML
 	public void onEnter(KeyEvent ke) {
 		if(ke.getCode() == KeyCode.ENTER) {
-			// Logic logic = new Logic();
+			Logic logic = new Logic();
 			String userCommand = inputWindow.getText();
 			System.out.println(userCommand);
-			/*
+			inputWindow.clear();
 	        try {
 	            logic.executeCommand(userCommand);
 	        } catch (FileNotFoundException e1) {
-	            // TODO Auto-generated catch block
 	            e1.printStackTrace();
 	        }
-	        */
 		}
 	}
 }
