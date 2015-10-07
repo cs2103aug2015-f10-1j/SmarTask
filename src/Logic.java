@@ -211,6 +211,7 @@ public class Logic {
 /*
 class LogicTest {
 	public static void main(String[] arg) throws FileNotFoundException {
+		
 		Logic logic = new Logic();
 		logic.executeCommand("addrc <title1> <Wed>");
 		logic.executeCommand("addrc <title2> <Tue>");
@@ -220,8 +221,8 @@ class LogicTest {
 	//	logic.executeCommand("addrc <title6> <Sat, 01:00>");
 	//	logic.executeCommand("addrc <title7> <Sun, 03:00>");
 		System.out.println("dgerge");
-		logic.printArrayList();
+		
 	}
-	
+
 }
-*/
+	*/
