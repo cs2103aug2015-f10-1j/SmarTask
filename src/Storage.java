@@ -6,17 +6,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public final class Storage {
+public class Storage {
 	
 	public File taskFile;
 
 	public static ArrayList<String> taskList; 
 	
-
+	private File createFile(){
+		
+		File taskFile = new File("C:\\Users\\user\\Desktop\\taskFile.txt");
+		
+		return taskFile;
+	}
 	
-	private ArrayList retrieveTexts(File file) {
+	private ArrayList<String> retrieveTexts(File file) {
 		try {
-			File taskFile = new File("C:\\Users\\user\\Desktop\\taskFile.txt");
 			Scanner scanner = new Scanner(taskFile);
 			while (scanner.hasNextLine()) {
 				taskList.add(scanner.nextLine());
@@ -27,7 +31,7 @@ public final class Storage {
 		return taskList;
 	}
 	
-	private void saveToFile(ArrayList taskList) throws FileNotFoundException {
+	private void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {
 		try {
 			FileWriter fileW = new FileWriter(taskFile);
 			BufferedWriter buffW = new BufferedWriter(fileW);
@@ -39,8 +43,8 @@ public final class Storage {
 		} catch (IOException e) {
 		}
 	}
-	public ArrayList <String> getArrayList (){
-		return taskList;
-	}
+	//public ArrayList <String> getArrayList (){
+		//return taskList;
+	//}
 
 }
