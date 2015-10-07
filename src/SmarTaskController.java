@@ -2,11 +2,8 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -35,7 +32,8 @@ public class SmarTaskController implements Initializable {
 			System.out.println(userCommand);
 			inputWindow.clear();
 	        try {
-	            logic.executeCommand(userCommand);
+	            String logicReturn = logic.executeCommand(userCommand);
+	            displayWindow.appendText(logicReturn);
 	        } catch (FileNotFoundException e1) {
 	            e1.printStackTrace();
 	        }
