@@ -10,8 +10,7 @@ public class Logic {
     private static ArrayList <String> taskList ;
     private static ArrayList <String> recList;
     private static ArrayList <Integer> currentList;
- 
-    static Storage storage; 
+    private static Storage storage; 
 
     public Logic (){
         commandParser = new CommandParser();
@@ -19,36 +18,27 @@ public class Logic {
         recList = new ArrayList <String>();
         storage = new Storage();
         currentList = new ArrayList <Integer>();
-      
-        
     }
 
     public static String executeCommand (String userInput) throws FileNotFoundException{
         String displayMessage = "";
+        storage.createFile();
+        taskList = storage.retrieveTexts();
         
-        taskList = storage.retrieveTexts(storage.createFile());
         Command command = commandParser.parse(userInput);
         switch (command.getCommandType()){
             case ADD : 
                 displayMessage = addTask(command);
                 break;
-                
             case ADDRECURRENCE : 
             	displayMessage = addRec(command);
             	break;
-            	
             case DELETE :
                 displayMessage = deleteTask(command);
                 break;
-                
             case VIEW :
                 displayMessage = viewTask (command);
                 break;
-                
-            case UPDATE :
-            	displayMessage = updateTask(command);
-            	break;
-            	
            // case SEARCH:
             //	displayMessage = searchTask(command);
             //	break;
@@ -58,8 +48,7 @@ public class Logic {
                 // return Command.Type.INVALID;
         }
         return displayMessage;
-        
-
+       
     }
 
     // ================================================================
@@ -71,7 +60,7 @@ public class Logic {
         String detailStored = com.getTaskTime() + "#" + com.getTaskTitle();
         taskList.add(detailStored);
         sortForAdd();
-        storage.saveToFile(taskList); 
+        //storage.saveToFile(taskList); 
         message = "add " + com.getTaskTitle() + " successful!";
         return message;
 
@@ -120,67 +109,33 @@ public class Logic {
         });
     }
     */
-    /*
     public static void printArrayList (){
     	for (int i=0; i<taskList.size(); i++){
         	System.out.println(taskList.get(i));
         }
     }
-    */
+
 
     // ================================================================
     // "Delete" command methods
     // ================================================================
 
-    public static String deleteTask(Command com) throws FileNotFoundException{
+    public static String deleteTask(Command com){
         String message = "";
         try{
-        	int index = com.getTaskNumber();
+        	int index = currentList.get(com.getTaskNumber());
         	taskList.remove(index);
-            currentList.remove(index);
+            currentList.remove(com.getTaskNumber());
             message = "delete "+com.getTaskTitle() + " successful!";
-            
         }catch(Exception e){
         	message = "Error. Invalid task number";
         }
-        storage.saveToFile(taskList);
+        
         return message;
-    }
-  /*  
- // ================================================================
-    // "Deleterec" command methods
-    // ================================================================
-
-    public static String deleteTaskRC(Command com){
-        String message = "";
-        try{
-        	int index = com.getTaskNumber();
-        	taskList.remove(index);
-            currentList.remove(index);
-            message = "delete "+com.getTaskTitle() + " successful!";
-            
-        }catch(Exception e){
-        	message = "Error. Invalid task number";
-        }
-        storage.saveToFileRC(taskList)
-        return message;
-    }
-  */
- // ================================================================
-    // "View" command methods
-    // ================================================================
-
-    public static String updateTask(Command com) throws FileNotFoundException{
-    	String message = "";
-    	int index = currentList.get(com.getTaskNumber());
-    	String[] str = taskList.get(index).trim().split("#");
-    	str[1] = com.getTaskTitle();
-    	storage.saveToFile(taskList);
-    	return message;
     }
     
  // ================================================================
-    // "Update" command methods
+    // "View" command methods
     // ================================================================
 
     public static String viewTask(Command com){
@@ -199,7 +154,6 @@ public class Logic {
     	return message;
     }
 
-
     // ================================================================
     // "show to user" command methods
     // ================================================================
@@ -208,21 +162,16 @@ public class Logic {
 		return message;
     }
 }
-/*
+
 class LogicTest {
 	public static void main(String[] arg) throws FileNotFoundException {
-		
 		Logic logic = new Logic();
-		logic.executeCommand("addrc <title1> <Wed>");
-		logic.executeCommand("addrc <title2> <Tue>");
-		logic.executeCommand("addrc <title3> <Mon>");
-	//	logic.executeCommand("addrc <title4> <Mon, 11:00>");
-	//	logic.executeCommand("addrc <title5> <Fri, 04:00>");
-	//	logic.executeCommand("addrc <title6> <Sat, 01:00>");
-	//	logic.executeCommand("addrc <title7> <Sun, 03:00>");
-		System.out.println("dgerge");
-		
+		logic.executeCommand("add <meeting with team-mates> <09/10/2015 18:00>");
+		logic.executeCommand("add <testing program component> <09/10/2015 14:00>");
+		logic.executeCommand("add <meeting with team-mates for integration> <08/10/2015 18:00>");
+		logic.executeCommand("add <testing demo program> <08/10/2015 14:00>");
+		logic.printArrayList();
+		System.out.println("End of Test");
 	}
-
+	
 }
-	*/
