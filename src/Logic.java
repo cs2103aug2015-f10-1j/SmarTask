@@ -10,7 +10,8 @@ public class Logic {
     //private Storage storage;
     private static ArrayList <String> taskList ;
     private static ArrayList <String> recList;
-    private static HashMap <Integer, Integer> currentList;
+  //  private static HashMap <Integer, Integer> currentList;
+    private static ArrayList <Integer> currentList;
  
     static Storage storage; 
 
@@ -19,14 +20,16 @@ public class Logic {
         taskList = new ArrayList <String>();
         recList = new ArrayList <String>();
         storage = new Storage();
-        currentList = new HashMap <Integer, Integer>();
+    //    currentList = new HashMap <Integer, Integer>();
+        currentList = new ArrayList <Integer>();
       
         
     }
 
     public static void executeCommand (String userInput) throws FileNotFoundException{
         String displayMessage = "";
-        taskList = storage.retrieveTexts();
+        
+        taskList = storage.retrieveTexts(storage.createFile());
         Command command = commandParser.parse(userInput);
         switch (command.getCommandType()){
             case ADD : 
@@ -59,7 +62,7 @@ public class Logic {
 
     private static String addTask(Command com) throws FileNotFoundException{
         String message;
-        String detailStored = com.getTaskTime() + " " + com.getTaskTitle();
+        String detailStored = com.getTaskTime() + "#" + com.getTaskTitle();
         taskList.add(detailStored);
         sortForAdd();
         storage.saveToFile(taskList); 
@@ -89,9 +92,9 @@ public class Logic {
     private static String addRec(Command com) throws FileNotFoundException{
         String message;
         storage = new Storage();     
-        String detailStored =  com.getRecurringPeriod() +" " + com.getTaskTitle();
+        String detailStored =  com.getRecurringPeriod() +"#" + com.getTaskTitle();
         recList.add(detailStored);
-      //  storage.saveToFile(recList); // BUG HERE
+        storage.saveToFileRC(recList); // BUG HERE
         message =  "addrc " + com.getTaskTitle() + " successful!";
         return message;
 
@@ -143,14 +146,14 @@ public class Logic {
     public static String viewTask(Command com){
     	String message = "";
     	int index = 1;
+    	
     //	taskList = Storage.retrieveTexts();
     	for (int i=0; i<taskList.size(); i++){
     		if (taskList.get(i).contains(com.getTaskTime())){
-    			currentList.put(index, i);
-    			message += index + ". " + com.getTaskTitle() + "\n";
-    			index++;
-    		}
-    			
+    			currentList.add(i);
+    			String[] str = taskList.get(i).trim().split("#");
+    			message += (index++) + str[1] + "\n";
+    		}	
     	}
     	
     	return message;
@@ -164,7 +167,7 @@ public class Logic {
 		return message;
     }
 }
-
+/*
 class LogicTest {
 	public static void main(String[] arg) throws FileNotFoundException {
 		Logic logic = new Logic();
@@ -180,3 +183,4 @@ class LogicTest {
 	}
 	
 }
+*/
