@@ -5,11 +5,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1047.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1047.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SmarTaskController">
    <children>
-      <TextArea layoutX="14.0" layoutY="451.0" prefHeight="191.0" prefWidth="1020.0" />
-      <TextArea fx:id="message" editable="false" layoutX="10.0" layoutY="8.0" prefHeight="431.0" prefWidth="707.0" text="Welcome to SmarTask!&#10;&#10;In case you need a refresher, type &quot;help&quot; to get a list of all the&#10;SmarTask commands." />
-      <TextArea editable="false" layoutX="733.0" layoutY="14.0" prefHeight="424.0" prefWidth="304.0" text="Today's Task&#10;&#10;1. 0800 Wake Up&#10;2. 0900 Breakfast" />
-      <Text fx:id="message" layoutX="862.0" layoutY="683.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Message" wrappingWidth="174.2734375" />
+      <TextArea fx:id="inputWindow" layoutX="14.0" layoutY="451.0" prefHeight="191.0" prefWidth="1020.0" />
+      <TextArea fx:id="displayWindow" editable="false" layoutX="10.0" layoutY="8.0" prefHeight="431.0" prefWidth="707.0" text="Welcome to SmarTask!&#10;&#10;In case you need a refresher, type &quot;help&quot; to get a list of all the&#10;SmarTask commands." />
+      <TextArea fx:id="taskWindow" editable="false" layoutX="733.0" layoutY="7.0" prefHeight="431.0" prefWidth="304.0" />
+    <Button fx:id="commandButton" layoutX="809.0" layoutY="642.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="228.0" text="Enter" />
    </children>
 </Pane>
