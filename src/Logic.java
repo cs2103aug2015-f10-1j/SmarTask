@@ -26,7 +26,7 @@ public class Logic {
         
     }
 
-    public static void executeCommand (String userInput) throws FileNotFoundException{
+    public static String executeCommand (String userInput) throws FileNotFoundException{
         String displayMessage = "";
         
         taskList = storage.retrieveTexts(storage.createFile());
@@ -52,7 +52,8 @@ public class Logic {
             default :
                 // return Command.Type.INVALID;
         }
-        showToUser(displayMessage);
+        return displayMessage;
+        
 
     }
 
@@ -163,7 +164,7 @@ public class Logic {
     // "show to user" command methods
     // ================================================================
     private static String showToUser(String message){
-        System.out.println( message);
+     //   System.out.println( message);
 		return message;
     }
 }
