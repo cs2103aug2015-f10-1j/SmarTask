@@ -40,8 +40,8 @@ public class Logic {
 	    displayMessage = viewTask (command);
 	    break;
 	case UPDATE :
-    	displayMessage = updateTask(command);
-    	break;
+	    displayMessage = updateTask(command);
+	    break;
 	    // case SEARCH:
 		//	displayMessage = searchTask(command);
 		//	break;
@@ -94,7 +94,7 @@ public class Logic {
 	storage = new Storage();     
 	String detailStored =  com.getRecurringPeriod() +"#" + com.getTaskTitle();
 	recList.add(detailStored);
-	storage.saveToFileRC(recList); // BUG HERE
+	storage.saveToFileRC(recList);
 	message =  "addrc " + com.getTaskTitle() + " successful!";
 	return message;
 
@@ -128,14 +128,14 @@ public class Logic {
     public static String deleteTask(Command com){
 	String message = "";
 	try{
-	    int index = currentList.get(com.getTaskNumber());
+	    int index = currentList.get(com.getTaskNumber()-1);
 	    taskList.remove(index);
-	    currentList.remove(com.getTaskNumber());
+	    currentList.remove(com.getTaskNumber()-1);
+	    storage.saveToFile(taskList); 
 	    message = "delete "+com.getTaskTitle() + " successful!";
 	}catch(Exception e){
 	    message = "Error. Invalid task number";
 	}
-
 	return message;
     }
 
@@ -165,9 +165,16 @@ public class Logic {
     
     public static String updateTask(Command com) throws FileNotFoundException{
     	String message = "";
-    	int index = currentList.get(com.getTaskNumber());
-    	String[] str = taskList.get(index).trim().split("#");
+    	int taskListIndex = currentList.get(com.getTaskNumber()-1);
+    	String[] str = taskList.get(taskListIndex).trim().split("#");
     	str[1] = com.getTaskTitle();
+    	String updateString = "";
+    	for (int i=0; i < str.length-1; i++){
+    	    updateString += (str[i] + "#");
+    	}
+    	updateString += str[str.length-1];
+    	taskList.set(taskListIndex, updateString);
+    	
     	storage.saveToFile(taskList);
     	return message;
     }
@@ -188,9 +195,11 @@ class LogicTest {
 	//logic.executeCommand("add <meeting with team-mates> <09/10/2015 18:00>");
 	//logic.executeCommand("add <testing program component> <09/10/2015 14:00>");
 	//logic.executeCommand("add <meeting with team-mates for integration> <08/10/2015 18:00>");
-	logic.printArrayList();
+	//logic.printArrayList();
 	System.out.print(logic.executeCommand("view <09/10/2015>"));
-	System.out.print(logic.executeCommand("update <2> <UPDATED> <09/10/2015>"));
+	//System.out.print(logic.executeCommand("update <2> <UPDATED> <09/10/2015>"));
+	//System.out.print(logic.executeCommand("view <09/10/2015>"));
+	System.out.print(logic.executeCommand("delete <2> <09/10/2015>"));
 	System.out.print(logic.executeCommand("view <09/10/2015>"));
 	System.out.println("End of Test");
     }

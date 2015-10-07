@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -44,11 +45,11 @@ public class CommandParser {
                 break;
 
             case USER_COMMAND_DELETE :
-                command = initDeleteRecurrenceCommand(arguments);
+                command = initDeleteCommand(arguments);
                 break;
 
             case USER_COMMAND_DELETERECURRENCE :
-                command = initDeleteCommand(arguments);
+                command = initDeleteRecurrenceCommand(arguments);
                 break;
 
             case USER_COMMAND_VIEW :
