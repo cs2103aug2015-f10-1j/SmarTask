@@ -132,7 +132,7 @@ public class Logic {
 	    taskList.remove(index);
 	    currentList.remove(com.getTaskNumber()-1);
 	    storage.saveToFile(taskList); 
-	    message = "delete "+com.getTaskTitle() + " successful!";
+	    message = "delete "+com.getTaskNumber() + " successful!";
 	}catch(Exception e){
 	    message = "Error. Invalid task number";
 	}
