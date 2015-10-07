@@ -12,9 +12,6 @@ public final class Storage {
 
 	public static ArrayList<String> text; 
 	
-	public static void main(String[] args) {
-
-	}
 	
 	private static void retrieveTexts(File file) {
 		try {
