@@ -39,6 +39,9 @@ public class Logic {
 	case VIEW :
 	    displayMessage = viewTask (command);
 	    break;
+	case UPDATE :
+    	displayMessage = updateTask(command);
+    	break;
 	    // case SEARCH:
 		//	displayMessage = searchTask(command);
 		//	break;
@@ -155,6 +158,20 @@ public class Logic {
 
 	return message;
     }
+    
+ // ================================================================
+    // "Update" command methods
+    // ================================================================
+    
+    public static String updateTask(Command com) throws FileNotFoundException{
+    	String message = "";
+    	int index = currentList.get(com.getTaskNumber());
+    	String[] str = taskList.get(index).trim().split("#");
+    	str[1] = com.getTaskTitle();
+    	storage.saveToFile(taskList);
+    	return message;
+    }
+
 
     // ================================================================
     // "show to user" command methods
