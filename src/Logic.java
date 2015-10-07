@@ -5,8 +5,8 @@ import java.util.*;
 public class Logic {
     private static CommandParser commandParser;
     //private Storage storage;
-    private static ArrayList <String> taskList ;
-    private Command targetTask;
+    private static ArrayList <String> inputList ;
+    private static ArrayList <String> taskList;
     static Storage storage; 
 
     private static final String ADD = "add";
@@ -16,7 +16,7 @@ public class Logic {
 
     public Logic (){
         commandParser = new CommandParser();
-        taskList = new ArrayList <String>();
+        inputList = new ArrayList <String>();
     }
 
     public static void executeCommand (String userInput) throws FileNotFoundException{
@@ -30,7 +30,7 @@ public class Logic {
                 displayMessage = deleteTask(command);
                 break;
             case VIEW :
-                //	viewTask (command);
+                displayMessage = viewTask ();
                 break;
             case EXIT :
                 break;
@@ -45,14 +45,13 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-    @SuppressWarnings("static-access")
     private static String addTask(Command com) throws FileNotFoundException{
         String message;
         storage = new Storage();
         message = ADD + " " + com.getTaskTitle() + " successful!";
         String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
                 com.getTaskDetail() + " " + com.getTaskTime();
-        taskList.add(detailStored);
+        inputList.add(detailStored);
         //storage.saveToFile(); // BUG HERE
         return message;
 
@@ -62,11 +61,30 @@ public class Logic {
     // "Delete" command methods
     // ================================================================
 
-    private static String deleteTask(Command com){
+    public static String deleteTask(Command com){
         String message = "";
-        message = DELETE +" "+com.getTaskTitle() + " successful!";
-        taskList.remove(com.getTaskNumber());
+        if (taskList.get(com.getTaskNumber()) != null){
+        	message = DELETE +" "+com.getTaskTitle() + " successful!";
+            taskList.remove(com.getTaskNumber());
+        }else{
+        	message = "Error. Invalid task number";
+        }
+        
         return message;
+    }
+    
+ // ================================================================
+    // "View" command methods
+    // ================================================================
+
+    public static String viewTask(){
+    	String message = "";
+    	taskList = Storage.getArrayList();
+    	for (int i=0; i<taskList.size(); i++){
+    		message += taskList.get(i) + "\n";
+    	}
+    	
+    	return message;
     }
 
     // ================================================================
