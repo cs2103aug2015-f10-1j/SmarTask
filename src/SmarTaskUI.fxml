@@ -7,10 +7,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1047.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SmarTaskController">
    <children>
-      <TextField fx:id="inputWindow" layoutX="14.0" layoutY="591.0" onKeyPressed="#onEnter" prefHeight="51.0" prefWidth="1020.0" />
+      <TextField fx:id="inputWindow" layoutX="14.0" layoutY="639.0" onKeyPressed="#onEnter" prefHeight="51.0" prefWidth="1020.0" />
       <TextArea fx:id="mainWindow" editable="false" layoutX="10.0" layoutY="8.0" prefHeight="141.0" prefWidth="641.0" text="Welcome to SmarTask!&#10;&#10;In case you need a refresher, please type &quot;help&quot; to get a list of all the SmarTask commands." />
-      <TextArea fx:id="taskWindow" editable="false" layoutX="668.0" layoutY="7.0" prefHeight="575.0" prefWidth="369.0" />
-      <TextArea fx:id="displayWindow" editable="false" layoutX="10.0" layoutY="155.0" prefHeight="428.0" prefWidth="641.0" />
-      <Button fx:id="commandButton" layoutX="923.0" layoutY="645.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="114.0" text="Enter" />
+      <TextArea fx:id="taskWindow" editable="false" layoutX="665.0" layoutY="7.0" prefHeight="622.0" prefWidth="369.0" />
+      <TextArea fx:id="displayWindow" editable="false" layoutX="10.0" layoutY="155.0" prefHeight="473.0" prefWidth="641.0" />
    </children>
 </Pane>
