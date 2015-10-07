@@ -7,10 +7,8 @@ import java.util.*;
 
 public class Logic {
     private static CommandParser commandParser;
-    //private Storage storage;
     private static ArrayList <String> taskList ;
     private static ArrayList <String> recList;
-  //  private static HashMap <Integer, Integer> currentList;
     private static ArrayList <Integer> currentList;
  
     static Storage storage; 
@@ -20,7 +18,6 @@ public class Logic {
         taskList = new ArrayList <String>();
         recList = new ArrayList <String>();
         storage = new Storage();
-    //    currentList = new HashMap <Integer, Integer>();
         currentList = new ArrayList <Integer>();
       
         
@@ -47,6 +44,11 @@ public class Logic {
             case VIEW :
                 displayMessage = viewTask (command);
                 break;
+                
+            case UPDATE :
+            	displayMessage = updateTask(command);
+            	break;
+            	
            // case SEARCH:
             //	displayMessage = searchTask(command);
             //	break;
@@ -168,6 +170,19 @@ public class Logic {
     // "View" command methods
     // ================================================================
 
+    public static String updateTask(Command com) throws FileNotFoundException{
+    	String message = "";
+    	int index = currentList.get(com.getTaskNumber());
+    	String[] str = taskList.get(index).trim().split("#");
+    	str[1] = com.getTaskTitle();
+    	storage.saveToFile(taskList);
+    	return message;
+    }
+    
+ // ================================================================
+    // "Update" command methods
+    // ================================================================
+
     public static String viewTask(Command com){
     	String message = "";
     	int index = 1;
@@ -183,6 +198,7 @@ public class Logic {
     	
     	return message;
     }
+
 
     // ================================================================
     // "show to user" command methods
