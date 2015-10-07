@@ -1,23 +1,32 @@
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
 public class Logic {
     private static CommandParser commandParser;
     //private Storage storage;
-    private static ArrayList <String> inputList ; // arraylist to store task to txt file
-    private static ArrayList <String> taskList; // arraylist use to hold the data from txt file
+    private static ArrayList <String> taskList ;
+    private static ArrayList <String> recList;
+    private static HashMap <Integer, Integer> currentList;
+ 
     static Storage storage; 
 
     public Logic (){
         commandParser = new CommandParser();
-        inputList = new ArrayList <String>();
         taskList = new ArrayList <String>();
+        recList = new ArrayList <String>();
         storage = new Storage();
+        currentList = new HashMap <Integer, Integer>();
+      
+        
     }
 
     public static void executeCommand (String userInput) throws FileNotFoundException{
         String displayMessage = "";
+        taskList = storage.retrieveTexts();
         Command command = commandParser.parse(userInput);
         switch (command.getCommandType()){
             case ADD : 
@@ -50,13 +59,27 @@ public class Logic {
 
     private static String addTask(Command com) throws FileNotFoundException{
         String message;
+        String detailStored = com.getTaskTime() + " " + com.getTaskTitle();
+        taskList.add(detailStored);
+        sortForAdd();
+        storage.saveToFile(taskList); 
         message = "add " + com.getTaskTitle() + " successful!";
-        String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
-                com.getTaskDetail() + " " + com.getTaskTime();
-        inputList.add(detailStored);
-        //storage.saveToFile(); // BUG HERE
         return message;
 
+    }
+    
+    public static void sortForAdd(){
+    	Collections.sort(taskList, new Comparator<String>() {
+            DateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            @Override
+            public int compare(String o1, String o2) {
+                try {
+                    return f.parse(o1).compareTo(f.parse(o2));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
     }
     
     // ================================================================
@@ -65,14 +88,33 @@ public class Logic {
 
     private static String addRec(Command com) throws FileNotFoundException{
         String message;
-        storage = new Storage();
-        message =  "add " + com.getTaskTitle() + " successful!";
-        String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
-                com.getTaskDetail() + " " + com.getTaskTime();
-        inputList.add(detailStored);
-        //storage.saveToFile(); // BUG HERE
+        storage = new Storage();     
+        String detailStored =  com.getRecurringPeriod() +" " + com.getTaskTitle();
+        recList.add(detailStored);
+      //  storage.saveToFile(recList); // BUG HERE
+        message =  "addrc " + com.getTaskTitle() + " successful!";
         return message;
 
+    }
+   /* 
+    public static void sortForRec(){
+    	Collections.sort(inputList, new Comparator<String>() {
+            DateFormat f = new SimpleDateFormat("EEE");
+            @Override
+            public int compare(String o1, String o2) {
+                try {
+                    return f.parse(o1).compareTo(f.parse(o2));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
+    */
+    public static void printArrayList (){
+    	for (int i=0; i<taskList.size(); i++){
+        	System.out.println(taskList.get(i));
+        }
     }
 
 
@@ -83,8 +125,10 @@ public class Logic {
     public static String deleteTask(Command com){
         String message = "";
         try{
-        	message = "delete "+com.getTaskTitle() + " successful!";
-            taskList.remove(com.getTaskNumber());
+        	int index = currentList.get(com.getTaskNumber());
+        	taskList.remove(index);
+            currentList.remove(com.getTaskNumber());
+            message = "delete "+com.getTaskTitle() + " successful!";
         }catch(Exception e){
         	message = "Error. Invalid task number";
         }
@@ -98,10 +142,15 @@ public class Logic {
 
     public static String viewTask(Command com){
     	String message = "";
-    	taskList = Storage.getArrayList();
+    	int index = 1;
+    //	taskList = Storage.retrieveTexts();
     	for (int i=0; i<taskList.size(); i++){
-    		if (taskList.get(i).contains(com.getTaskTime()))
-    			message += taskList.get(i) + "\n";
+    		if (taskList.get(i).contains(com.getTaskTime())){
+    			currentList.put(index, i);
+    			message += index + ". " + com.getTaskTitle() + "\n";
+    			index++;
+    		}
+    			
     	}
     	
     	return message;
@@ -110,9 +159,24 @@ public class Logic {
     // ================================================================
     // "show to user" command methods
     // ================================================================
-    private static void showToUser(String message){
-        System.out.println(message);
+    private static String showToUser(String message){
+        System.out.println( message);
+		return message;
     }
+}
 
-
+class LogicTest {
+	public static void main(String[] arg) throws FileNotFoundException {
+		Logic logic = new Logic();
+		logic.executeCommand("addrc <title1> <Wed>");
+		logic.executeCommand("addrc <title2> <Tue>");
+		logic.executeCommand("addrc <title3> <Mon>");
+	//	logic.executeCommand("addrc <title4> <Mon, 11:00>");
+	//	logic.executeCommand("addrc <title5> <Fri, 04:00>");
+	//	logic.executeCommand("addrc <title6> <Sat, 01:00>");
+	//	logic.executeCommand("addrc <title7> <Sun, 03:00>");
+		System.out.println("dgerge");
+		logic.printArrayList();
+	}
+	
 }
