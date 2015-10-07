@@ -51,9 +51,21 @@ public class Storage {
 		}
 	}
 
-	public void saveToFileRCS(ArrayList<String> rcsTaskList) throws FileNotFoundException {
+	public void saveToFileRC(ArrayList<String> rcTaskList) throws FileNotFoundException {
 		try {
-			
+			File tempFile = new File(taskFile.getAbsolutePath());
+			PrintWriter pw = new PrintWriter(tempFile);
+			pw.print("");
+			pw.close();
+			taskFile.delete();
+			tempFile.renameTo(taskFile);
+			FileWriter fileW = new FileWriter(taskFile);
+			BufferedWriter buffW = new BufferedWriter(fileW);
+			for (int i = 0; i < rcTaskList.size(); i++) {
+				buffW.write(rcTaskList.get(i));
+				buffW.newLine();
+			}
+			buffW.close();
 		} catch (IOException e) {			
 		}		
 	}
