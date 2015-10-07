@@ -30,7 +30,7 @@ public class Logic {
                 displayMessage = deleteTask(command);
                 break;
             case VIEW :
-                displayMessage = viewTask ();
+                displayMessage = viewTask (command);
                 break;
             case EXIT :
                 break;
@@ -77,11 +77,12 @@ public class Logic {
     // "View" command methods
     // ================================================================
 
-    public static String viewTask(){
+    public static String viewTask(Command com){
     	String message = "";
     	taskList = Storage.getArrayList();
     	for (int i=0; i<taskList.size(); i++){
-    		message += taskList.get(i) + "\n";
+    		if (taskList.get(i).contains(com.getTaskTime()))
+    			message += taskList.get(i) + "\n";
     	}
     	
     	return message;
