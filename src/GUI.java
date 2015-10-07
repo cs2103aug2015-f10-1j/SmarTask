@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 
 public class GUI extends Application {
-  
+	
     public static void main(String[] args) {
         launch(args);
     }
@@ -24,7 +24,7 @@ public class GUI extends Application {
 	    	Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
 	        primaryStage.setTitle("SmarTask Main Window");
 	        primaryStage.setScene(new Scene(root, 1050, 700));
-	        primaryStage.show(); 
+	        primaryStage.show();
 	   } catch(Exception e) {
 		   e.printStackTrace();
 	   }       

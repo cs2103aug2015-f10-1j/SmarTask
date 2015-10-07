@@ -8,17 +8,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class SmarTaskController implements Initializable {
   
-	@FXML // fx:id = "commandButton"
+	@FXML
 	private Button commandButton;   //Value injected by FXMLoader
 	private TextArea mainWindow;    //Value injected by FXML Loader
 	private TextArea displayWindow;	//Value injected by FXMLoader
 	private TextArea taskWindow;    //Value injected by FXMLoader
-	private TextArea inputWindow;   //Value injected by FXMLoader
+	private TextField inputWindow;   //Value injected by FXMLoader
 	
 	@Override
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -34,14 +35,29 @@ public class SmarTaskController implements Initializable {
 	            public void handle(ActionEvent e) {
 	                String userCommand = inputWindow.getText();
 	                try {
-	                    String textToDisplay = logic.executeCommand(userCommand);
-	                    String originalText = displayWindow.getText();
-	                    displayWindow.appendText(originalText + textToDisplay);
+	                    logic.executeCommand(userCommand);
 	                } catch (FileNotFoundException e1) {
 	                    // TODO Auto-generated catch block
 	                    e1.printStackTrace();
 	                }
 	            }
-	        });	
-	}	
+	        });
+	}
+	
+	@FXML
+	public void onEnter(KeyEvent ke) {
+		if(ke.getCode() == KeyCode.ENTER) {
+			System.out.println("Success!");
+			/*
+			Logic logic = new Logic();
+			String userCommand = inputWindow.getText();
+	        try {
+	            logic.executeCommand(userCommand);
+	        } catch (FileNotFoundException e1) {
+	            // TODO Auto-generated catch block
+	            e1.printStackTrace();
+	        }
+	        */
+		}
+	}
 }
