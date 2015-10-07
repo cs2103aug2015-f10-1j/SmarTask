@@ -12,14 +12,14 @@ public class Storage {
 
 	public static ArrayList<String> taskList; 
 	
-	private File createFile(){
+	public File createFile(){
 		
 		File taskFile = new File("C:\\Users\\user\\Desktop\\taskFile.txt");
 		
 		return taskFile;
 	}
 	
-	private ArrayList<String> retrieveTexts(File file) {
+	public ArrayList<String> retrieveTexts(File file) {
 		try {
 			Scanner scanner = new Scanner(taskFile);
 			while (scanner.hasNextLine()) {
@@ -31,7 +31,7 @@ public class Storage {
 		return taskList;
 	}
 	
-	private void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {
+	public void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {
 		try {
 			FileWriter fileW = new FileWriter(taskFile);
 			BufferedWriter buffW = new BufferedWriter(fileW);
