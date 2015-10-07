@@ -35,12 +35,15 @@ public class Logic {
             case ADD : 
                 displayMessage = addTask(command);
                 break;
+                
             case ADDRECURRENCE : 
             	displayMessage = addRec(command);
             	break;
+            	
             case DELETE :
                 displayMessage = deleteTask(command);
                 break;
+                
             case VIEW :
                 displayMessage = viewTask (command);
                 break;
@@ -115,31 +118,52 @@ public class Logic {
         });
     }
     */
+    /*
     public static void printArrayList (){
     	for (int i=0; i<taskList.size(); i++){
         	System.out.println(taskList.get(i));
         }
     }
-
+    */
 
     // ================================================================
     // "Delete" command methods
     // ================================================================
 
-    public static String deleteTask(Command com){
+    public static String deleteTask(Command com) throws FileNotFoundException{
         String message = "";
         try{
-        	int index = currentList.get(com.getTaskNumber());
+        	int index = com.getTaskNumber();
         	taskList.remove(index);
-            currentList.remove(com.getTaskNumber());
+            currentList.remove(index);
             message = "delete "+com.getTaskTitle() + " successful!";
+            
         }catch(Exception e){
         	message = "Error. Invalid task number";
         }
-        
+        storage.saveToFile(taskList);
         return message;
     }
-    
+  /*  
+ // ================================================================
+    // "Deleterec" command methods
+    // ================================================================
+
+    public static String deleteTaskRC(Command com){
+        String message = "";
+        try{
+        	int index = com.getTaskNumber();
+        	taskList.remove(index);
+            currentList.remove(index);
+            message = "delete "+com.getTaskTitle() + " successful!";
+            
+        }catch(Exception e){
+        	message = "Error. Invalid task number";
+        }
+        storage.saveToFileRC(taskList)
+        return message;
+    }
+  */
  // ================================================================
     // "View" command methods
     // ================================================================
