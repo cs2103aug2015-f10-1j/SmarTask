@@ -39,5 +39,8 @@ public final class Storage {
 		} catch (IOException e) {
 		}
 	}
+	public static ArrayList <String> getArrayList (){
+		return text;
+	}
 
 }
