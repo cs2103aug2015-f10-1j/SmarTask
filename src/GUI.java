@@ -18,7 +18,6 @@ public class GUI extends Application {
         launch(args);
     }
     
-   @Override
     public void start(Stage primaryStage) {
 	   try {
 	    	Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
