@@ -9,11 +9,6 @@ public class Logic {
     private static ArrayList <String> taskList;
     static Storage storage; 
 
-    private static final String ADD = "add";
-    private static final String DELETE = "delete";
-    private static final String VIEW = "view";
-    private static final String EXIT = "exit";
-
     public Logic (){
         commandParser = new CommandParser();
         inputList = new ArrayList <String>();
@@ -26,12 +21,18 @@ public class Logic {
             case ADD : 
                 displayMessage = addTask(command);
                 break;
+            case ADDRECURRENCE : 
+            	displayMessage = addRec(command);
+            	break;
             case DELETE :
                 displayMessage = deleteTask(command);
                 break;
             case VIEW :
                 displayMessage = viewTask (command);
                 break;
+           // case SEARCH:
+            //	displayMessage = searchTask(command);
+            //	break;
             case EXIT :
                 break;
             default :
@@ -48,7 +49,23 @@ public class Logic {
     private static String addTask(Command com) throws FileNotFoundException{
         String message;
         storage = new Storage();
-        message = ADD + " " + com.getTaskTitle() + " successful!";
+        message = "add " + com.getTaskTitle() + " successful!";
+        String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
+                com.getTaskDetail() + " " + com.getTaskTime();
+        inputList.add(detailStored);
+        //storage.saveToFile(); // BUG HERE
+        return message;
+
+    }
+    
+    // ================================================================
+    // "Addrc" command methods
+    // ================================================================
+
+    private static String addRec(Command com) throws FileNotFoundException{
+        String message;
+        storage = new Storage();
+        message =  "add " + com.getTaskTitle() + " successful!";
         String detailStored = com.getTaskTitle() + " " + com.getTaskLabel() + " "+
                 com.getTaskDetail() + " " + com.getTaskTime();
         inputList.add(detailStored);
@@ -57,16 +74,17 @@ public class Logic {
 
     }
 
+
     // ================================================================
     // "Delete" command methods
     // ================================================================
 
     public static String deleteTask(Command com){
         String message = "";
-        if (taskList.get(com.getTaskNumber()) != null){
-        	message = DELETE +" "+com.getTaskTitle() + " successful!";
+        try{
+        	message = "delete "+com.getTaskTitle() + " successful!";
             taskList.remove(com.getTaskNumber());
-        }else{
+        }catch(Exception e){
         	message = "Error. Invalid task number";
         }
         
