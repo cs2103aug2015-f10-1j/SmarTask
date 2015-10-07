@@ -17,7 +17,7 @@ public class Storage {
     }
     
     public void createFile(){	
-	taskFile = new File("C:\\Users\\user\\Desktop\\taskFile.txt");
+	taskFile = new File("C:\\Users\\Bobby\\Desktop\\taskFile.txt");
     }
 
     public ArrayList<String> retrieveTexts() {
