@@ -8,36 +8,39 @@ import java.util.Scanner;
 
 public final class Storage {
 	
-	private static File file;
+	public File taskFile;
 
-	public static ArrayList<String> text; 
+	public static ArrayList<String> taskList; 
 	
+
 	
-	private static void retrieveTexts(File file) {
+	private ArrayList retrieveTexts(File file) {
 		try {
-			Scanner scanner = new Scanner(file);
+			File taskFile = new File("C:\\Users\\user\\Desktop\\taskFile.txt");
+			Scanner scanner = new Scanner(taskFile);
 			while (scanner.hasNextLine()) {
-				text.add(scanner.nextLine());
+				taskList.add(scanner.nextLine());
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 		}
+		return taskList;
 	}
 	
-	static void saveToFile() throws FileNotFoundException {
+	private void saveToFile(ArrayList taskList) throws FileNotFoundException {
 		try {
-			FileWriter fileW = new FileWriter(file);
+			FileWriter fileW = new FileWriter(taskFile);
 			BufferedWriter buffW = new BufferedWriter(fileW);
-			for (int i = 0; i < text.size(); i++) {
-				buffW.write(text.get(i));
+			for (int i = 0; i < taskList.size(); i++) {
+				buffW.write(taskList.get(i));
 				buffW.newLine();
 			}
 			buffW.close();
 		} catch (IOException e) {
 		}
 	}
-	public static ArrayList <String> getArrayList (){
-		return text;
+	public ArrayList <String> getArrayList (){
+		return taskList;
 	}
 
 }
