@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -31,8 +32,14 @@ public class Storage {
 		return taskList;
 	}
 	
-	public void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {
+	public void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {			
 		try {
+			File tempFile = new File(taskFile.getAbsolutePath());
+			PrintWriter pw = new PrintWriter(tempFile);
+			pw.print("");
+			pw.close();
+			taskFile.delete();
+			tempFile.renameTo(taskFile);
 			FileWriter fileW = new FileWriter(taskFile);
 			BufferedWriter buffW = new BufferedWriter(fileW);
 			for (int i = 0; i < taskList.size(); i++) {
@@ -43,8 +50,12 @@ public class Storage {
 		} catch (IOException e) {
 		}
 	}
-	//public ArrayList <String> getArrayList (){
-		//return taskList;
-	//}
+
+	public void saveToFileRCS(ArrayList<String> rcsTaskList) throws FileNotFoundException {
+		try {
+			
+		} catch (IOException e) {			
+		}		
+	}
 
 }
