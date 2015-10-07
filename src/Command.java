@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Command {
     public enum Type {
-        ADD, DELETE, VIEW, EXIT, INVALID
+        ADD, ADDRECURRENCE, DELETE, DELETERECURRENCE, UPDATE, COMPLETE, VIEW, EXIT, INVALID
     }
 
     private Type type;
@@ -19,6 +19,8 @@ public class Command {
     private String taskLabel;
     private String taskDetail;
     private String taskTime;
+    private String recurringPeriod;
+    private String searchKeyword;
     private int taskNumber;
 
     public Command(Type type) {
@@ -31,7 +33,7 @@ public class Command {
     }
 
     // ================================================================
-    // "Add" command methods
+    // Getters method to support Logic methods
     // ================================================================
 
     public String getTaskTitle() {
@@ -53,6 +55,22 @@ public class Command {
     public ArrayList<String> getTaskInput() {
         return taskInput;
     }
+    
+    public int getTaskNumber() {
+        return taskNumber;
+    }
+    
+    public String getSearchKeyword() {
+        return searchKeyword;
+    }
+    
+    public String getRecurringPeriod() {
+        return recurringPeriod;
+    }
+
+    // ================================================================
+    // Setters method to support CommandParser methods
+    // ================================================================
 
     public void setTaskInput(ArrayList<String> taskInput) {
         this.taskInput = taskInput;
@@ -74,21 +92,17 @@ public class Command {
         this.taskTime = taskTime;
     }
 
-    // ================================================================
-    // "Delete" command methods
-    // ================================================================
-
-    public int getTaskNumber() {
-        return taskNumber;
-    }
-
     public void setTaskNumber(int taskNumber) {
         this.taskNumber = taskNumber;
     }
 
-    // ================================================================
-    // "View" command methods
-    // ================================================================
+    public void setSearchKeyword(String searchKeyword) {
+        this.searchKeyword = searchKeyword;
+    }
+
+    public void setRecurringPeriod(String recurringPeriod) {
+        this.recurringPeriod = recurringPeriod;
+    }
 
 
 }
