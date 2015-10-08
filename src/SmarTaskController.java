@@ -15,6 +15,7 @@ public class SmarTaskController implements Initializable {
 	@FXML private TextArea displayWindow;	//Value injected by FXMLoader
 	@FXML private TextArea taskWindow;    //Value injected by FXMLoader
 	@FXML private TextField inputWindow;   //Value injected by FXMLoader
+	public Logic logic = new Logic();
 	
 	@Override
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -27,13 +28,13 @@ public class SmarTaskController implements Initializable {
 	@FXML
 	public void onEnter(KeyEvent ke) {
 		if(ke.getCode() == KeyCode.ENTER) {
-			Logic logic = new Logic();
 			String userCommand = inputWindow.getText();
 			System.out.println(userCommand);
 			inputWindow.clear();
 	        try {
 	            String logicReturn = logic.executeCommand(userCommand);
-	            displayWindow.appendText(logicReturn);
+	            displayWindow.clear();
+	            displayWindow.setText(logicReturn);
 	        } catch (FileNotFoundException e1) {
 	            e1.printStackTrace();
 	        }
