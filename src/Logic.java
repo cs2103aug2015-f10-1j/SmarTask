@@ -9,14 +9,17 @@ public class Logic {
     private static CommandParser commandParser;
     private static ArrayList <String> taskList ;
     private static ArrayList <String> recList;
+    private static ArrayList <Integer> todayTask;
     private static ArrayList <Integer> currentList;
     private static Storage storage; 
+    
 
     public Logic (){
         commandParser = new CommandParser();
         taskList = new ArrayList <String>();
         recList = new ArrayList <String>();
         storage = new Storage();
+        todayTask = new ArrayList <Integer>();
         currentList = new ArrayList <Integer>();
     }
 
@@ -71,7 +74,7 @@ public class Logic {
 
     }
 
-    public static void sortForAdd(){
+    private static void sortForAdd(){
         Collections.sort(taskList, new Comparator<String>() {
             DateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm");
             @Override
@@ -125,7 +128,7 @@ public class Logic {
     // "Delete" command methods
     // ================================================================
 
-    public static String deleteTask(Command com){
+    private static String deleteTask(Command com){
         String message = "";
         try{
             int index = currentList.get(com.getTaskNumber()-1);
@@ -163,7 +166,7 @@ public class Logic {
     // "Update" command methods
     // ================================================================
 
-    public static String updateTask(Command com) throws FileNotFoundException{
+    private static String updateTask(Command com) throws FileNotFoundException{
         String message = "";
         int taskListIndex = currentList.get(com.getTaskNumber()-1);
         String[] str = taskList.get(taskListIndex).trim().split("#");
@@ -178,6 +181,28 @@ public class Logic {
         storage.saveToFile(taskList);
         return message;
     }
+    
+ // ================================================================
+    // "view today's task" command methods
+    // ================================================================
+    private static String viewTodayTask(){
+    	String message = "";
+    	int index = 1;
+    	taskList = storage.retrieveTexts();
+    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	Calendar cal = Calendar.getInstance();
+    	for (int i = 0; i<taskList.size(); i++){
+            if (taskList.get(i).contains(dateFormat.format(cal.getTime()))){
+                todayTask.add(i);
+                String[] str = taskList.get(i).trim().split("#");
+                message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
+            }	
+        }
+        
+        return message;
+    }
+    
+    
 
 
     // ================================================================
