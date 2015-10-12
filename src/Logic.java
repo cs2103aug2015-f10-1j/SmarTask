@@ -147,7 +147,7 @@ public class Logic {
     // ================================================================
 
     public static String viewTask(Command com){
-        String message = "";
+        String message = "To do tasks on " + com.getTaskTime() + "\n";
         int index = 1;
 
         //	taskList = Storage.retrieveTexts();
