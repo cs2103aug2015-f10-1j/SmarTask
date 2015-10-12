@@ -186,7 +186,7 @@ public class Logic {
     // "view today's task" command methods
     // ================================================================
     private static String viewTodayTask(){
-    	String message = "";
+    	String message = "Today's Task: \n";
     	int index = 1;
     	taskList = storage.retrieveTexts();
     	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
