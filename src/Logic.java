@@ -11,7 +11,9 @@ public class Logic {
     private static ArrayList <String> recList;
     private static ArrayList <Integer> todayTask;
     private static ArrayList <Integer> currentList;
+    private static ArrayList <String> searchList; 
     private static Storage storage; 
+    private static String curDate;
     
 
     public Logic (){
@@ -21,6 +23,10 @@ public class Logic {
         storage = new Storage();
         todayTask = new ArrayList <Integer>();
         currentList = new ArrayList <Integer>();
+        searchList = new ArrayList <String> ();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	Calendar cal = Calendar.getInstance();
+    	curDate = dateFormat.format(cal.getTime());
     }
 
     public static String executeCommand (String userInput) throws FileNotFoundException{
@@ -45,9 +51,9 @@ public class Logic {
             case UPDATE :
                 displayMessage = updateTask(command);
                 break;
-                // case SEARCH:
-                //	displayMessage = searchTask(command);
-                //	break;
+            case SEARCH:
+                displayMessage = searchTask(command);
+                break;
             case EXIT :
                 break;
             default :
@@ -122,6 +128,24 @@ public class Logic {
             System.out.println(taskList.get(i));
         }
     }
+    
+ // ================================================================
+    // "search" command methods
+    // ================================================================
+
+    private static String searchTask(Command com) throws FileNotFoundException{
+        String message = "Search Result: \n";
+        currentList.clear();
+        int index = 1;
+        for (int i = 0; i<taskList.size(); i++){
+            if (taskList.get(i).contains(com.getSearchKeyword())){
+                currentList.add(i);
+                String[] str = taskList.get(i).trim().split("#");
+                message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
+            }
+        }
+        return message;
+    }
 
 
     // ================================================================
@@ -132,6 +156,9 @@ public class Logic {
         String message = "";
         try{
             int index = currentList.get(com.getTaskNumber()-1);
+            if (com.getTaskTime().equals(curDate)){
+            	todayTask.remove(com.getTaskNumber()-1);
+            }
             taskList.remove(index);
             currentList.remove(com.getTaskNumber()-1);
             storage.saveToFile(taskList); 
@@ -189,15 +216,18 @@ public class Logic {
     	String message = "Today's Task: \n";
     	int index = 1;
     	taskList = storage.retrieveTexts();
-    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    	Calendar cal = Calendar.getInstance();
+    	
     	for (int i = 0; i<taskList.size(); i++){
-            if (taskList.get(i).contains(dateFormat.format(cal.getTime()))){
+            if (taskList.get(i).contains(curDate)){
                 todayTask.add(i);
+                currentList.add(i);
                 String[] str = taskList.get(i).trim().split("#");
                 message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
             }	
         }
+    	if(currentList.isEmpty() && todayTask.isEmpty()){
+    		message += "There is no task need to be finished.";
+    	}
         
         return message;
     }
