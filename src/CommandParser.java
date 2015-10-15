@@ -30,7 +30,7 @@ public class CommandParser {
     public CommandParser() {
     }
 
-    public Command parse(String userInput) {
+    public static Command parse(String userInput) {
 	Command command;
 	ArrayList<String> parameters = splitString(userInput);
 	String userCommand = getUserCommand(parameters);
@@ -83,17 +83,17 @@ public class CommandParser {
 	return command;
     }
 
-    private ArrayList<String> splitString(String arguments) {
+    private static ArrayList<String> splitString(String arguments) {
 	String[] strArray = arguments.trim().split(REGEX_WHITESPACES, 2);
 	return new ArrayList<String>(Arrays.asList(strArray));
     }
 
-    private ArrayList<String> getUserArguments(ArrayList<String> parameters) {
+    private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
 	String[] strArray = extractParameter(parameters);
 	return new ArrayList<String>(Arrays.asList(strArray));
     }
 
-    private String[] extractParameter(ArrayList<String> parameters) {
+    private static String[] extractParameter(ArrayList<String> parameters) {
 	String line = parameters.get(1);
 	String[] strArray = line.trim().split(">");
 	for(int i = 0 ;i < strArray.length; i++) {
@@ -102,7 +102,7 @@ public class CommandParser {
 	return strArray;
     }
 
-    private String getUserCommand(ArrayList<String> parameters) {
+    private static String getUserCommand(ArrayList<String> parameters) {
 	return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
     }
 
@@ -110,7 +110,7 @@ public class CommandParser {
     // Create add command method
     // ================================================================
 
-    private Command initAddCommand(ArrayList<String> arguments) {
+    private static Command initAddCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.ADD);
 	command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -121,7 +121,7 @@ public class CommandParser {
     // Create add recurrence command method
     // ================================================================
 
-    private Command initAddRecurrenceCommand(ArrayList<String> arguments) {
+    private static Command initAddRecurrenceCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.ADDRECURRENCE);
 	command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 	command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -132,7 +132,7 @@ public class CommandParser {
     // Create delete command method
     // ================================================================
 
-    private Command initDeleteCommand(ArrayList<String> arguments) {
+    private static Command initDeleteCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.DELETE);
 	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
 	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -143,7 +143,7 @@ public class CommandParser {
     // Create delete recurrence command method
     // ================================================================
 
-    private Command initDeleteRecurrenceCommand(ArrayList<String> arguments) {
+    private static Command initDeleteRecurrenceCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.DELETERECURRENCE);
 	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
 	command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -154,7 +154,7 @@ public class CommandParser {
     // Create view all tasks of a day command method
     // ================================================================
 
-    private Command initViewDateCommand(ArrayList<String> arguments) {
+    private static Command initViewDateCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.VIEW);
 	command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 	return command;
@@ -164,7 +164,7 @@ public class CommandParser {
     // Create update command method
     // ================================================================
 
-    private Command initUpdateCommand(ArrayList<String> arguments) {
+    private static Command initUpdateCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.UPDATE);
 	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
 	command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -176,7 +176,7 @@ public class CommandParser {
     // Create complete command method
     // ================================================================
 
-    private Command initCompleteCommand(ArrayList<String> arguments) {
+    private static Command initCompleteCommand(ArrayList<String> arguments) {
 	Command command = new Command(Command.Type.COMPLETE);
 	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
 	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -187,7 +187,7 @@ public class CommandParser {
     // Create exit command method
     // ================================================================
 
-    private Command initExitCommand() {
+    private static Command initExitCommand() {
 	return new Command(Command.Type.EXIT);
     }
 
@@ -195,7 +195,7 @@ public class CommandParser {
     // Create invalid command method
     // ================================================================
 
-    private Command initInvalidCommand() {
+    private static Command initInvalidCommand() {
 	return new Command(Command.Type.INVALID);
     }
 
@@ -209,14 +209,14 @@ public class CommandParser {
     // ================================================================
     // TO DO: Create undo command method
     // ================================================================
-    private Command initUndoCommand() {
+    private static Command initUndoCommand() {
 	return new Command(Command.Type.UNDO);
     }
 
     // ================================================================
     // TO DO: Create redo command method
     // ================================================================
-    private Command initRedoCommand() {
+    private static Command initRedoCommand() {
 	return new Command(Command.Type.REDO);
     }
 
