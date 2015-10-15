@@ -37,28 +37,32 @@ public class Logic {
 
 	Command command = commandParser.parse(userInput);
 	switch (command.getCommandType()){
-	case ADD : 
-	    displayMessage = addTask(command);
-	    break;
-	case ADDRECURRENCE : 
-	    displayMessage = addRec(command);
-	    break;
-	case DELETE :
-	    displayMessage = deleteTask(command);
-	    break;
-	case VIEW :
-	    displayMessage = viewTask (command);
-	    break;
-	case UPDATE :
-	    displayMessage = updateTask(command);
-	    break;
-	case SEARCH:
-	    displayMessage = searchTask(command);
-	    break;
-	case EXIT :
-	    break;
-	default :
-	    // return Command.Type.INVALID;
+        	case ADD : 
+        	    displayMessage = addTask(command);
+        	    break;
+        	case ADDRECURRENCE : 
+        	    displayMessage = addRec(command);
+        	    break;
+        	case DELETE :
+        	    displayMessage = deleteTask(command);
+        	    break;
+        	case VIEW :
+        	    displayMessage = viewTask (command);
+        	    break;
+        	case UPDATE :
+        	    displayMessage = updateTask(command);
+        	    break;
+        	case SEARCH:
+        	    displayMessage = searchTask(command);
+        	    break;
+        	case UNDO :
+        	    break;
+        	case REDO :
+        	    break;
+        	case EXIT :
+        	    break;
+        	default :
+        	    return "invalid command";
 	}
 
 	taskList.clear();
