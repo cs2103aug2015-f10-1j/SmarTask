@@ -11,7 +11,7 @@ import java.util.*;
 public class Command {
     public enum Type {
         ADD, ADDRECURRENCE, DELETE, DELETERECURRENCE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
-        UNDO, REDO, REPEAT, STOP_REPEAT
+        UNDO, REDO, REPEAT, CANCEL_REPEAT
     }
 
     private Type type;
