@@ -47,7 +47,7 @@ public class CommandParserStubTest {
         System.out.println(redo.getCommandType());
 
         // invalid command
-        Command invalid = CommandParser.parse("sfhasfhasfjfas");
+        Command invalid = CommandParser.parse("This is an invalid command");
         System.out.println(invalid.getCommandType());
         
         // exit
