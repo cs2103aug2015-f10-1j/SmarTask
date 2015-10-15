@@ -56,8 +56,10 @@ public class Logic {
         	    displayMessage = searchTask(command);
         	    break;
         	case UNDO :
+        	    displayMessage = undoCommand();
         	    break;
         	case REDO :
+        	    displayMessage = redoCommand();
         	    break;
         	case EXIT :
         	    break;
@@ -236,6 +238,22 @@ public class Logic {
 	}
 
 	return message;
+    }
+    
+    // ================================================================
+    // "undo command methods
+    // ================================================================
+    private static String redoCommand() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    // ================================================================
+    // redo command methods
+    // ================================================================
+    private static String undoCommand() {
+	// TODO Auto-generated method stub
+	return null;
     }
 
 }
