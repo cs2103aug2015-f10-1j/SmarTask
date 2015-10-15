@@ -94,7 +94,14 @@ public class CommandParser {
     }
 
     private static String[] extractParameter(ArrayList<String> parameters) {
-	String line = parameters.get(1);
+        String line;
+        if(parameters.size() == 1) {
+            line = parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
+        }
+        else {
+            line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
+        }
+        
 	String[] strArray = line.trim().split(">");
 	for(int i = 0 ;i < strArray.length; i++) {
 	    strArray[i] = strArray[i].trim().replaceAll("<", "");
