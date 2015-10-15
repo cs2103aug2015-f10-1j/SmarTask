@@ -42,18 +42,10 @@ public class CommandParser {
                 command = initAddCommand(arguments);
                 break;
 
-            case USER_COMMAND_ADDRECURRENCE :
-                command = initAddRecurrenceCommand(arguments);
-                break;
-
             case USER_COMMAND_DELETE :
                 command = initDeleteCommand(arguments);
                 break;
-
-            case USER_COMMAND_DELETERECURRENCE :
-                command = initDeleteRecurrenceCommand(arguments);
-                break;
-
+                
             case USER_COMMAND_VIEW :
                 command = initViewDateCommand(arguments);
                 break;
@@ -61,21 +53,13 @@ public class CommandParser {
             case USER_COMMAND_UPDATE :
                 command = initUpdateCommand(arguments);
                 break;
-
-            case USER_COMMAND_UNDO :
-                command = initUndoCommand();
-                break;
-
-            case USER_COMMAND_REDO :
-                command = initRedoCommand();
-                break;
-
-            case USER_COMMAND_SEARCH :
-                command = initSearchCommand(arguments);
-                break;
-
+                
             case USER_COMMAND_COMPLETE :
                 command = initCompleteCommand(arguments);
+                break;
+                
+            case USER_COMMAND_SEARCH :
+                command = initSearchCommand(arguments);
                 break;
                 
             case USER_COMMAND_REPEAT :
@@ -84,6 +68,14 @@ public class CommandParser {
 
             case USER_COMMAND_CANCEL_REPEAT :
                 command = initCancelRepeatCommand(arguments);
+                break;
+                
+            case USER_COMMAND_UNDO :
+                command = initUndoCommand();
+                break;
+
+            case USER_COMMAND_REDO :
+                command = initRedoCommand();
                 break;
                 
             case USER_COMMAND_EXIT :
@@ -143,17 +135,6 @@ public class CommandParser {
     }
 
     // ================================================================
-    // Create add recurrence command method
-    // ================================================================
-
-    private static Command initAddRecurrenceCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.ADDRECURRENCE);
-        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
-    }
-
-    // ================================================================
     // Create delete command method
     // ================================================================
 
@@ -161,17 +142,6 @@ public class CommandParser {
         Command command = new Command(Command.Type.DELETE);
         command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
         command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
-    }
-
-    // ================================================================
-    // Create delete recurrence command method
-    // ================================================================
-
-    private static Command initDeleteRecurrenceCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.DELETERECURRENCE);
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
@@ -223,6 +193,8 @@ public class CommandParser {
     // ================================================================
     private static Command initRepeatCommand(ArrayList<String> arguments) {
         Command command = new Command(Command.Type.REPEAT);
+        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
@@ -230,7 +202,9 @@ public class CommandParser {
     // Create cancel recurrence using cancel repeat command method
     // ================================================================
     private static Command initCancelRepeatCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.STOP_REPEAT);
+        Command command = new Command(Command.Type.CANCEL_REPEAT);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         return command;
     }
 
