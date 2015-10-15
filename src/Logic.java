@@ -76,13 +76,18 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-    private static void addTask(Command com) throws FileNotFoundException{
-	String detailStored = com.getTaskTime() + "#" + com.getTaskTitle();
-	taskList.add(detailStored);
-	sortForAdd();
-	history.addChangeToHistory(taskList);
-	storage.saveToFile(taskList); 
-	msglog.add( "add " + com.getTaskTitle() + " successful!");
+    private static void addTask(Command com){
+    	try{
+    		String detailStored = com.getTaskTime() + "#" + com.getTaskTitle();
+    	    taskList.add(detailStored);
+    	    sortForAdd();
+    	    history.addChangeToHistory(taskList);
+    	    storage.saveToFile(taskList); 
+    	    msglog.add( "add " + com.getTaskTitle() + " successful!");	
+    	}catch (FileNotFoundException e){
+    		msglog.add(e.toString());
+    	}
+    	
     }
 
     private static void sortForAdd(){
