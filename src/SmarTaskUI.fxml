@@ -10,7 +10,12 @@
    <children>
       <TextField fx:id="inputWindow" layoutX="14.0" layoutY="639.0" onKeyPressed="#onEnter" prefHeight="51.0" prefWidth="1020.0" />
       <TextArea fx:id="mainWindow" editable="false" layoutX="10.0" layoutY="8.0" prefHeight="141.0" prefWidth="641.0" text="Welcome to SmarTask!&#10;&#10;In case you need a refresher, please type &quot;help&quot; to get a list of all the SmarTask commands." />
-      <TextArea fx:id="taskWindow" editable="false" layoutX="665.0" layoutY="7.0" prefHeight="622.0" prefWidth="369.0" />
-      <TextArea fx:id="displayWindow" editable="false" layoutX="10.0" layoutY="155.0" prefHeight="473.0" prefWidth="641.0" />
+      <TextArea fx:id="taskWindow" editable="false" layoutX="664.0" layoutY="36.0" prefHeight="278.0" prefWidth="369.0" />
+      <TextArea fx:id="displayWindow" editable="false" layoutX="10.0" layoutY="195.0" prefHeight="409.0" prefWidth="641.0" />
+      <TextArea fx:id="specialTaskWindow" editable="false" layoutX="664.0" layoutY="353.0" prefHeight="278.0" prefWidth="369.0" />
+      <Text fx:id="commandInput" layoutX="14.0" layoutY="630.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Command Input:" />
+      <Text fx:id="specialTasks" layoutX="664.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks Without A Due Date:" />
+      <Text fx:id="todayTasks" layoutX="664.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Tasks:" />
+      <Text fx:id="smartaskLog" layoutX="14.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SmarTask Log:" />
    </children>
 </Pane>
