@@ -15,6 +15,11 @@ public class Logic {
     private static Storage storage; 
     private static CommandHistory history;
     private static String curDate;
+    // messages pass to the UI
+    private static ArrayList <String> msglog;
+    private static ArrayList <String> events;
+    private static ArrayList <String> deadline;
+    private static ArrayList <String> floatingTask;
 
     public Logic (){
         commandParser = new CommandParser();
@@ -28,7 +33,8 @@ public class Logic {
     	Calendar cal = Calendar.getInstance();
     	curDate = dateFormat.format(cal.getTime());
     }
-    public static String executeCommand (String userInput) throws FileNotFoundException{
+    
+    public static void executeCommand (String userInput) throws FileNotFoundException{
 	String displayMessage = "";
 	storage.createFile();
 	taskList = storage.retrieveTexts();
@@ -37,36 +43,35 @@ public class Logic {
 	Command command = commandParser.parse(userInput);
 	switch (command.getCommandType()){
         	case ADD : 
-        	    displayMessage = addTask(command);
+        	    addTask(command);
         	    break;
         	case ADDRECURRENCE : 
-        	    displayMessage = addRec(command);
+        	    addRec(command);
         	    break;
         	case DELETE :
-        	    displayMessage = deleteTask(command);
+        	    deleteTask(command);
         	    break;
         	case VIEW :
-        	    displayMessage = viewTask (command);
+        	    viewTask (command);
         	    break;
         	case UPDATE :
-        	    displayMessage = updateTask(command);
+        	    updateTask(command);
         	    break;
         	case SEARCH:
-        	    displayMessage = searchTask(command);
+        	    searchTask(command);
         	    break;
         	case UNDO :
-        	    displayMessage = undoCommand();
+        	    undoCommand();
         	    break;
         	case REDO :
-        	    displayMessage = redoCommand();
+        	    redoCommand();
         	    break;
         	case EXIT :
         	    break;
         	default :
-        	    return "invalid command";
+        	    msglog.add( "invalid command");
 	}
 	taskList.clear();
-	return displayMessage;
     }
     // ================================================================
     // "Add" command methods
@@ -274,5 +279,18 @@ public class Logic {
 	String message = "undo successfully";
 	return message;
     }
-
+    
+    public ArrayList getMessageLog (){
+    	return msglog;
+    }
+    public ArrayList getEvents(){
+    	return events;
+    }
+    public ArrayList getDeadline(){
+    	return deadline;
+    }
+    public ArrayList getFloatingTask(){
+    	return floatingTask;
+    }
+    
 }
