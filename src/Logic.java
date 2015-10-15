@@ -21,7 +21,7 @@ public class Logic {
     private static ArrayList <String> deadline;
     private static ArrayList <String> floatingTask;
 
-    public Logic (){
+    private Logic (){
         commandParser = new CommandParser();
         taskList = new ArrayList <String>();
         recurringList = new ArrayList <String>();
@@ -35,7 +35,6 @@ public class Logic {
     }
     
     public static void executeCommand (String userInput) throws FileNotFoundException{
-	String displayMessage = "";
 	storage.createFile();
 	taskList = storage.retrieveTexts();
 	history = new CommandHistory(taskList);
@@ -45,7 +44,7 @@ public class Logic {
         	case ADD : 
         	    addTask(command);
         	    break;
-        	case ADDRECURRENCE : 
+        	case REPEAT : 
         	    addRec(command);
         	    break;
         	case DELETE :
@@ -77,16 +76,13 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-    private static String addTask(Command com) throws FileNotFoundException{
-	String message;
+    private static void addTask(Command com) throws FileNotFoundException{
 	String detailStored = com.getTaskTime() + "#" + com.getTaskTitle();
 	taskList.add(detailStored);
 	sortForAdd();
 	history.addChangeToHistory(taskList);
 	storage.saveToFile(taskList); 
-	message = "add " + com.getTaskTitle() + " successful!";
-	return message;
-
+	msglog.add( "add " + com.getTaskTitle() + " successful!");
     }
 
     private static void sortForAdd(){
@@ -107,14 +103,14 @@ public class Logic {
     // "Addrc" command methods
     // ================================================================
 
-    private static String addRec(Command com) throws FileNotFoundException{
-	String message;
+    private static void addRec(Command com) throws FileNotFoundException{
+
 	storage = new Storage();     
 	String detailStored =  com.getRecurringPeriod() +"#" + com.getTaskTitle();
 	recurringList.add(detailStored);
 	storage.saveToFileRC(recurringList);
-	message =  "addrc " + com.getTaskTitle() + " successful!";
-	return message;
+	msglog.add("addrc " + com.getTaskTitle() + " successful!");
+	
 
     }
     /* 
@@ -142,27 +138,26 @@ public class Logic {
     // "search" command methods
     // ================================================================
 
-    private static String searchTask(Command com) throws FileNotFoundException{
-        String message = "Search Result: \n";
+    private static void searchTask(Command com) throws FileNotFoundException{
         searchList.clear();
         int index = 1;
         for (int i = 0; i<taskList.size(); i++){
-            if (taskList.get(i).contains(com.getSearchKeyword())){
+            if (taskList.get(i).contains((CharSequence) com.getSearchKeyword())){
                 currentList.add(i);
                 String[] str = taskList.get(i).trim().split("#");
-                message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
+                msglog.add((index++) + ". " + str[1] + " " + str[0] ) ;
             }
         }
-        return message;
+        
     }
 
     // ================================================================
     // "Delete" command methods
     // ================================================================
 
-    private static String deleteTask(Command com){
+    private static void deleteTask(Command com){
 
-	String message = "";
+	
 	try{
 	    int index = currentList.get(com.getTaskNumber()-1);
 	    if (com.getTaskTime().equals(curDate)){
@@ -172,11 +167,10 @@ public class Logic {
 	    currentList.remove(com.getTaskNumber()-1);
 	    history.addChangeToHistory(taskList);
 	    storage.saveToFile(taskList); 
-	    message = "delete task no. " + com.getTaskNumber() + " successfully!";
+	    msglog.add( "delete task no. " + com.getTaskNumber() + " successfully!");
 	}catch(Exception e){
-	    message = "Error. Invalid task number";
+	    msglog.add("Error. Invalid task number");
 	}
-	return message;
 
     }
 
@@ -184,8 +178,8 @@ public class Logic {
     // "View" command methods
     // ================================================================
 
-    public static String viewTask(Command com){
-	String message = "To do tasks on " + com.getTaskTime() + "\n";
+    private static void viewTask(Command com){
+	
 	int index = 1;
 
 	//	taskList = Storage.retrieveTexts();
@@ -193,19 +187,17 @@ public class Logic {
 	    if (taskList.get(i).contains(com.getTaskTime())){
 		currentList.add(i);
 		String[] str = taskList.get(i).trim().split("#");
-		message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
+		events.add((index++) + ". " + str[1] + " " + str[0] ) ;
 	    }	
 	}
-
-	return message;
     }
 
     // ================================================================
     // "Update" command methods
     // ================================================================
 
-    private static String updateTask(Command com) throws FileNotFoundException{
-	String message = "";
+    private static void updateTask(Command com) throws FileNotFoundException{
+	
 	int taskListIndex = currentList.get(com.getTaskNumber()-1);
 	String[] str = taskList.get(taskListIndex).trim().split("#");
 	str[1] = com.getTaskTitle();
@@ -217,7 +209,8 @@ public class Logic {
 	taskList.set(taskListIndex, updateString);
 	history.addChangeToHistory(taskList);
 	storage.saveToFile(taskList);
-	return message;
+	msglog.add("task updated!");
+	
     }
 
     // ================================================================
@@ -244,7 +237,7 @@ public class Logic {
     }
     
 */  
-    private static String viewTodayTask(){
+    private static void viewTodayTask(){
 	String message = "Today's Task: \n";
 	int index = 1;
 	taskList = storage.retrieveTexts();
@@ -254,14 +247,14 @@ public class Logic {
 		todayTask.add(i);
 		currentList.add(i);
 		String[] str = taskList.get(i).trim().split("#");
-		message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
+		events.add( (index++) + ". " + str[1] + " " + str[0] ) ;
 	    }	
 	}
 	if(currentList.isEmpty() && todayTask.isEmpty()){
-	    message += "There is no task need to be finished.";
+	    events.add("There is no task need to be finished.");
 	}
 
-	return message;
+	
     }
     
     // ================================================================
