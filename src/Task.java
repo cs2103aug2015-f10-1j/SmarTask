@@ -1,4 +1,9 @@
-
+/**
+ * Task is an object class that contains all attibutes of a task
+ * 
+ * @author Bobby Lin
+ *
+ */
 
 public class Task {
 
