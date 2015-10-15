@@ -1,3 +1,5 @@
+import javax.swing.text.html.HTMLEditorKit.Parser;
+
 /**
  * CommandParserStubTest checks if the CommandParser returns the correct Command object
  * by using stubs command.
@@ -8,26 +10,11 @@
 
 public class CommandParserStubTest {
 
-    public static void main(String[] args) {
-        // Test exception handling during adding task
-        try {
-            Command add = CommandParser.parse("add <dsffdadsf safsdfsf");
-            System.out.println(add.getCommandType() + " " + add.getTaskTitle() + " " + add.getTaskTime());
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    public static void main(String[] args) throws Exception {
 
         // Adding task
         try {
-            Command add2 = CommandParser.parse("add <Meeting with Boss> <09/10/2015 12:00>");
-            System.out.println(add2.getCommandType() + " " + add2.getTaskTitle() + " " + add2.getTaskTime());
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        // Test exception handling during adding task
-        try {
-            Command add = CommandParser.parse("update <2> <Ar <09/10/2015>");
+            Command add = CommandParser.parse("add <Meeting with Boss> <09/10/2015 12:00>");
             System.out.println(add.getCommandType() + " " + add.getTaskTitle() + " " + add.getTaskTime());
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -39,34 +26,32 @@ public class CommandParserStubTest {
             System.out.println(update.getCommandType() + " " + update.getTaskNumber() + 
                     " "  + update.getTaskTitle() + " " + update.getTaskTime());
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println(e.getMessage());
         }
 
-        // deleting task
+        // Deleting task
         try {
             Command delete = CommandParser.parse("delete <1> <09/10/2015>");
             System.out.println(delete.getCommandType() + " " + delete.getTaskNumber() + " " + delete.getTaskTime());
-        } catch (Exception e7) {
-            // TODO Auto-generated catch block
-            e7.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         // view task from a specific day
         try {
             Command view = CommandParser.parse("view <09/10/2015>");
             System.out.println(view.getCommandType() + " " + view.getTaskTime());
-        } catch (Exception e6) {
-            // TODO Auto-generated catch block
-            e6.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
 
         // complete task
         try {
             Command complete = CommandParser.parse("complete <1> <09/10/2015>");
             System.out.println(complete.getCommandType() + " " + complete.getTaskNumber() + " " +complete.getTaskTime());
-        } catch (Exception e5) {
-            // TODO Auto-generated catch block
-            e5.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
 
@@ -78,51 +63,106 @@ public class CommandParserStubTest {
                 keywords = keywords + search.getSearchKeyword().get(index) + " - ";
             }
             System.out.println(search.getCommandType() + " " + keywords);
-        } catch (Exception e4) {
-            // TODO Auto-generated catch block
-            e4.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         // undo
-
         try {
             Command undo = CommandParser.parse("undo");
             System.out.println(undo.getCommandType());
-        } catch (Exception e3) {
-            // TODO Auto-generated catch block
-            e3.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         // redo
-
         try {
             Command redo = CommandParser.parse("redo");
             System.out.println(redo.getCommandType());
-        } catch (Exception e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
 
         // invalid command      
         try {
             Command invalid = CommandParser.parse("This is an invalid command");
             System.out.println(invalid.getCommandType());
-        } catch (Exception e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
 
         // exit
         try {
             Command exit = CommandParser.parse("exit");
             System.out.println(exit.getCommandType());
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
+        System.out.println("============================Testing exception handling============================");
+        // Test exception handling for adding task
+        try {
+            System.out.println("add <dsffdadsf safsdfsf");
+            Command add = CommandParser.parse("add <dsffdadsf safsdfsf");
+            System.out.println(add.getCommandType() + " " + add.getTaskTitle() + " " + add.getTaskTime());
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test exception handling for updating task
+        try {
+            System.out.println("update <2> <Ar <09/10/2015>");
+            Command add = CommandParser.parse("update <2> <Ar <09/10/2015>");
+            System.out.println(add.getCommandType() + " " + add.getTaskTitle() + " " + add.getTaskTime());
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test exception handling for deleting task
+        try {
+            System.out.println("delete <1 <09/10201");
+            Command delete = CommandParser.parse("delete <1 <09/10201");
+            System.out.println(delete.getCommandType() + " " + delete.getTaskNumber() + " " + delete.getTaskTime());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test exception handling for complete task
+        try {
+            System.out.println("complete <1a> <09adasdaf/10/2015>");
+            Command complete = CommandParser.parse("complete <1a> <09adasdaf/10/2015>");
+            System.out.println(complete.getCommandType() + " " + complete.getTaskNumber() + " " +complete.getTaskTime());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        // [TO DEBUG: Test exception handling for view task from a specific day]
+        try {
+            Command view = CommandParser.parse("view <abc <129302");
+            System.out.println("STILL DEBUGGING --- " + view.getCommandType() + " " + view.getTaskTime());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("=================================Testing assertion================================");
+
+        // Test assertion handling for undo
+        try {
+            Command undo = CommandParser.parse(null);
+            System.out.println(undo.getCommandType());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test assertion handling for undo
+        try {
+            Command redo = CommandParser.parse(null);
+            System.out.println(redo.getCommandType());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("This message should not appear");
     } 
 
 }

@@ -28,8 +28,8 @@ public class CommandParser {
     private static final String USER_COMMAND_CANCEL_REPEAT = "cancel";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
-    private static final String MSG_INCORRECT_FORMAT = "Incorrect attributes format in command";
-    private static final String MSG_ATTRIBUTES_NOT_FOUND = "Cannot find attributes of command";
+    private static final String MSG_INCORRECT_FORMAT = "Error in attributes: Ensure attributes are entered in valid format";
+    private static final String MSG_NULL_POINTER = "Error: Null pointer";
 
     public static Command parse(String userInput) throws Exception {
         Command command;
@@ -85,20 +85,30 @@ public class CommandParser {
             default :
                 command = initInvalidCommand();
         }
+        
+        assert command != null : "command is null"; 
+        
         return command;
     }
 
-    private static ArrayList<String> splitStringIntoTwoParts(String arguments) {
-        String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
-        return new ArrayList<String>(Arrays.asList(strArray));
+    private static ArrayList<String> splitStringIntoTwoParts(String arguments) throws Exception {
+       assert arguments !=null : "String argument in splitStringIntoTwoParts(String arguments) is null";
+       try {
+            String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
+            return new ArrayList<String>(Arrays.asList(strArray));
+       } catch (NullPointerException e) {
+           throw new Exception(MSG_NULL_POINTER); 
+       } 
     }
 
     private static ArrayList<String> splitStringBySpace(String arguments) {
+        assert arguments !=null : "String argument in splitStringBySpace(String arguments) is null";
         String[] strArray = arguments.trim().split(REGEX_WHITESPACES);
         return new ArrayList<String>(Arrays.asList(strArray));
     }
 
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
+        assert parameters !=null;
         String[] strArray = extractParameter(parameters);
         return new ArrayList<String>(Arrays.asList(strArray));
     }
@@ -134,8 +144,10 @@ public class CommandParser {
             command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
 
@@ -152,8 +164,10 @@ public class CommandParser {
             command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
     }
@@ -168,8 +182,10 @@ public class CommandParser {
             command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
     }
@@ -186,8 +202,10 @@ public class CommandParser {
             command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
     }
@@ -203,8 +221,10 @@ public class CommandParser {
             command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command; 
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
     }
@@ -219,7 +239,7 @@ public class CommandParser {
             command.setSearchKeyword(keywords);
             return command; 
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
@@ -235,8 +255,10 @@ public class CommandParser {
             command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
     }
@@ -251,8 +273,10 @@ public class CommandParser {
             command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
-            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+            throw new Exception(MSG_NULL_POINTER); 
         } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        } catch (NumberFormatException e) {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
 
@@ -261,15 +285,25 @@ public class CommandParser {
     // ================================================================
     // Create undo command method
     // ================================================================
-    private static Command initUndoCommand() {
-        return new Command(Command.Type.UNDO);
+    private static Command initUndoCommand() throws Exception {
+        try {
+            Command command = new Command(Command.Type.UNDO);
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_NULL_POINTER); 
+        } 
     }
 
     // ================================================================
     // Create redo command method
     // ================================================================
-    private static Command initRedoCommand() {
-        return new Command(Command.Type.REDO);
+    private static Command initRedoCommand() throws Exception {
+        try {
+            Command command = new Command(Command.Type.REDO);
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_NULL_POINTER); 
+        }  
     }
 
     // ================================================================
