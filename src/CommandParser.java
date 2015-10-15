@@ -1,5 +1,7 @@
 import java.util.*;
 
+import org.omg.CORBA.SystemException;
+
 /**
  * CommandParser parses user's input to create Command objects that have the
  * appropriate fields initialised. For example, the "add" command requires the
@@ -13,6 +15,7 @@ public class CommandParser {
     private static final int POSITION_ZERO_PARAM_ARGUMENT = 0;
     private static final int POSITION_FIRST_PARAM_ARGUMENT = 1;
     private static final int POSITION_SECOND_PARAM_ARGUMENT = 2;
+    private static final int TWOPARTS = 2;
 
     private static final String REGEX_WHITESPACES = " ";
 
@@ -22,17 +25,15 @@ public class CommandParser {
     private static final String USER_COMMAND_DELETERECURRENCE = "deleterc";
     private static final String USER_COMMAND_UPDATE = "update";
     private static final String USER_COMMAND_VIEW = "view";
+    private static final String USER_COMMAND_SEARCH = "search";
     private static final String USER_COMMAND_UNDO= "undo";
     private static final String USER_COMMAND_REDO = "redo";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
 
-    public CommandParser() {
-    }
-
     public static Command parse(String userInput) {
 	Command command;
-	ArrayList<String> parameters = splitString(userInput);
+	ArrayList<String> parameters = splitStringIntoTwoParts(userInput);
 	String userCommand = getUserCommand(parameters);
 	ArrayList<String> arguments = getUserArguments(parameters);
 
@@ -68,6 +69,10 @@ public class CommandParser {
 	case USER_COMMAND_REDO :
 	    command = initRedoCommand();
 	    break;
+	    
+	case USER_COMMAND_SEARCH :
+            command = initSearchCommand(arguments);
+            break;
 
 	case USER_COMMAND_COMPLETE :
 	    command = initCompleteCommand(arguments);
@@ -83,9 +88,14 @@ public class CommandParser {
 	return command;
     }
 
-    private static ArrayList<String> splitString(String arguments) {
-	String[] strArray = arguments.trim().split(REGEX_WHITESPACES, 2);
+    private static ArrayList<String> splitStringIntoTwoParts(String arguments) {
+        String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
 	return new ArrayList<String>(Arrays.asList(strArray));
+    }
+    
+    private static ArrayList<String> splitStringBySpace(String arguments) {
+        String[] strArray = arguments.trim().split(REGEX_WHITESPACES);
+        return new ArrayList<String>(Arrays.asList(strArray));
     }
 
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
@@ -189,6 +199,38 @@ public class CommandParser {
 	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
 	return command;
     }
+    
+    // ================================================================
+    // Create search command method
+    // ================================================================
+    private static Command initSearchCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.SEARCH);
+        ArrayList<String> keywords = splitStringBySpace(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setSearchKeyword(keywords);
+        return command;
+    }
+
+    // ================================================================
+    // Create undo command method
+    // ================================================================
+    private static Command initUndoCommand() {
+        return new Command(Command.Type.UNDO);
+    }
+
+    // ================================================================
+    // Create redo command method
+    // ================================================================
+    private static Command initRedoCommand() {
+        return new Command(Command.Type.REDO);
+    }
+    
+    // ================================================================
+    // Create invalid command method
+    // ================================================================
+
+    private static Command initInvalidCommand() {
+        return new Command(Command.Type.INVALID);
+    }
 
     // ================================================================
     // Create exit command method
@@ -196,35 +238,6 @@ public class CommandParser {
 
     private static Command initExitCommand() {
 	return new Command(Command.Type.EXIT);
-    }
-
-    // ================================================================
-    // Create invalid command method
-    // ================================================================
-
-    private static Command initInvalidCommand() {
-	return new Command(Command.Type.INVALID);
-    }
-
-    // ================================================================
-    // TO DO: Create search command method
-    // ================================================================
-    private Command initSearchCommand() {
-	return new Command(Command.Type.SEARCH);
-    }
-
-    // ================================================================
-    // TO DO: Create undo command method
-    // ================================================================
-    private static Command initUndoCommand() {
-	return new Command(Command.Type.UNDO);
-    }
-
-    // ================================================================
-    // TO DO: Create redo command method
-    // ================================================================
-    private static Command initRedoCommand() {
-	return new Command(Command.Type.REDO);
     }
 
 }

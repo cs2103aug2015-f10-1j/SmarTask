@@ -34,7 +34,7 @@ public class CommandParserStubTest {
         Command search = CommandParser.parse("search meeting jardine Singapore");
         String keywords = "";
         for(int index = 0 ; index < search.getSearchKeyword().size(); index++) {
-            keywords = search.getSearchKeyword().get(index);
+            keywords = keywords + search.getSearchKeyword().get(index) + " - ";
         }
         System.out.println(search.getCommandType() + " " + keywords);
 
