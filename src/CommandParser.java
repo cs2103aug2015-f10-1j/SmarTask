@@ -28,8 +28,10 @@ public class CommandParser {
     private static final String USER_COMMAND_CANCEL_REPEAT = "cancel";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
+    private static final String MSG_INCORRECT_FORMAT = "Incorrect attributes format in command";
+    private static final String MSG_ATTRIBUTES_NOT_FOUND = "Cannot find attributes of command";
 
-    public static Command parse(String userInput) {
+    public static Command parse(String userInput) throws Exception {
         Command command;
         ArrayList<String> parameters = splitStringIntoTwoParts(userInput);
         String userCommand = getUserCommand(parameters);
@@ -43,7 +45,7 @@ public class CommandParser {
             case USER_COMMAND_DELETE :
                 command = initDeleteCommand(arguments);
                 break;
-                
+
             case USER_COMMAND_VIEW :
                 command = initViewDateCommand(arguments);
                 break;
@@ -51,15 +53,15 @@ public class CommandParser {
             case USER_COMMAND_UPDATE :
                 command = initUpdateCommand(arguments);
                 break;
-                
+
             case USER_COMMAND_COMPLETE :
                 command = initCompleteCommand(arguments);
                 break;
-                
+
             case USER_COMMAND_SEARCH :
                 command = initSearchCommand(arguments);
                 break;
-                
+
             case USER_COMMAND_REPEAT :
                 command = initRepeatCommand(arguments);
                 break;
@@ -67,7 +69,7 @@ public class CommandParser {
             case USER_COMMAND_CANCEL_REPEAT :
                 command = initCancelRepeatCommand(arguments);
                 break;
-                
+
             case USER_COMMAND_UNDO :
                 command = initUndoCommand();
                 break;
@@ -75,7 +77,7 @@ public class CommandParser {
             case USER_COMMAND_REDO :
                 command = initRedoCommand();
                 break;
-                
+
             case USER_COMMAND_EXIT :
                 command = initExitCommand();
                 break;
@@ -125,85 +127,135 @@ public class CommandParser {
     // Create add command method
     // ================================================================
 
-    private static Command initAddCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.ADD);
-        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
+    private static Command initAddCommand(ArrayList<String> arguments) throws Exception {
+        try {
+            Command command = new Command(Command.Type.ADD);
+            command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
+
     }
 
     // ================================================================
     // Create delete command method
     // ================================================================
 
-    private static Command initDeleteCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.DELETE);
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
+    private static Command initDeleteCommand(ArrayList<String> arguments) throws Exception {  
+        try {
+            Command command = new Command(Command.Type.DELETE);
+            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+            command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
     }
 
     // ================================================================
     // Create view all tasks of a day command method
     // ================================================================
 
-    private static Command initViewDateCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.VIEW);
-        command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        return command;
+    private static Command initViewDateCommand(ArrayList<String> arguments) throws Exception {    
+        try {
+            Command command = new Command(Command.Type.VIEW);
+            command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
     }
 
     // ================================================================
     // Create update command method
     // ================================================================
 
-    private static Command initUpdateCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.UPDATE);
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-        command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
-        return command;
+    private static Command initUpdateCommand(ArrayList<String> arguments) throws Exception {
+        try {
+            Command command = new Command(Command.Type.UPDATE);
+            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+            command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
     }
 
     // ================================================================
     // Create complete command method
     // ================================================================
 
-    private static Command initCompleteCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.COMPLETE);
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
+    private static Command initCompleteCommand(ArrayList<String> arguments) throws Exception {
+        try {
+            Command command = new Command(Command.Type.COMPLETE);
+            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+            command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            return command; 
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
     }
 
     // ================================================================
     // Create search command method
     // ================================================================
-    private static Command initSearchCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.SEARCH);
-        ArrayList<String> keywords = splitStringBySpace(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        command.setSearchKeyword(keywords);
-        return command;
+    private static Command initSearchCommand(ArrayList<String> arguments) throws Exception {
+        try {
+            Command command = new Command(Command.Type.SEARCH);
+            ArrayList<String> keywords = splitStringBySpace(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            command.setSearchKeyword(keywords);
+            return command; 
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
     }
 
     // ================================================================
     // Create recurrence using repeat command method
     // ================================================================
-    private static Command initRepeatCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.REPEAT);
-        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
+    private static Command initRepeatCommand(ArrayList<String> arguments) throws Exception {
+        try {
+            Command command = new Command(Command.Type.REPEAT);
+            command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
     }
 
     // ================================================================
     // Create cancel recurrence using cancel repeat command method
     // ================================================================
-    private static Command initCancelRepeatCommand(ArrayList<String> arguments) {
-        Command command = new Command(Command.Type.CANCEL_REPEAT);
-        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        return command;
+    private static Command initCancelRepeatCommand(ArrayList<String> arguments) throws Exception {
+        try {
+            Command command = new Command(Command.Type.CANCEL_REPEAT);
+            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+            command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            return command;
+        } catch (NullPointerException e) {
+            throw new Exception(MSG_ATTRIBUTES_NOT_FOUND); 
+        } catch (IndexOutOfBoundsException e) {
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
+
     }
 
     // ================================================================
