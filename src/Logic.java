@@ -8,19 +8,21 @@ import java.util.*;
 public class Logic {
     private static CommandParser commandParser;
     private static ArrayList <String> taskList ;
-    private static ArrayList <String> recList;
+    private static ArrayList <String> recurringList;
     private static ArrayList <Integer> todayTask;
     private static ArrayList <Integer> currentList;
     private static ArrayList <String> searchList; 
     private static Storage storage; 
+    private static CommandHistory history;
     private static String curDate;
     
-
     public Logic (){
         commandParser = new CommandParser();
-        taskList = new ArrayList <String>();
-        recList = new ArrayList <String>();
         storage = new Storage();
+        storage.createFile();
+        taskList = storage.retrieveTexts();
+        recurringList = new ArrayList <String>();
+        history = new CommandHistory(taskList);
         todayTask = new ArrayList <Integer>();
         currentList = new ArrayList <Integer>();
         searchList = new ArrayList <String> ();
@@ -74,6 +76,7 @@ public class Logic {
         String detailStored = com.getTaskTime() + "#" + com.getTaskTitle();
         taskList.add(detailStored);
         sortForAdd();
+        history.addChangeToHistory(taskList);
         storage.saveToFile(taskList); 
         message = "add " + com.getTaskTitle() + " successful!";
         return message;
@@ -102,8 +105,8 @@ public class Logic {
         String message;
         storage = new Storage();     
         String detailStored =  com.getRecurringPeriod() +"#" + com.getTaskTitle();
-        recList.add(detailStored);
-        storage.saveToFileRC(recList);
+        recurringList.add(detailStored);
+        storage.saveToFileRC(recurringList);
         message =  "addrc " + com.getTaskTitle() + " successful!";
         return message;
 
@@ -161,6 +164,7 @@ public class Logic {
             }
             taskList.remove(index);
             currentList.remove(com.getTaskNumber()-1);
+            history.addChangeToHistory(taskList);
             storage.saveToFile(taskList); 
             message = "delete task no. " + com.getTaskNumber() + " successfully!";
         }catch(Exception e){
@@ -204,7 +208,7 @@ public class Logic {
         }
         updateString += str[str.length-1];
         taskList.set(taskListIndex, updateString);
-
+        history.addChangeToHistory(taskList);
         storage.saveToFile(taskList);
         return message;
     }
@@ -232,9 +236,6 @@ public class Logic {
         return message;
     }
     
-    
-
-
     // ================================================================
     // "show to user" command methods
     // ================================================================
