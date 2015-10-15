@@ -10,21 +10,33 @@ public class CommandParserStubTest {
 
     public static void main(String[] args) {
         // adding task
-        Command addCommand = CommandParser.parse("add <meeting with team-mates> <09/10/2015 18:00>");
-        System.out.println(addCommand.getCommandType() + " " + addCommand.getTaskTitle() + " " + addCommand.getTaskTime());
+        Command add = CommandParser.parse("add <meeting with team-mates> <09/10/2015 18:00>");
+        System.out.println(add.getCommandType() + " " + add.getTaskTitle() + " " + add.getTaskTime());
 
         // updating task
-        Command updateCommand = CommandParser.parse("update <2> <Arrange meeting with customer> <09/10/2015>");
-        System.out.println(updateCommand.getCommandType() + " " + updateCommand.getTaskNumber() + 
-                " "  + updateCommand.getTaskTitle() + " " + updateCommand.getTaskTime());
+        Command update = CommandParser.parse("update <2> <Arrange meeting with customer> <09/10/2015>");
+        System.out.println(update.getCommandType() + " " + update.getTaskNumber() + 
+                " "  + update.getTaskTitle() + " " + update.getTaskTime());
 
         // deleting task
-        Command deleteCommand = CommandParser.parse("delete <1> <09/10/2015>");
-        System.out.println(deleteCommand.getCommandType() + " " + deleteCommand.getTaskNumber() + " " + deleteCommand.getTaskTime());
+        Command delete = CommandParser.parse("delete <1> <09/10/2015>");
+        System.out.println(delete.getCommandType() + " " + delete.getTaskNumber() + " " + delete.getTaskTime());
 
         // view task from a specific day
-        Command viewCommand = CommandParser.parse("view <09/10/2015>");
-        System.out.println(viewCommand.getCommandType() + " " + viewCommand.getTaskTime());
+        Command view = CommandParser.parse("view <09/10/2015>");
+        System.out.println(view.getCommandType() + " " + view.getTaskTime());
+        
+        // complete task
+        Command complete = CommandParser.parse("complete <1> <09/10/2015>");
+        System.out.println(complete.getCommandType() + " " + complete.getTaskNumber() + " " +complete.getTaskTime());
+        
+        // search task with keywords
+        Command search = CommandParser.parse("search meeting jardine Singapore");
+        String keywords = "";
+        for(int index = 0 ; index < search.getSearchKeyword().size(); index++) {
+            keywords = search.getSearchKeyword().get(index);
+        }
+        System.out.println(search.getCommandType() + " " + keywords);
 
         // undo
         Command undo = CommandParser.parse("undo");
