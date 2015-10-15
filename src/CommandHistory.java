@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 /**
@@ -25,13 +26,29 @@ public class CommandHistory {
 	undoStack.add(taskList);
     }
     
-    public ArrayList<String> undoCommand() {
-	redoStack.add(undoStack.pop());
+    public ArrayList<String> undo() {
+	if(undoStack.isEmpty() || undoStack == null || redoStack == null) {
+	    return null;
+	}
+	try {
+	    redoStack.add(undoStack.pop());
+	}
+	catch(EmptyStackException e) {
+	    return null;
+	}
 	return undoStack.peek();
     }
     
-    public ArrayList<String> redoCommand() {
-	undoStack.add(redoStack.pop());
+    public ArrayList<String> redo() {
+	if(redoStack.isEmpty() || redoStack == null || undoStack == null) {
+	    return null;
+	}
+	try {
+		undoStack.add(redoStack.pop());
+	}
+	catch(EmptyStackException e) {
+	    return null;
+	}
 	return undoStack.peek();
     }
 
