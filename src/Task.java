@@ -10,8 +10,12 @@ public class Task {
     private String id;
     private String description;
     private String date;
+    private String time;
     private String startTime;
     private String endTime;
+    private String period;
+    private String dateAdded;
+    private String timeAdded;
 
     public Task(Type type) {
         setType(type);
@@ -20,6 +24,9 @@ public class Task {
         setDate("");
         setStartTime("");
         setEndTime("");
+        setPeriod("");
+        setDateAdded("");
+        setTimeAdded("");
     }
 
     // ================================================================
@@ -49,6 +56,22 @@ public class Task {
     public String getEndTime() {
         return endTime;
     }
+    
+    public String getTime() {
+        return time;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public String getTimeAdded() {
+        return timeAdded;
+    }
 
     // ================================================================
     // Setter methods to initialize Task object
@@ -69,6 +92,10 @@ public class Task {
     public void setDate(String date) {
         this.date = date;
     }
+    
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
@@ -76,6 +103,18 @@ public class Task {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+    
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+    
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public void setTimeAdded(String timeAdded) {
+        this.timeAdded = timeAdded;
     }
 
 }
