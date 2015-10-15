@@ -1,11 +1,9 @@
 import java.util.*;
 
-import org.omg.CORBA.SystemException;
-
 /**
  * CommandParser parses user's input to create Command objects that have the
  * appropriate fields initialised. For example, the "add" command requires the
- * taskTitle, taskLabel, taskDetail, taskTime field to be initialised.
+ * taskDetail and taskTime field to be initialised.
  * 
  * @author Bobby Lin
  *
@@ -28,79 +26,89 @@ public class CommandParser {
     private static final String USER_COMMAND_SEARCH = "search";
     private static final String USER_COMMAND_UNDO= "undo";
     private static final String USER_COMMAND_REDO = "redo";
+    private static final String USER_COMMAND_REPEAT = "repeat";
+    private static final String USER_COMMAND_CANCEL_REPEAT = "cancel";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
 
     public static Command parse(String userInput) {
-	Command command;
-	ArrayList<String> parameters = splitStringIntoTwoParts(userInput);
-	String userCommand = getUserCommand(parameters);
-	ArrayList<String> arguments = getUserArguments(parameters);
+        Command command;
+        ArrayList<String> parameters = splitStringIntoTwoParts(userInput);
+        String userCommand = getUserCommand(parameters);
+        ArrayList<String> arguments = getUserArguments(parameters);
 
-	switch (userCommand.toLowerCase()) {
-	case USER_COMMAND_ADD :
-	    command = initAddCommand(arguments);
-	    break;
+        switch (userCommand.toLowerCase()) {
+            case USER_COMMAND_ADD :
+                command = initAddCommand(arguments);
+                break;
 
-	case USER_COMMAND_ADDRECURRENCE :
-	    command = initAddRecurrenceCommand(arguments);
-	    break;
+            case USER_COMMAND_ADDRECURRENCE :
+                command = initAddRecurrenceCommand(arguments);
+                break;
 
-	case USER_COMMAND_DELETE :
-	    command = initDeleteCommand(arguments);
-	    break;
+            case USER_COMMAND_DELETE :
+                command = initDeleteCommand(arguments);
+                break;
 
-	case USER_COMMAND_DELETERECURRENCE :
-	    command = initDeleteRecurrenceCommand(arguments);
-	    break;
+            case USER_COMMAND_DELETERECURRENCE :
+                command = initDeleteRecurrenceCommand(arguments);
+                break;
 
-	case USER_COMMAND_VIEW :
-	    command = initViewDateCommand(arguments);
-	    break;
+            case USER_COMMAND_VIEW :
+                command = initViewDateCommand(arguments);
+                break;
 
-	case USER_COMMAND_UPDATE :
-	    command = initUpdateCommand(arguments);
-	    break;
+            case USER_COMMAND_UPDATE :
+                command = initUpdateCommand(arguments);
+                break;
 
-	case USER_COMMAND_UNDO :
-	    command = initUndoCommand();
-	    break;
+            case USER_COMMAND_UNDO :
+                command = initUndoCommand();
+                break;
 
-	case USER_COMMAND_REDO :
-	    command = initRedoCommand();
-	    break;
-	    
-	case USER_COMMAND_SEARCH :
-            command = initSearchCommand(arguments);
-            break;
+            case USER_COMMAND_REDO :
+                command = initRedoCommand();
+                break;
 
-	case USER_COMMAND_COMPLETE :
-	    command = initCompleteCommand(arguments);
-	    break;
+            case USER_COMMAND_SEARCH :
+                command = initSearchCommand(arguments);
+                break;
 
-	case USER_COMMAND_EXIT :
-	    command = initExitCommand();
-	    break;
+            case USER_COMMAND_COMPLETE :
+                command = initCompleteCommand(arguments);
+                break;
+                
+            case USER_COMMAND_REPEAT :
+                command = initRepeatCommand(arguments);
+                break;
 
-	default :
-	    command = initInvalidCommand();
-	}
-	return command;
+            case USER_COMMAND_CANCEL_REPEAT :
+                command = initCancelRepeatCommand(arguments);
+                break;
+                
+            case USER_COMMAND_EXIT :
+                command = initExitCommand();
+                break;
+
+            default :
+                command = initInvalidCommand();
+        }
+        return command;
     }
 
     private static ArrayList<String> splitStringIntoTwoParts(String arguments) {
         String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
-	return new ArrayList<String>(Arrays.asList(strArray));
+        return new ArrayList<String>(Arrays.asList(strArray));
     }
-    
+
     private static ArrayList<String> splitStringBySpace(String arguments) {
         String[] strArray = arguments.trim().split(REGEX_WHITESPACES);
         return new ArrayList<String>(Arrays.asList(strArray));
     }
 
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
-	String[] strArray = extractParameter(parameters);
-	return new ArrayList<String>(Arrays.asList(strArray));
+        String[] strArray = extractParameter(parameters);
+        return new ArrayList<String>(Arrays.asList(strArray));
     }
 
     private static String[] extractParameter(ArrayList<String> parameters) {
@@ -111,16 +119,16 @@ public class CommandParser {
         else {
             line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
         }
-        
-	String[] strArray = line.trim().split(">");
-	for(int i = 0 ;i < strArray.length; i++) {
-	    strArray[i] = strArray[i].trim().replaceAll("<", "");
-	}
-	return strArray;
+
+        String[] strArray = line.trim().split(">");
+        for(int i = 0 ;i < strArray.length; i++) {
+            strArray[i] = strArray[i].trim().replaceAll("<", "");
+        }
+        return strArray;
     }
 
     private static String getUserCommand(ArrayList<String> parameters) {
-	return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
+        return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
     }
 
     // ================================================================
@@ -128,10 +136,10 @@ public class CommandParser {
     // ================================================================
 
     private static Command initAddCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.ADD);
-	command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.ADD);
+        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return command;
     }
 
     // ================================================================
@@ -139,10 +147,10 @@ public class CommandParser {
     // ================================================================
 
     private static Command initAddRecurrenceCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.ADDRECURRENCE);
-	command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.ADDRECURRENCE);
+        command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return command;
     }
 
     // ================================================================
@@ -150,10 +158,10 @@ public class CommandParser {
     // ================================================================
 
     private static Command initDeleteCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.DELETE);
-	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.DELETE);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return command;
     }
 
     // ================================================================
@@ -161,10 +169,10 @@ public class CommandParser {
     // ================================================================
 
     private static Command initDeleteRecurrenceCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.DELETERECURRENCE);
-	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-	command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.DELETERECURRENCE);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return command;
     }
 
     // ================================================================
@@ -172,9 +180,9 @@ public class CommandParser {
     // ================================================================
 
     private static Command initViewDateCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.VIEW);
-	command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.VIEW);
+        command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        return command;
     }
 
     // ================================================================
@@ -182,11 +190,11 @@ public class CommandParser {
     // ================================================================
 
     private static Command initUpdateCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.UPDATE);
-	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-	command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-	command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.UPDATE);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+        return command;
     }
 
     // ================================================================
@@ -194,12 +202,12 @@ public class CommandParser {
     // ================================================================
 
     private static Command initCompleteCommand(ArrayList<String> arguments) {
-	Command command = new Command(Command.Type.COMPLETE);
-	command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-	command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-	return command;
+        Command command = new Command(Command.Type.COMPLETE);
+        command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
+        command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return command;
     }
-    
+
     // ================================================================
     // Create search command method
     // ================================================================
@@ -207,6 +215,22 @@ public class CommandParser {
         Command command = new Command(Command.Type.SEARCH);
         ArrayList<String> keywords = splitStringBySpace(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
         command.setSearchKeyword(keywords);
+        return command;
+    }
+
+    // ================================================================
+    // Create recurrence using repeat command method
+    // ================================================================
+    private static Command initRepeatCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.REPEAT);
+        return command;
+    }
+
+    // ================================================================
+    // Create cancel recurrence using cancel repeat command method
+    // ================================================================
+    private static Command initCancelRepeatCommand(ArrayList<String> arguments) {
+        Command command = new Command(Command.Type.STOP_REPEAT);
         return command;
     }
 
@@ -223,7 +247,7 @@ public class CommandParser {
     private static Command initRedoCommand() {
         return new Command(Command.Type.REDO);
     }
-    
+
     // ================================================================
     // Create invalid command method
     // ================================================================
@@ -237,7 +261,7 @@ public class CommandParser {
     // ================================================================
 
     private static Command initExitCommand() {
-	return new Command(Command.Type.EXIT);
+        return new Command(Command.Type.EXIT);
     }
 
 }
