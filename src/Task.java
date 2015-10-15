@@ -1,81 +1,126 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+
+/**
+ * Task is an object class that contains all attibutes of a task
+ * 
+ * @author Bobby Lin
+ *
+ */
 
 public class Task {
-	
-	private String taskTitle;
-    private String taskLabel;
-    private String taskDetail;
-    private String taskTime;
-    private String recurringPeriod;
-    private int taskNumber;
-    private ArrayList <String> task;
-    
-    
-    //
-    private final String SPLIT = "#";
-    
-    private Task(String str){
-    	task = new ArrayList <String>();
-    	task = splitString(str);
-    	taskTime = task.get(0);
-    	taskTitle = task.get(1);
-    	taskLabel = task.get(2);
-    }
-    
-    private static ArrayList<String> splitString(String arguments) {
-        String[] strArray = arguments.trim().split("SPLIT");
-        return new ArrayList<String>(Arrays.asList(strArray));
-    }
-    
-    
-    public String getTaskTitle() {
-        return taskTitle;
+
+    public enum Type {
+        EVENT, DEADLINE, FLOATING, REPEAT
     }
 
-    public String getTaskLabel() {
-        return taskLabel;
+    private Type type;
+    private String id;
+    private String description;
+    private String date;
+    private String time;
+    private String startTime;
+    private String endTime;
+    private String period;
+    private String dateAdded;
+    private String timeAdded;
+
+    public Task(Type type) {
+        setType(type);
+        setID("");
+        setDescription("");
+        setDate("");
+        setStartTime("");
+        setEndTime("");
+        setPeriod("");
+        setDateAdded("");
+        setTimeAdded("");
     }
 
-    public String getTaskDetail() {
-        return taskDetail;
-    }
+    // ================================================================
+    // Getter methods to get attributes of Task object
+    // ================================================================
 
-    public String getTaskTime() {
-        return taskTime;
+    public Type getType() {
+        return type;
     }
     
-    public int getTaskNumber() {
-        return taskNumber;
+    public String getID() {
+        return id;
     }
     
-    public String getRecurringPeriod() {
-        return recurringPeriod;
+    public String getDescription() {
+        return description;
     }
     
-    public void setTaskTitle(String taskTitle) {
-        this.taskTitle = taskTitle;
+    public String getDate() {
+        return date;
+    }
+    
+    public String getStartTime() {
+        return startTime;
+    }
+    
+    public String getEndTime() {
+        return endTime;
+    }
+    
+    public String getTime() {
+        return time;
     }
 
-    public void setTaskLabel(String taskLabel) {
-        this.taskLabel = taskLabel;
+    public String getPeriod() {
+        return period;
     }
 
-    public void setTaskDetail(String taskDetail) {
-        this.taskDetail = taskDetail;
+    public String getDateAdded() {
+        return dateAdded;
     }
 
-    public void setTaskTime(String taskTime) {
-        this.taskTime = taskTime;
+    public String getTimeAdded() {
+        return timeAdded;
     }
 
-    public void setTaskNumber(int taskNumber) {
-        this.taskNumber = taskNumber;
+    // ================================================================
+    // Setter methods to initialize Task object
+    // ================================================================
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public void setRecurringPeriod(String recurringPeriod) {
-        this.recurringPeriod = recurringPeriod;
+    public void setID(String id) {
+        this.id = id;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+    
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+    
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public void setTimeAdded(String timeAdded) {
+        this.timeAdded = timeAdded;
+    }
 
 }
