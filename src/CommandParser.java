@@ -18,9 +18,7 @@ public class CommandParser {
     private static final String REGEX_WHITESPACES = " ";
 
     private static final String USER_COMMAND_ADD = "add";
-    private static final String USER_COMMAND_ADDRECURRENCE = "addrc";
     private static final String USER_COMMAND_DELETE = "delete";
-    private static final String USER_COMMAND_DELETERECURRENCE = "deleterc";
     private static final String USER_COMMAND_UPDATE = "update";
     private static final String USER_COMMAND_VIEW = "view";
     private static final String USER_COMMAND_SEARCH = "search";
