@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Storage {
 
-    public File taskFile;
+    public static File taskFile;
     public static ArrayList<String> taskList; 
     public static String DEFAULT_LOCATION = System.getProperty("user.home") + "/Desktop" ;
     public static String DEFAULT_FILENAME = "/taskFile.txt";
@@ -19,11 +19,11 @@ public class Storage {
 	taskList = new ArrayList<String>();
     }
     
-    public void createFile(){	
+    public static void createFile(){	
 	taskFile = new File(DEFAULT_FILELOCATION);
     }
 
-    public ArrayList<String> retrieveTexts() {
+    public static ArrayList<String> retrieveTexts() {
 	try {
 	    Scanner scanner = new Scanner(taskFile);
 	    while (scanner.hasNextLine()) {
@@ -35,7 +35,7 @@ public class Storage {
 	return taskList;
     }
 
-    public void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {			
+    public static void saveToFile(ArrayList<String> taskList) throws FileNotFoundException {			
 	try {
 	    File tempFile = new File(taskFile.getAbsolutePath());
 	    PrintWriter pw = new PrintWriter(tempFile);
@@ -54,7 +54,7 @@ public class Storage {
 	}
     }
 
-    public void saveToFileRC(ArrayList<String> rcTaskList) throws FileNotFoundException {
+    public static void saveToFileRC(ArrayList<String> rcTaskList) throws FileNotFoundException {
 	try {
 	    File tempFile = new File(taskFile.getAbsolutePath());
 	    PrintWriter pw = new PrintWriter(tempFile);
