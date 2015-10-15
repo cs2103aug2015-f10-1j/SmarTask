@@ -244,16 +244,16 @@ public class Logic {
     // "undo command methods
     // ================================================================
     private static String redoCommand() {
-	// TODO Auto-generated method stub
-	return null;
+	String message = "redo successfully";
+	return message;
     }
 
     // ================================================================
     // redo command methods
     // ================================================================
     private static String undoCommand() {
-	// TODO Auto-generated method stub
-	return null;
+	String message = "undo successfully";
+	return message;
     }
 
 }
