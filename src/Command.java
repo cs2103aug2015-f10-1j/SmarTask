@@ -21,7 +21,7 @@ public class Command {
     private String taskDetail;
     private String taskTime;
     private String recurringPeriod;
-    private String searchKeyword;
+    private ArrayList<String> searchKeyword;
     private int taskNumber;
 
     public Command(Type type) {
@@ -61,7 +61,7 @@ public class Command {
         return taskNumber;
     }
     
-    public String getSearchKeyword() {
+    public ArrayList<String> getSearchKeyword() {
         return searchKeyword;
     }
     
@@ -97,8 +97,8 @@ public class Command {
         this.taskNumber = taskNumber;
     }
 
-    public void setSearchKeyword(String searchKeyword) {
-        this.searchKeyword = searchKeyword;
+    public void setSearchKeyword(ArrayList<String> arguments) {
+        this.searchKeyword = arguments;
     }
 
     public void setRecurringPeriod(String recurringPeriod) {
