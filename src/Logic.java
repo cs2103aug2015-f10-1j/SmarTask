@@ -9,7 +9,7 @@ public class Logic {
     private static CommandParser commandParser;
     private static ArrayList <String> taskList ;
     private static ArrayList <String> recList;
-    private static ArrayList <Integer> todayTask;
+    private static ArrayList <Integer> upcommingTask;
     private static ArrayList <Integer> currentList;
     private static ArrayList <String> searchList; 
     private static Storage storage; 
@@ -21,7 +21,7 @@ public class Logic {
         taskList = new ArrayList <String>();
         recList = new ArrayList <String>();
         storage = new Storage();
-        todayTask = new ArrayList <Integer>();
+        upcommingTask = new ArrayList <Integer>();
         currentList = new ArrayList <Integer>();
         searchList = new ArrayList <String> ();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -33,6 +33,7 @@ public class Logic {
         String displayMessage = "";
         storage.createFile();
         taskList = storage.retrieveTexts();
+        recList = storage.retrieveRecTexts();
 
         Command command = commandParser.parse(userInput);
         switch (command.getCommandType()){
@@ -45,6 +46,9 @@ public class Logic {
             case DELETE :
                 displayMessage = deleteTask(command);
                 break;
+          //  case DELETERECURRENCE :
+          //  	displayMessage = deleteRC (command);
+          //  	break;
             case VIEW :
                 displayMessage = viewTask (command);
                 break;
@@ -55,8 +59,9 @@ public class Logic {
                 displayMessage = searchTask(command);
                 break;
             case EXIT :
+            	System.exit(0);
                 break;
-            default :
+            case INVALID :
                 // return Command.Type.INVALID;
         }
 
@@ -135,7 +140,7 @@ public class Logic {
 
     private static String searchTask(Command com) throws FileNotFoundException{
         String message = "Search Result: \n";
-        currentList.clear();
+        searchList.clear();
         int index = 1;
         for (int i = 0; i<taskList.size(); i++){
             if (taskList.get(i).contains(com.getSearchKeyword())){
@@ -157,7 +162,7 @@ public class Logic {
         try{
             int index = currentList.get(com.getTaskNumber()-1);
             if (com.getTaskTime().equals(curDate)){
-            	todayTask.remove(com.getTaskNumber()-1);
+            	upcommingTask.remove(com.getTaskNumber()-1);
             }
             taskList.remove(index);
             currentList.remove(com.getTaskNumber()-1);
@@ -212,20 +217,19 @@ public class Logic {
  // ================================================================
     // "view today's task" command methods
     // ================================================================
-    private static String viewTodayTask(){
-    	String message = "Today's Task: \n";
+    private static String viewUpcommingTask(){
+    	String message = "Top 10 Upcomming Tasks: \n";
     	int index = 1;
     	taskList = storage.retrieveTexts();
     	
-    	for (int i = 0; i<taskList.size(); i++){
-            if (taskList.get(i).contains(curDate)){
-                todayTask.add(i);
-                currentList.add(i);
+    	for (int i = 0; i<10; i++){
                 String[] str = taskList.get(i).trim().split("#");
                 message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
-            }	
+                upcommingTask.add(i);
+                currentList.add(i);
+            	
         }
-    	if(currentList.isEmpty() && todayTask.isEmpty()){
+    	if(currentList.isEmpty() && upcommingTask.isEmpty()){
     		message += "There is no task need to be finished.";
     	}
         
