@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 public class Logic {
     private static CommandParser commandParser;
     private static ArrayList <String> taskList ;
@@ -243,21 +242,4 @@ public class Logic {
         //   System.out.println( message);
         return message;
     }
-}
-
-class LogicTest {
-    public static void main(String[] arg) throws FileNotFoundException {
-        Logic logic = new Logic();
-        //logic.executeCommand("add <meeting with team-mates> <09/10/2015 18:00>");
-        //logic.executeCommand("add <testing program component> <09/10/2015 14:00>");
-        //logic.executeCommand("add <meeting with team-mates for integration> <08/10/2015 18:00>");
-        //logic.printArrayList();
-        System.out.print(logic.executeCommand("view <09/10/2015>"));
-        //System.out.print(logic.executeCommand("update <2> <UPDATED> <09/10/2015>"));
-        //System.out.print(logic.executeCommand("view <09/10/2015>"));
-        System.out.print(logic.executeCommand("delete <2> <09/10/2015>"));
-        System.out.print(logic.executeCommand("view <09/10/2015>"));
-        System.out.println("End of Test");
-    }
-
 }
