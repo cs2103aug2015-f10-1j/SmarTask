@@ -12,11 +12,27 @@ import java.util.Stack;
 
 public class CommandHistory {
     
-    Stack<ArrayList <String>> undoStack = new Stack<ArrayList<String>>();
-    Stack<ArrayList <String>> redoStack = new Stack<ArrayList<String>>();
+    Stack<ArrayList<String>> undoStack ;
+    Stack<ArrayList<String>> redoStack;
     
-    public CommandHistory() {
-	// TODO Auto-generated constructor stub
+    public CommandHistory(ArrayList<String> taskList) {
+	undoStack = new Stack<ArrayList<String>>();
+	undoStack.add(taskList);
+	redoStack = new Stack<ArrayList<String>>();
+    }
+    
+    public void addChangeToHistory(ArrayList<String> taskList) {
+	undoStack.add(taskList);
+    }
+    
+    public ArrayList<String> undoCommand() {
+	redoStack.add(undoStack.pop());
+	return undoStack.peek();
+    }
+    
+    public ArrayList<String> redoCommand() {
+	undoStack.add(redoStack.pop());
+	return undoStack.peek();
     }
 
 }
