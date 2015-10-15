@@ -11,13 +11,16 @@ public class Storage {
 
     public File taskFile;
     public static ArrayList<String> taskList; 
-
+    public static String DEFAULT_LOCATION = System.getProperty("user.home") + "/Desktop" ;
+    public static String DEFAULT_FILENAME = "/taskFile.txt";
+    public static String DEFAULT_FILELOCATION = DEFAULT_LOCATION + DEFAULT_FILENAME;
+    
     public Storage() {
 	taskList = new ArrayList<String>();
     }
     
     public void createFile(){	
-	taskFile = new File("C:\\Users\\David_Chong\\Documents\\Test Environment\\taskFile.txt");
+	taskFile = new File(DEFAULT_FILELOCATION);
     }
 
     public ArrayList<String> retrieveTexts() {
