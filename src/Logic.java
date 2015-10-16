@@ -21,7 +21,7 @@ public class Logic {
     private static ArrayList <String> deadline;
     private static ArrayList <String> floatingTask;
 
-    private Logic (){
+    Logic (){
         commandParser = new CommandParser();
         taskList = new ArrayList <String>();
         recurringList = new ArrayList <String>();
@@ -184,15 +184,13 @@ public class Logic {
     // ================================================================
 
     private static void viewTask(Command com){
-	
-	int index = 1;
 
 	//	taskList = Storage.retrieveTexts();
 	for (int i = 0; i<taskList.size(); i++){
 	    if (taskList.get(i).contains(com.getTaskTime())){
 		currentList.add(i);
 		String[] str = taskList.get(i).trim().split("#");
-		events.add((index++) + ". " + str[1] + " " + str[0] ) ;
+		events.add(str[1] + " " + str[0] ) ;
 	    }	
 	}
     }
@@ -243,7 +241,6 @@ public class Logic {
     
 */  
     private static void viewTodayTask(){
-	String message = "Today's Task: \n";
 	int index = 1;
 	taskList = storage.retrieveTexts();
 
