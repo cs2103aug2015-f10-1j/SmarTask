@@ -290,35 +290,35 @@ public class Logic {
         return message;
     }
 
-    public static String getMessageLog(){
+    public static ArrayList<String> getMessageLog(){
         String messageLog = "";
         for(int i=0; i<msgLogger.size(); i++) {
             messageLog += msgLogger.get(i) + "\n";
         }
-        return messageLog.trim();
+        return msgLogger;
     }
     
-    public static String getEvents(){
+    public static ArrayList<String> getEvents(){
         String messageLog = "";
         for(int i=0; i<events.size(); i++) {
             messageLog += events.get(i) + "\n";
         }
-        return messageLog.trim();
+        return events;
     }
     
-    public static String getDeadline(){
+    public static ArrayList<String> getDeadline(){
         String messageLog = "";
         for(int i=0; i<deadline.size(); i++) {
             messageLog += deadline.get(i) + "\n";
         }
-        return messageLog.trim();
+        return deadline;
     }
-    public static String getFloatingTask(){
+    public static ArrayList<String> getFloatingTask(){
         String messageLog = "";
         for(int i=0; i<floatingTask.size(); i++) {
             messageLog += floatingTask.get(i) + "\n";
         }
-        return messageLog.trim();
+        return floatingTask;
     }
 
 }
