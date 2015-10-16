@@ -171,11 +171,8 @@ public class CommandParser {
         	command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
         	command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
             }
-            else {
-        	return null;
-            }
-        	
             return command;
+            
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
