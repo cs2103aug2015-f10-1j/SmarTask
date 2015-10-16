@@ -60,7 +60,8 @@ public class Logic {
             default :
                 msgLogger.add( "invalid command");
         }
-        //taskList.clear();
+        
+        taskList.clear();
     }
     // ================================================================
     // "Add" command methods
@@ -87,12 +88,12 @@ public class Logic {
                 throw new Exception("Fail to add an invalid task");
             }
 
-            //taskList.add(detailStored);
-            //sortForAdd();
+            taskList.add(detailStored);
+            //NEED TO MODIFY: sortForAdd();
 
             //history.addChangeToHistory(taskList);
-            //Storage.saveToFile(taskList);
-            msgLogger.add( "add " + command.getTaskDescription() + " successful!");     
+            Storage.saveToFile(taskList);
+            msgLogger.add("add " + command.getTaskDescription() + " successful!");     
 
         }catch (FileNotFoundException e){
             msgLogger.add(e.toString());
@@ -259,8 +260,6 @@ public class Logic {
         if(currentList.isEmpty() && todayTask.isEmpty()){
             events.add("There is no task need to be finished.");
         }
-
-
     }
 
     // ================================================================
@@ -279,35 +278,35 @@ public class Logic {
         return message;
     }
 
-    public static ArrayList<String> getMessageLog(){
-        String messageLog = "";
+    public static String getMessageLog(){
+        String messageToPrint = "";
         for(int i=0; i<msgLogger.size(); i++) {
-            messageLog += msgLogger.get(i) + "\n";
+            messageToPrint += msgLogger.get(i) + "\n";
         }
-        return msgLogger;
+        return messageToPrint.trim();
     }
     
-    public static ArrayList<String> getEvents(){
-        String messageLog = "";
+    public static String getEvents(){
+        String messageToPrint = "";
         for(int i=0; i<events.size(); i++) {
-            messageLog += events.get(i) + "\n";
+            messageToPrint += events.get(i) + "\n";
         }
-        return events;
+        return messageToPrint.trim();
     }
     
-    public static ArrayList<String> getDeadline(){
-        String messageLog = "";
+    public static String getDeadline(){
+        String messageToPrint = "";
         for(int i=0; i<deadline.size(); i++) {
-            messageLog += deadline.get(i) + "\n";
+            messageToPrint += deadline.get(i) + "\n";
         }
-        return deadline;
+        return messageToPrint.trim();
     }
-    public static ArrayList<String> getFloatingTask(){
-        String messageLog = "";
+    public static String getFloatingTask(){
+        String messageToPrint = "";
         for(int i=0; i<floatingTask.size(); i++) {
-            messageLog += floatingTask.get(i) + "\n";
+            messageToPrint += floatingTask.get(i) + "\n";
         }
-        return floatingTask;
+        return messageToPrint.trim();
     }
 
 }

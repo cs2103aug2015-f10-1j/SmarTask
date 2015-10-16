@@ -24,9 +24,9 @@ public class SmarTaskController implements Initializable {
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
     @FXML private TextArea specialTaskWindow; //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
-    public ArrayList<String> logDisplay;
-    public ArrayList<String> taskDeadlineDisplay;
-    public ArrayList<String> specialTaskDisplay;
+    public String logDisplay;
+    public String taskDeadlineDisplay;
+    public String specialTaskDisplay;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -49,12 +49,9 @@ public class SmarTaskController implements Initializable {
 
     }
 
-    public static void displayText(TextArea display, ArrayList<String> toDisplay) {
+    public static void displayText(TextArea display, String toDisplay) {
         display.clear();
-        for(int i=0; i < toDisplay.size(); i++) {
-            String textToDisplay = toDisplay.get(i);
-            display.insertText(i, textToDisplay);
-        }
+        display.setText(toDisplay);
     }
 
     @FXML
@@ -64,12 +61,14 @@ public class SmarTaskController implements Initializable {
             inputWindow.clear();
             try {
                 Logic.executeCommand(userCommand);
-                displayWindow.clear();
+                displayWindow.clear();              
                 logDisplay = Logic.getMessageLog();
                 displayText(displayWindow, logDisplay);
+                
                 taskWindow.clear();
                 taskDeadlineDisplay = Logic.getDeadline();
                 displayText(taskWindow, taskDeadlineDisplay);
+                
                 specialTaskDisplay = Logic.getFloatingTask();
                 displayText(specialTaskWindow, specialTaskDisplay);
             } catch (FileNotFoundException e1) {
