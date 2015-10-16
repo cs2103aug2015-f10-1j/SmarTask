@@ -1,4 +1,3 @@
-import javax.swing.text.html.HTMLEditorKit.Parser;
 
 /**
  * CommandParserStubTest checks if the CommandParser returns the correct Command object
@@ -139,10 +138,12 @@ public class CommandParserStubTest {
         // [TO DEBUG: Test exception handling for view task from a specific day]
         try {
             Command view = CommandParser.parse("view <abc <129302");
-            System.out.println("STILL DEBUGGING --- " + view.getCommandType() + " " + view.getTaskTime());
+            System.out.println("Error: " + view.getCommandType() + " " + view.getTaskTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        CommandParser.viewCommandParserLog();
 
         System.out.println("=================================Testing assertion================================");
 
