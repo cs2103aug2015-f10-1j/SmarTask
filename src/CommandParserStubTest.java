@@ -117,11 +117,20 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+     // Updating task description and time
+        try {
+            Command update = CommandParser.parse("update E1 Arrange meeting>>13:00-14:00");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+                    " "  + update.getTaskDescription() + " " + update.getTaskEventDate() + " " + update.getTaskEventTime());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Updating only task time
         try {
             Command update = CommandParser.parse("update E1>>09/10/2015");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskDeadline());
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskEventDate());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -129,20 +138,19 @@ public class CommandParserStubTest {
         // Updating only task time
         try {
             Command update = CommandParser.parse("update E1>>13:00-14:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskDeadline());
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskEventTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         // Updating only task description
         try {
-            Command update = CommandParser.parse("update E1 Arrange meeting");
+            Command update = CommandParser.parse("update E1 Marketing Research Survey");
             System.out.println(update.getCommandType() + " " + update.getTaskID() + 
                     " "  + update.getTaskDescription());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
 
         /*
         // view task from a specific day

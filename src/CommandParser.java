@@ -258,6 +258,15 @@ public class CommandParser {
             else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
                 command.setTaskType("floating");
             }
+            
+            if(arguments.size() == 3) {
+                command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+                ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+                if(parameters.size() == 2) {
+                    command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+                }
+                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            }
 
             if(arguments.size() == 2) {
                 command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));

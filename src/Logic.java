@@ -271,6 +271,27 @@ public class Logic {
             }
             else if(taskType.equals("event")) {
                 existingItem = event.get(indexToUpdate);
+                String[] strArr = existingItem.split("#");
+                updatedItem += strArr[0]+"#";                
+                if(command.getTaskEventDate() != null) {
+                    updatedItem += command.getTaskEventDate()+"#";
+                }
+                else{
+                    updatedItem += strArr[1]+"#";
+                }
+                if(command.getTaskEventTime() != null) {
+                    updatedItem += command.getTaskEventTime()+"#";
+                }
+                else{
+                    updatedItem += strArr[2]+"#";
+                }
+                if(command.getTaskDescription() != null) {
+                    updatedItem += command.getTaskDescription();
+                }
+                else{
+                    updatedItem += strArr[3];
+                }
+                event.set(indexToUpdate, updatedItem);
             }
             
             taskStored.set(taskStored.indexOf(existingItem), updatedItem);
