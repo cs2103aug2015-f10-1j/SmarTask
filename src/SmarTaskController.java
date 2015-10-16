@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -9,6 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * SmarTask Controller acts as a initializer and gives the action properties to the fxml file.
+ * 
+ * @author David Chong
+ *
+ */
+
 public class SmarTaskController implements Initializable {
   
 	@FXML private TextArea mainWindow;    //Value injected by FXML Loader
@@ -16,8 +24,9 @@ public class SmarTaskController implements Initializable {
 	@FXML private TextArea taskWindow;    //Value injected by FXMLoader
 	@FXML private TextArea specialTaskWindow; //Value injected by FXMLoader
 	@FXML private TextField inputWindow;   //Value injected by FXMLoader
-	public Logic logic = new Logic();
-	public String viewCommand = "view today's task";
+	public ArrayList<String> logDisplay;
+	public ArrayList<String> taskDeadlineDisplay;
+	public ArrayList<String> specialTaskDisplay;
 	
 	@Override
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -26,14 +35,26 @@ public class SmarTaskController implements Initializable {
 		assert taskWindow != null : "fx:id=\"taskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
 		assert specialTaskWindow != null : "fx:id=\"specialTaskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
 		assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
+		logDisplay = Logic.getMessageLog();
+		taskDeadlineDisplay = Logic.getDeadline();
+		specialTaskDisplay = Logic.getFloatingTask();
 		
 		try {
-			String taskInitialDisplay = logic.executeCommand(viewCommand);
-			taskWindow.setText(taskInitialDisplay);
-		} catch (FileNotFoundException e) {
+			displayText(displayWindow, logDisplay);
+			displayText(taskWindow, taskDeadlineDisplay);
+			displayText(specialTaskWindow, specialTaskDisplay);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static void displayText(TextArea display, ArrayList<String> toDisplay) {
+		display.clear();
+		for(int i=0; i < toDisplay.size(); i++) {
+			String textToDisplay = toDisplay.get(i);
+			display.insertText(i, textToDisplay);
+		}
 	}
 	
 	@FXML
@@ -42,12 +63,15 @@ public class SmarTaskController implements Initializable {
 			String userCommand = inputWindow.getText();
 			inputWindow.clear();
 	        try {
-	            String logicReturn = logic.executeCommand(userCommand);
-	            String viewReturn = logic.executeCommand(viewCommand);
+	            Logic.executeCommand(userCommand);
 	            displayWindow.clear();
-	            displayWindow.setText(logicReturn);
+	            logDisplay = Logic.getMessageLog();
+	            displayText(displayWindow, logDisplay);
 	            taskWindow.clear();
-	            taskWindow.setText(viewReturn);
+	            taskDeadlineDisplay = Logic.getDeadline();
+	            displayText(taskWindow, taskDeadlineDisplay);
+	            specialTaskDisplay = Logic.getFloatingTask();
+	            displayText(specialTaskWindow, specialTaskDisplay);
 	        } catch (FileNotFoundException e1) {
 	            e1.printStackTrace();
 	        }
