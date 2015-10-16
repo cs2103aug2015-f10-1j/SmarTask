@@ -18,41 +18,45 @@ public class Logic {
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
     private static String currentDate = initDate();
 
-    public static void executeCommand (String userInput) throws Exception{
-        msgLogger.add("command : " + userInput);
-        Command command = CommandParser.parse(userInput);
+    public static void executeCommand (String userInput) {
+        try {
+            msgLogger.add("command : " + userInput);
+            Command command = CommandParser.parse(userInput);
 
-        switch (command.getCommandType()){
-            case ADD : 
-                addTask(command);
-                break;
-            case REPEAT : 
-                addRec(command);
-                break;
-            case DELETE :
-                deleteTask(command);
-                break;
-            case VIEW :
-                viewTask (command);
-                break;
-            case UPDATE :
-                updateTask(command);
-                break;
-            case SEARCH:
-                searchTask(command);
-                break;
-            case UNDO :
-                undoCommand();
-                break;
-            case REDO :
-                redoCommand();
-                break;
-            case EXIT :
-                break;
-            default :
-                msgLogger.add( "invalid command");
+            switch (command.getCommandType()){
+                case ADD : 
+                    addTask(command);
+                    break;
+                case REPEAT : 
+                    addRec(command);
+                    break;
+                case DELETE :
+                    deleteTask(command);
+                    break;
+                case VIEW :
+                    viewTask (command);
+                    break;
+                case UPDATE :
+                    updateTask(command);
+                    break;
+                case SEARCH:
+                    searchTask(command);
+                    break;
+                case UNDO :
+                    undoCommand();
+                    break;
+                case REDO :
+                    redoCommand();
+                    break;
+                case EXIT :
+                    break;
+                default :
+                    msgLogger.add( "invalid command");
+            }
+        } catch (Exception e) {
+            msgLogger.add(e.getMessage());
         }
-
+       
     }
 
     private static ArrayList<String> initList(String type, ArrayList<String> taskStored) {
@@ -195,14 +199,14 @@ public class Logic {
             taskStored.remove(new String(removedItem));
             Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<String>(taskStored));
-            msgLogger.add( "deleted " + taskType + " index " + command.getTaskID() + " successfully!");
+            msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
 
             /*int index = currentList.get(com.getTaskID()-1);
             if (com.getTaskEventDate().equals(currentDate)){
                 todayTask.remove(com.getTaskID()-1);
             }*/
         }catch(Exception e){
-            msgLogger.add("Invalid index used");
+            msgLogger.add("Cannot delete!!");
         }
 
     }
@@ -346,7 +350,7 @@ public class Logic {
     public static String getDeadline(){
         String messageToPrint = "";
         if(deadline.size() == 0) {
-            return messageToPrint = "No tasks with deadline";
+            return messageToPrint = "No tasks";
         }
         for(int i=0; i<deadline.size(); i++) {
             messageToPrint += "D" + (i+1) + ". "+ deadline.get(i) + "\n";
@@ -357,7 +361,7 @@ public class Logic {
     public static String getFloatingTask(){
         String messageToPrint = "";
         if(floatingTask.size() == 0) {
-            return messageToPrint = "No tasks without due date";
+            return messageToPrint = "No tasks";
         }
         for(int i=0; i<floatingTask.size(); i++) {
             messageToPrint += "F" + (i+1) + ". "+ floatingTask.get(i) + "\n";
