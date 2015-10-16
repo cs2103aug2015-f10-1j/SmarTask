@@ -6,8 +6,6 @@ import java.util.*;
 
 public class Logic {
     private static ArrayList<String> taskStored = Storage.retrieveTexts();
-
-    // Pass messages to UI
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
@@ -18,14 +16,9 @@ public class Logic {
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
     private static ArrayList<String> searchList = new ArrayList <String>();
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
-    private static String curDate;
-
-    Logic(){    
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar cal = Calendar.getInstance();
-        curDate = dateFormat.format(cal.getTime());
-    }
-
+    private static String currentDate = initDate();
+    
+   
     public static void executeCommand (String userInput) throws Exception{
         msgLogger.add("command : " + userInput);
         Command command = CommandParser.parse(userInput);
@@ -71,6 +64,12 @@ public class Logic {
             }
         }
         return list;
+    }
+    
+    private static String initDate() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
+        return dateFormat.format(cal.getTime());
     }
 
     // ================================================================
@@ -179,7 +178,7 @@ public class Logic {
     private static void deleteTask(Command com){
         try{
             int index = currentList.get(com.getTaskID()-1);
-            if (com.getTaskEventDate().equals(curDate)){
+            if (com.getTaskEventDate().equals(currentDate)){
                 todayTask.remove(com.getTaskID()-1);
             }
             taskStored.remove(index);
@@ -259,7 +258,7 @@ public class Logic {
         taskStored = Storage.retrieveTexts();
 
         for (int i = 0; i<taskStored.size(); i++){
-            if (taskStored.get(i).contains(curDate)){
+            if (taskStored.get(i).contains(currentDate)){
                 todayTask.add(i);
                 currentList.add(i);
                 String[] str = taskStored.get(i).trim().split("#");
@@ -308,7 +307,7 @@ public class Logic {
     }
 
     // ================================================================
-    // Passing messages to UI methods
+    // Getter methods to retrieve lists for UI
     // ================================================================
     public static String getMessageLog(){
         String messageToPrint = "";
