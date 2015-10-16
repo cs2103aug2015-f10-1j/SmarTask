@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import javax.print.attribute.standard.PrinterLocation;
+
 public class CommandHistoryStubTest {
 
     public static void main(String[] args) {
@@ -25,12 +27,69 @@ public class CommandHistoryStubTest {
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
         
         System.out.print("After undo : ");
-        printArrayList(history.undo());
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
         
         System.out.print("After undo : ");
-        printArrayList(history.undo());
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
+        System.out.print("After redo : ");
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
+        System.out.print("After redo : ");
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
+        System.out.print("After undo : ");
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            
+        }
+        System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
+        System.out.print("After undo : ");
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
+        System.out.print("After undo : ");
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
+        System.out.print("After undo : ");
+        try {
+            printArrayList(history.undo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
+        
     }
     
     public static void printArrayList(ArrayList<String> list) {

@@ -15,6 +15,8 @@ public class CommandHistory {
 
     Stack<ArrayList<String>> undoStack;
     Stack<ArrayList<String>> redoStack;
+    private final String MSG_UNDO_FAIL = "cannot undo!!!";
+    private final String MSG_REDO_FAIL = "cannot redo!!!";
 
     public CommandHistory(ArrayList<String> storedTask) {
         undoStack = new Stack<ArrayList<String>>();
@@ -26,22 +28,28 @@ public class CommandHistory {
         undoStack.push(storedTask);
     }
 
-    public ArrayList<String> undo() {
+    public ArrayList<String> undo() throws Exception {
+        if(undoStack.empty() || undoStack.peek() == null || undoStack.size() == 1) {
+            throw new Exception(MSG_UNDO_FAIL);
+        }
         try {
             redoStack.push(undoStack.pop());
         }
-        catch(EmptyStackException e) {
-            return null;
+        catch(Exception e) {
+            throw new Exception(MSG_UNDO_FAIL);
         }
         return undoStack.peek();
     }
 
-    public ArrayList<String> redo() {
+    public ArrayList<String> redo() throws Exception {
+        if(redoStack.empty() || redoStack.peek() == null || redoStack.size() == 1) {
+            throw new Exception(MSG_REDO_FAIL);
+        }
         try {
             undoStack.push(redoStack.pop());
         }
-        catch(EmptyStackException e) {
-            return null;
+        catch(Exception e) {
+            throw new Exception(MSG_REDO_FAIL);
         }
         return undoStack.peek();
     }
