@@ -278,16 +278,16 @@ public class Logic {
 	return message;
     }
     
-    public ArrayList getMessageLog (){
+    public static ArrayList getMessageLog (){
     	return msglog;
     }
-    public ArrayList getEvents(){
+    public static ArrayList getEvents(){
     	return events;
     }
-    public ArrayList getDeadline(){
+    public static ArrayList getDeadline(){
     	return deadline;
     }
-    public ArrayList getFloatingTask(){
+    public static ArrayList getFloatingTask(){
     	return floatingTask;
     }
     
