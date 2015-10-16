@@ -1,3 +1,4 @@
+import java.beans.EventSetDescriptor;
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,7 +19,7 @@ public class Logic {
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
     private static String currentDate = initDate();
 
-    public static void executeCommand (String userInput) {
+    public static void executeCommand (String userInput) throws Exception {
         try {
             msgLogger.add("command : " + userInput);
             Command command = CommandParser.parse(userInput);
@@ -56,7 +57,7 @@ public class Logic {
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
         }
-       
+
     }
 
     private static ArrayList<String> initList(String type, ArrayList<String> taskStored) {
@@ -181,11 +182,11 @@ public class Logic {
     // ================================================================
 
     private static void deleteTask(Command command){
+        String taskType = command.getTaskType();
         try{
-            String taskType = command.getTaskType();
             int indexToRemove = command.getTaskID() - 1;
             String removedItem = "";
-            
+
             if(taskType.equals("deadline")) {
                 removedItem = deadline.remove(indexToRemove);
             }
@@ -195,7 +196,7 @@ public class Logic {
             else if(taskType.equals("event")) {
                 removedItem = event.remove(indexToRemove);
             }
-            
+
             taskStored.remove(new String(removedItem));
             Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<String>(taskStored));
@@ -206,7 +207,18 @@ public class Logic {
                 todayTask.remove(com.getTaskID()-1);
             }*/
         }catch(Exception e){
-            msgLogger.add("Cannot delete!!");
+            if(taskType.equals("deadline") && deadline.size() == 0) {
+                msgLogger.add("There is no deadline task to delete!!");
+            }
+            else if(taskType.equals("floating") && floatingTask.size() == 0) {
+                msgLogger.add("There is no floating task to delete!!");
+            }
+            else if(taskType.equals("event") && event.size() == 0) {
+                msgLogger.add("There is no event to delete!!");
+            }
+            else { 
+                msgLogger.add("Cannot find item to delete!!");
+            }
         }
 
     }
