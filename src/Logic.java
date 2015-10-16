@@ -5,30 +5,20 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Logic {
-    private static ArrayList <String> taskList ;
-    private static ArrayList <String> recurringList;
-    private static ArrayList <Integer> todayTask;
-
-    private static ArrayList <Integer> currentList;
-    private static ArrayList <String> searchList; 
-    private static CommandHistory history;
+    private static ArrayList <String> taskList = new ArrayList <String>();
+    private static ArrayList <String> recurringList = new ArrayList <String>();
+    private static ArrayList <Integer> todayTask = new ArrayList <Integer>();
+    private static ArrayList <Integer> currentList = new ArrayList <Integer>();
+    private static ArrayList <String> searchList = new ArrayList <String> ();
+    private static CommandHistory history = new CommandHistory(taskList);
     private static String curDate;
     // messages pass to the UI
-    private static ArrayList <String> msgLogger;
-    private static ArrayList <String> events;
-    private static ArrayList <String> deadline;
-    private static ArrayList <String> floatingTask;
+    private static ArrayList <String> msgLogger = new ArrayList<String>();
+    private static ArrayList <String> events = new ArrayList<String>();
+    private static ArrayList <String> deadline = new ArrayList<String>();
+    private static ArrayList <String> floatingTask = new ArrayList<String>();
 
-    Logic(){
-        taskList = new ArrayList <String>();
-        recurringList = new ArrayList <String>();
-        todayTask = new ArrayList <Integer>();
-        currentList = new ArrayList <Integer>();
-        searchList = new ArrayList <String> ();
-        msgLogger = new ArrayList<String>();
-        events = new ArrayList<String>();
-        deadline = new ArrayList<String>();
-        floatingTask = new ArrayList<String>();
+    Logic(){    
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
         curDate = dateFormat.format(cal.getTime());
@@ -38,8 +28,7 @@ public class Logic {
         msgLogger.add("command : " + userInput);
         Storage.createFile();
         taskList = Storage.retrieveTexts();
-        history = new CommandHistory(taskList);
-
+        
         Command command = CommandParser.parse(userInput);
         switch (command.getCommandType()){
             case ADD : 
