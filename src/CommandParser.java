@@ -134,10 +134,7 @@ public class CommandParser {
             line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
         }
 
-        String[] strArray = line.trim().split(">");
-        for(int i = 0 ;i < strArray.length; i++) {
-            strArray[i] = strArray[i].trim().replaceAll("<", "");
-        }
+        String[] strArray = line.trim().split(">>");
         return strArray;
     }
 
@@ -159,8 +156,25 @@ public class CommandParser {
     private static Command initAddCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.ADD);
-            command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-            command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            if(arguments.size() == 1) {
+        	command.setTaskType("floating");
+        	command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            }
+            else if(arguments.size() == 2) {
+        	command.setTaskType("deadline");
+        	command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        	command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            }
+            else if(arguments.size() == 3) {
+        	command.setTaskType("event");
+        	command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        	command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+        	command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+            }
+            else {
+        	return null;
+            }
+        	
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -182,8 +196,6 @@ public class CommandParser {
     private static Command initDeleteCommand(ArrayList<String> arguments) throws Exception {  
         try {
             Command command = new Command(Command.Type.DELETE);
-            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-            command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -204,7 +216,6 @@ public class CommandParser {
     private static Command initViewDateCommand(ArrayList<String> arguments) throws Exception {    
         try {
             Command command = new Command(Command.Type.VIEW);
-            command.setTaskTime(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -225,9 +236,6 @@ public class CommandParser {
     private static Command initUpdateCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.UPDATE);
-            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-            command.setTaskTitle(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-            command.setTaskTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -248,8 +256,6 @@ public class CommandParser {
     private static Command initCompleteCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.COMPLETE);
-            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-            command.setTaskTime(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command; 
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -287,8 +293,6 @@ public class CommandParser {
     private static Command initRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.REPEAT);
-            command.setTaskTitle(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-            command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -308,8 +312,6 @@ public class CommandParser {
     private static Command initCancelRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.CANCEL_REPEAT);
-            command.setTaskNumber(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)));
-            command.setRecurringPeriod(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);

@@ -10,15 +10,32 @@
 public class CommandParserStubTest {
 
     public static void main(String[] args) throws Exception {
+	
+	// Adding event task
+	try {
+	    Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015>>13:00-14:00");
+	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskEventDate() + " " + add.getTaskEventTime());
+	}catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+	
+	// Adding deadline task
+	try {
+	    Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015 12:00");
+	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskDeadline());
+	}catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Adding task
-        try {
-            Command add = CommandParser.parse("add <Meeting with Boss> <09/10/2015 12:00>");
-            System.out.println(add.getCommandType() + " " + add.getTaskTitle() + " " + add.getTaskTime());
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	// Adding floating task
+	try {
+	    Command add = CommandParser.parse("add Meeting with Boss");
+	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription());
+	}catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
+	/*
         // Updating task
         try {
             Command update = CommandParser.parse("update <2> <Arrange meeting with customer> <09/10/2015>");
@@ -134,7 +151,7 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         // [TO DEBUG: Test exception handling for view task from a specific day]
         try {
             Command view = CommandParser.parse("view <abc <129302");
@@ -142,7 +159,7 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         CommandParser.viewCommandParserLog();
 
         System.out.println("=================================Testing assertion================================");
@@ -164,6 +181,7 @@ public class CommandParserStubTest {
         }
 
         System.out.println("This message should not appear");
+	 */
     } 
 
 }
