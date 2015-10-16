@@ -10,45 +10,79 @@
 public class CommandParserStubTest {
 
     public static void main(String[] args) throws Exception {
-	
-	// Adding event task
-	try {
-	    Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015>>13:00-14:00");
-	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskEventDate() + " " + add.getTaskEventTime());
-	}catch (Exception e) {
-	    System.out.println(e.getMessage());
-	}
-	
-	// Adding deadline task
-	try {
-	    Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015 12:00");
-	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskDeadline());
-	}catch (Exception e) {
-	    System.out.println(e.getMessage());
-	}
 
-	// Adding floating task
-	try {
-	    Command add = CommandParser.parse("add Meeting with Boss");
-	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription());
-	}catch (Exception e) {
-	    System.out.println(e.getMessage());
-	}
+        // Adding event task
+        try {
+            Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015>>13:00-14:00");
+            System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskEventDate() + " " + add.getTaskEventTime());
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-	/*
+        // Adding deadline task
+        try {
+            Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015 12:00");
+            System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskDeadline());
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Adding floating task
+        try {
+            Command add = CommandParser.parse("add Meeting with Boss");
+            System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription());
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Deleting deadline task
+        try {
+            Command delete = CommandParser.parse("delete D1");
+            System.out.println(delete.getCommandType() + " " + delete.getTaskType() + " " + delete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Deleting event task
+        try {
+            Command delete = CommandParser.parse("delete E2");
+            System.out.println(delete.getCommandType() + " " + delete.getTaskType() + " " + delete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Deleting floating task
+        try {
+            Command delete = CommandParser.parse("delete F4");
+            System.out.println(delete.getCommandType() + " " + delete.getTaskType() + " " + delete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+     // Deleting floating task
+        try {
+            Command delete = CommandParser.parse("delete f4");
+            System.out.println(delete.getCommandType() + " " + delete.getTaskType() + " " + delete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        /*
         // Updating task
         try {
-            Command update = CommandParser.parse("update <2> <Arrange meeting with customer> <09/10/2015>");
+            Command update = CommandParser.parse("update D1 Arrange meeting>>09/10/2015 09:00");
             System.out.println(update.getCommandType() + " " + update.getTaskNumber() + 
                     " "  + update.getTaskTitle() + " " + update.getTaskTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        // Deleting task
+        // Updating task
         try {
-            Command delete = CommandParser.parse("delete <1> <09/10/2015>");
-            System.out.println(delete.getCommandType() + " " + delete.getTaskNumber() + " " + delete.getTaskTime());
+            Command update = CommandParser.parse("update D1>>09/10/2015 09:00");
+            System.out.println(update.getCommandType() + " " + update.getTaskNumber() + 
+                    " "  + update.getTaskTitle() + " " + update.getTaskTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -181,7 +215,7 @@ public class CommandParserStubTest {
         }
 
         System.out.println("This message should not appear");
-	 */
+         */
     } 
 
 }

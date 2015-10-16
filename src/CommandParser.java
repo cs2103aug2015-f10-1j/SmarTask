@@ -193,6 +193,20 @@ public class CommandParser {
     private static Command initDeleteCommand(ArrayList<String> arguments) throws Exception {  
         try {
             Command command = new Command(Command.Type.DELETE);
+            String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+            if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
+                command.setTaskType("deadline");
+            }
+            else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
+                command.setTaskType("event");
+            }
+            else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
+                command.setTaskType("floating");
+            }
+            command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            if(command.getTaskID()<=0) {
+                throw new Exception(MSG_NULL_POINTER);
+            }
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
