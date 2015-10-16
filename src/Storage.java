@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-
-    public static File taskFile;
-    public static ArrayList<String> taskList; 
+    
+    public static ArrayList<String> taskList = new ArrayList<String>();; 
     public static String DEFAULT_LOCATION = System.getProperty("user.home") + "/Desktop" ;
     public static String DEFAULT_FILENAME = "/taskFile.txt";
     public static String DEFAULT_FILELOCATION = DEFAULT_LOCATION + DEFAULT_FILENAME;
+    public static File taskFile = new File(DEFAULT_FILELOCATION);
     
     public Storage() {
 	taskList = new ArrayList<String>();
