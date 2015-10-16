@@ -90,9 +90,9 @@ public class CommandParser {
             default :
                 command = initInvalidCommand();
         }
-        
+
         assert command != null : "command is null"; 
-        
+
         return command;
     }
 
@@ -103,14 +103,14 @@ public class CommandParser {
     }
 
     private static ArrayList<String> splitStringIntoTwoParts(String arguments) throws Exception {
-       assert arguments !=null : "String argument in splitStringIntoTwoParts(String arguments) is null";
-       try {
+        assert arguments !=null : "String argument in splitStringIntoTwoParts(String arguments) is null";
+        try {
             String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
             return new ArrayList<String>(Arrays.asList(strArray));
-       } catch (NullPointerException e) {
-           addToParserLogger("exception: " + MSG_NULL_POINTER);
-           throw new Exception(MSG_NULL_POINTER); 
-       } 
+        } catch (NullPointerException e) {
+            addToParserLogger("exception: " + MSG_NULL_POINTER);
+            throw new Exception(MSG_NULL_POINTER); 
+        } 
     }
 
     private static ArrayList<String> splitStringBySpace(String arguments) {
@@ -141,7 +141,7 @@ public class CommandParser {
     private static String getUserCommand(ArrayList<String> parameters) {
         return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
     }
-    
+
     public static void viewCommandParserLog() {
         System.out.println("=================================CommandParser Log================================");
         for(int i = 0; i < parserLogger.size(); i++) {
@@ -157,22 +157,22 @@ public class CommandParser {
         try {
             Command command = new Command(Command.Type.ADD);
             if(arguments.size() == 1) {
-        	command.setTaskType("floating");
-        	command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+                command.setTaskType("floating");
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
             }
             else if(arguments.size() == 2) {
-        	command.setTaskType("deadline");
-        	command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        	command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+                command.setTaskType("deadline");
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+                command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
             }
             else if(arguments.size() == 3) {
-        	command.setTaskType("event");
-        	command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        	command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-        	command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+                command.setTaskType("event");
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+                command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+                command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
             }
             return command;
-            
+
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
@@ -247,6 +247,32 @@ public class CommandParser {
     private static Command initUpdateCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.UPDATE);
+            String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+
+            if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
+                command.setTaskType("deadline");
+            }
+            else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
+                command.setTaskType("event");
+            }
+            else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
+                command.setTaskType("floating");
+            }
+
+            if(arguments.size() == 2) {
+                command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+                ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+                if(parameters.size() == 2) {
+                    command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+                }
+                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            }
+            else if(arguments.size() == 1) {
+                ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            }
+
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -376,7 +402,7 @@ public class CommandParser {
     // ================================================================
 
     private static Command initExitCommand() {
-        
+
         return new Command(Command.Type.EXIT);
     }
 

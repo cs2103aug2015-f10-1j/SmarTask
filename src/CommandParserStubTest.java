@@ -58,8 +58,8 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-     // Deleting floating task
+
+        // Deleting floating task
         try {
             Command delete = CommandParser.parse("delete f4");
             System.out.println(delete.getCommandType() + " " + delete.getTaskType() + " " + delete.getTaskID());
@@ -67,26 +67,84 @@ public class CommandParserStubTest {
             System.out.println(e.getMessage());
         }
 
-
-        /*
-        // Updating task
+        // Updating task description and time
         try {
             Command update = CommandParser.parse("update D1 Arrange meeting>>09/10/2015 09:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskNumber() + 
-                    " "  + update.getTaskTitle() + " " + update.getTaskTime());
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+                    " "  + update.getTaskDescription() + " " + update.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        // Updating task
+        // Updating only task time
         try {
-            Command update = CommandParser.parse("update D1>>09/10/2015 09:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskNumber() + 
-                    " "  + update.getTaskTitle() + " " + update.getTaskTime());
+            Command update = CommandParser.parse("update D5>>09/10/2015 09:00");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
+        // Updating only task description
+        try {
+            Command update = CommandParser.parse("update D9 Arrange meeting");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+                    " "  + update.getTaskDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Updating task description and time
+        try {
+            Command update = CommandParser.parse("update F1 Arrange meeting");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " "  + update.getTaskDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Updating task description and time
+        try {
+            Command update = CommandParser.parse("update F2 Kayaking at EC");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " "  + update.getTaskDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Updating task description and time
+        try {
+            Command update = CommandParser.parse("update E1 Arrange meeting>>09/10/2015>>13:00-14:00");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+                    " "  + update.getTaskDescription() + " " + update.getTaskEventDate() + " " + update.getTaskEventTime());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Updating only task time
+        try {
+            Command update = CommandParser.parse("update E1>>09/10/2015");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskDeadline());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Updating only task time
+        try {
+            Command update = CommandParser.parse("update E1>>13:00-14:00");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskDeadline());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Updating only task description
+        try {
+            Command update = CommandParser.parse("update E1 Arrange meeting");
+            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+                    " "  + update.getTaskDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        /*
         // view task from a specific day
         try {
             Command view = CommandParser.parse("view <09/10/2015>");

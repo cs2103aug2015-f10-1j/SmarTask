@@ -20,44 +20,48 @@ public class Logic {
     private static String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
-        try {
-            msgLogger.add("command : " + userInput);
-            Command command = CommandParser.parse(userInput);
-
-            switch (command.getCommandType()){
-                case ADD : 
-                    addTask(command);
-                    break;
-                case REPEAT : 
-                    addRec(command);
-                    break;
-                case DELETE :
-                    deleteTask(command);
-                    break;
-                case VIEW :
-                    viewTask (command);
-                    break;
-                case UPDATE :
-                    updateTask(command);
-                    break;
-                case SEARCH:
-                    searchTask(command);
-                    break;
-                case UNDO :
-                    undoCommand();
-                    break;
-                case REDO :
-                    redoCommand();
-                    break;
-                case EXIT :
-                    break;
-                default :
-                    msgLogger.add( "invalid command");
-            }
-        } catch (Exception e) {
-            msgLogger.add(e.getMessage());
+        if(userInput.trim().isEmpty()) {
+            msgLogger.add("Please enter a command.");
         }
+        else {
+            try {
+                msgLogger.add("command : " + userInput);
+                Command command = CommandParser.parse(userInput);
 
+                switch (command.getCommandType()){
+                    case ADD : 
+                        addTask(command);
+                        break;
+                    case REPEAT : 
+                        addRec(command);
+                        break;
+                    case DELETE :
+                        deleteTask(command);
+                        break;
+                    case VIEW :
+                        viewTask (command);
+                        break;
+                    case UPDATE :
+                        updateTask(command);
+                        break;
+                    case SEARCH:
+                        searchTask(command);
+                        break;
+                    case UNDO :
+                        undoCommand();
+                        break;
+                    case REDO :
+                        redoCommand();
+                        break;
+                    case EXIT :
+                        break;
+                    default :
+                        msgLogger.add( "invalid command");
+                }
+            } catch (Exception e) {
+                msgLogger.add(e.getMessage());
+            }
+        }
     }
 
     private static ArrayList<String> initList(String type, ArrayList<String> taskStored) {
@@ -222,7 +226,63 @@ public class Logic {
         }
 
     }
+    
+    // ================================================================
+    // "Update" command methods
+    // ================================================================
 
+    private static void updateTask(Command command) throws FileNotFoundException{
+        String taskType = command.getTaskType();
+
+        try {
+            int indexToUpdate = command.getTaskID() - 1;
+            String updatedItem = "";
+            String existingItem = "";
+            if(taskType.equals("deadline")) {
+                existingItem = deadline.get(indexToUpdate);
+                String[] strArr = existingItem.split("#");
+                updatedItem += strArr[0]+"#";
+                if(command.getTaskDeadline() != null) {
+                    updatedItem += command.getTaskDeadline()+"#";
+                }
+                else{
+                    updatedItem += strArr[1]+"#";
+                }
+                
+                if(command.getTaskDescription() != null) {
+                    updatedItem += command.getTaskDescription();
+                }
+                else{
+                    updatedItem += strArr[2];
+                }
+                deadline.set(indexToUpdate, updatedItem);
+            }
+            else if(taskType.equals("floating")) {
+                existingItem = floatingTask.get(indexToUpdate);
+                String[] strArr = existingItem.split("#");
+                updatedItem += strArr[0]+"#";                
+                if(command.getTaskDescription() != null) {
+                    updatedItem += command.getTaskDescription();
+                }
+                else{
+                    updatedItem += strArr[1];
+                }
+                floatingTask.set(indexToUpdate, updatedItem);
+            }
+            else if(taskType.equals("event")) {
+                existingItem = event.get(indexToUpdate);
+            }
+            
+            taskStored.set(taskStored.indexOf(existingItem), updatedItem);
+            Storage.saveToFile(taskStored);
+            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            msgLogger.add("task updated!");
+        } catch (Exception e) {
+            msgLogger.add(e.getMessage());
+        }
+
+    }
+    
     // ================================================================
     // "View" command methods
     // ================================================================
@@ -235,31 +295,10 @@ public class Logic {
                 currentList.add(i);
                 String[] str = taskStored.get(i).trim().split("#");
                 event.add(str[1] + " " + str[0] ) ;
-            }	
+            }   
         }
     }
-
-    // ================================================================
-    // "Update" command methods
-    // ================================================================
-
-    private static void updateTask(Command com) throws FileNotFoundException{
-
-        int taskListIndex = currentList.get(com.getTaskID()-1);
-        String[] str = taskStored.get(taskListIndex).trim().split("#");
-        str[1] = com.getTaskDescription();
-        String updateString = "";
-        for (int i=0; i < str.length-1; i++){
-            updateString += (str[i] + "#");
-        }
-        updateString += str[str.length-1];
-        taskStored.set(taskListIndex, updateString);
-        history.addChangeToHistory(taskStored);
-        Storage.saveToFile(taskStored);
-        msgLogger.add("task updated!");
-
-    }
-
+    
     // ================================================================
     // "view today's task" command methods
     // ================================================================
