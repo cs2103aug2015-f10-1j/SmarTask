@@ -10,14 +10,13 @@ public class Logic {
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static ArrayList<String> floatingTask = initList("floating", taskStored);
-
-    private static ArrayList<String> recurringList = new ArrayList <String>();
+    private static ArrayList<String> repeatedTask = new ArrayList <String>();
+    
     private static ArrayList<Integer> todayTask = new ArrayList <Integer>();
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
     private static ArrayList<String> searchList = new ArrayList <String>();
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
     private static String currentDate = initDate();
-    
    
     public static void executeCommand (String userInput) throws Exception{
         msgLogger.add("command : " + userInput);
@@ -129,10 +128,11 @@ public class Logic {
 
     private static void addRec(Command com) throws FileNotFoundException{  
         String detailStored =  com.getTaskRepeatPeriod() +"#" + com.getTaskDescription();
-        recurringList.add(detailStored);
-        Storage.saveToFileRC(recurringList);
+        repeatedTask.add(detailStored);
+        Storage.saveToFileRC(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
+    
     /* 
     public static void sortForRec(){
     	Collections.sort(inputList, new Comparator<String>() {
@@ -148,7 +148,8 @@ public class Logic {
         });
     }
      */
-    public static void printArrayList (){
+    
+    public static void printArrayList(){
         for (int i=0; i<taskStored.size(); i++){
             System.out.println(taskStored.get(i));
         }
@@ -251,8 +252,8 @@ public class Logic {
 
         return message;
     }
-
-     */  
+     */ 
+    
     private static void viewTodayTask(){
         int index = 1;
         taskStored = Storage.retrieveTexts();
@@ -271,7 +272,7 @@ public class Logic {
     }
 
     // ================================================================
-    // undo command methods
+    // Undo command method
     // ================================================================
     private static void redoCommand() throws FileNotFoundException {
         String message = "";
@@ -289,7 +290,7 @@ public class Logic {
     }
 
     // ================================================================
-    // redo command methods
+    // Redo command method
     // ================================================================
     private static void undoCommand() throws FileNotFoundException {
         String message = "";

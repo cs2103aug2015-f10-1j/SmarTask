@@ -42,7 +42,7 @@ public class CommandHistory {
     }
 
     public ArrayList<String> redo() throws Exception {
-        if(redoStack.empty() || redoStack.peek() == null || redoStack.size() == 1) {
+        if(redoStack.empty() || redoStack.peek() == null) {
             throw new Exception(MSG_REDO_FAIL);
         }
         try {
