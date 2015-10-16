@@ -15,95 +15,93 @@ public class Command {
     }
 
     private Type type;
-    private ArrayList<String> taskInput;
-    private String taskTitle;
-    private String taskLabel;
-    private String taskDetail;
-    private String taskTime;
-    private String recurringPeriod;
+    private String taskType;
+    private String taskDescription;
+    private String taskDeadline;
+    private String taskEventDate;
+    private String taskEventTime;
+    private String taskRepeatPeriod;
     private ArrayList<String> searchKeyword;
-    private int taskNumber;
+    private int taskID;
 
     public Command(Type type) {
-        this.setTaskInput(new ArrayList<String>());
         this.type = type;
-    }
-
-    public Type getCommandType() {
-        return type;
     }
 
     // ================================================================
     // Getters method to support Logic methods
     // ================================================================
-
-    public String getTaskTitle() {
-        return taskTitle;
-    }
-
-    public String getTaskLabel() {
-        return taskLabel;
-    }
-
-    public String getTaskDetail() {
-        return taskDetail;
-    }
-
-    public String getTaskTime() {
-        return taskTime;
-    }
-
-    public ArrayList<String> getTaskInput() {
-        return taskInput;
+    
+    public String getTaskDescription() {
+	return taskDescription;
     }
     
-    public int getTaskNumber() {
-        return taskNumber;
+    public Type getCommandType() {
+        return type;
+    }
+    
+    public String getTaskDeadline() {
+	return taskDeadline;
+    }
+    
+    public String getTaskEventDate() {
+	return taskEventDate;
+    }
+    
+    public String getTaskEventTime() {
+	return taskEventTime;
+    }
+
+    public String getTaskRepeatPeriod() {
+	return taskRepeatPeriod;
     }
     
     public ArrayList<String> getSearchKeyword() {
-        return searchKeyword;
+	return searchKeyword;
     }
     
-    public String getRecurringPeriod() {
-        return recurringPeriod;
+    public int getTaskID() {
+	return taskID;
     }
-
+    
+    public String getTaskType() {
+	return taskType;
+    }
+   
     // ================================================================
     // Setters method to support CommandParser methods
     // ================================================================
-
-    public void setTaskInput(ArrayList<String> taskInput) {
-        this.taskInput = taskInput;
+    
+    public void setTaskDescription(String taskDescription) {
+	this.taskDescription = taskDescription;
+    }
+    
+    public void setTaskDeadline(String taskDeadline) {
+	this.taskDeadline = taskDeadline;
     }
 
-    public void setTaskTitle(String taskTitle) {
-        this.taskTitle = taskTitle;
+    public void setTaskEventDate(String taskEventDate) {
+   	this.taskEventDate = taskEventDate;
+       }
+    
+    public void setTaskEventTime(String taskEventTime) {
+	this.taskEventTime = taskEventTime;
     }
-
-    public void setTaskLabel(String taskLabel) {
-        this.taskLabel = taskLabel;
+    
+    public void setSearchKeyword(ArrayList<String> searchKeyword) {
+	this.searchKeyword = searchKeyword;
     }
-
-    public void setTaskDetail(String taskDetail) {
-        this.taskDetail = taskDetail;
+    
+    public void setTaskRepeatPeriod(String taskRepeatPeriod) {
+	this.taskRepeatPeriod = taskRepeatPeriod ;
     }
-
-    public void setTaskTime(String taskTime) {
-        this.taskTime = taskTime;
+    
+    public void setTaskID(int taskID) {
+	this.taskID = taskID;
     }
-
-    public void setTaskNumber(int taskNumber) {
-        this.taskNumber = taskNumber;
+    
+    public void setTaskType(String taskType) {
+	this.taskType = taskType;
     }
-
-    public void setSearchKeyword(ArrayList<String> arguments) {
-        this.searchKeyword = arguments;
-    }
-
-    public void setRecurringPeriod(String recurringPeriod) {
-        this.recurringPeriod = recurringPeriod;
-    }
-
-
+    
 }
