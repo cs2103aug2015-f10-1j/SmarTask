@@ -11,13 +11,13 @@ public class Logic {
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static ArrayList<String> floatingTask = initList("floating", taskStored);
     private static ArrayList<String> repeatedTask = new ArrayList <String>();
-    
+
     private static ArrayList<Integer> todayTask = new ArrayList <Integer>();
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
     private static ArrayList<String> searchList = new ArrayList <String>();
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
     private static String currentDate = initDate();
-   
+
     public static void executeCommand (String userInput) throws Exception{
         msgLogger.add("command : " + userInput);
         Command command = CommandParser.parse(userInput);
@@ -64,7 +64,7 @@ public class Logic {
         }
         return list;
     }
-    
+
     private static String initDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -132,7 +132,7 @@ public class Logic {
         Storage.saveToFileRC(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
-    
+
     /* 
     public static void sortForRec(){
     	Collections.sort(inputList, new Comparator<String>() {
@@ -148,7 +148,7 @@ public class Logic {
         });
     }
      */
-    
+
     public static void printArrayList(){
         for (int i=0; i<taskStored.size(); i++){
             System.out.println(taskStored.get(i));
@@ -176,19 +176,33 @@ public class Logic {
     // "Delete" command methods
     // ================================================================
 
-    private static void deleteTask(Command com){
+    private static void deleteTask(Command command){
         try{
-            int index = currentList.get(com.getTaskID()-1);
+            String taskType = command.getTaskType();
+            int indexToRemove = command.getTaskID() - 1;
+            String removedItem = "";
+            
+            if(taskType.equals("deadline")) {
+                removedItem = deadline.remove(indexToRemove);
+            }
+            else if(taskType.equals("floating")) {
+                removedItem = floatingTask.remove(indexToRemove);
+            }
+            else if(taskType.equals("event")) {
+                removedItem = event.remove(indexToRemove);
+            }
+            
+            taskStored.remove(new String(removedItem));
+            Storage.saveToFile(taskStored);
+            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            msgLogger.add( "deleted " + taskType + " index " + command.getTaskID() + " successfully!");
+
+            /*int index = currentList.get(com.getTaskID()-1);
             if (com.getTaskEventDate().equals(currentDate)){
                 todayTask.remove(com.getTaskID()-1);
-            }
-            taskStored.remove(index);
-            currentList.remove(com.getTaskID()-1);
-            history.addChangeToHistory(taskStored);
-            Storage.saveToFile(taskStored); 
-            msgLogger.add( "delete task no. " + com.getTaskID() + " successfully!");
+            }*/
         }catch(Exception e){
-            msgLogger.add("Error. Invalid task number");
+            msgLogger.add("Invalid index used");
         }
 
     }
@@ -253,7 +267,7 @@ public class Logic {
         return message;
     }
      */ 
-    
+
     private static void viewTodayTask(){
         int index = 1;
         taskStored = Storage.retrieveTexts();
@@ -320,24 +334,33 @@ public class Logic {
 
     public static String getEvents(){
         String messageToPrint = "";
+        if(deadline.size() == 0) {
+            return messageToPrint = "No events";
+        }
         for(int i=0; i<event.size(); i++) {
-            messageToPrint += event.get(i) + "\n";
+            messageToPrint += "E" + (i+1) + ". "+ event.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
 
     public static String getDeadline(){
         String messageToPrint = "";
+        if(deadline.size() == 0) {
+            return messageToPrint = "No tasks with deadline";
+        }
         for(int i=0; i<deadline.size(); i++) {
-            messageToPrint += deadline.get(i) + "\n";
+            messageToPrint += "D" + (i+1) + ". "+ deadline.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
 
     public static String getFloatingTask(){
         String messageToPrint = "";
+        if(floatingTask.size() == 0) {
+            return messageToPrint = "No tasks without due date";
+        }
         for(int i=0; i<floatingTask.size(); i++) {
-            messageToPrint += floatingTask.get(i) + "\n";
+            messageToPrint += "F" + (i+1) + ". "+ floatingTask.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
