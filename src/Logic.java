@@ -49,6 +49,9 @@ public class Logic {
                     case SEARCH:
                         searchTask(command);
                         break;
+                    case COMPLETE :
+                        completeTask(command);
+                        break;
                     case UNDO :
                         undoCommand();
                         break;
@@ -230,6 +233,48 @@ public class Logic {
     }
     
     // ================================================================
+    // "Complete" command method
+    // ================================================================
+    
+    private static void completeTask(Command command) {
+        String taskType = command.getTaskType();
+        try{
+            int indexToComplete = command.getTaskID() - 1;
+            String completedItem = "";
+
+            if(taskType.equals("deadline")) {
+                completedItem = deadline.remove(indexToComplete);
+            }
+            else if(taskType.equals("floating")) {
+                completedItem = floatingTask.remove(indexToComplete);
+            }
+            else if(taskType.equals("event")) {
+                completedItem = event.remove(indexToComplete);
+            }
+
+            taskStored.remove(new String(completedItem));
+            Storage.saveToFile(taskStored);
+            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            msgLogger.add("completed " + taskType + " index " + command.getTaskID());
+
+        }catch(Exception e){
+            if(taskType.equals("deadline") && deadline.size() == 0) {
+                msgLogger.add("There is no deadline task to complete!!");
+            }
+            else if(taskType.equals("floating") && floatingTask.size() == 0) {
+                msgLogger.add("There is no floating task to complete!!");
+            }
+            else if(taskType.equals("event") && event.size() == 0) {
+                msgLogger.add("There is no event to complete!!");
+            }
+            else { 
+                msgLogger.add("Cannot find item to complete!!");
+            }
+        }
+        
+    }
+    
+    // ================================================================
     // "Update" command methods
     // ================================================================
 
@@ -319,8 +364,6 @@ public class Logic {
     // ================================================================
 
     private static void viewTask(Command com){
-
-        // taskList = Storage.retrieveTexts();
         for (int i = 0; i<taskStored.size(); i++){
             if (taskStored.get(i).contains(com.getTaskEventDate())){
                 currentList.add(i);
