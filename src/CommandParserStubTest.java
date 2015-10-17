@@ -43,6 +43,31 @@ public class CommandParserStubTest {
             System.out.println(e.getMessage());
         }
 
+        // complete task
+        try {
+            Command complete = CommandParser.parse("complete D1");
+            System.out.println(complete.getCommandType() + " " + complete.getTaskType() + " " + complete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // complete task
+        try {
+            Command complete = CommandParser.parse("complete F1");
+            System.out.println(complete.getCommandType() + " " + complete.getTaskType() + " " + complete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // complete task
+        try {
+            Command complete = CommandParser.parse("complete E1");
+            System.out.println(complete.getCommandType() + " " + complete.getTaskType() + " " + complete.getTaskID());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
         // Adding event task
         try {
             Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015>>13:00-14:00");
@@ -118,7 +143,7 @@ public class CommandParserStubTest {
             if(update.getTaskDescription().isEmpty()) {
                 System.out.println("No description");
             }
-            System.out.println(update.getCommandType() + " " + " -"  + update.getTaskDescription() + "- " + update.getTaskID() + " " + update.getTaskDeadline());
+            System.out.println(update.getCommandType() + " " + update.getTaskDescription() + update.getTaskID() + " " + update.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -146,7 +171,7 @@ public class CommandParserStubTest {
         //=======================================================================================================
         //====================================Testing Updating of Event tasks====================================
         //=======================================================================================================
-        
+
         // Update description, date and duration
         try {
             Command update = CommandParser.parse("update E5 Arrange meeting 09/10/2015 13:00-14:00");
@@ -189,7 +214,7 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-            
+
         /*
         // view task from a specific day
         try {
@@ -199,14 +224,6 @@ public class CommandParserStubTest {
             System.out.println(e.getMessage());
         }
 
-        // complete task
-        try {
-            Command complete = CommandParser.parse("complete <1> <09/10/2015>");
-            System.out.println(complete.getCommandType() + " " + complete.getTaskNumber() + " " +complete.getTaskTime());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
         // search task with keywords
         try {
             Command search = CommandParser.parse("search meeting jardine Singapore");

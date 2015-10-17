@@ -255,7 +255,7 @@ public class CommandParser {
             if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
                 command.setTaskType("deadline");
                 command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
-                command.setTaskDeadline(getDeadlineTime(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
+                command.setTaskDeadline(getDeadline(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
                 command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}", "")
                         .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());   
             }
@@ -312,7 +312,7 @@ public class CommandParser {
         return allMatches;
     }
     
-    private static String[] getDeadlineTime(String desc) {
+    private static String[] getDeadline(String desc) {
         int count=0;
         String[] allMatches = new String[2];
         Matcher m = Pattern.compile("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d [0-9]{1,2}:[0-9]{2}").matcher(desc);
@@ -330,7 +330,24 @@ public class CommandParser {
     private static Command initCompleteCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.COMPLETE);
-            return command; 
+            String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+            
+            if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
+                command.setTaskType("deadline");
+            }
+            else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
+                command.setTaskType("event");
+            }
+            else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
+                command.setTaskType("floating");
+            }
+            command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            if(command.getTaskID()<=0) {
+                throw new Exception(MSG_NULL_POINTER);
+            }
+            
+            return command;
+            
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
