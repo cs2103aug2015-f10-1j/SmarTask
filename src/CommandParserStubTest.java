@@ -67,6 +67,17 @@ public class CommandParserStubTest {
             System.out.println(e.getMessage());
         }
 
+        // search task with keywords
+        try {
+            Command search = CommandParser.parse("search meeting NUS");
+            String keywords = "";
+            for(int index = 0 ; index < search.getSearchKeyword().size(); index++) {
+                keywords = keywords + search.getSearchKeyword().get(index) + " - ";
+            }
+            System.out.println(search.getCommandType() + " " + keywords);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Adding event task
         try {

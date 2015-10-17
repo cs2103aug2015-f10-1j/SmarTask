@@ -17,7 +17,6 @@ public class Logic {
 
     private static ArrayList<Integer> todayTask = new ArrayList <Integer>();
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
-    private static ArrayList<String> searchList = new ArrayList <String>();
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
     private static String currentDate = initDate();
 
@@ -35,7 +34,7 @@ public class Logic {
                         addTask(command);
                         break;
                     case REPEAT : 
-                        addRec(command);
+                        addRepeatTask(command);
                         break;
                     case DELETE :
                         deleteTask(command);
@@ -61,7 +60,7 @@ public class Logic {
                     case EXIT :
                         break;
                     default :
-                        msgLogger.add( "invalid command");
+                        msgLogger.add("invalid command");
                 }
             } catch (Exception e) {
                 msgLogger.add(e.getMessage());
@@ -137,10 +136,10 @@ public class Logic {
     }
 
     // ================================================================
-    // "Addrc" command methods
+    // "Repeat task" command methods
     // ================================================================
 
-    private static void addRec(Command com) throws FileNotFoundException{  
+    private static void addRepeatTask(Command com) throws FileNotFoundException{  
         String detailStored =  com.getTaskRepeatPeriod() +"#" + com.getTaskDescription();
         repeatedTask.add(detailStored);
         Storage.saveToFileRC(repeatedTask);
@@ -173,17 +172,21 @@ public class Logic {
     // "search" command methods
     // ================================================================
 
-    private static void searchTask(Command com) throws FileNotFoundException{
-        searchList.clear();
+    private static void searchTask(Command command) throws FileNotFoundException{
+        ArrayList<String> keyWordList = command.getSearchKeyword();
         int index = 1;
-        for (int i = 0; i<taskStored.size(); i++){
-            if (taskStored.get(i).contains((CharSequence) com.getSearchKeyword())){
-                currentList.add(i);
-                String[] str = taskStored.get(i).trim().split("#");
-                msgLogger.add((index++) + ". " + str[1] + " " + str[0] ) ;
+        String keyword = "";
+        for(int i=0; i< keyWordList.size(); i++) {
+            keyword = keyWordList.get(i).toLowerCase();
+            for(int j=0; j<taskStored.size(); j++) {
+                String[] arr = taskStored.get(j).split("#");
+                for(int k=0; k<arr.length; k++) {
+                    if (arr[k].toLowerCase().contains(keyword)){
+                        msgLogger.add(taskStored.get(j));
+                    }
+                }
             }
         }
-
     }
 
     // ================================================================
@@ -231,11 +234,11 @@ public class Logic {
         }
 
     }
-    
+
     // ================================================================
     // "Complete" command method
     // ================================================================
-    
+
     private static void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
@@ -271,9 +274,9 @@ public class Logic {
                 msgLogger.add("Cannot find item to complete!!");
             }
         }
-        
+
     }
-    
+
     // ================================================================
     // "Update" command methods
     // ================================================================
@@ -295,9 +298,9 @@ public class Logic {
                 else{
                     updatedItem += strArr[1]+"#";
                 }
-                
+
                 msgLogger.add("Deadline Desc: " + command.getTaskDescription());
-                
+
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
                     msgLogger.add("Using new desc");
@@ -348,7 +351,7 @@ public class Logic {
                 msgLogger.add("Index choosen is not valid");
                 throw new Exception("Index choosen is not valid");
             }
-            
+
             taskStored.set(taskStored.indexOf(existingItem), updatedItem);
             Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<String>(taskStored));
@@ -357,61 +360,6 @@ public class Logic {
             msgLogger.add(e.getMessage());
         }
 
-    }
-    
-    // ================================================================
-    // "View" command methods
-    // ================================================================
-
-    private static void viewTask(Command com){
-        for (int i = 0; i<taskStored.size(); i++){
-            if (taskStored.get(i).contains(com.getTaskEventDate())){
-                currentList.add(i);
-                String[] str = taskStored.get(i).trim().split("#");
-                event.add(str[1] + " " + str[0] ) ;
-            }   
-        }
-    }
-    
-    // ================================================================
-    // "view today's task" command methods
-    // ================================================================
-    /*
-    private static String viewUpcommingTask(){
-    	String message = "Top 10 Upcomming Tasks: \n";
-    	int index = 1;
-    	taskList = storage.retrieveTexts();
-
-    	for (int i = 0; i<10; i++){
-                String[] str = taskList.get(i).trim().split("#");
-                message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
-                upcommingTask.add(i);
-                currentList.add(i);
-
-        }
-    	if(currentList.isEmpty() && upcommingTask.isEmpty()){
-    		message += "There is no task need to be finished.";
-    	}
-
-        return message;
-    }
-     */ 
-
-    private static void viewTodayTask(){
-        int index = 1;
-        taskStored = Storage.retrieveTexts();
-
-        for (int i = 0; i<taskStored.size(); i++){
-            if (taskStored.get(i).contains(currentDate)){
-                todayTask.add(i);
-                currentList.add(i);
-                String[] str = taskStored.get(i).trim().split("#");
-                event.add( (index++) + ". " + str[1] + " " + str[0] ) ;
-            }	
-        }
-        if(currentList.isEmpty() && todayTask.isEmpty()){
-            event.add("There is no task need to be finished.");
-        }
     }
 
     // ================================================================
@@ -448,6 +396,61 @@ public class Logic {
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
         }   
+    }
+
+    // ================================================================
+    // "View" command methods
+    // ================================================================
+
+    private static void viewTask(Command com){
+        for (int i = 0; i<taskStored.size(); i++){
+            if (taskStored.get(i).contains(com.getTaskEventDate())){
+                currentList.add(i);
+                String[] str = taskStored.get(i).trim().split("#");
+                event.add(str[1] + " " + str[0] ) ;
+            }   
+        }
+    }
+
+    // ================================================================
+    // "view today's task" command methods
+    // ================================================================
+    /*
+    private static String viewUpcommingTask(){
+        String message = "Top 10 Upcomming Tasks: \n";
+        int index = 1;
+        taskList = storage.retrieveTexts();
+
+        for (int i = 0; i<10; i++){
+                String[] str = taskList.get(i).trim().split("#");
+                message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
+                upcommingTask.add(i);
+                currentList.add(i);
+
+        }
+        if(currentList.isEmpty() && upcommingTask.isEmpty()){
+                message += "There is no task need to be finished.";
+        }
+
+        return message;
+    }
+     */ 
+
+    private static void viewTodayTask(){
+        int index = 1;
+        taskStored = Storage.retrieveTexts();
+
+        for (int i = 0; i<taskStored.size(); i++){
+            if (taskStored.get(i).contains(currentDate)){
+                todayTask.add(i);
+                currentList.add(i);
+                String[] str = taskStored.get(i).trim().split("#");
+                event.add( (index++) + ". " + str[1] + " " + str[0] ) ;
+            }   
+        }
+        if(currentList.isEmpty() && todayTask.isEmpty()){
+            event.add("There is no task need to be finished.");
+        }
     }
 
     // ================================================================
