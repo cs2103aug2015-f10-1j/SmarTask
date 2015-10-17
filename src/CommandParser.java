@@ -2,6 +2,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * CommandParser parses user's input to create Command objects that have the
@@ -248,41 +250,31 @@ public class CommandParser {
         try {
             Command command = new Command(Command.Type.UPDATE);
             String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+            ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 
             if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
                 command.setTaskType("deadline");
+                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+                command.setTaskDeadline(getDeadlineTime(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
+                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}", "")
+                        .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());   
             }
             else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
                 command.setTaskType("event");
+                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+                command.setTaskEventDate(getDate(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
+                command.setTaskEventTime(getDuration(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
+                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
+                        .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
             }
             else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
                 command.setTaskType("floating");
+                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
             }
             
-            if(arguments.size() == 3) {
-                command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-                ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-                if(parameters.size() == 2) {
-                    command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
-                }
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
-            }
-
-            if(arguments.size() == 2) {
-                command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-                ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-                if(parameters.size() == 2) {
-                    command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
-                }
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
-            }
-            else if(arguments.size() == 1) {
-                ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
-            }
-
             return command;
+            
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
@@ -293,6 +285,39 @@ public class CommandParser {
             addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
+    }
+    
+    private static String[] getDate(String desc) {
+        int count=0;
+        String[] allMatches = new String[2];
+        Matcher m = Pattern.compile("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d").matcher(desc);
+        while (m.find()) {
+            allMatches[count] = m.group();
+            count++;
+        }
+        return allMatches;
+    }
+    
+    private static String[] getDuration(String desc) {
+        int count=0;
+        String[] allMatches = new String[2];
+        Matcher m = Pattern.compile("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}").matcher(desc);
+        while (m.find()) {
+            allMatches[count] = m.group();
+            count++;
+        }
+        return allMatches;
+    }
+    
+    private static String[] getDeadlineTime(String desc) {
+        int count=0;
+        String[] allMatches = new String[2];
+        Matcher m = Pattern.compile("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d [0-9]{1,2}:[0-9]{2}").matcher(desc);
+        while (m.find()) {
+            allMatches[count] = m.group();
+            count++;
+        }
+        return allMatches;
     }
 
     // ================================================================
