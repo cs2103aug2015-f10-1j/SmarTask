@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.junit.internal.Throwables;
+
 public class Logic {
     private static ArrayList<String> taskStored = Storage.retrieveTexts();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
@@ -249,11 +251,15 @@ public class Logic {
                     updatedItem += strArr[1]+"#";
                 }
                 
-                if(command.getTaskDescription() != null) {
+                msgLogger.add("Deadline Desc: " + command.getTaskDescription());
+                
+                if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
+                    msgLogger.add("Using new desc");
                 }
                 else{
                     updatedItem += strArr[2];
+                    msgLogger.add("Using current desc");
                 }
                 deadline.set(indexToUpdate, updatedItem);
             }
@@ -292,6 +298,10 @@ public class Logic {
                     updatedItem += strArr[3];
                 }
                 event.set(indexToUpdate, updatedItem);
+            }
+            else {
+                msgLogger.add("Index choosen is not valid");
+                throw new Exception("Index choosen is not valid");
             }
             
             taskStored.set(taskStored.indexOf(existingItem), updatedItem);

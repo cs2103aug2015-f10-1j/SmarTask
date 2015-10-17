@@ -115,7 +115,10 @@ public class CommandParserStubTest {
         // Update deadline
         try {
             Command update = CommandParser.parse("update D2 09/10/2015 09:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskDeadline());
+            if(update.getTaskDescription().isEmpty()) {
+                System.out.println("No description");
+            }
+            System.out.println(update.getCommandType() + " " + " -"  + update.getTaskDescription() + "- " + update.getTaskID() + " " + update.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

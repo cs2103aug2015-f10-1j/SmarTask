@@ -271,6 +271,9 @@ public class CommandParser {
                 command.setTaskType("floating");
                 command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
                 command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+            }else {
+                addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+                throw new Exception(MSG_INCORRECT_FORMAT);
             }
             
             return command;
