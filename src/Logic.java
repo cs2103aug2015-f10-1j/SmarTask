@@ -8,15 +8,17 @@ import java.util.*;
 import org.junit.internal.Throwables;
 
 public class Logic {
-    private static ArrayList<String> taskStored = Storage.retrieveTexts();
+    private static ArrayList<Task> taskStored = Storage.retrieveTexts();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static ArrayList<String> floatingTask = initList("floating", taskStored);
-    private static ArrayList<String> repeatedTask = new ArrayList <String>();
+    private static ArrayList<Task> repeatedTask = new ArrayList <Task>();
+    
+    private static int taskCode;
 
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
-    private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
+    private static CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
     private static String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
@@ -67,11 +69,12 @@ public class Logic {
         }
     }
 
-    private static ArrayList<String> initList(String type, ArrayList<String> taskStored) {
+    @SuppressWarnings("unchecked")
+	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
         for (int i = 0; i<taskStored.size(); i++){
-            if(taskStored.get(i).contains(type)){
-                list.add(taskStored.get(i));
+            if(taskStored.get(i).getType().equals(type)){
+                list.addAll((Collection<? extends String>) taskStored.get(i));
             }
         }
         return list;
@@ -89,20 +92,29 @@ public class Logic {
 
     private static void addTask(Command command) throws Exception{
         try{
+        	
             String taskType = command.getTaskType();
-            String detailStored = "";
+            ArrayList <String> detailStored;
+            ArrayList <String> detailTask;
+            Task.Type type;
 
             if(taskType.equals("floating")) {
-                detailStored = taskType + "#" + command.getTaskDescription();
-                floatingTask.add(detailStored);
+                detailStored.add(taskType+"#"+command.getTaskDescription());
+                detailTask.add(command.getTaskDescription());
+                type = Task.Type.FLOATING;
+                floatingTask.add(detailStored.toString());
             } 
             else if(taskType.equals("event")) {
-                detailStored = taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription();
-                event.add(detailStored);
+                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription());
+                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription());
+                type = Task.Type.EVENT;
+                event.add(detailStored.toString());
             }
             else if(taskType.equals("deadline")) {
-                detailStored = taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription();
-                deadline.add(detailStored);
+                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription());
+                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription());
+                type = Task.Type.DEADLINE;
+                deadline.add(detailStored.toString());
             }
             else {
                 throw new Exception("Fail to add an invalid task");
@@ -111,8 +123,8 @@ public class Logic {
             	msgLogger.add("Collision Task!");
             	
             }else {
-            	taskStored.add(detailStored);
-                sortForAdd();
+            	taskStored.add(new Task(type,detailTask));
+              //  sortForAdd();
                 Storage.saveToFile(taskStored);
                 msgLogger.add("add " + command.getTaskDescription() + " successful!");  
                 history.addChangeToHistory(new ArrayList<String>(taskStored));
@@ -124,7 +136,7 @@ public class Logic {
         }
 
     }
-
+/*
     private static void sortForAdd(){
         Collections.sort(taskStored, new Comparator<String>() {
             DateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -138,14 +150,15 @@ public class Logic {
             }
         });
     }
-
+*/
     // ================================================================
     // "Repeat task" command methods
     // ================================================================
 
     private static void addRepeatTask(Command com) throws FileNotFoundException{  
-        String detailStored =  com.getTaskRepeatPeriod() +"#" + com.getTaskDescription();
-        repeatedTask.add(detailStored);
+    	ArrayList <String> detailStored; 
+        detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription());
+        repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
         Storage.saveToFileRC(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
@@ -182,10 +195,10 @@ public class Logic {
         for(int i=0; i< keyWordList.size(); i++) {
             keyword = keyWordList.get(i).toLowerCase();
             for(int j=0; j<taskStored.size(); j++) {
-                String[] arr = taskStored.get(j).split("#");
+                String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                        msgLogger.add(taskStored.get(j));
+                        msgLogger.add(taskStored.get(j).getDescription());
                     }
                 }
             }
