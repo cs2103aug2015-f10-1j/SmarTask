@@ -110,7 +110,7 @@ public class Logic {
             }
 
             taskStored.add(detailStored);
-            //TO SORT??? : sortForAdd();
+            sortForAdd();
             Storage.saveToFile(taskStored);
             msgLogger.add("add " + command.getTaskDescription() + " successful!");  
             history.addChangeToHistory(new ArrayList<String>(taskStored));
@@ -174,7 +174,6 @@ public class Logic {
 
     private static void searchTask(Command command) throws FileNotFoundException{
         ArrayList<String> keyWordList = command.getSearchKeyword();
-        int index = 1;
         String keyword = "";
         for(int i=0; i< keyWordList.size(); i++) {
             keyword = keyWordList.get(i).toLowerCase();
@@ -420,18 +419,15 @@ public class Logic {
         String message = "Top 10 Upcomming Tasks: \n";
         int index = 1;
         taskList = storage.retrieveTexts();
-
         for (int i = 0; i<10; i++){
                 String[] str = taskList.get(i).trim().split("#");
                 message += (index++) + ". " + str[1] + " " + str[0] + "\n" ;
                 upcommingTask.add(i);
                 currentList.add(i);
-
         }
         if(currentList.isEmpty() && upcommingTask.isEmpty()){
                 message += "There is no task need to be finished.";
         }
-
         return message;
     }
      */ 
