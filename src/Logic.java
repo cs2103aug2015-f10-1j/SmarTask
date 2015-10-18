@@ -15,7 +15,6 @@ public class Logic {
     private static ArrayList<String> floatingTask = initList("floating", taskStored);
     private static ArrayList<String> repeatedTask = new ArrayList <String>();
 
-    private static ArrayList<Integer> todayTask = new ArrayList <Integer>();
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
     private static CommandHistory history = new CommandHistory(new ArrayList<String>(taskStored));
     private static String currentDate = initDate();
@@ -108,12 +107,17 @@ public class Logic {
             else {
                 throw new Exception("Fail to add an invalid task");
             }
-
-            taskStored.add(detailStored);
-            sortForAdd();
-            Storage.saveToFile(taskStored);
-            msgLogger.add("add " + command.getTaskDescription() + " successful!");  
-            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            if (taskStored.contains(detailStored)) {
+            	msgLogger.add("Collision Task!");
+            	
+            }else {
+            	taskStored.add(detailStored);
+                sortForAdd();
+                Storage.saveToFile(taskStored);
+                msgLogger.add("add " + command.getTaskDescription() + " successful!");  
+                history.addChangeToHistory(new ArrayList<String>(taskStored));
+            }
+            
 
         }catch (FileNotFoundException e){
             msgLogger.add(e.toString());
@@ -431,7 +435,7 @@ public class Logic {
         return message;
     }
      */ 
-
+/*
     private static void viewTodayTask(){
         int index = 1;
         taskStored = Storage.retrieveTexts();
@@ -448,7 +452,7 @@ public class Logic {
             event.add("There is no task need to be finished.");
         }
     }
-
+*/
     // ================================================================
     // Getter methods to retrieve lists for UI
     // ================================================================
