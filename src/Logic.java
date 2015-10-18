@@ -15,7 +15,7 @@ public class Logic {
     private static ArrayList<String> floatingTask = initList("floating", taskStored);
     private static ArrayList<Task> repeatedTask = new ArrayList <Task>();
     
-    private static int taskCode;
+    private static int taskCode = 1;
 
     private static ArrayList<Integer> currentList = new ArrayList <Integer>();
     private static CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
@@ -100,19 +100,19 @@ public class Logic {
 
             if(taskType.equals("floating")) {
                 detailStored.add(taskType+"#"+command.getTaskDescription());
-                detailTask.add(command.getTaskDescription());
+                detailTask.add(command.getTaskDescription()+ "#" + taskCode++);
                 type = Task.Type.FLOATING;
                 floatingTask.add(detailStored.toString());
             } 
             else if(taskType.equals("event")) {
                 detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription());
-                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription());
+                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode++);
                 type = Task.Type.EVENT;
                 event.add(detailStored.toString());
             }
             else if(taskType.equals("deadline")) {
                 detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription());
-                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription());
+                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode++);
                 type = Task.Type.DEADLINE;
                 deadline.add(detailStored.toString());
             }
@@ -157,7 +157,7 @@ public class Logic {
 
     private static void addRepeatTask(Command com) throws FileNotFoundException{  
     	ArrayList <String> detailStored; 
-        detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription());
+        detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription()+ "#" + taskCode++);
         repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
         Storage.saveToFileRC(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
