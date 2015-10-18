@@ -2,6 +2,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -14,18 +16,55 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 	
+	public static int tabChanger;
+	
     public static void main(String[] args) {
-        launch(args);
+        tabChanger = 0;
+    	launch(args);
     }
     
     public void start(Stage primaryStage) {
 	   try {
-	    	Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-	        primaryStage.setTitle("SmarTask Main Window");
-	        primaryStage.setScene(new Scene(root, 1050, 700));
-	        primaryStage.show();
+		   if(tabChanger == 0) {
+			   loadFirstFxml(primaryStage);
+		   } else if(tabChanger == 1) {
+			   loadSecondFxml(primaryStage);
+		   }
 	   } catch(Exception e) {
 		   e.printStackTrace();
 	   }       
+    }
+    
+    public void loadFirstFxml(Stage primaryStage) {
+    	try {
+    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+	        primaryStage.setTitle("SmarTask Main Window");
+	        primaryStage.setScene(new Scene(root, 1050, 700));
+		    primaryStage.show();
+    		
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void loadSecondFxml(Stage primaryStage) {
+    	try {
+    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+	        primaryStage.setTitle("SmarTask Main Window");
+	        primaryStage.setScene(new Scene(root, 1050, 700));
+		    primaryStage.show();
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void keyboardLog(KeyEvent ke) {
+    	if(ke.getCode() == KeyCode.TAB) {
+    		if(tabChanger == 0) {
+    			tabChanger = 1;
+    		} else {
+    			tabChanger = 0;
+    		}
+    	}
     }
 }
