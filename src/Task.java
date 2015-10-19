@@ -31,7 +31,24 @@ public class Task {
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) {
-
+    	this.type = type;
+    	String[] list = null;
+    	if (attributeList.size()>1){
+    		list = attributeList.get(0).trim().split("#");
+    	}
+    	if (type.equals(Task.Type.EVENT)){
+    		this.eventDate = list[0];
+    		this.eventTime = list[1];
+    		this.description = list[2];
+    	} else if (type.equals(Task.Type.DEADLINE)) {
+    		this.deadline = list[0];
+    		this.description = list[1];
+    	} else if (type.equals(Task.Type.FLOATING)) {
+    		this.description = attributeList.get(0);
+    	} else {
+    		this.repeatPeriod = list[0];
+    		this.description = list[1];
+    	}	
     }
 
     // ================================================================
