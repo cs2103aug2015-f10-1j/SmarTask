@@ -49,8 +49,8 @@ public class GUI extends Application {
     
     public void loadSecondFxml(Stage primaryStage) {
     	try {
-    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-	        primaryStage.setTitle("SmarTask Main Window");
+    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUIRecurringTasks.fxml"));
+	        primaryStage.setTitle("SmarTask Recurring Tasks");
 	        primaryStage.setScene(new Scene(root, 1050, 700));
 		    primaryStage.show();
     	} catch(Exception e) {

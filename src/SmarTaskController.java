@@ -24,11 +24,13 @@ public class SmarTaskController implements Initializable {
     @FXML private TextArea eventWindow; //Value injected by FXMLoader
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
     @FXML private TextArea specialTaskWindow; //Value injected by FXMLoader
+    @FXML private TextArea recurringTaskWindow; //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
     public String logDisplay;
     public String eventDisplay;
     public String taskDeadlineDisplay;
     public String specialTaskDisplay;
+    public String recurringTaskDisplay;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -37,6 +39,7 @@ public class SmarTaskController implements Initializable {
         assert eventWindow != null : "fx:id=\"eventWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert taskWindow != null : "fx:id=\"taskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert specialTaskWindow != null : "fx:id=\"specialTaskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
+        assert recurringTaskWindow != null : "fx:id=\"recurringTaskWindow\" was not injected: check your FXML file 'SmarTaskUIRecurringTasks.fxml'.";
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         logDisplay = Logic.getMessageLog();
         eventDisplay = Logic.getEvents();
