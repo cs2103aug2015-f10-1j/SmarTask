@@ -11,7 +11,7 @@ import java.util.*;
 public class Command {
     public enum Type {
 	ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
-	UNDO, REDO, REPEAT, CANCEL_REPEAT
+	UNDO, REDO, REPEAT, STOP_REPEAT
     }
 
     private int taskID;
@@ -34,7 +34,7 @@ public class Command {
     private String[] taskRepeatMonthFrequencyBySpecificDayOfWeek; //  Example: first-mon of every month
     private String taskRepeatYearFrequency;
     private String taskRepeatEndDate;
-    private ArrayList<String> cancelRepeatDateAndTime;
+    private ArrayList<String> stopRepeat;
 
     public Command(Type type) {
 	this.type = type;
@@ -76,14 +76,14 @@ public class Command {
 	return taskType;
     }
 
-    public ArrayList<String> getCancelRepeatDateAndTime() {
-	return cancelRepeatDateAndTime;
-    }
-
     // ================================================================
     // Getters method to support recurring task
     // ================================================================
-
+    
+    public ArrayList<String> getStopRepeat() {
+	return stopRepeat;
+    }
+    
     public String getDateOfRepeatAdded() {
 	return dateOfRepeatAdded;
     }
@@ -152,8 +152,8 @@ public class Command {
     // Setters method to support recurring task
     // ================================================================
 
-    public void setCancelRepeatDateAndTime(ArrayList<String> cancelRepeatDateAndTime) {
-	this.cancelRepeatDateAndTime = cancelRepeatDateAndTime;
+    public void setStopRepeat(ArrayList<String> cancelRepeatDateAndTime) {
+	this.stopRepeat = cancelRepeatDateAndTime;
     }
 
     public void setDateOfRepeatAdded(String strings) {

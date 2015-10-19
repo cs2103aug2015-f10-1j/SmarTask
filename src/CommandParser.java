@@ -30,7 +30,7 @@ public class CommandParser {
     private static final String USER_COMMAND_UNDO= "undo";
     private static final String USER_COMMAND_REDO = "redo";
     private static final String USER_COMMAND_REPEAT = "repeat";
-    private static final String USER_COMMAND_CANCEL_REPEAT = "cancel";
+    private static final String USER_COMMAND_STOP_REPEAT = "stop";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
     private static final String MSG_INCORRECT_FORMAT = "Error in attributes: Ensure attributes are entered in valid format";
@@ -73,8 +73,8 @@ public class CommandParser {
                 command = initRepeatCommand(arguments);
                 break;
 
-            case USER_COMMAND_CANCEL_REPEAT :
-                command = initCancelRepeatCommand(arguments);
+            case USER_COMMAND_STOP_REPEAT :
+                command = initStopRepeatCommand(arguments);
                 break;
 
             case USER_COMMAND_UNDO :
@@ -211,6 +211,12 @@ public class CommandParser {
             else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
                 command.setTaskType("floating");
             }
+            else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
+                command.setTaskType("repeat");
+            }
+            else {
+        	throw new Exception(MSG_NULL_POINTER);
+            }
             command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
             if(command.getTaskID()<=0) {
                 throw new Exception(MSG_NULL_POINTER);
@@ -277,7 +283,12 @@ public class CommandParser {
                 command.setTaskType("floating");
                 command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
                 command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
-            }else {
+            }
+            else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
+        	command.setTaskType("repeat");
+        	
+            }
+            else {
                 addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
                 throw new Exception(MSG_INCORRECT_FORMAT);
             }
@@ -464,9 +475,16 @@ public class CommandParser {
     // ================================================================
     // Create cancel recurrence using cancel repeat command method
     // ================================================================
-    private static Command initCancelRepeatCommand(ArrayList<String> arguments) throws Exception {
+    private static Command initStopRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
-            Command command = new Command(Command.Type.CANCEL_REPEAT);
+            Command command = new Command(Command.Type.STOP_REPEAT);            
+            String info = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("\\{", "").replaceAll("\\}", "").trim();
+            String[] params = info.trim().split("[?=\\,]");
+            ArrayList<String> paramList = new ArrayList<String>();
+            for(int i =0; i< params.length; i++) {
+        	paramList.add(i, params[i].trim());
+            }
+            command.setStopRepeat(paramList);
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
