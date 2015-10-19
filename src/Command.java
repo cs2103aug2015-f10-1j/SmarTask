@@ -13,16 +13,26 @@ public class Command {
         ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
         UNDO, REDO, REPEAT, CANCEL_REPEAT
     }
-
+    
+    private int taskID;
     private Type type;
     private String taskType;
     private String taskDescription;
     private String taskDeadline;
     private String taskEventDate;
     private String taskEventTime;
-    private String taskRepeatPeriod;
     private ArrayList<String> searchKeyword;
-    private int taskID;
+
+    // Additional attributes for recurrencing task
+    private String dateOfRepeatAdded;
+    private String taskRepeatTime;
+    private String taskRepeatType;
+    private String taskRepeatDayFrequency;
+    private String taskRepeatWeekFrequency;
+    private String taskRepeatMonthFrequency;
+    private String taskRepeatYearFrequency;
+    private String taskRepeatEndDate;
+    private ArrayList<String> cancelRepeatDateAndTime;
 
     public Command(Type type) {
         this.type = type;
@@ -52,10 +62,6 @@ public class Command {
 	return taskEventTime;
     }
 
-    public String getTaskRepeatPeriod() {
-	return taskRepeatPeriod;
-    }
-    
     public ArrayList<String> getSearchKeyword() {
 	return searchKeyword;
     }
@@ -66,6 +72,10 @@ public class Command {
     
     public String getTaskType() {
 	return taskType;
+    }
+    
+    public ArrayList<String> getCancelRepeatDateAndTime() {
+	return cancelRepeatDateAndTime;
     }
    
     // ================================================================
@@ -92,16 +102,80 @@ public class Command {
 	this.searchKeyword = searchKeyword;
     }
     
-    public void setTaskRepeatPeriod(String taskRepeatPeriod) {
-	this.taskRepeatPeriod = taskRepeatPeriod ;
-    }
-    
     public void setTaskID(int taskID) {
 	this.taskID = taskID;
     }
     
     public void setTaskType(String taskType) {
 	this.taskType = taskType;
+    }
+
+    public void setCancelRepeatDateAndTime(ArrayList<String> cancelRepeatDateAndTime) {
+	this.cancelRepeatDateAndTime = cancelRepeatDateAndTime;
+    }
+
+    public String getDateOfRepeatAdded() {
+	return dateOfRepeatAdded;
+    }
+
+    public void setDateOfRepeatAdded(String strings) {
+	this.dateOfRepeatAdded = strings;
+    }
+
+    public String getTaskRepeatTime() {
+	return taskRepeatTime;
+    }
+
+    public void setTaskRepeatTime(String taskRepeatTime) {
+	this.taskRepeatTime = taskRepeatTime;
+    }
+
+    public String getTaskRepeatEndDate() {
+	return taskRepeatEndDate;
+    }
+
+    public void setTaskRepeatEndDate(String taskRepeatEndDate) {
+	this.taskRepeatEndDate = taskRepeatEndDate;
+    }
+
+    public String getTaskRepeatType() {
+	return taskRepeatType;
+    }
+
+    public void setTaskRepeatType(String taskRepeatType) {
+	this.taskRepeatType = taskRepeatType;
+    }
+
+    public String getTaskRepeatDayFrequency() {
+	return taskRepeatDayFrequency;
+    }
+
+    public void setTaskRepeatDayFrequency(String taskRepeatDayFrequency) {
+	this.taskRepeatDayFrequency = taskRepeatDayFrequency;
+    }
+
+    public String getTaskRepeatWeekFrequency() {
+	return taskRepeatWeekFrequency;
+    }
+
+    public void setTaskRepeatWeekFrequency(String taskRepeatWeekFrequency) {
+	this.taskRepeatWeekFrequency = taskRepeatWeekFrequency;
+    }
+
+    public String getTaskRepeatMonthFrequency() {
+	return taskRepeatMonthFrequency;
+    }
+
+    public void setTaskRepeatMonthFrequency(String taskRepeatMonthFrequency) {
+	this.taskRepeatMonthFrequency = taskRepeatMonthFrequency;
+    }
+
+    public String getTaskRepeatYearFrequency() {
+	return taskRepeatYearFrequency;
+    }
+
+    public void setTaskRepeatYearFrequency(String taskRepeatYearFrequency) {
+	this.taskRepeatYearFrequency = taskRepeatYearFrequency;
     }
     
 }

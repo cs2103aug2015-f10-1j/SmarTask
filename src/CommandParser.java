@@ -114,6 +114,12 @@ public class CommandParser {
             throw new Exception(MSG_NULL_POINTER); 
         } 
     }
+    
+    private static ArrayList<String> splitStringByLeftCurlyBracket(String arguments) {
+        assert arguments !=null : "String argument in splitStringBySpace(String arguments) is null";
+        String[] strArray = arguments.trim().split("(?=\\{)");
+        return new ArrayList<String>(Arrays.asList(strArray));
+    }
 
     private static ArrayList<String> splitStringBySpace(String arguments) {
         assert arguments !=null : "String argument in splitStringBySpace(String arguments) is null";
@@ -145,7 +151,7 @@ public class CommandParser {
     }
 
     public static void viewCommandParserLog() {
-        System.out.println("=================================CommandParser Log================================");
+        System.out.println("==============CommandParser Log=================");
         for(int i = 0; i < parserLogger.size(); i++) {
             System.out.println(parserLogger.get(i));
         }
@@ -384,6 +390,39 @@ public class CommandParser {
     private static Command initRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.REPEAT);
+            ArrayList<String> param = splitStringByLeftCurlyBracket(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            command.setDateOfRepeatAdded(getDate(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
+            command.setTaskRepeatTime(getDuration(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
+            command.setTaskDescription(param.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
+                    .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
+            
+            String content = param.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("\\{", "").replaceAll("\\}", "").trim();
+            String[] recurrenceParam = content.split(",");
+            String type = recurrenceParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
+            String frequency = recurrenceParam[POSITION_FIRST_PARAM_ARGUMENT].trim();
+            String endDate = recurrenceParam[POSITION_SECOND_PARAM_ARGUMENT].trim();
+            
+            command.setTaskRepeatType(type);
+            
+            if(type.equals("day")) {
+        	command.setTaskRepeatDayFrequency(frequency);
+            }
+            else if(type.equals("week")) {
+        	command.setTaskRepeatWeekFrequency(frequency);
+            }
+            else if(type.equals("month")) {
+        	command.setTaskRepeatMonthFrequency(frequency);
+            }
+            else if (type.equals("year")) {
+        	command.setTaskRepeatYearFrequency(frequency);
+            }
+            else {
+        	addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+                throw new Exception(MSG_INCORRECT_FORMAT);
+            }
+            
+            command.setTaskRepeatEndDate(endDate);
+            
             return command;
         } catch (NullPointerException e) {
             addToParserLogger("exception: " + MSG_NULL_POINTER);
@@ -396,7 +435,7 @@ public class CommandParser {
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
     }
-
+    
     // ================================================================
     // Create cancel recurrence using cancel repeat command method
     // ================================================================

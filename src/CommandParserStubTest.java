@@ -134,15 +134,15 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        //=======================================================================================================
-        //====================================Testing Updating of Deadline tasks=================================
-        //=======================================================================================================
+        
+        //==========================================================================
+        //=====================Testing Updating of Deadline tasks==============================
+        //==========================================================================
 
         // Update description and deadline
         try {
             Command update = CommandParser.parse("update D1 Arrange meeting 09/10/2015 09:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + 
                     " "  + update.getTaskDescription() + " " + update.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -151,10 +151,7 @@ public class CommandParserStubTest {
         // Update deadline
         try {
             Command update = CommandParser.parse("update D2 09/10/2015 09:00");
-            if(update.getTaskDescription().isEmpty()) {
-                System.out.println("No description");
-            }
-            System.out.println(update.getCommandType() + " " + update.getTaskDescription() + update.getTaskID() + " " + update.getTaskDeadline());
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskDescription() + update.getTaskID() + " " + update.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -162,7 +159,7 @@ public class CommandParserStubTest {
         // Update description
         try {
             Command update = CommandParser.parse("update D3 Arrange meeting");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + 
                     " "  + update.getTaskDescription());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -174,7 +171,7 @@ public class CommandParserStubTest {
 
         try {
             Command update = CommandParser.parse("update F4 This is a floating task");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + " "  + update.getTaskDescription());
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + " "  + update.getTaskDescription());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -186,7 +183,7 @@ public class CommandParserStubTest {
         // Update description, date and duration
         try {
             Command update = CommandParser.parse("update E5 Arrange meeting 09/10/2015 13:00-14:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + 
                     " "  + update.getTaskDescription() + " " + update.getTaskEventDate() + " " + update.getTaskEventTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -195,7 +192,7 @@ public class CommandParserStubTest {
         // Update description and duration
         try {
             Command update = CommandParser.parse("update E6 Arrange meeting 13:00-14:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + 
                     " "  + update.getTaskDescription() + " " + update.getTaskEventTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -204,7 +201,7 @@ public class CommandParserStubTest {
         // Update date
         try {
             Command update = CommandParser.parse("update E7 09/10/2015");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskEventDate());
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " " + update.getTaskID() + " " + update.getTaskEventDate());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -212,7 +209,7 @@ public class CommandParserStubTest {
         // Updating duration
         try {
             Command update = CommandParser.parse("update E8 13:00-14:00");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + " " + update.getTaskEventTime());
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + " " + update.getTaskEventTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -220,8 +217,53 @@ public class CommandParserStubTest {
         // Update description
         try {
             Command update = CommandParser.parse("update E9 Marketing Research Survey");
-            System.out.println(update.getCommandType() + " " + update.getTaskID() + 
+            System.out.println(update.getCommandType() + " " + update.getTaskType() + " "  + update.getTaskID() + 
                     " "  + update.getTaskDescription());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        //=================================================================================
+        //============================Testing Recurrence tasks=====================================
+        //=================================================================================
+        // Command: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {<period> , <frequency>, <until dd/mm/yy or forever>}
+        
+        // Daily: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {day , every X day, Until dd/mm/yy or forever}
+        try {
+            Command repeat = CommandParser.parse("repeat team meeting 18:00-20:00 14/10/2015 {day, 1, forever}");
+            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatTime() + " " 
+                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatDayFrequency() 
+                    + " " + repeat.getTaskRepeatEndDate());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        // Weekly: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {week , <Mon-Sun>,  <until dd/mm/yy or forever>}
+        try {
+            Command repeat = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, 1 ,forever}");
+            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatTime() + " " 
+                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatWeekFrequency() 
+                    + " " + repeat.getTaskRepeatEndDate());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        // Monthly: repeat month {Duration X-Y time, Repeat: Every X month, On Xst/nd/rd/th of month or every third <Mon-Sun> of month, Until Date or Forever}
+        try {
+            Command repeat = CommandParser.parse("repeat team meeting 09:00-13:00 29/10/2015 {month, day 19, 15/06/2016}");
+            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatTime() + " " 
+                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatMonthFrequency() 
+                    + " " + repeat.getTaskRepeatEndDate());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        // Yearly: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {year , every X year,  <until dd/mm/yy or forever>}
+        try {
+            Command repeat = CommandParser.parse("repeat team meeting 14:00-18:00 19/12/2015 {year, 1, forever}");
+            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatTime() + " " 
+                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatYearFrequency() 
+                    + " " + repeat.getTaskRepeatEndDate());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
