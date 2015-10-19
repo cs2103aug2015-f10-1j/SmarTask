@@ -332,9 +332,40 @@ public class CommandParserStubTest {
 	    System.out.println(e.getMessage());
 	}
 
+	//=================================================================================
+	//============================Updating Recurrence tasks====================================
+	//=================================================================================
+	try {
+	    Command repeat = CommandParser.parse("update R3 team meeting");
+	    System.out.println(repeat.getCommandType()  + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " " + repeat.getTaskDescription());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+
+	try {
+	    Command repeat = CommandParser.parse("update R4 18:00-20:00 14/10/2015");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " "  
+		    +  repeat.getTaskEventDate() + " " + repeat.getTaskEventTime());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+	
+	try {
+	    Command repeat = CommandParser.parse("update R2 team meeting 18:00-20:00 14/10/2015");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " " +  repeat.getTaskEventDate() + " " 
+	    + repeat.getTaskEventTime() + " " +   repeat.getTaskDescription());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+
 	try {
 	    Command repeat = CommandParser.parse("update R1 team meeting 18:00-20:00 14/10/2015 {day, 1, forever}");
-	    System.out.println(repeat.getCommandType());
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " " +  repeat.getTaskEventDate() + 
+		    " " + repeat.getTaskEventTime() + " " + repeat.getTaskDescription());
+	    for(int i =0; i < repeat.getUpdateRepeat().size(); i++) {
+		System.out.println("Attribute "+ (i+1) +" " + repeat.getUpdateRepeat().get(i));
+	    }
+	    System.out.println();
 	} catch (Exception e) {
 	    System.out.println(e.getMessage());
 	}

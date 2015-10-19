@@ -35,6 +35,7 @@ public class Command {
     private String taskRepeatYearFrequency;
     private String taskRepeatEndDate;
     private ArrayList<String> stopRepeat;
+    private ArrayList<String> updateRepeat;
 
     public Command(Type type) {
 	this.type = type;
@@ -202,6 +203,14 @@ public class Command {
 
     public void setTaskRepeatMonthFrequencyBySpecificDate(String taskRepeatMonthFrequencyBySpecificDate) {
 	this.taskRepeatMonthFrequencyBySpecificDate = taskRepeatMonthFrequencyBySpecificDate;
+    }
+
+    public ArrayList<String> getUpdateRepeat() {
+	return updateRepeat;
+    }
+
+    public void setUpdateRepeat(ArrayList<String> updateRepeat) {
+	this.updateRepeat = updateRepeat;
     }
 
 }
