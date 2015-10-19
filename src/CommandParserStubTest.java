@@ -242,8 +242,7 @@ public class CommandParserStubTest {
         try {
             Command repeat = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, mon/tue/wed ,forever}");
             System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatWeekFrequency() 
-                    + " " + repeat.getTaskRepeatEndDate());
+                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " + repeat.getTaskRepeatEndDate());
             Boolean[] week = repeat.isTaskRepeatOnDayOfWeek();
             for(int i =0; i< week.length; i++) {
         	if(week[i]) {
@@ -257,8 +256,7 @@ public class CommandParserStubTest {
         try {
             Command repeat = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, sun/thu/wed ,forever}");
             System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatWeekFrequency() 
-                    + " " + repeat.getTaskRepeatEndDate());
+                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " + repeat.getTaskRepeatEndDate());
             Boolean[] week = repeat.isTaskRepeatOnDayOfWeek();
             for(int i =0; i< week.length; i++) {
         	if(week[i]) {

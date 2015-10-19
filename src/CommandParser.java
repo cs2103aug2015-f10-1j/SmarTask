@@ -410,9 +410,15 @@ public class CommandParser {
             else if(type.equals("week")) {
         	String[] days = frequency.split("/");
         	command.setTaskRepeatOnDayOfWeek(createIsDayTrue(days));
-        	command.setTaskRepeatWeekFrequency(frequency);
             }
             else if(type.equals("month")) {
+        	String[] fqParam = frequency.split("\\s+");
+        	if(fqParam.length == 2) {
+        	    command.setTaskRepeatMonthFrequencyBySpecificDate(fqParam[1].trim());
+        	}else {
+        	    command.setTaskRepeatMonthFrequencyBySpecificDay(fqParam[0]);
+        	}
+        	
         	command.setTaskRepeatMonthFrequency(frequency);
             }
             else if (type.equals("year")) {

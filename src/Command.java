@@ -28,7 +28,6 @@ public class Command {
     private String taskRepeatDuration;
     private String taskRepeatType;
     private String taskRepeatDayFrequency;
-    private String taskRepeatWeekFrequency;
     private String taskRepeatMonthFrequency;
     private Boolean[] isTaskRepeatOnDayOfWeek = new Boolean[7]; // Example: Mon, Tues, Fri
     private String taskRepeatMonthFrequencyBySpecificDate; // Example: on 19 of every month
@@ -109,10 +108,6 @@ public class Command {
 	return taskRepeatDayFrequency;
     }
 
-    public String getTaskRepeatWeekFrequency() {
-	return taskRepeatWeekFrequency;
-    }
-
     public String getTaskRepeatMonthFrequency() {
 	return taskRepeatMonthFrequency;
     }
@@ -175,10 +170,6 @@ public class Command {
 
     public void setTaskRepeatType(String taskRepeatType) {
 	this.taskRepeatType = taskRepeatType;
-    }
-
-    public void setTaskRepeatWeekFrequency(String taskRepeatWeekFrequency) {
-	this.taskRepeatWeekFrequency = taskRepeatWeekFrequency;
     }
 
     public void setTaskRepeatMonthFrequency(String taskRepeatMonthFrequency) {
