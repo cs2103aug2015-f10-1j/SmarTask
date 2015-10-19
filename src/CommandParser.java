@@ -416,7 +416,8 @@ public class CommandParser {
         	if(fqParam.length == 2) {
         	    command.setTaskRepeatMonthFrequencyBySpecificDate(fqParam[1].trim());
         	}else {
-        	    command.setTaskRepeatMonthFrequencyBySpecificDay(fqParam[0]);
+        	    fqParam = fqParam[0].split("-");
+        	    command.setTaskRepeatMonthFrequencyBySpecificDayOfWeek(fqParam);
         	}
         	
         	command.setTaskRepeatMonthFrequency(frequency);

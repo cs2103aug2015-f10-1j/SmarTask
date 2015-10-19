@@ -31,7 +31,7 @@ public class Command {
     private String taskRepeatMonthFrequency;
     private Boolean[] isTaskRepeatOnDayOfWeek = new Boolean[7]; // Example: Mon, Tues, Fri
     private String taskRepeatMonthFrequencyBySpecificDate; // Example: on 19 of every month
-    private String taskRepeatMonthFrequencyBySpecificDay; //  Example: first-mon of every month
+    private String[] taskRepeatMonthFrequencyBySpecificDayOfWeek; //  Example: first-mon of every month
     private String taskRepeatYearFrequency;
     private String taskRepeatEndDate;
     private ArrayList<String> cancelRepeatDateAndTime;
@@ -180,12 +180,12 @@ public class Command {
 	this.taskRepeatYearFrequency = taskRepeatYearFrequency;
     }
 
-    public String getTaskRepeatMonthFrequencyBySpecificDay() {
-	return taskRepeatMonthFrequencyBySpecificDay;
+    public String[] getTaskRepeatMonthFrequencyBySpecificDayOfWeek() {
+	return taskRepeatMonthFrequencyBySpecificDayOfWeek;
     }
 
-    public void setTaskRepeatMonthFrequencyBySpecificDay(String taskRepeatMonthFrequencyBySpecificDay) {
-	this.taskRepeatMonthFrequencyBySpecificDay = taskRepeatMonthFrequencyBySpecificDay;
+    public void setTaskRepeatMonthFrequencyBySpecificDayOfWeek(String[] taskRepeatMonthFrequencyBySpecificDayOfWeek) {
+	this.taskRepeatMonthFrequencyBySpecificDayOfWeek = taskRepeatMonthFrequencyBySpecificDayOfWeek;
     }
 
     public Boolean[] isTaskRepeatOnDayOfWeek() {

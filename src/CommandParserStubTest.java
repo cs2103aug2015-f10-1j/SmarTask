@@ -274,6 +274,7 @@ public class CommandParserStubTest {
             System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
                     + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatMonthFrequency() 
                     + " " + repeat.getTaskRepeatEndDate());
+            System.out.println("Repeating Monthly on day : " + repeat.getTaskRepeatMonthFrequencyBySpecificDate());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -283,6 +284,8 @@ public class CommandParserStubTest {
             System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
                     + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatMonthFrequency() 
                     + " " + repeat.getTaskRepeatEndDate());
+            System.out.println("Repeating monthly on : " + repeat.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1] + " of week " +
+                    repeat.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[0]);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
