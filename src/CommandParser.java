@@ -392,7 +392,7 @@ public class CommandParser {
             Command command = new Command(Command.Type.REPEAT);
             ArrayList<String> param = splitStringByLeftCurlyBracket(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
             command.setDateOfRepeatAdded(getDate(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
-            command.setTaskRepeatTime(getDuration(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
+            command.setTaskRepeatDuration(getDuration(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
             command.setTaskDescription(param.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
                     .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
             
@@ -408,6 +408,8 @@ public class CommandParser {
         	command.setTaskRepeatDayFrequency(frequency);
             }
             else if(type.equals("week")) {
+        	String[] days = frequency.split("/");
+        	command.setTaskRepeatOnDayOfWeek(createIsDayTrue(days));
         	command.setTaskRepeatWeekFrequency(frequency);
             }
             else if(type.equals("month")) {
@@ -434,6 +436,22 @@ public class CommandParser {
             addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
+    }
+    
+    private static Boolean[] createIsDayTrue(String[] list) {
+	Boolean[] isDayTrue = new Boolean[7];
+	String[] wk = {"mon","tue","wed","thu","fri","sat","sun"};
+	ArrayList<String> week = new ArrayList<String>(Arrays.asList(wk));
+	Arrays.fill(isDayTrue, false);
+	String day = "";
+	int index = -1;
+	for(int i=0; i<list.length; i++) {
+	    index = week.indexOf(list[i]);
+	    if(index != -1) {
+		isDayTrue[index] = true;
+	    }
+	}
+	return isDayTrue;
     }
     
     // ================================================================
