@@ -114,17 +114,50 @@ public class JSonStorage {
 			e.printStackTrace();
 		}
 	}
+	
+	private String retrieveFile(String filePathInput) {
+		String currLine = "", pathOut = null;
+		File file = new File(filePathInput);
+		try {
+			FileReader fr = new FileReader(file);
+			BufferedReader br = new BufferedReader(fr);
+			while ((currLine = br.readLine()) != null) {
+				pathOut = currLine;
+			}
+			fr.close();
+			br.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return pathOut;
+	}
+
+	public void saveToFile(String fileInput, String newPath) {
+		File file = new File(fileInput);
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.flush();
+
+			fw.write(newPath);
+			fw.write('\n');
+
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	// ------------------------------------------------------------------------------------------------//
 
 	public String getPath() {
-		ReadFile rf = new ReadFile();
-		String path = rf.readFile(DEFAULT_FILEPATH);
+		String path = retrieveFile(DEFAULT_FILEPATH);
 		return path;
 	}
-
+	
 	public void addPath(String newPath) {
-		SaveFile sf = new SaveFile();
+//		SaveFile sf = new SaveFile();
 		createFile(DEFAULT_FILEPATH);
 		File file = new File(DEFAULT_FILEPATH);
 		if (checkPathFileExist() && file.length() > 0) {
@@ -134,14 +167,14 @@ public class JSonStorage {
 			oldLocation = "Data.txt";
 		}
 
-		sf.saveFile(DEFAULT_FILEPATH, newPath);
+		saveToFile(DEFAULT_FILEPATH, newPath);
 		copyAndDelete(oldLocation, newPath);
 	}
 
 	public void addSetting(String input) {
 		createFile(DEFAULT_CONFIG);
-		SaveFile sf = new SaveFile();
-		sf.saveFile(DEFAULT_CONFIG, input);
+//		SaveFile sf = new SaveFile();
+		saveToFile(DEFAULT_CONFIG, input);
 	}
 
 	public void addInnerImage() {
@@ -201,7 +234,6 @@ public class JSonStorage {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
