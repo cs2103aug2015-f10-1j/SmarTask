@@ -24,7 +24,7 @@ public class JSonStorage {
 	private static boolean OVERWRITE = false;
 	private static boolean APPEND = true;
 	private static String DEFAULT_FILENAME = "Data.txt";
-	private ArrayList<Task> taskList;
+	private List<Task> taskList;
 	private static String fileName;
 	private static String oldFileName;
 
@@ -52,14 +52,13 @@ public class JSonStorage {
 			Collections.sort(taskList);
 			rewriteFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void delete(int taskID) {
 		for (int i = 0; i < taskList.size(); i++) {
-			if (taskID == taskList.get(i).getId()) {
+			if (taskID == taskList.get(i).getID()) {
 				taskList.remove(i);
 			}
 		}
@@ -97,7 +96,7 @@ public class JSonStorage {
 		}
 
 		Gson gson = new Gson();
-		Task task = new Task();
+		Task task = new Task(null, null); // TODO: add parameters for Task
 
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(fileName));
