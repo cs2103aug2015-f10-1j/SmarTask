@@ -368,13 +368,15 @@ public class Logic {
 
     private void updateTask(Command command) throws FileNotFoundException{
         String taskType = command.getTaskType();
-        Task updatedTask = null;
+        String updatedItem = "";
+        String existingItem = "";
+        String updatedTask = "";
+        Task.Type type;
+        ArrayList <String> updatedLine = new ArrayList <String>();
 
         try {
             int indexToUpdate = command.getTaskID()-1;
-            String updatedItem = "";
-            String existingItem = "";
-            
+           
             if(taskType.equals("deadline")) {
                 existingItem = deadline.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
@@ -383,9 +385,11 @@ public class Logic {
                 updatedItem += strArr[0]+"#";
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
+                    updatedTask +=command.getTaskDeadline() + "#";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
+                    updatedTask += strArr[1] + "#";
                 }
                 
                 
@@ -393,21 +397,25 @@ public class Logic {
 
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
+                    updatedTask +=command.getTaskDescription() + "#";
                     msgLogger.add("Using new desc");
                 }
                 else{
                     updatedItem += strArr[2];
+                    updatedTask += strArr[2];
                     msgLogger.add("Using current desc");
                 }
              //   msgLogger.add(updatedItem);
                 updatedItem = updatedItem +"#"+Integer.toString(taskCode);
+                updatedTask = updatedTask +"#"+Integer.toString(taskCode);
              //   msgLogger.add(updatedItem);
-                ArrayList<String> updatedLine = new ArrayList<String> ();
-                updatedLine.add(updatedItem);
+              //  updatedLine = new ArrayList<String> ();
+              //  updatedLine.add(updatedItem);
+                type = Task.Type.DEADLINE;
              
                 msgLogger.add(Integer.toString(indexToUpdate));
                 deadline.set(indexToUpdate, updatedItem);
-                updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
+            //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
             else if(taskType.equals("floating")) {
                 existingItem = floatingTask.get(indexToUpdate);
@@ -416,14 +424,18 @@ public class Logic {
                 updatedItem += strArr[0]+"#";                
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
+                    updatedTask +=command.getTaskDescription();
                 }
                 else{
                     updatedItem += strArr[1];
+                    updatedTask += strArr[1];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
-                ArrayList<String>updatedLine = new ArrayList<String> ();
-                updatedLine.add(updatedItem);
-                updatedTask = new Task (Task.Type.FLOATING, updatedLine);
+                updatedTask += "#"+Integer.toString(taskCode);
+               // updatedLine = new ArrayList<String> ();
+               // updatedLine.add(updatedItem);
+              //  updatedTask = new Task (Task.Type.FLOATING, updatedLine);
+                type = Task.Type.FLOATING;
                 floatingTask.set(indexToUpdate, updatedItem);
             }
             else if(taskType.equals("event")) {
@@ -433,27 +445,35 @@ public class Logic {
                 updatedItem += strArr[0]+"#";                
                 if(command.getTaskEventDate() != null) {
                     updatedItem += command.getTaskEventDate()+"#";
+                    updatedTask += command.getTaskEventDate() + "#";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
+                    updatedTask += strArr[1]+"#";
                 }
                 if(command.getTaskEventTime() != null) {
                     updatedItem += command.getTaskEventTime()+"#";
+                    updatedTask += command.getTaskEventTime()+"#";
                 }
                 else{
                     updatedItem += strArr[2]+"#";
+                    updatedTask += strArr[2]+"#";
                 }
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
+                    updatedTask += command.getTaskDescription();
                 }
                 else{
                     updatedItem += strArr[3];
+                    updatedTask += strArr[3];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
-                ArrayList <String>updatedLine = new ArrayList <String> ();
-                updatedLine.add(updatedItem);
-                updatedTask = new Task (Task.Type.EVENT, updatedLine);
+                updatedTask += "#"+Integer.toString(taskCode);
+             //   updatedLine = new ArrayList <String> ();
+             //   updatedLine.add(updatedItem);
+             //   updatedTask = new Task (Task.Type.EVENT, updatedLine);
                 event.set(indexToUpdate, updatedItem);
+                type = Task.Type.EVENT;
             }
             else {
                 msgLogger.add("Index choosen is not valid");
@@ -461,11 +481,24 @@ public class Logic {
             }
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){
-            		taskStored.set(i, updatedTask);
+            	//	System.out.println(i);
+            	//	msgLogger.add(Integer.toString(taskStored.size()));
+            	//    msgLogger.add(Integer.toString(taskStored.get(i).getID()));
+            	//    msgLogger.add(Integer.toString(i));
+            		taskStored.remove(i);
+           // 		msgLogger.add(Integer.toString(taskStored.size()));
+            		updatedLine = new ArrayList<String>();
+            		updatedLine.add(updatedTask);
+            		msgLogger.add(updatedLine.get(0));
+            		Task task = new Task (type,updatedLine);
+                    taskStored.add(task);
+            //        msgLogger.add(Integer.toString(taskStored.size()));
+            		storage.saveToFile(taskStored);
+            		break;
             	}
             }
             
-            storage.saveToFile(taskStored);
+          //  storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("task updated!");
         } catch (Exception e) {
