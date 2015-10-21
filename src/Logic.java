@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.swing.RowFilter.ComparisonType;
+
 import org.junit.internal.Throwables;
 
 public class Logic {
@@ -43,7 +45,7 @@ public class Logic {
                         logic.deleteTask(command);
                         break;
                     case VIEW :
-                        logic.viewTask (command);
+                    //    logic.viewTask (command);
                         break;
                     case UPDATE :
                         logic.updateTask(command);
@@ -180,7 +182,7 @@ public class Logic {
     	}
      //   detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
         repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
-     //   Storage.saveToFileRC(repeatedTask);
+        Storage.saveToFile(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
 
@@ -221,7 +223,7 @@ public class Logic {
                 String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                        msgLogger.add(taskStored.get(j).getID()+taskStored.get(j).getDescription());
+                        msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
                     }
                 }
             }
@@ -235,40 +237,30 @@ public class Logic {
     private void deleteTask(Command command){
         String taskType = command.getTaskType();
         try{
-            String indexToRemove = Integer.toString(command.getTaskID());
-            String removedItem = "";
-            int indexInList;
+        	int indexToRemove = command.getTaskID();
+            String  removedItem = "";
+            String currentLine = "";
 
             if(taskType.equals("deadline")) {
-            	for (int i=0; i<deadline.size(); i++){
-            		if (deadline.get(i).contains(indexToRemove)){
-                        removedItem = deadline.remove(i);
-                        break;
-            		}
-            	}   	
+            	 currentLine = deadline.get(indexToRemove);
+            	 removedItem = deadline.remove(indexToRemove);
             }
             else if(taskType.equals("floating")) {
-            	for (int i=0; i<floatingTask.size(); i++){
-            		if (floatingTask.get(i).contains(indexToRemove)){
-                        removedItem = floatingTask.remove(i);
-                        break;
-            		}
-            	}   
+            	currentLine = deadline.get(indexToRemove);
+            	removedItem = floatingTask.remove(indexToRemove);
             }
             else if(taskType.equals("event")) {
-            	for (int i=0; i<event.size(); i++){
-            		if (event.get(i).contains(indexToRemove)){
-                        removedItem = event.remove(i);
-                        break;
-            		}
-            	}   
+            	currentLine = deadline.get(indexToRemove);
+            	removedItem = event.remove(indexToRemove);
             }
+            String str[] = currentLine.split("#");
+            taskCode = Integer.parseInt(str[str.length-1]);
             for (int i=0; i<taskStored.size(); i++){
-        		if (taskStored.get(i).getID() == Integer.parseInt(indexToRemove)){
-        			taskStored.remove(i);
-                    break;
-        		}
-        	}   
+            	if (taskStored.get(i).getID() == taskCode){
+            		taskStored.remove(i);
+            		break;
+            	}
+            }
             Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
@@ -301,40 +293,34 @@ public class Logic {
     private void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
-            String indexToComplete = Integer.toString(command.getTaskID());
+            int indexToComplete = command.getTaskID();
             String completedItem = "";
+            String currentLine = " ";
+            
 
             if(taskType.equals("deadline")) {
-            	for (int i=0; i < deadline.size(); i++){
-            		if (deadline.get(i).contains(indexToComplete)){
-            			completedItem = deadline.remove(i);
-            			break;
-            		}
-            	}
+            	currentLine = deadline.get(indexToComplete);
+                completedItem = deadline.remove(indexToComplete);
             }
             else if(taskType.equals("floating")) {
-            	for (int i=0; i < floatingTask.size(); i++){
-            		if (floatingTask.get(i).contains(indexToComplete)){
-            			completedItem =floatingTask.remove(i);
-            			break;
-            		}
-            	}
+            	currentLine = floatingTask.get(indexToComplete);
+                completedItem = floatingTask.remove(indexToComplete);
             }
             else if(taskType.equals("event")) {
-            	for (int i=0; i < event.size(); i++){
-            		if (event.get(i).contains(indexToComplete)){
-            			completedItem =event.remove(i);
-            			break;
-            		}
-            	}
+                currentLine = event.get(indexToComplete);
+                completedItem = event.remove(indexToComplete);
             }
 
-            for (int i=0; i < taskStored.size(); i++){
-        		if (taskStored.get(i).getID() == Integer.parseInt(indexToComplete)){
-        			taskStored.get(i).setIsComplete(true);
-        			break;
-        		}
-        	}
+         //   taskStored.remove(new String(completedItem));
+            String str[] = currentLine.split("#");
+            taskCode = Integer.parseInt(str[str.length-1]);
+            
+            for (int i=0; i<taskStored.size(); i++){
+            	if (taskStored.get(i).getID() == taskCode){
+            		taskStored.get(i).setIsComplete(true);
+            		break;
+            	}
+            }
             Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
@@ -362,14 +348,17 @@ public class Logic {
 
     private void updateTask(Command command) throws FileNotFoundException{
         String taskType = command.getTaskType();
+        Task updatedTask = null;
 
         try {
             int indexToUpdate = command.getTaskID();
             String updatedItem = "";
             String existingItem = "";
+            
             if(taskType.equals("deadline")) {
                 existingItem = deadline.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
+                taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
@@ -377,6 +366,7 @@ public class Logic {
                 else{
                     updatedItem += strArr[1]+"#";
                 }
+                
 
                 msgLogger.add("Deadline Desc: " + command.getTaskDescription());
 
@@ -388,11 +378,16 @@ public class Logic {
                     updatedItem += strArr[2];
                     msgLogger.add("Using current desc");
                 }
+                updatedItem += "#"+Integer.toString(taskCode);
+                ArrayList updatedLine = new ArrayList ();
+                updatedLine.add(updatedItem);
+                updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
                 deadline.set(indexToUpdate, updatedItem);
             }
             else if(taskType.equals("floating")) {
                 existingItem = floatingTask.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
+                taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";                
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
@@ -400,11 +395,16 @@ public class Logic {
                 else{
                     updatedItem += strArr[1];
                 }
+                updatedItem += "#"+Integer.toString(taskCode);
+                ArrayList updatedLine = new ArrayList ();
+                updatedLine.add(updatedItem);
+                updatedTask = new Task (Task.Type.FLOATING, updatedLine);
                 floatingTask.set(indexToUpdate, updatedItem);
             }
             else if(taskType.equals("event")) {
                 existingItem = event.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
+                taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";                
                 if(command.getTaskEventDate() != null) {
                     updatedItem += command.getTaskEventDate()+"#";
@@ -424,14 +424,22 @@ public class Logic {
                 else{
                     updatedItem += strArr[3];
                 }
+                updatedItem += "#"+Integer.toString(taskCode);
+                ArrayList updatedLine = new ArrayList ();
+                updatedLine.add(updatedItem);
+                updatedTask = new Task (Task.Type.EVENT, updatedLine);
                 event.set(indexToUpdate, updatedItem);
             }
             else {
                 msgLogger.add("Index choosen is not valid");
                 throw new Exception("Index choosen is not valid");
             }
-
-            taskStored.set(taskStored.indexOf(existingItem), updatedItem);
+            for (int i=0; i<taskStored.size(); i++){
+            	if (taskStored.get(i).getID() == taskCode){
+            		taskStored.set(i, updatedTask);
+            	}
+            }
+            
             Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("task updated!");
@@ -480,7 +488,7 @@ public class Logic {
     // ================================================================
     // "View" command methods
     // ================================================================
-
+/*
     private void viewTask(Command com){
         for (int i = 0; i<taskStored.size(); i++){
             if (taskStored.get(i).contains(com.getTaskEventDate())){
@@ -490,7 +498,7 @@ public class Logic {
             }   
         }
     }
-
+*/
     // ================================================================
     // "view today's task" command methods
     // ================================================================
