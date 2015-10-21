@@ -8,20 +8,21 @@ import java.util.*;
 import org.junit.internal.Throwables;
 
 public class Logic {
-    private static ArrayList<Task> taskStored = Storage.retrieveTexts();
-    private static ArrayList<String> msgLogger = new ArrayList<String>();
-    private static ArrayList<String> event = initList("event", taskStored);
-    private static ArrayList<String> deadline = initList("deadline", taskStored);
-    private static ArrayList<String> floatingTask = initList("floating", taskStored);
-    private static ArrayList<Task> repeatedTask = new ArrayList <Task>();
+    private  ArrayList<Task> taskStored = JSonStorage.retrieveAllTasks();
+    private  ArrayList<String> msgLogger = new ArrayList<String>();
+    private  ArrayList<String> event = initList("event", taskStored);
+    private  ArrayList<String> deadline = initList("deadline", taskStored);
+    private  ArrayList<String> floatingTask = initList("floating", taskStored);
+    private  ArrayList<Task> repeatedTask = new ArrayList <Task>();
+    pri
     
-    private static int taskCode = 1;
+    private  int taskCode = ;
 
-    private static ArrayList<Integer> currentList = new ArrayList <Integer>();
-    private static CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
-    private static String currentDate = initDate();
+    private  ArrayList<Integer> currentList = new ArrayList <Integer>();
+    private  CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
+    private  String currentDate = initDate();
 
-    public static void executeCommand (String userInput) throws Exception {
+    public void executeCommand (String userInput) throws Exception {
         if(userInput.trim().isEmpty()) {
             msgLogger.add("Please enter a command.");
         }
@@ -70,7 +71,7 @@ public class Logic {
     }
 
     @SuppressWarnings("unchecked")
-	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
+	private ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(type)){
@@ -80,7 +81,7 @@ public class Logic {
         return list;
     }
 
-    private static String initDate() {
+    private String initDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
         return dateFormat.format(cal.getTime());
@@ -90,7 +91,7 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-    private static void addTask(Command command) throws Exception{
+    private void addTask(Command command) throws Exception{
         try{
         	
             String taskType = command.getTaskType();
@@ -155,7 +156,7 @@ public class Logic {
     // "Repeat task" command methods
     // ================================================================
 
-    private static void addRepeatTask(Command com) throws FileNotFoundException{  
+    private void addRepeatTask(Command com) throws FileNotFoundException{  
     	ArrayList <String> detailStored; 
         detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription()+ "#" + taskCode++);
         repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
@@ -179,7 +180,7 @@ public class Logic {
     }
      */
 
-    public static void printArrayList(){
+    public void printArrayList(){
         for (int i=0; i<taskStored.size(); i++){
             System.out.println(taskStored.get(i));
         }
@@ -189,7 +190,7 @@ public class Logic {
     // "search" command methods
     // ================================================================
 
-    private static void searchTask(Command command) throws FileNotFoundException{
+    private void searchTask(Command command) throws FileNotFoundException{
         ArrayList<String> keyWordList = command.getSearchKeyword();
         String keyword = "";
         for(int i=0; i< keyWordList.size(); i++) {
@@ -209,7 +210,7 @@ public class Logic {
     // "Delete" command methods
     // ================================================================
 
-    private static void deleteTask(Command command){
+    private void deleteTask(Command command){
         String taskType = command.getTaskType();
         try{
             int indexToRemove = command.getTaskID() - 1;
@@ -255,7 +256,7 @@ public class Logic {
     // "Complete" command method
     // ================================================================
 
-    private static void completeTask(Command command) {
+    private void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
             int indexToComplete = command.getTaskID() - 1;
@@ -297,7 +298,7 @@ public class Logic {
     // "Update" command methods
     // ================================================================
 
-    private static void updateTask(Command command) throws FileNotFoundException{
+    private void updateTask(Command command) throws FileNotFoundException{
         String taskType = command.getTaskType();
 
         try {
@@ -381,7 +382,7 @@ public class Logic {
     // ================================================================
     // Undo command method
     // ================================================================
-    private static void redoCommand() throws FileNotFoundException {
+    private void redoCommand() throws FileNotFoundException {
         String message = "";
         try {
             message = "redo successfully";
@@ -399,7 +400,7 @@ public class Logic {
     // ================================================================
     // Redo command method
     // ================================================================
-    private static void undoCommand() throws FileNotFoundException {
+    private void undoCommand() throws FileNotFoundException {
         String message = "";
         try {
             message = "undo successfully";
@@ -418,7 +419,7 @@ public class Logic {
     // "View" command methods
     // ================================================================
 
-    private static void viewTask(Command com){
+    private void viewTask(Command com){
         for (int i = 0; i<taskStored.size(); i++){
             if (taskStored.get(i).contains(com.getTaskEventDate())){
                 currentList.add(i);
@@ -469,7 +470,7 @@ public class Logic {
     // ================================================================
     // Getter methods to retrieve lists for UI
     // ================================================================
-    public static String getMessageLog(){
+    public String getMessageLog(){
         String messageToPrint = "";
         for(int i=0; i<msgLogger.size(); i++) {
             messageToPrint += msgLogger.get(i) + "\n";
@@ -477,7 +478,7 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public static String getEvents(){
+    public String getEvents(){
         String messageToPrint = "";
         if(deadline.size() == 0) {
             return messageToPrint = "No events";
@@ -488,7 +489,7 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public static String getDeadline(){
+    public String getDeadline(){
         String messageToPrint = "";
         if(deadline.size() == 0) {
             return messageToPrint = "No tasks";
@@ -499,7 +500,7 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public static String getFloatingTask(){
+    public String getFloatingTask(){
         String messageToPrint = "";
         if(floatingTask.size() == 0) {
             return messageToPrint = "No tasks";
