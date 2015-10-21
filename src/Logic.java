@@ -22,7 +22,7 @@ public class Logic {
 
     private  ArrayList<Integer> currentList = new ArrayList <Integer>();
     private  CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
-    private  String currentDate = initDate();
+  //  private  String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
     	Logic logic = new Logic ();
@@ -76,7 +76,7 @@ public class Logic {
     @SuppressWarnings("unchecked")
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
-        System.out.println(taskStored.size());
+      //  System.out.println(taskStored.size());
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
                 if (type.equals("floating")){
@@ -94,20 +94,24 @@ public class Logic {
     }
     
     private int getID(){
-    	String s = initDate();
-    //	String sID = Integer.toString(id);
-    //	id++;
-    //	s = s + sID;
-    	taskCode = Integer.parseInt(s);
+    	DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+    	Calendar cal = Calendar.getInstance();
+    	String s = dateFormat.format(cal.getTime());
+    	DateFormat dateFormat2 = new SimpleDateFormat("HHmmss");
+        Date date = new Date();
+    	String sID = dateFormat2.format(date);
+    	int sNum = Integer.parseInt(s);
+    	int sIDNum = Integer.parseInt(sID);
+    	taskCode = sNum + sIDNum;
     	return taskCode;
     }
-
+/*
     private String initDate() {
-        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Calendar cal = Calendar.getInstance();
         return dateFormat.format(cal.getTime());
     }
-
+*/
     // ================================================================
     // "Add" command methods
     // ================================================================
@@ -254,18 +258,18 @@ public class Logic {
         	int indexToRemove = command.getTaskID()-1;
             String  removedItem = "";
             String currentLine = "";
-
+            
             if(taskType.equals("deadline")) {
             	 currentLine = deadline.get(indexToRemove);
             	 removedItem = deadline.remove(indexToRemove);
             }
             else if(taskType.equals("floating")) {
-            	currentLine = deadline.get(indexToRemove);
-            	msgLogger.add(currentLine);
+            	currentLine = floatingTask.get(indexToRemove);
+            //	msgLogger.add(currentLine);
             	removedItem = floatingTask.remove(indexToRemove);
             }
             else if(taskType.equals("event")) {
-            	currentLine = deadline.get(indexToRemove);
+            	currentLine = event.get(indexToRemove);
             	removedItem = event.remove(indexToRemove);
             }
             String str[] = currentLine.split("#");

@@ -50,7 +50,7 @@ public class Task {
     }
     
     public String getFloatingString (){
-    	return "floating"+ "#" + this.description  + Integer.toString(this.id) ;
+    	return "floating"+ "#" + this.description +"#"+ Integer.toString(this.id) ;
     }
     public String getEventString (){
     	return "event"+ "#" + this.eventDate + "#" + this.eventTime + "#" +this.description + "#"+ Integer.toString(this.id) ;
