@@ -371,14 +371,15 @@ public class Logic {
         Task updatedTask = null;
 
         try {
-            int indexToUpdate = command.getTaskID();
+            int indexToUpdate = command.getTaskID()-1;
             String updatedItem = "";
             String existingItem = "";
             
             if(taskType.equals("deadline")) {
                 existingItem = deadline.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
-                taskCode = Integer.parseInt(strArr[strArr.length -1]);
+                taskCode = Integer.parseInt(strArr[strArr.length-1]);
+            //    msgLogger.add(Integer.toString(taskCode));
                 updatedItem += strArr[0]+"#";
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
@@ -387,7 +388,7 @@ public class Logic {
                     updatedItem += strArr[1]+"#";
                 }
                 
-
+                
                 msgLogger.add("Deadline Desc: " + command.getTaskDescription());
 
                 if(!command.getTaskDescription().isEmpty()) {
@@ -398,11 +399,15 @@ public class Logic {
                     updatedItem += strArr[2];
                     msgLogger.add("Using current desc");
                 }
-                updatedItem += "#"+Integer.toString(taskCode);
-                ArrayList updatedLine = new ArrayList ();
+             //   msgLogger.add(updatedItem);
+                updatedItem = updatedItem +"#"+Integer.toString(taskCode);
+             //   msgLogger.add(updatedItem);
+                ArrayList<String> updatedLine = new ArrayList<String> ();
                 updatedLine.add(updatedItem);
-                updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
+             
+                msgLogger.add(Integer.toString(indexToUpdate));
                 deadline.set(indexToUpdate, updatedItem);
+                updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
             else if(taskType.equals("floating")) {
                 existingItem = floatingTask.get(indexToUpdate);
@@ -416,7 +421,7 @@ public class Logic {
                     updatedItem += strArr[1];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
-                ArrayList updatedLine = new ArrayList ();
+                ArrayList<String>updatedLine = new ArrayList<String> ();
                 updatedLine.add(updatedItem);
                 updatedTask = new Task (Task.Type.FLOATING, updatedLine);
                 floatingTask.set(indexToUpdate, updatedItem);
@@ -445,7 +450,7 @@ public class Logic {
                     updatedItem += strArr[3];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
-                ArrayList updatedLine = new ArrayList ();
+                ArrayList <String>updatedLine = new ArrayList <String> ();
                 updatedLine.add(updatedItem);
                 updatedTask = new Task (Task.Type.EVENT, updatedLine);
                 event.set(indexToUpdate, updatedItem);
