@@ -136,13 +136,13 @@ public class Logic {
             else {
                 throw new Exception("Fail to add an invalid task");
             }
-            msgLogger.add("hasdkajsha");
+           
             if (taskStored.contains(detailStored)) {
             	msgLogger.add("Collision Task!");
             	
             }else {
-            	
-               taskStored.add(new Task(type,detailTask));
+               Task task = new Task (type, detailTask);
+               taskStored.add(task);
                System.out.println(taskStored.get(0).getDescription());
               //  sortForAdd();
                 storage.saveToFile(taskStored);

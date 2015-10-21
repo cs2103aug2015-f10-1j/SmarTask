@@ -34,7 +34,7 @@ public class Task {
     private void setAttributes(Type type, ArrayList<String> attributeList) {
     	this.type = type;
     	String[] list = null;
-    	if (attributeList.size()>1){
+    	if (attributeList.size()>0){
     		list = attributeList.get(0).trim().split("#");
     	}
     	if (type.equals(Task.Type.EVENT)){
