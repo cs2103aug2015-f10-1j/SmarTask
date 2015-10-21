@@ -112,34 +112,38 @@ public class Logic {
             ArrayList <String> detailStored = new ArrayList <String> ();
             ArrayList <String> detailTask = new ArrayList <String> ();
             Task.Type type;
+            taskCode = getID();
 
             if(taskType.equals("floating")) {
-                detailStored.add(taskType+"#"+command.getTaskDescription() + "#" + getID());
-                detailTask.add(command.getTaskDescription()+ "#" + getID());
+                detailStored.add(taskType+"#"+command.getTaskDescription() + "#" + taskCode);
+                detailTask.add(command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.FLOATING;
           //      msgLogger.add(detailStored.toString() + "\n" + detailTask.toString());
                 floatingTask.add(detailStored.toString());
             } 
             else if(taskType.equals("event")) {
-                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ getID());
-                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + getID());
+                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ taskCode);
+                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.EVENT;
                 event.add(detailStored.toString());
             }
             else if(taskType.equals("deadline")) {
-                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+ getID());
-                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + getID());
+                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+ taskCode);
+                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.DEADLINE;
                 deadline.add(detailStored.toString());
             }
             else {
                 throw new Exception("Fail to add an invalid task");
             }
+            msgLogger.add("hasdkajsha");
             if (taskStored.contains(detailStored)) {
             	msgLogger.add("Collision Task!");
             	
             }else {
+            	
                taskStored.add(new Task(type,detailTask));
+               System.out.println(taskStored.get(0).getDescription());
               //  sortForAdd();
                 storage.saveToFile(taskStored);
                 msgLogger.add("add " + command.getTaskDescription() + " successful!");  
