@@ -5,24 +5,24 @@ import javax.print.attribute.standard.PrinterLocation;
 public class CommandHistoryStubTest {
 
     public static void main(String[] args) {
-       /* ArrayList<String> storedTask = new ArrayList<String>();
-        storedTask.add("Task 0");
-        CommandHistory history = new CommandHistory(new ArrayList<String>(storedTask));
+       ArrayList<Task> storedTask = new ArrayList<Task>();
+        storedTask.add(new Task ());
+        CommandHistory history = new CommandHistory(new ArrayList<Task>(storedTask));
         printArrayList(history.undoStack.peek());
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
         
-        storedTask.add("Task 1");
-        history.addChangeToHistory(new ArrayList<String>(storedTask));
+        storedTask.add(new Task ());
+        history.addChangeToHistory(new ArrayList<Task>(storedTask));
         printArrayList(history.undoStack.peek());
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
         
-        storedTask.add("Task 2");
-        history.addChangeToHistory(new ArrayList<String>(storedTask));
+        storedTask.add(new Task ());
+        history.addChangeToHistory(new ArrayList<Task>(storedTask));
         printArrayList(history.undoStack.peek());
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
         
-        storedTask.add("Task 3");
-        history.addChangeToHistory(new ArrayList<String>(storedTask));
+        storedTask.add(new Task ());
+        history.addChangeToHistory(new ArrayList<Task>(storedTask));
         printArrayList(history.undoStack.peek());
         System.out.println("Undo Stack Size: " + history.undoStack.size() + " Redo Stack Size: " + history.redoStack.size());
         
@@ -92,11 +92,10 @@ public class CommandHistoryStubTest {
         
     }
     
-    public static void printArrayList(ArrayList<String> list) {
+    public static void printArrayList(ArrayList<Task> list) {
         for(int i = 0; i <list.size(); i++) {
             System.out.print(list.get(i) + " ");
         }
         System.out.println();
-        */
     }
 }
