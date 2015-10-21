@@ -301,22 +301,41 @@ public class Logic {
     private void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
-            int indexToComplete = command.getTaskID();
+            String indexToComplete = Integer.toString(command.getTaskID());
             String completedItem = "";
 
             if(taskType.equals("deadline")) {
-                completedItem = deadline.remove(indexToComplete);
+            	for (int i=0; i < deadline.size(); i++){
+            		if (deadline.get(i).contains(indexToComplete)){
+            			completedItem = deadline.remove(i);
+            			break;
+            		}
+            	}
             }
             else if(taskType.equals("floating")) {
-                completedItem = floatingTask.remove(indexToComplete);
+            	for (int i=0; i < floatingTask.size(); i++){
+            		if (floatingTask.get(i).contains(indexToComplete)){
+            			completedItem =floatingTask.remove(i);
+            			break;
+            		}
+            	}
             }
             else if(taskType.equals("event")) {
-                completedItem = event.remove(indexToComplete);
+            	for (int i=0; i < event.size(); i++){
+            		if (event.get(i).contains(indexToComplete)){
+            			completedItem =event.remove(i);
+            			break;
+            		}
+            	}
             }
 
-           // taskStored.remove(new String(completedItem));
-           // Storage.saveToFile(taskStored);
-            storage.delete(indexToComplete);
+            for (int i=0; i < taskStored.size(); i++){
+        		if (taskStored.get(i).getID() == Integer.parseInt(indexToComplete)){
+        			taskStored.get(i).setIsComplete(true);
+        			break;
+        		}
+        	}
+            Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
 
