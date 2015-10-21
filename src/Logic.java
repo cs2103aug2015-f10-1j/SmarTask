@@ -143,7 +143,7 @@ public class Logic {
             }else {
                Task task = new Task (type, detailTask);
                taskStored.add(task);
-               System.out.println(taskStored.get(0).getDescription());
+             //  System.out.println(taskStored.get(0).getDescription());
               //  sortForAdd();
                 storage.saveToFile(taskStored);
                 msgLogger.add("add " + command.getTaskDescription() + " successful!");  
@@ -243,7 +243,7 @@ public class Logic {
     private void deleteTask(Command command){
         String taskType = command.getTaskType();
         try{
-        	int indexToRemove = command.getTaskID();
+        	int indexToRemove = command.getTaskID()-1;
             String  removedItem = "";
             String currentLine = "";
 
@@ -253,6 +253,7 @@ public class Logic {
             }
             else if(taskType.equals("floating")) {
             	currentLine = deadline.get(indexToRemove);
+            //	msgLogger.add(currentLine);
             	removedItem = floatingTask.remove(indexToRemove);
             }
             else if(taskType.equals("event")) {
@@ -261,6 +262,7 @@ public class Logic {
             }
             String str[] = currentLine.split("#");
             taskCode = Integer.parseInt(str[str.length-1]);
+            msgLogger.add(Integer.toString(taskCode));
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){
             		taskStored.remove(i);
@@ -299,7 +301,7 @@ public class Logic {
     private void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
-            int indexToComplete = command.getTaskID();
+            int indexToComplete = command.getTaskID()-1;
             String completedItem = "";
             String currentLine = " ";
             
