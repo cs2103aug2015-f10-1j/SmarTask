@@ -78,7 +78,8 @@ public class Logic {
         ArrayList<String> list = new ArrayList <String>();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(type)){
-                list.addAll((Collection<? extends String>) taskStored.get(i));
+                list.add(taskStored.get(i).toString());
+                msgLogger.add(taskStored.get(i).toString());
             }
         }
         return list;
