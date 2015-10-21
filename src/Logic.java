@@ -9,7 +9,7 @@ import org.junit.internal.Throwables;
 
 public class Logic {
 	private JSonStorage storage = new JSonStorage ();
-    private  ArrayList<Task> taskStored = JSonStorage.retrieveAllTasks();
+    private static  ArrayList<Task> taskStored = JSonStorage.retrieveAllTasks();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
@@ -23,6 +23,7 @@ public class Logic {
     private  String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
+    	Logic logic = new Logic ();
         if(userInput.trim().isEmpty()) {
             msgLogger.add("Please enter a command.");
         }
@@ -33,31 +34,31 @@ public class Logic {
 
                 switch (command.getCommandType()){
                     case ADD : 
-                        addTask(command);
+                        logic.addTask(command);
                         break;
                     case REPEAT : 
-                        addRepeatTask(command);
+                        logic.addRepeatTask(command);
                         break;
                     case DELETE :
-                        deleteTask(command);
+                        logic.deleteTask(command);
                         break;
                     case VIEW :
-                        viewTask (command);
+                        logic.viewTask (command);
                         break;
                     case UPDATE :
-                        updateTask(command);
+                        logic.updateTask(command);
                         break;
                     case SEARCH:
-                        searchTask(command);
+                        logic.searchTask(command);
                         break;
                     case COMPLETE :
-                        completeTask(command);
+                        logic.completeTask(command);
                         break;
                     case UNDO :
-                        undoCommand();
+                        logic.undoCommand();
                         break;
                     case REDO :
-                        redoCommand();
+                        logic.redoCommand();
                         break;
                     case EXIT :
                         break;
@@ -71,7 +72,7 @@ public class Logic {
     }
 
     @SuppressWarnings("unchecked")
-	private ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
+	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(type)){
@@ -137,7 +138,7 @@ public class Logic {
               //  sortForAdd();
                 storage.add(new Task(type,detailTask));
                 msgLogger.add("add " + command.getTaskDescription() + " successful!");  
-                history.addChangeToHistory(new ArrayList<String>(taskStored));
+                history.addChangeToHistory(new ArrayList<Task>(taskStored));
             }
             
 
@@ -249,7 +250,7 @@ public class Logic {
            // taskStored.remove(new String(removedItem));
            // Storage.saveToFile(taskStored);
             storage.delete(indexToRemove);
-            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
 
             /*int index = currentList.get(com.getTaskID()-1);
@@ -296,7 +297,7 @@ public class Logic {
            // taskStored.remove(new String(completedItem));
            // Storage.saveToFile(taskStored);
             storage.delete(indexToComplete);
-            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
 
         }catch(Exception e){
@@ -393,7 +394,7 @@ public class Logic {
 
             taskStored.set(taskStored.indexOf(existingItem), updatedItem);
             Storage.saveToFile(taskStored);
-            history.addChangeToHistory(new ArrayList<String>(taskStored));
+            history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("task updated!");
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
@@ -408,7 +409,7 @@ public class Logic {
         String message = "";
         try {
             message = "redo successfully";
-            taskStored = new ArrayList<String>(history.redo());
+            taskStored = new ArrayList<Task>(history.redo());
             Storage.saveToFile(taskStored);
             event = initList("event", taskStored);
             deadline = initList("deadline", taskStored);
@@ -426,7 +427,7 @@ public class Logic {
         String message = "";
         try {
             message = "undo successfully";
-            taskStored = new ArrayList<String>(history.undo());
+            taskStored = new ArrayList<Task>(history.undo());
             Storage.saveToFile(taskStored);
             event = initList("event", taskStored);
             deadline = initList("deadline", taskStored);
