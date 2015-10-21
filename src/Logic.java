@@ -10,8 +10,8 @@ import javax.swing.RowFilter.ComparisonType;
 import org.junit.internal.Throwables;
 
 public class Logic {
-	private Storage storage = new Storage ();
-    private static  ArrayList<Task> taskStored = Storage.retrieveFile();
+	private static Storage storage = new Storage ();
+    private static  ArrayList<Task> taskStored = storage.retrieveFile();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
@@ -183,7 +183,7 @@ public class Logic {
     	}
      //   detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
         repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
-        Storage.saveToFile(repeatedTask);
+        storage.saveToFile(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
 
@@ -262,7 +262,7 @@ public class Logic {
             		break;
             	}
             }
-            Storage.saveToFile(taskStored);
+            storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
 
@@ -322,7 +322,7 @@ public class Logic {
             		break;
             	}
             }
-            Storage.saveToFile(taskStored);
+            storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
 
@@ -441,7 +441,7 @@ public class Logic {
             	}
             }
             
-            Storage.saveToFile(taskStored);
+            storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("task updated!");
         } catch (Exception e) {
@@ -458,7 +458,7 @@ public class Logic {
         try {
             message = "redo successfully";
             taskStored = new ArrayList<Task>(history.redo());
-            Storage.saveToFile(taskStored);
+            storage.saveToFile(taskStored);
             event = initList("event", taskStored);
             deadline = initList("deadline", taskStored);
             floatingTask = initList("floating", taskStored);
@@ -476,7 +476,7 @@ public class Logic {
         try {
             message = "undo successfully";
             taskStored = new ArrayList<Task>(history.undo());
-            Storage.saveToFile(taskStored);
+            storage.saveToFile(taskStored);
             event = initList("event", taskStored);
             deadline = initList("deadline", taskStored);
             floatingTask = initList("floating", taskStored);
