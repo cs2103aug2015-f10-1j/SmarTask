@@ -27,7 +27,7 @@ public class Storage {
 
 	private static File taskFile;
 	private static BufferedReader reader;
-	private PrintWriter writer;
+	private static PrintWriter writer;
 	private ArrayList<Task> taskList;
 
 	
@@ -76,8 +76,9 @@ public class Storage {
 		return taskList;
 	}
 
-	public void saveToFile(ArrayList<Task> taskList) {
+	public static void saveToFile(ArrayList<Task> taskList) {
 		try {
+		
 			writer = new PrintWriter(taskFile, "UTF-8");
 			for (Task task : taskList) {
 				writer.println(gson.toJson(task));
