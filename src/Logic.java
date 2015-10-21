@@ -21,7 +21,7 @@ public class Logic {
     private  int taskCode ;
 
     private  ArrayList<Integer> currentList = new ArrayList <Integer>();
-    private  CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
+    private  CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
   //  private  String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
@@ -508,7 +508,7 @@ public class Logic {
     }
 
     // ================================================================
-    // Undo command method
+    // redo command method
     // ================================================================
     private void redoCommand() throws FileNotFoundException {
         String message = "";
@@ -526,7 +526,7 @@ public class Logic {
     }
 
     // ================================================================
-    // Redo command method
+    // undo command method
     // ================================================================
     private void undoCommand() throws FileNotFoundException {
         String message = "";
