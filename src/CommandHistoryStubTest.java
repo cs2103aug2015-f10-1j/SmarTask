@@ -5,7 +5,7 @@ import javax.print.attribute.standard.PrinterLocation;
 public class CommandHistoryStubTest {
 
     public static void main(String[] args) {
-        ArrayList<String> storedTask = new ArrayList<String>();
+       /* ArrayList<String> storedTask = new ArrayList<String>();
         storedTask.add("Task 0");
         CommandHistory history = new CommandHistory(new ArrayList<String>(storedTask));
         printArrayList(history.undoStack.peek());
@@ -97,6 +97,6 @@ public class CommandHistoryStubTest {
             System.out.print(list.get(i) + " ");
         }
         System.out.println();
+        */
     }
-
 }
