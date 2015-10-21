@@ -8,8 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -24,7 +28,7 @@ public class JSonStorage {
 	private static boolean OVERWRITE = false;
 	private static boolean APPEND = true;
 	private static String DEFAULT_FILENAME = "Data.txt";
-	private List<Task> taskList;
+	private ArrayList<Task> taskList;
 	private static String fileName;
 	private static String oldFileName;
 
@@ -49,7 +53,7 @@ public class JSonStorage {
 
 			taskList.add(task);
 			System.out.println(taskList.size());
-			Collections.sort(taskList);
+			sortByDate();
 			rewriteFile();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,7 +66,7 @@ public class JSonStorage {
 				taskList.remove(i);
 			}
 		}
-		Collections.sort(taskList);
+		sortByDate();
 		rewriteFile();
 	}
 
@@ -80,7 +84,7 @@ public class JSonStorage {
 		}
 	}
 
-	public List<Task> getAllTasks() {
+	public List<Task> retrieveAllTasks() {
 		return taskList;
 	}
 
@@ -251,5 +255,19 @@ public class JSonStorage {
 		File f = new File(name);
 		return f.getAbsolutePath();
 	}
+	
+	private void sortByDate(){
+        Collections.sort(taskList, new Comparator<Task>() {
+            DateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            @Override
+            public int compare(Task task1, Task task2) {
+                try {
+                    return f.parse(task1.getDeadline()).compareTo(f.parse(task2.getDeadline()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
 
 }
