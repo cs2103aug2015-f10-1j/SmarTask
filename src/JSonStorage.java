@@ -43,7 +43,6 @@ public class JSonStorage {
 	}
 
 	public void add(Task task) {
-		System.out.println("fileName : " + fileName);
 		try {
 			Gson gson = new Gson();
 			FileWriter writer = new FileWriter(fileName, APPEND);
@@ -258,7 +257,7 @@ public class JSonStorage {
 	
 	private void sortByDate(){
         Collections.sort(taskList, new Comparator<Task>() {
-            DateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             @Override
             public int compare(Task task1, Task task2) {
                 try {

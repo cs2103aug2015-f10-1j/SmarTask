@@ -1,4 +1,132 @@
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+/**
+ * Storage component - Nothing should be stored in Storage
+ * @author gaieepo
+ *
+ */
+
+
+
+
+public class Storage {
+	public static String DEFAULT_FILELOCATION = System.getProperty("user.home") + "/Desktop";
+    public static String DEFAULT_FILENAME = "taskFile.txt";
+
+	private static Storage taskOrganiser;
+
+	private File taskFile;
+	private BufferedReader reader;
+	private PrintWriter writer;
+	private ArrayList<Task> taskList;
+
+	
+	private Gson gson;
+
+	public Storage() {
+		gson = new Gson();
+		taskFile = new File(DEFAULT_FILENAME);
+		
+		createFile();
+	}
+	
+    public void createFile() {
+    		if (!checkFileExist()) {
+    			taskFile = new File(DEFAULT_FILELOCATION);
+    		}
+    }
+    
+	public static Storage getInstance() {
+		if (taskOrganiser == null) {
+			taskOrganiser = new Storage();
+		}
+		return taskOrganiser;
+	}
+	
+	public ArrayList<Task> retrieveFile() {
+		String text = "";
+		ArrayList<Task> taskList = new ArrayList<Task>();
+		
+		try {
+			if (!initReader(taskFile)) {
+				return taskList;
+			}
+			while ((text = reader.readLine()) != null) {
+				Task task = gson.fromJson(text, Task.class);
+				taskList.add(task);
+			}
+		} catch (IOException | JsonSyntaxException e) {
+			e.printStackTrace();
+		}
+		closeReader();
+		
+		if (taskList == null || taskList.isEmpty()) {
+			taskList = new ArrayList<Task>();
+		}
+		return taskList;
+	}
+
+	public void updateFile(ArrayList<Task> taskList) {
+		try {
+			writer = new PrintWriter(taskFile, "UTF-8");
+			for (Task task : taskList) {
+				writer.println(gson.toJson(task));
+			}
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		writer.close();
+	}
+
+	// Initialization Methods
+	private boolean initReader(File taskFile) {
+		try {
+			reader = new BufferedReader(new FileReader(taskFile));
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+		return true;
+	}
+
+	private void closeReader() {
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Utility Methods
+	public boolean checkFileExist() {
+		File file = new File(DEFAULT_FILELOCATION);
+		if (file.exists()) {
+			return true;
+		}
+		return false;
+	}
+	
+
+}
+
+
+
+
+
+
+
+
+
+/*import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -74,3 +202,4 @@ public class Storage {
     }
 
 }
+*/
