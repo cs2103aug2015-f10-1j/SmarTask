@@ -31,33 +31,51 @@ public class Task {
 	setAttributes(type, attributeList);
     }
 
+    private Type getTypeFromString(String type) {
+	if(type == "floating") {
+	    return Type.FLOATING;
+	}
+	else if(type == "event") {
+	    return Type.EVENT;
+	}
+	else if(type == "deadline") {
+	    return Type.DEADLINE;
+	}
+	else if(type == "repeat") {
+	    return Type.REPEAT;
+	}
+	else {
+	    return null;
+	}
+    }
+
     private void setAttributes(Type type, ArrayList<String> attributeList) {
-    	this.type = type;
-    	String[] list = null;
-    	if (attributeList.size()>0){
-    		list = attributeList.get(0).trim().split("#");
-    	}
-    	if (type.equals(Task.Type.EVENT)){
-    		this.eventDate = list[0];
-    		this.eventTime = list[1];
-    		this.description = list[2];
-    		this.id = Integer.parseInt(list[3]);
-    		this.isComplete = false;
-    	} else if (type.equals(Task.Type.DEADLINE)) {
-    		this.deadline = list[0];
-    		this.description = list[1];
-    		this.id = Integer.parseInt(list[2]);
-    		this.isComplete = false;
-    	} else if (type.equals(Task.Type.FLOATING)) {
-    		this.description = list[0];
-    		this.id = Integer.parseInt(list[1]);
-    		this.isComplete = false;
-    	} else {
-    		this.repeatPeriod = list[0];
-    		this.description = list[1];
-    		this.id = Integer.parseInt(list[2]);
-    		this.isComplete = false;
-    	}	
+	this.type = type;
+	String[] list = null;
+	if (attributeList.size()>0){
+	    list = attributeList.get(0).trim().split("#");
+	}
+	if (type.equals(Task.Type.EVENT)){
+	    this.eventDate = list[0];
+	    this.eventTime = list[1];
+	    this.description = list[2];
+	    this.id = Integer.parseInt(list[3]);
+	    this.isComplete = false;
+	} else if (type.equals(Task.Type.DEADLINE)) {
+	    this.deadline = list[0];
+	    this.description = list[1];
+	    this.id = Integer.parseInt(list[2]);
+	    this.isComplete = false;
+	} else if (type.equals(Task.Type.FLOATING)) {
+	    this.description = list[0];
+	    this.id = Integer.parseInt(list[1]);
+	    this.isComplete = false;
+	} else {
+	    this.repeatPeriod = list[0];
+	    this.description = list[1];
+	    this.id = Integer.parseInt(list[2]);
+	    this.isComplete = false;
+	}	
     }
 
     // ================================================================
@@ -75,7 +93,7 @@ public class Task {
     public String getDescription() {
 	return description;
     }
-    
+
     public String getDeadline() {
 	return deadline;
     }
@@ -83,7 +101,7 @@ public class Task {
     public String getEventDate() {
 	return eventDate;
     }
-    
+
     public String getEventTime() {
 	return eventTime;
     }
@@ -99,9 +117,9 @@ public class Task {
     public String getTimeAdded() {
 	return timeAdded;
     }
-    
+
     public Boolean getIsComplete(){
-    	return isComplete;
+	return isComplete;
     }
 
     // ================================================================
@@ -127,7 +145,7 @@ public class Task {
     public void setEventDate(String eventDate) {
 	this.eventDate = eventDate;
     }
-    
+
     public void setEventTime(String eventTime) {
 	this.eventTime = eventTime;
     }
@@ -143,9 +161,9 @@ public class Task {
     public void setTimeAdded(String timeAdded) {
 	this.timeAdded = timeAdded;
     }
-    
+
     public void setIsComplete(Boolean bo){
-    	this.isComplete = bo;
+	this.isComplete = bo;
     }
 
 }
