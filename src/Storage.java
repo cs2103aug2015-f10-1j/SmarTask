@@ -76,7 +76,7 @@ public class Storage {
 		return taskList;
 	}
 
-	public void updateFile(ArrayList<Task> taskList) {
+	public void saveToFile(ArrayList<Task> taskList) {
 		try {
 			writer = new PrintWriter(taskFile, "UTF-8");
 			for (Task task : taskList) {
