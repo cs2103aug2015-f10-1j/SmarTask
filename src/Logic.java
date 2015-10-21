@@ -397,7 +397,7 @@ public class Logic {
 
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
-                    updatedTask +=command.getTaskDescription() + "#";
+                    updatedTask +=command.getTaskDescription();
                     msgLogger.add("Using new desc");
                 }
                 else{
