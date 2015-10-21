@@ -8,15 +8,15 @@ import java.util.*;
 import org.junit.internal.Throwables;
 
 public class Logic {
+	private JSonStorage storage = new JSonStorage ();
     private  ArrayList<Task> taskStored = JSonStorage.retrieveAllTasks();
-    private  ArrayList<String> msgLogger = new ArrayList<String>();
-    private  ArrayList<String> event = initList("event", taskStored);
-    private  ArrayList<String> deadline = initList("deadline", taskStored);
-    private  ArrayList<String> floatingTask = initList("floating", taskStored);
+    private static ArrayList<String> msgLogger = new ArrayList<String>();
+    private static ArrayList<String> event = initList("event", taskStored);
+    private static ArrayList<String> deadline = initList("deadline", taskStored);
+    private static  ArrayList<String> floatingTask = initList("floating", taskStored);
     private  ArrayList<Task> repeatedTask = new ArrayList <Task>();
-    pri
-    
-    private  int taskCode = ;
+    private int id=1;
+    private  int taskCode ;
 
     private  ArrayList<Integer> currentList = new ArrayList <Integer>();
     private  CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
@@ -80,6 +80,15 @@ public class Logic {
         }
         return list;
     }
+    
+    private int getID(){
+    	String s = initDate();
+    	String sID = Integer.toString(id);
+    	id++;
+    	s = s + sID;
+    	taskCode = Integer.parseInt(s);
+    	return taskCode;
+    }
 
     private String initDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -100,20 +109,20 @@ public class Logic {
             Task.Type type;
 
             if(taskType.equals("floating")) {
-                detailStored.add(taskType+"#"+command.getTaskDescription());
-                detailTask.add(command.getTaskDescription()+ "#" + taskCode++);
+                detailStored.add(taskType+"#"+command.getTaskDescription() + "#" + getID());
+                detailTask.add(command.getTaskDescription()+ "#" + getID());
                 type = Task.Type.FLOATING;
                 floatingTask.add(detailStored.toString());
             } 
             else if(taskType.equals("event")) {
-                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription());
-                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode++);
+                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ getID());
+                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + getID());
                 type = Task.Type.EVENT;
                 event.add(detailStored.toString());
             }
             else if(taskType.equals("deadline")) {
-                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription());
-                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode++);
+                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+ getID());
+                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + getID());
                 type = Task.Type.DEADLINE;
                 deadline.add(detailStored.toString());
             }
@@ -124,9 +133,9 @@ public class Logic {
             	msgLogger.add("Collision Task!");
             	
             }else {
-            	taskStored.add(new Task(type,detailTask));
+               //taskStored.add(new Task(type,detailTask));
               //  sortForAdd();
-                Storage.saveToFile(taskStored);
+                storage.add(new Task(type,detailTask));
                 msgLogger.add("add " + command.getTaskDescription() + " successful!");  
                 history.addChangeToHistory(new ArrayList<String>(taskStored));
             }
@@ -157,8 +166,17 @@ public class Logic {
     // ================================================================
 
     private void addRepeatTask(Command com) throws FileNotFoundException{  
-    	ArrayList <String> detailStored; 
-        detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription()+ "#" + taskCode++);
+    	ArrayList <String> detailStored;
+    	if (com.getTaskRepeatType().equals("day")){
+    		detailStored.add(com.getTask)
+    	} else if (com.getTaskRepeatType().equals("week")){
+    		
+    	} else if (com.getTaskRepeatType().equals("month")){
+    		
+    	} else if (com.getTaskRepeatType().equals("year")){
+    		
+    	}
+        detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
         repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
         Storage.saveToFileRC(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
@@ -470,7 +488,7 @@ public class Logic {
     // ================================================================
     // Getter methods to retrieve lists for UI
     // ================================================================
-    public String getMessageLog(){
+    public static String getMessageLog(){
         String messageToPrint = "";
         for(int i=0; i<msgLogger.size(); i++) {
             messageToPrint += msgLogger.get(i) + "\n";
@@ -478,7 +496,7 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public String getEvents(){
+    public static String getEvents(){
         String messageToPrint = "";
         if(deadline.size() == 0) {
             return messageToPrint = "No events";
@@ -489,7 +507,7 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public String getDeadline(){
+    public static String getDeadline(){
         String messageToPrint = "";
         if(deadline.size() == 0) {
             return messageToPrint = "No tasks";
@@ -500,7 +518,7 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public String getFloatingTask(){
+    public static String getFloatingTask(){
         String messageToPrint = "";
         if(floatingTask.size() == 0) {
             return messageToPrint = "No tasks";

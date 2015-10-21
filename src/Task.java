@@ -40,14 +40,18 @@ public class Task {
     		this.eventDate = list[0];
     		this.eventTime = list[1];
     		this.description = list[2];
+    		this.id = list[3];
     	} else if (type.equals(Task.Type.DEADLINE)) {
     		this.deadline = list[0];
     		this.description = list[1];
+    		this.id = list[2];
     	} else if (type.equals(Task.Type.FLOATING)) {
-    		this.description = attributeList.get(0);
+    		this.description = list[0];
+    		this.id = list[1];
     	} else {
     		this.repeatPeriod = list[0];
     		this.description = list[1];
+    		this.id = list[2];
     	}	
     }
 
