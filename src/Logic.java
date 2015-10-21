@@ -21,7 +21,7 @@ public class Logic {
     private  int taskCode ;
 
     private  ArrayList<Integer> currentList = new ArrayList <Integer>();
-    private  CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
+    private  static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
   //  private  String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
