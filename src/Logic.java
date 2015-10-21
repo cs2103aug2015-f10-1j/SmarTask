@@ -22,7 +22,7 @@ public class Logic {
     private  CommandHistory history = new CommandHistory(new ArrayList<>(taskStored));
     private  String currentDate = initDate();
 
-    public void executeCommand (String userInput) throws Exception {
+    public static void executeCommand (String userInput) throws Exception {
         if(userInput.trim().isEmpty()) {
             msgLogger.add("Please enter a command.");
         }
@@ -168,17 +168,17 @@ public class Logic {
     private void addRepeatTask(Command com) throws FileNotFoundException{  
     	ArrayList <String> detailStored;
     	if (com.getTaskRepeatType().equals("day")){
-    		detailStored.add(com.getTask)
+    		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + getID());
     	} else if (com.getTaskRepeatType().equals("week")){
-    		
+    		detailStored.add(com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + getID());
     	} else if (com.getTaskRepeatType().equals("month")){
-    		
+    		detailStored.add(com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + getID());
     	} else if (com.getTaskRepeatType().equals("year")){
-    		
+    		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + getID());
     	}
-        detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
+     //   detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
         repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
-        Storage.saveToFileRC(repeatedTask);
+     //   Storage.saveToFileRC(repeatedTask);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
 
@@ -211,13 +211,15 @@ public class Logic {
     private void searchTask(Command command) throws FileNotFoundException{
         ArrayList<String> keyWordList = command.getSearchKeyword();
         String keyword = "";
+        taskStored.clear();
+        taskStored = JSonStorage.retrieveAllTasks(); // get the latest task from the storage
         for(int i=0; i< keyWordList.size(); i++) {
             keyword = keyWordList.get(i).toLowerCase();
             for(int j=0; j<taskStored.size(); j++) {
                 String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                        msgLogger.add(taskStored.get(j).getDescription());
+                        msgLogger.add(taskStored.get(j).getID()+taskStored.get(j).getDescription());
                     }
                 }
             }
@@ -231,7 +233,7 @@ public class Logic {
     private void deleteTask(Command command){
         String taskType = command.getTaskType();
         try{
-            int indexToRemove = command.getTaskID() - 1;
+            int indexToRemove = command.getTaskID();
             String removedItem = "";
 
             if(taskType.equals("deadline")) {
@@ -244,8 +246,9 @@ public class Logic {
                 removedItem = event.remove(indexToRemove);
             }
 
-            taskStored.remove(new String(removedItem));
-            Storage.saveToFile(taskStored);
+           // taskStored.remove(new String(removedItem));
+           // Storage.saveToFile(taskStored);
+            storage.delete(indexToRemove);
             history.addChangeToHistory(new ArrayList<String>(taskStored));
             msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
 
@@ -277,7 +280,7 @@ public class Logic {
     private void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
-            int indexToComplete = command.getTaskID() - 1;
+            int indexToComplete = command.getTaskID();
             String completedItem = "";
 
             if(taskType.equals("deadline")) {
@@ -290,8 +293,9 @@ public class Logic {
                 completedItem = event.remove(indexToComplete);
             }
 
-            taskStored.remove(new String(completedItem));
-            Storage.saveToFile(taskStored);
+           // taskStored.remove(new String(completedItem));
+           // Storage.saveToFile(taskStored);
+            storage.delete(indexToComplete);
             history.addChangeToHistory(new ArrayList<String>(taskStored));
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
 
@@ -320,7 +324,7 @@ public class Logic {
         String taskType = command.getTaskType();
 
         try {
-            int indexToUpdate = command.getTaskID() - 1;
+            int indexToUpdate = command.getTaskID();
             String updatedItem = "";
             String existingItem = "";
             if(taskType.equals("deadline")) {
