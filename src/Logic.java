@@ -77,7 +77,7 @@ public class Logic {
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
         for (int i = 0; i<taskStored.size(); i++){
-            if(taskStored.get(i).getType().equals(type)){
+            if(taskStored.get(i).getType().equals(type) && taskStored.get(i).getIsComplete()==false){
                 list.add(taskStored.get(i).toString());
                 msgLogger.add(taskStored.get(i).toString());
             }
