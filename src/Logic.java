@@ -8,8 +8,8 @@ import java.util.*;
 import org.junit.internal.Throwables;
 
 public class Logic {
-	private JSonStorage storage = new JSonStorage ();
-    private static  ArrayList<Task> taskStored = JSonStorage.retrieveAllTasks();
+	private Storage storage = new Storage ();
+    private static  ArrayList<Task> taskStored = Storage.retrieveFile();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
@@ -101,12 +101,13 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-    private void addTask(Command command) throws Exception{
+    @SuppressWarnings("null")
+	private void addTask(Command command) throws Exception{
         try{
         	
             String taskType = command.getTaskType();
-            ArrayList <String> detailStored;
-            ArrayList <String> detailTask;
+            ArrayList <String> detailStored = null;
+            ArrayList <String> detailTask = null;
             Task.Type type;
 
             if(taskType.equals("floating")) {
@@ -134,9 +135,9 @@ public class Logic {
             	msgLogger.add("Collision Task!");
             	
             }else {
-               //taskStored.add(new Task(type,detailTask));
+               taskStored.add(new Task(type,detailTask));
               //  sortForAdd();
-                storage.add(new Task(type,detailTask));
+                storage.saveToFile(taskStored);
                 msgLogger.add("add " + command.getTaskDescription() + " successful!");  
                 history.addChangeToHistory(new ArrayList<Task>(taskStored));
             }
@@ -167,7 +168,7 @@ public class Logic {
     // ================================================================
 
     private void addRepeatTask(Command com) throws FileNotFoundException{  
-    	ArrayList <String> detailStored;
+    	ArrayList <String> detailStored = null;
     	if (com.getTaskRepeatType().equals("day")){
     		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + getID());
     	} else if (com.getTaskRepeatType().equals("week")){
@@ -213,7 +214,7 @@ public class Logic {
         ArrayList<String> keyWordList = command.getSearchKeyword();
         String keyword = "";
         taskStored.clear();
-        taskStored = JSonStorage.retrieveAllTasks(); // get the latest task from the storage
+        taskStored = storage.retrieveFile(); // get the latest task from the storage
         for(int i=0; i< keyWordList.size(); i++) {
             keyword = keyWordList.get(i).toLowerCase();
             for(int j=0; j<taskStored.size(); j++) {
@@ -234,22 +235,41 @@ public class Logic {
     private void deleteTask(Command command){
         String taskType = command.getTaskType();
         try{
-            int indexToRemove = command.getTaskID();
+            String indexToRemove = Integer.toString(command.getTaskID());
             String removedItem = "";
+            int indexInList;
 
             if(taskType.equals("deadline")) {
-                removedItem = deadline.remove(indexToRemove);
+            	for (int i=0; i<deadline.size(); i++){
+            		if (deadline.get(i).contains(indexToRemove)){
+                        removedItem = deadline.remove(i);
+                        break;
+            		}
+            	}   	
             }
             else if(taskType.equals("floating")) {
-                removedItem = floatingTask.remove(indexToRemove);
+            	for (int i=0; i<floatingTask.size(); i++){
+            		if (floatingTask.get(i).contains(indexToRemove)){
+                        removedItem = floatingTask.remove(i);
+                        break;
+            		}
+            	}   
             }
             else if(taskType.equals("event")) {
-                removedItem = event.remove(indexToRemove);
+            	for (int i=0; i<event.size(); i++){
+            		if (event.get(i).contains(indexToRemove)){
+                        removedItem = event.remove(i);
+                        break;
+            		}
+            	}   
             }
-
-           // taskStored.remove(new String(removedItem));
-           // Storage.saveToFile(taskStored);
-            storage.delete(indexToRemove);
+            for (int i=0; i<taskStored.size(); i++){
+        		if (taskStored.get(i).getID() == Integer.parseInt(indexToRemove)){
+        			taskStored.remove(i);
+                    break;
+        		}
+        	}   
+            Storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
 
