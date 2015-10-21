@@ -8,7 +8,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1047.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SmarTaskController">
    <children>
-      <TextField fx:id="inputWindow" layoutX="10.0" layoutY="641.0" onKeyPressed="#onEnter" prefHeight="51.0" prefWidth="1024.0" />
+      <TextField fx:id="inputWindow" layoutX="10.0" layoutY="641.0" onKeyPressed="#keyboardLog" prefHeight="51.0" prefWidth="1024.0" />
       <TextArea fx:id="mainWindow" editable="false" layoutX="10.0" layoutY="8.0" prefHeight="141.0" prefWidth="641.0" text="Welcome to SmarTask!&#10;&#10;In case you need a refresher, please type &quot;help&quot; to get a list of all the SmarTask commands." />
       <TextArea fx:id="taskWindow" editable="false" layoutX="665.0" layoutY="245.0" prefHeight="175.0" prefWidth="369.0" />
       <TextArea fx:id="displayWindow" editable="false" layoutX="10.0" layoutY="189.0" prefHeight="409.0" prefWidth="641.0" />
