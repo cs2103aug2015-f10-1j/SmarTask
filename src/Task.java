@@ -16,7 +16,7 @@ public class Task {
     }
 
     private Type type;
-    private String id;
+    private int id;
     private String description;
     private String deadline;
     private String eventDate;
@@ -40,18 +40,18 @@ public class Task {
     		this.eventDate = list[0];
     		this.eventTime = list[1];
     		this.description = list[2];
-    		this.id = list[3];
+    		this.id = Integer.parseInt(list[3]);
     	} else if (type.equals(Task.Type.DEADLINE)) {
     		this.deadline = list[0];
     		this.description = list[1];
-    		this.id = list[2];
+    		this.id = Integer.parseInt(list[2]);
     	} else if (type.equals(Task.Type.FLOATING)) {
     		this.description = list[0];
-    		this.id = list[1];
+    		this.id = Integer.parseInt(list[1]);
     	} else {
     		this.repeatPeriod = list[0];
     		this.description = list[1];
-    		this.id = list[2];
+    		this.id = Integer.parseInt(list[2]);
     	}	
     }
 
@@ -63,7 +63,7 @@ public class Task {
 	return type;
     }
 
-    public String getID() {
+    public int getID() {
 	return id;
     }
 
@@ -103,7 +103,7 @@ public class Task {
 	this.type = type;
     }
 
-    public void setID(String id) {
+    public void setID(int id) {
 	this.id = id;
     }
 
