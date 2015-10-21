@@ -24,6 +24,7 @@ public class Task {
     private String repeatPeriod;
     private String dateAdded;
     private String timeAdded;
+    private Boolean isComplete;
 
     public Task(Type type, ArrayList<String> attributeList) {
 	setType(type);
@@ -41,17 +42,21 @@ public class Task {
     		this.eventTime = list[1];
     		this.description = list[2];
     		this.id = Integer.parseInt(list[3]);
+    		this.isComplete = false;
     	} else if (type.equals(Task.Type.DEADLINE)) {
     		this.deadline = list[0];
     		this.description = list[1];
     		this.id = Integer.parseInt(list[2]);
+    		this.isComplete = false;
     	} else if (type.equals(Task.Type.FLOATING)) {
     		this.description = list[0];
     		this.id = Integer.parseInt(list[1]);
+    		this.isComplete = false;
     	} else {
     		this.repeatPeriod = list[0];
     		this.description = list[1];
     		this.id = Integer.parseInt(list[2]);
+    		this.isComplete = false;
     	}	
     }
 
@@ -94,6 +99,10 @@ public class Task {
     public String getTimeAdded() {
 	return timeAdded;
     }
+    
+    public Boolean getIsComplete(){
+    	return isComplete;
+    }
 
     // ================================================================
     // Setter methods to initialize Task object
@@ -133,6 +142,10 @@ public class Task {
 
     public void setTimeAdded(String timeAdded) {
 	this.timeAdded = timeAdded;
+    }
+    
+    public void setIsComplete(Boolean bo){
+    	this.isComplete = bo;
     }
 
 }
