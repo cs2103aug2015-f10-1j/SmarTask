@@ -95,7 +95,7 @@ public class Logic {
     }
 
     private String initDate() {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Calendar cal = Calendar.getInstance();
         return dateFormat.format(cal.getTime());
     }
@@ -104,19 +104,20 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-    @SuppressWarnings("null")
+  //  @SuppressWarnings("null")
 	private void addTask(Command command) throws Exception{
         try{
         	
             String taskType = command.getTaskType();
-            ArrayList <String> detailStored = null;
-            ArrayList <String> detailTask = null;
+            ArrayList <String> detailStored = new ArrayList <String> ();
+            ArrayList <String> detailTask = new ArrayList <String> ();
             Task.Type type;
 
             if(taskType.equals("floating")) {
                 detailStored.add(taskType+"#"+command.getTaskDescription() + "#" + getID());
                 detailTask.add(command.getTaskDescription()+ "#" + getID());
                 type = Task.Type.FLOATING;
+          //      msgLogger.add(detailStored.toString() + "\n" + detailTask.toString());
                 floatingTask.add(detailStored.toString());
             } 
             else if(taskType.equals("event")) {
