@@ -12,7 +12,7 @@ import com.google.gson.JsonSyntaxException;
 
 /**
  * Storage component - Nothing should be stored in Storage
- * @author gaieepo
+ * @author Kevin
  *
  */
 
@@ -25,13 +25,13 @@ public class Storage {
 
 	private static Storage taskOrganiser;
 
-	private File taskFile;
-	private BufferedReader reader;
+	private static File taskFile;
+	private static BufferedReader reader;
 	private PrintWriter writer;
 	private ArrayList<Task> taskList;
 
 	
-	private Gson gson;
+	private static Gson gson;
 
 	public Storage() {
 		gson = new Gson();
@@ -53,7 +53,7 @@ public class Storage {
 		return taskOrganiser;
 	}
 	
-	public ArrayList<Task> retrieveFile() {
+	public static ArrayList<Task> retrieveFile() {
 		String text = "";
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		
@@ -89,7 +89,7 @@ public class Storage {
 	}
 
 	// Initialization Methods
-	private boolean initReader(File taskFile) {
+	private static boolean initReader(File taskFile) {
 		try {
 			reader = new BufferedReader(new FileReader(taskFile));
 		} catch (FileNotFoundException e) {
@@ -98,7 +98,7 @@ public class Storage {
 		return true;
 	}
 
-	private void closeReader() {
+	private static void closeReader() {
 		try {
 			reader.close();
 		} catch (IOException e) {
