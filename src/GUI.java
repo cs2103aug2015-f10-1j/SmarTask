@@ -26,36 +26,19 @@ public class GUI extends Application {
     public void start(Stage primaryStage) {
 	   try {
 		   if(tabChanger == 0) {
-			   loadFirstFxml(primaryStage);
+			   Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+		       primaryStage.setTitle("SmarTask Main Window");
+		       primaryStage.setScene(new Scene(root, 1050, 700));
+			   primaryStage.show();
 		   } else if(tabChanger == 1) {
-			   loadSecondFxml(primaryStage);
+			   Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUIRecurringTasks.fxml"));
+		       primaryStage.setTitle("SmarTask Recurring Tasks");
+		       primaryStage.setScene(new Scene(root, 1050, 700));
+			   primaryStage.show();
 		   }
 	   } catch(Exception e) {
 		   e.printStackTrace();
 	   }       
-    }
-    
-    public void loadFirstFxml(Stage primaryStage) {
-    	try {
-    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-	        primaryStage.setTitle("SmarTask Main Window");
-	        primaryStage.setScene(new Scene(root, 1050, 700));
-		    primaryStage.show();
-    		
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-    
-    public void loadSecondFxml(Stage primaryStage) {
-    	try {
-    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUIRecurringTasks.fxml"));
-	        primaryStage.setTitle("SmarTask Recurring Tasks");
-	        primaryStage.setScene(new Scene(root, 1050, 700));
-		    primaryStage.show();
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
     }
     
     public void keyboardLog(KeyEvent ke) {
