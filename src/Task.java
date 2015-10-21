@@ -16,14 +16,14 @@ public class Task {
     }
 
     private Type type;
-    private int id;
-    private String description;
-    private String deadline;
-    private String eventDate;
-    private String eventTime;
-    private String repeatPeriod;
-    private String dateAdded;
-    private String timeAdded;
+    private  int id;
+    private  String description;
+    private  String deadline;
+    private  String eventDate;
+    private  String eventTime;
+    private  String repeatPeriod;
+    private  String dateAdded;
+    private  String timeAdded;
     private Boolean isComplete;
 
     public Task(Type type, ArrayList<String> attributeList) {
@@ -31,7 +31,7 @@ public class Task {
 	setAttributes(type, attributeList);
     }
 
-    private Type getTypeFromString(String type) {
+    public static Type getTypeFromString(String type) {
 	if(type == "floating") {
 	    return Type.FLOATING;
 	}
@@ -47,6 +47,17 @@ public class Task {
 	else {
 	    return null;
 	}
+    }
+    
+    public String getFloatingString (){
+    	return "floating"+ "#" + this.description  + Integer.toString(this.id) ;
+    }
+    public String getEventString (){
+    	return "event"+ "#" + this.eventDate + "#" + this.eventTime + "#" +this.description + "#"+ Integer.toString(this.id) ;
+    	
+    }
+    public String getDeadlineString (){
+    	return "deadline"+ "#" + this.deadline + "#" + this.description + "#"+ Integer.toString(this.id) ;	
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) {

@@ -17,7 +17,7 @@ public class Logic {
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTask = initList("floating", taskStored);
     private  ArrayList<Task> repeatedTask = new ArrayList <Task>();
-    private int id=1;
+  //  private int id=1;
     private  int taskCode ;
 
     private  ArrayList<Integer> currentList = new ArrayList <Integer>();
@@ -76,10 +76,18 @@ public class Logic {
     @SuppressWarnings("unchecked")
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
+        System.out.println(taskStored.size());
         for (int i = 0; i<taskStored.size(); i++){
-            if(taskStored.get(i).getType().equals(type) && taskStored.get(i).getIsComplete()==false){
-                list.add(taskStored.get(i).toString());
-                msgLogger.add(taskStored.get(i).toString());
+            if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
+                if (type.equals("floating")){
+                	list.add(taskStored.get(i).getFloatingString());
+                }else if (type.equals("event")){
+                	list.add(taskStored.get(i).getEventString());
+                }else if (type.equals("deadline")){
+                	list.add(taskStored.get(i).getDeadlineString());
+                	
+                }
+             //   msgLogger.add(taskStored.get(i).toString());
             }
         }
         return list;
@@ -87,15 +95,15 @@ public class Logic {
     
     private int getID(){
     	String s = initDate();
-    	String sID = Integer.toString(id);
-    	id++;
-    	s = s + sID;
+    //	String sID = Integer.toString(id);
+    //	id++;
+    //	s = s + sID;
     	taskCode = Integer.parseInt(s);
     	return taskCode;
     }
 
     private String initDate() {
-        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
         Calendar cal = Calendar.getInstance();
         return dateFormat.format(cal.getTime());
     }
@@ -119,19 +127,19 @@ public class Logic {
                 detailTask.add(command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.FLOATING;
           //      msgLogger.add(detailStored.toString() + "\n" + detailTask.toString());
-                floatingTask.add(detailStored.toString());
+                floatingTask.add(detailStored.get(0));
             } 
             else if(taskType.equals("event")) {
                 detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ taskCode);
                 detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.EVENT;
-                event.add(detailStored.toString());
+                event.add(detailStored.get(0));
             }
             else if(taskType.equals("deadline")) {
                 detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+ taskCode);
                 detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.DEADLINE;
-                deadline.add(detailStored.toString());
+                deadline.add(detailStored.get(0));
             }
             else {
                 throw new Exception("Fail to add an invalid task");
@@ -253,7 +261,7 @@ public class Logic {
             }
             else if(taskType.equals("floating")) {
             	currentLine = deadline.get(indexToRemove);
-            //	msgLogger.add(currentLine);
+            	msgLogger.add(currentLine);
             	removedItem = floatingTask.remove(indexToRemove);
             }
             else if(taskType.equals("event")) {
