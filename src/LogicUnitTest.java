@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LogicUnitTest {
-
+/*
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -25,7 +25,7 @@ public class LogicUnitTest {
     @After
     public void tearDown() throws Exception {
     }
-	
+*/	
 	// expectList contains the answer that are expected in the operation
 	static ArrayList<String> expectList;
 
@@ -35,8 +35,8 @@ public class LogicUnitTest {
       expectList = new ArrayList <String>();
     }
 
-    @Test
-    public final void testExecuteCommand() throws Exception {
+ //   @Test
+  /*  public final void testExecuteCommand() throws Exception {
       //  fail("Not yet implemented"); // TODO
       Logic logic = new Logic ();
       expectList.clear();
@@ -53,19 +53,43 @@ public class LogicUnitTest {
       logic.executeCommand("undo");
       logic.executeCommand("add Meeting with Boss>>09/10/2015>>13:00-14:00");	
     }
-    
+ */   
     @Test
     public final void testAddTask () throws Exception{
     	Logic logic = new Logic ();
-        expectList.clear();
-        expectList.add("add Meeting with Boss successful!");
-        logic.executeCommand("add Meeting with Boss>>09/10/2015 12:00");
-        
+    	expectList = new ArrayList <String>();
+    	expectList.add("command : add meeting with feifei");
+    	expectList.add("add meeting with feifei successful!");
+        logic.executeCommand("add meeting with feifei");
+        assertEquals(expectList.get(0) + "\n" + expectList.get(1),logic.getMessageLog());
     	
     	
     }
+    @Test
+    public final void testDeleteTask () throws Exception{
+    	Logic logic = new Logic ();
+    	expectList = new ArrayList <String>();
+    	expectList.add("command : add meeting with feifei" + "\n" + "add meeting with feifei successful!"
+    	               + "\n" + "command : add meeting with feifei" + "\n" + "add meeting with feifei successful!"
+    			       +"\n" +"command : update F1 haha"  + "\n" + "task updated!");
+    	expectList.add("command : delete F1" +"\n"+"deleted floating index 1 successfully!");
+    	logic.executeCommand("delete F1");
+        assertEquals(expectList.get(0) + "\n" + expectList.get(1),logic.getMessageLog());	
+    }
+    @Test
+    public final void testUpdateTask () throws Exception{
+    	Logic logic = new Logic ();
+    	expectList = new ArrayList <String>();
+    	expectList.add("command : add meeting with feifei" + "\n" + "add meeting with feifei successful!");
+    	expectList.add("command : add meeting with feifei" + "\n" + "add meeting with feifei successful!" + "\n"
+    	                + "command : update F1 haha" + "\n" + "task updated!");
+    	logic.executeCommand("add meeting with feifei");
+    	logic.executeCommand("update F1 haha");
+        assertEquals(expectList.get(0) + "\n" + expectList.get(1),logic.getMessageLog());	
+    }
     
     
+ /*   
     @Test
     public final void testPrintArrayList() {
         fail("Not yet implemented"); // TODO
@@ -150,5 +174,5 @@ public class LogicUnitTest {
     public final void testFinalize() {
         fail("Not yet implemented"); // TODO
     }
-
+*/
 }
