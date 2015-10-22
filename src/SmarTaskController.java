@@ -53,14 +53,14 @@ public class SmarTaskController implements Initializable {
         taskDeadlineDisplay = Logic.getDeadline();
         specialTaskDisplay = Logic.getFloatingTask();
         recurringTaskDisplay = Logic.getDeadline();
-        displayText(displayWindow, logDisplay);
-        displayText(eventWindow, eventDisplay);
-        displayText(taskWindow, taskDeadlineDisplay);
-        displayText(specialTaskWindow, specialTaskDisplay);
-        displayText(recurringTaskWindow, recurringTaskDisplay);
+        updateWindows(displayWindow, logDisplay);
+        updateWindows(eventWindow, eventDisplay);
+        updateWindows(taskWindow, taskDeadlineDisplay);
+        updateWindows(specialTaskWindow, specialTaskDisplay);
+        updateWindows(recurringTaskWindow, recurringTaskDisplay);
     }
 
-    private void displayText(TextArea display, String toDisplay) {
+    private void updateWindows(TextArea display, String toDisplay) {
         display.clear();
         display.setText(toDisplay);
     }

@@ -20,11 +20,11 @@ public class GUI extends Application {
     
     public void start(Stage primaryStage) {
 	   try {
-			   Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-			   Scene scene = new Scene(root, 1040, 710);
-		       primaryStage.setTitle("SmarTask Main Window");
-		       primaryStage.setScene(scene);
-			   primaryStage.show();
+		   Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+		   Scene scene = new Scene(root, 1040, 710);
+	       primaryStage.setTitle("SmarTask Main Window");
+	       primaryStage.setScene(scene);
+		   primaryStage.show();
 	   } catch(Exception e) {
 		   e.printStackTrace();
 	   }       
