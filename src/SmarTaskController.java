@@ -1,6 +1,4 @@
-import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -83,11 +81,10 @@ public class SmarTaskController implements Initializable {
             displayWindow.clear();              
             logDisplay = Logic.getMessageLog();
             displayText(displayWindow, logDisplay);
-            
             taskWindow.clear();
             taskDeadlineDisplay = Logic.getDeadline();
             displayText(taskWindow, taskDeadlineDisplay);
-            
+            specialTaskWindow.clear();
             specialTaskDisplay = Logic.getFloatingTask();
             displayText(specialTaskWindow, specialTaskDisplay);
         } catch (Exception e) {
@@ -101,10 +98,36 @@ public class SmarTaskController implements Initializable {
     }
     
     public void controlZKeyEvent() {
-    	
+    	try {
+    	    Logic.executeCommand("undo");
+    	    displayWindow.clear();
+    	    logDisplay = Logic.getMessageLog();
+    	    displayText(displayWindow, logDisplay);
+    	    taskWindow.clear();
+            taskDeadlineDisplay = Logic.getDeadline();
+            displayText(taskWindow, taskDeadlineDisplay);
+            specialTaskWindow.clear();
+            specialTaskDisplay = Logic.getFloatingTask();
+            displayText(specialTaskWindow, specialTaskDisplay);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     
     public void controlYKeyEvent() {
-    	
+    	try {
+    	    Logic.executeCommand("redo");
+    	    displayWindow.clear();
+    	    logDisplay = Logic.getMessageLog();
+    	    displayText(displayWindow, logDisplay);
+    	    taskWindow.clear();
+            taskDeadlineDisplay = Logic.getDeadline();
+            displayText(taskWindow, taskDeadlineDisplay);
+            specialTaskWindow.clear();
+            specialTaskDisplay = Logic.getFloatingTask();
+            displayText(specialTaskWindow, specialTaskDisplay);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 }
