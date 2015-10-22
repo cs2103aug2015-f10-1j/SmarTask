@@ -385,35 +385,35 @@ public class Logic {
                 updatedItem += strArr[0]+"#";
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
-                    updatedTask +=command.getTaskDeadline() + "#";
+                    updatedTask += command.getTaskDeadline()+"#";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
-                    updatedTask += strArr[1] + "#";
+                    updatedTask += strArr[1]+"#";
                 }
                 
                 
-                msgLogger.add("Deadline Desc: " + command.getTaskDescription());
+             //   msgLogger.add("Deadline Desc: " + command.getTaskDescription());
 
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
                     updatedTask +=command.getTaskDescription();
-                    msgLogger.add("Using new desc");
+                //    msgLogger.add("Using new desc");
                 }
                 else{
                     updatedItem += strArr[2];
                     updatedTask += strArr[2];
-                    msgLogger.add("Using current desc");
+                //    msgLogger.add("Using current desc");
                 }
              //   msgLogger.add(updatedItem);
                 updatedItem = updatedItem +"#"+Integer.toString(taskCode);
                 updatedTask = updatedTask +"#"+Integer.toString(taskCode);
-             //   msgLogger.add(updatedItem);
+              //  msgLogger.add(updatedItem);
               //  updatedLine = new ArrayList<String> ();
               //  updatedLine.add(updatedItem);
                 type = Task.Type.DEADLINE;
              
-                msgLogger.add(Integer.toString(indexToUpdate));
+             //   msgLogger.add(Integer.toString(indexToUpdate));
                 deadline.set(indexToUpdate, updatedItem);
             //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
