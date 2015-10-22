@@ -21,7 +21,7 @@ public class Logic {
     private  int taskCode ;
 
     private  ArrayList<Integer> currentList = new ArrayList <Integer>();
-    private  CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
+    private  static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
   //  private  String currentDate = initDate();
 
     public static void executeCommand (String userInput) throws Exception {
@@ -241,7 +241,8 @@ public class Logic {
                 String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                        msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
+                     //   msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
+                    	  msgLogger.add(taskStored.get(j).getDescription());
                     }
                 }
             }
@@ -274,7 +275,7 @@ public class Logic {
             }
             String str[] = currentLine.split("#");
             taskCode = Integer.parseInt(str[str.length-1]);
-            msgLogger.add(Integer.toString(taskCode));
+         //   msgLogger.add(Integer.toString(taskCode));
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){
             		taskStored.remove(i);
@@ -385,35 +386,35 @@ public class Logic {
                 updatedItem += strArr[0]+"#";
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
-                    updatedTask +=command.getTaskDeadline() + "#";
+                    updatedTask += command.getTaskDeadline()+"#";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
-                    updatedTask += strArr[1] + "#";
+                    updatedTask += strArr[1]+"#";
                 }
                 
                 
-                msgLogger.add("Deadline Desc: " + command.getTaskDescription());
+             //   msgLogger.add("Deadline Desc: " + command.getTaskDescription());
 
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
                     updatedTask +=command.getTaskDescription();
-                    msgLogger.add("Using new desc");
+                //    msgLogger.add("Using new desc");
                 }
                 else{
                     updatedItem += strArr[2];
                     updatedTask += strArr[2];
-                    msgLogger.add("Using current desc");
+                //    msgLogger.add("Using current desc");
                 }
              //   msgLogger.add(updatedItem);
                 updatedItem = updatedItem +"#"+Integer.toString(taskCode);
                 updatedTask = updatedTask +"#"+Integer.toString(taskCode);
-             //   msgLogger.add(updatedItem);
+              //  msgLogger.add(updatedItem);
               //  updatedLine = new ArrayList<String> ();
               //  updatedLine.add(updatedItem);
                 type = Task.Type.DEADLINE;
              
-                msgLogger.add(Integer.toString(indexToUpdate));
+             //   msgLogger.add(Integer.toString(indexToUpdate));
                 deadline.set(indexToUpdate, updatedItem);
             //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
@@ -489,7 +490,7 @@ public class Logic {
            // 		msgLogger.add(Integer.toString(taskStored.size()));
             		updatedLine = new ArrayList<String>();
             		updatedLine.add(updatedTask);
-            		msgLogger.add(updatedLine.get(0));
+            //		msgLogger.add(updatedLine.get(0));
             		Task task = new Task (type,updatedLine);
                     taskStored.add(task);
             //        msgLogger.add(Integer.toString(taskStored.size()));

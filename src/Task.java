@@ -25,7 +25,11 @@ public class Task {
     private  String dateAdded;
     private  String timeAdded;
     private Boolean isComplete;
-
+    
+    public Task() {
+	
+    }
+    
     public Task(Type type, ArrayList<String> attributeList) {
 	setType(type);
 	setAttributes(type, attributeList);
