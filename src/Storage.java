@@ -19,55 +19,71 @@ import com.google.gson.JsonSyntaxException;
  */
 
 public class Storage {
+	private static final String DEFAULT_FILENAME = "storage.txt";
+
 	private static Storage taskOrganiser;
 
-	private File saveFile;
+	private File taskFile;
 	private BufferedReader reader;
 	private PrintWriter writer;
 
 	private Gson gson;
 
+
+
+	public Storage() {
+		gson = new Gson();
+
+		taskFile = new File(DEFAULT_FILENAME);
+		createIfNotExists(taskFile);
+	}
+	
 	public static Storage getInstance() {
 		if (taskOrganiser == null) {
 			taskOrganiser = new Storage();
 		}
 		return taskOrganiser;
 	}
-
-	public Storage() {
-		gson = new Gson();
-
-		saveFile = new File("save.txt");
-		createIfNotExists(saveFile);
+	
+	private void createIfNotExists(File taskFile) {
+		try {
+			if (!taskFile.exists()) {
+				taskFile.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
+//-------------------------------------------------------------------------------------------
 
 	public ArrayList<Task> retrieveFile() {
 		String text = "";
-		ArrayList<Task> tasks = new ArrayList<Task>();
+		ArrayList<Task> taskList = new ArrayList<Task>();
 		
 		try {
-			if (!initReader(saveFile)) {
-				return tasks;
+			if (!initReader(taskFile)) {
+				return taskList;
 			}
 			while ((text = reader.readLine()) != null) {
 				Task task = gson.fromJson(text, Task.class);
-				tasks.add(task);
+				taskList.add(task);
 			}
 		} catch (IOException | JsonSyntaxException e) {
 			e.printStackTrace();
 		}
 		closeReader();
 		
-		if (tasks == null || tasks.isEmpty()) {
-			tasks = new ArrayList<Task>();
+		if (taskList == null || taskList.isEmpty()) {
+			taskList = new ArrayList<Task>();
 		}
-		return tasks;
+		return taskList;
 	}
 
-	public void saveToFile(ArrayList<Task> tasks) {
+	public void saveToFile(ArrayList<Task> taskList) {
 		try {
-			writer = new PrintWriter(saveFile, "UTF-8");
-			for (Task task : tasks) {
+			writer = new PrintWriter(taskFile, "UTF-8");
+			for (Task task : taskList) {
 				writer.println(gson.toJson(task));
 			}
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
@@ -77,9 +93,9 @@ public class Storage {
 	}
 
 	// Initialization Methods
-	private boolean initReader(File saveFile) {
+	private boolean initReader(File taskFile) {
 		try {
-			reader = new BufferedReader(new FileReader(saveFile));
+			reader = new BufferedReader(new FileReader(taskFile));
 		} catch (FileNotFoundException e) {
 			return false;
 		}
@@ -94,16 +110,7 @@ public class Storage {
 		}
 	}
 
-	// Utility Methods
-	private void createIfNotExists(File saveFile) {
-		try {
-			if (!saveFile.exists()) {
-				saveFile.createNewFile();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+
 }
 
 /*
