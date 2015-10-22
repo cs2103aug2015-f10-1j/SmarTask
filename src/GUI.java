@@ -2,8 +2,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -16,38 +14,19 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 	
-	public static int tabChanger;
-	
     public static void main(String[] args) {
-        tabChanger = 0;
     	launch(args);
     }
     
     public void start(Stage primaryStage) {
 	   try {
-		   if(tabChanger == 0) {
 			   Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+			   Scene scene = new Scene(root, 1040, 710);
 		       primaryStage.setTitle("SmarTask Main Window");
-		       primaryStage.setScene(new Scene(root, 1050, 700));
+		       primaryStage.setScene(scene);
 			   primaryStage.show();
-		   } else if(tabChanger == 1) {
-			   Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUIRecurringTasks.fxml"));
-		       primaryStage.setTitle("SmarTask Recurring Tasks");
-		       primaryStage.setScene(new Scene(root, 1050, 700));
-			   primaryStage.show();
-		   }
 	   } catch(Exception e) {
 		   e.printStackTrace();
 	   }       
-    }
-    
-    public void keyboardLog(KeyEvent ke) {
-    	if(ke.getCode() == KeyCode.TAB) {
-    		if(tabChanger == 0) {
-    			tabChanger = 1;
-    		} else {
-    			tabChanger = 0;
-    		}
-    	}
     }
 }
