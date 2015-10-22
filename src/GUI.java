@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * GUI is a class that receives commands from the user and pass it down to 
+ * GUI is a class that loads up the fxml file to display to the user.
  * This program will serve as the main window of interaction between user and SmarTask.
  * 
  * @author David Chong

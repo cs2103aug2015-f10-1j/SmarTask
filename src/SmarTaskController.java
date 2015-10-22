@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 
 /**
  * SmarTask Controller acts as a initializer and gives the action properties to the fxml file.
+ * It determines the behavior of the fxml file and is the main class to add UI enhancements.
  * 
  * @author David Chong
  *
@@ -34,7 +35,14 @@ public class SmarTaskController implements Initializable {
     
     final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
-
+	
+	/**
+	 * Checks if the variables referenced from the fxml file have been properly referenced
+	 * If not, method will return a error message
+	 * 
+	 * @param fxmlFileLocation	the file location of the fxml file in the system
+	 * @param resources the resources associated with the fxml file
+	 */
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         assert mainWindow != null : "fx:id=\"mainWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
@@ -47,6 +55,9 @@ public class SmarTaskController implements Initializable {
         updateDisplay();
     }
     
+    /**
+	 * Method updates the information display from Logic to the user so they can preview the information stored in SmarTask.
+	 */
     public void updateDisplay() {
     	logDisplay = Logic.getMessageLog();
         eventDisplay = Logic.getEvents();
@@ -59,12 +70,16 @@ public class SmarTaskController implements Initializable {
         updateWindows(specialTaskWindow, specialTaskDisplay);
         updateWindows(recurringTaskWindow, recurringTaskDisplay);
     }
-
     private void updateWindows(TextArea display, String toDisplay) {
         display.clear();
         display.setText(toDisplay);
     }
 
+    /**
+	 * Checks the keys pressed by the user and activates certain events according to which keys have been pressed.
+	 * 
+	 * @param ke the key pressed by the user as recorded by the system
+	 */
     @FXML
     public void keyboardLog(KeyEvent ke) {
         if(ke.getCode() == KeyCode.ENTER) {
@@ -78,6 +93,11 @@ public class SmarTaskController implements Initializable {
         }
     }
     
+    /**
+	 * Checks the keys pressed by the user and activates certain events according to which keys have been pressed.
+	 * 
+	 * @param ke the key pressed by the user as recorded by the system
+	 */
     @FXML
     public void secondKeyboardLog(KeyEvent ke) {
         if(ke.getCode() == KeyCode.UP) {
