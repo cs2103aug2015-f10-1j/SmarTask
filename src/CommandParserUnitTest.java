@@ -70,6 +70,7 @@ public class CommandParserUnitTest {
         Command delete1 = CommandParser.parse("delete D1");
         Command add1 = CommandParser.parse("add Meeting with Boss");
         Command update1 = CommandParser.parse("update D1 Arrange meeting 09/10/2015 09:00");
+        Command repeat = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, mon/tue/wed ,forever}");
         
         String[] arr = new String[100];
         arr[0] = invalid1.getCommandType().toString();
@@ -79,9 +80,8 @@ public class CommandParserUnitTest {
         arr[4] = complete1.getCommandType().toString();
         arr[5] = add1.getCommandType() + " " + add1.getTaskType() +" " + add1.getTaskDescription();
         arr[6] = delete1.getCommandType() + " " + delete1.getTaskType() + " " + delete1.getTaskID();
-        arr[7] = update1.getCommandType() + " " + update1.getTaskType() + " "  + update1.getTaskID() + 
-                " "  + update1.getTaskDescription() + " " + update1.getTaskDeadline();   
-        
+        arr[7] = update1.getCommandType() + " " + update1.getTaskType() + " "  + update1.getTaskID() + " "  + update1.getTaskDescription() + " " + update1.getTaskDeadline();   
+        Command repeat1 = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, mon/tue/wed ,forever}");
         
         assertArrayEquals("invalid", arr, arr1);
         assertArrayEquals("exit", arr, arr1);
