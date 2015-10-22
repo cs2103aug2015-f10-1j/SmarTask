@@ -1,4 +1,5 @@
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -32,6 +33,8 @@ public class SmarTaskController implements Initializable {
     private static String taskDeadlineDisplay;
     private static String specialTaskDisplay;
     private static String recurringTaskDisplay;
+    private static ArrayList<String> pastCommands;
+    private static int commandCounter;
     
     final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
@@ -53,6 +56,8 @@ public class SmarTaskController implements Initializable {
         assert recurringTaskWindow != null : "fx:id=\"recurringTaskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         updateDisplay();
+        pastCommands = new ArrayList<String>();
+        commandCounter = 1;
     }
     
     /**
@@ -111,6 +116,7 @@ public class SmarTaskController implements Initializable {
     
     private void enterKeyEvent() {
     	String userCommand = inputWindow.getText();
+    	pastCommands.add(userCommand);
         inputWindow.clear();
         try {
             Logic.executeCommand(userCommand);
@@ -121,8 +127,15 @@ public class SmarTaskController implements Initializable {
     }
     
     private void upKeyEvent() {
-    	String pastCommand = "Displays Last User Command";
-    	inputWindow.setText(pastCommand);
+    	int recall = pastCommands.size() - commandCounter;
+    	if(recall < 0) {
+    		inputWindow.clear();
+    	} else {
+    		commandCounter++;
+    		inputWindow.clear();
+    		String pastCommand = pastCommands.get(recall);
+    		inputWindow.setText(pastCommand);
+    	}
     }
     
     private void controlZKeyEvent() {
