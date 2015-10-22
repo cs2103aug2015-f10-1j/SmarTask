@@ -26,11 +26,12 @@ public class SmarTaskController implements Initializable {
     @FXML private TextArea specialTaskWindow; //Value injected by FXMLoader
     @FXML private TextArea recurringTaskWindow; //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
-    public static String logDisplay;
-    public static String eventDisplay;
-    public static String taskDeadlineDisplay;
-    public static String specialTaskDisplay;
-    public static String recurringTaskDisplay;
+    private static String logDisplay;
+    private static String eventDisplay;
+    private static String taskDeadlineDisplay;
+    private static String specialTaskDisplay;
+    private static String recurringTaskDisplay;
+    
     final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
 
@@ -59,7 +60,7 @@ public class SmarTaskController implements Initializable {
         displayText(recurringTaskWindow, recurringTaskDisplay);
     }
 
-    public void displayText(TextArea display, String toDisplay) {
+    private void displayText(TextArea display, String toDisplay) {
         display.clear();
         display.setText(toDisplay);
     }
@@ -88,7 +89,7 @@ public class SmarTaskController implements Initializable {
         }
     }
     
-    public void enterKeyEvent() {
+    private void enterKeyEvent() {
     	String userCommand = inputWindow.getText();
         inputWindow.clear();
         try {
@@ -99,12 +100,12 @@ public class SmarTaskController implements Initializable {
         }
     }
     
-    public void upKeyEvent() {
+    private void upKeyEvent() {
     	String pastCommand = "Displays Last User Command";
     	inputWindow.setText(pastCommand);
     }
     
-    public void controlZKeyEvent() {
+    private void controlZKeyEvent() {
     	try {
     	    Logic.executeCommand("undo");
     	    updateDisplay();
@@ -113,7 +114,7 @@ public class SmarTaskController implements Initializable {
     	}
     }
     
-    public void controlYKeyEvent() {
+    private void controlYKeyEvent() {
     	try {
     	    Logic.executeCommand("redo");
     	    updateDisplay();
