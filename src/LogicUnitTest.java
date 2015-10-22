@@ -44,16 +44,28 @@ public class LogicUnitTest {
       expectList.add("task updated!");
       expectList.add("add Meeting successful");
       expectList.add("deleted floating index 1 successfully!");
-      expectList.add("");
+      expectList.add("undo successfully");
+      expectList.add("add Meeting with Boss successful!");
       logic.executeCommand("add Meeting with Boss>>09/10/2015 12:00");
       logic.executeCommand("update D1 09/10/2015 09:00");
       logic.executeCommand("add Meeting");
       logic.executeCommand("delete F1");
-      
-      
+      logic.executeCommand("undo");
+      logic.executeCommand("add Meeting with Boss>>09/10/2015>>13:00-14:00");	
+    }
+    
+    @Test
+    public final void testAddTask () throws Exception{
+    	Logic logic = new Logic ();
+        expectList.clear();
+        expectList.add("add Meeting with Boss successful!");
+        logic.executeCommand("add Meeting with Boss>>09/10/2015 12:00");
+        
+    	
     	
     }
-
+    
+    
     @Test
     public final void testPrintArrayList() {
         fail("Not yet implemented"); // TODO

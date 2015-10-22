@@ -241,7 +241,8 @@ public class Logic {
                 String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                        msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
+                     //   msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
+                    	  msgLogger.add(taskStored.get(j).getDescription());
                     }
                 }
             }
@@ -274,7 +275,7 @@ public class Logic {
             }
             String str[] = currentLine.split("#");
             taskCode = Integer.parseInt(str[str.length-1]);
-            msgLogger.add(Integer.toString(taskCode));
+         //   msgLogger.add(Integer.toString(taskCode));
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){
             		taskStored.remove(i);
@@ -489,7 +490,7 @@ public class Logic {
            // 		msgLogger.add(Integer.toString(taskStored.size()));
             		updatedLine = new ArrayList<String>();
             		updatedLine.add(updatedTask);
-            		msgLogger.add(updatedLine.get(0));
+            //		msgLogger.add(updatedLine.get(0));
             		Task task = new Task (type,updatedLine);
                     taskStored.add(task);
             //        msgLogger.add(Integer.toString(taskStored.size()));
