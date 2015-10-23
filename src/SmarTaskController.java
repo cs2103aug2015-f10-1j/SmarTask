@@ -68,7 +68,7 @@ public class SmarTaskController implements Initializable {
         eventDisplay = Logic.getEvents();
         taskDeadlineDisplay = Logic.getDeadline();
         specialTaskDisplay = Logic.getFloatingTask();
-        recurringTaskDisplay = Logic.getDeadline();
+        recurringTaskDisplay = Logic.getRecurringTask();
         updateWindows(displayWindow, logDisplay);
         updateWindows(eventWindow, eventDisplay);
         updateWindows(taskWindow, taskDeadlineDisplay);
