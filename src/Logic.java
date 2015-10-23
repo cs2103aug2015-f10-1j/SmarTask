@@ -13,9 +13,12 @@ public class Logic {
 	private static Storage storage = new Storage ();
     private static  ArrayList<Task> taskStored = storage.retrieveFile();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
-    private static ArrayList<String> event = initList("event", taskStored);
-    private static ArrayList<String> deadline = initList("deadline", taskStored);
+    private static ArrayList<String> eventForLogic = initList("event", taskStored);
+    private static ArrayList<String> deadlineForLogic = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTask = initList("floating", taskStored);
+  //  private static ArrayList<String> event = new ArrayList <String>();
+  //  private static ArrayList<String> deadline = new ArrayList <String> ();
+   // private static  ArrayList<String> floating = new ArrayList<String>();
     private static ArrayList <Integer> searchList;
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
   //  private int id=1;
@@ -126,41 +129,46 @@ public class Logic {
             ArrayList <String> detailTask = new ArrayList <String> ();
             Task.Type type;
             taskCode = getID();
+            Task task;
 
             if(taskType.equals("floating")) {
                 detailStored.add(taskType+"#"+command.getTaskDescription() + "#" + taskCode);
                 detailTask.add(command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.FLOATING;
           //      msgLogger.add(detailStored.toString() + "\n" + detailTask.toString());
-                floatingTask.add(detailStored.get(0));
+                task = new Task (type, detailTask);
+                if (!isCollision(task)) floatingTask.add(detailStored.get(0));
+                
             } 
             else if(taskType.equals("event")) {
                 detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ taskCode);
                 detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.EVENT;
-                event.add(detailStored.get(0));
+                task = new Task (type, detailTask);
+                if (!isCollision(task)) eventForLogic.add(detailStored.get(0));
             }
             else if(taskType.equals("deadline")) {
                 detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+"#"+ taskCode);
                 detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.DEADLINE;
-                deadline.add(detailStored.get(0));
+                task = new Task (type, detailTask);
+                if (!isCollision(task)) deadlineForLogic.add(detailStored.get(0));
             }
             else {
                 throw new Exception("Fail to add an invalid task");
             }
-           
-            if (taskStored.contains(detailStored)) {
-            	msgLogger.add("Collision Task!");
-            	
+            Boolean isColl = isCollision(task);
+            if (!isColl) {
+            	taskStored.add(task);
+                //  System.out.println(taskStored.get(0).getDescription());
+                 //  sortForAdd();
+                   storage.saveToFile(taskStored);
+                   msgLogger.add("add " + command.getTaskDescription() + " successful!");  
+                   history.addChangeToHistory(new ArrayList<Task>(taskStored));   	
             }else {
-               Task task = new Task (type, detailTask);
-               taskStored.add(task);
-             //  System.out.println(taskStored.get(0).getDescription());
-              //  sortForAdd();
-                storage.saveToFile(taskStored);
-                msgLogger.add("add " + command.getTaskDescription() + " successful!");  
-                history.addChangeToHistory(new ArrayList<Task>(taskStored));
+            	
+                msgLogger.add("Collision Task!");
+            	return;
             }
             
 
@@ -169,6 +177,37 @@ public class Logic {
         }
 
     }
+	
+	private static Boolean isCollision (Task task){
+		Boolean boo = false;
+		
+		for (int i=0; i<taskStored.size(); i++){
+			if (taskStored.get(i).getDescription().equals(task.getDescription())){
+				if (taskStored.get(i).getType().equals(task.getType())){
+					if (taskStored.get(i).getType().equals(Task.getTypeFromString("deadline"))){
+						if (taskStored.get(i).getDeadline().equals(task.getDeadline())){
+							boo = true;
+							break;
+						}
+					} else if (taskStored.get(i).getType().equals(Task.getTypeFromString("floating"))){
+						boo = true;
+						break;
+					} else if(taskStored.get(i).getType().equals(Task.getTypeFromString("event"))) {
+						if (taskStored.get(i).getEventDate().equals(task.getEventDate()) && taskStored.get(i).getEventTime().equals(task.getEventTime())){
+							boo = true;
+							break;
+						}
+					} else {
+						if (taskStored.get(i).getRepeatPeriod().equals(task.getRepeatPeriod())){
+							boo = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return boo;
+	}
 /*
     private static void sortForAdd(){
         Collections.sort(taskStored, new Comparator<String>() {
@@ -296,8 +335,8 @@ public class Logic {
             String currentLine = "";
             if (taskType != null){
             if(taskType.equals("deadline")) {
-            	 currentLine = deadline.get(indexToRemove);
-            	 removedItem = deadline.remove(indexToRemove);
+            	 currentLine = deadlineForLogic.get(indexToRemove);
+            	 removedItem = deadlineForLogic.remove(indexToRemove);
             	 String str[] = currentLine.split("#");
             	 taskCode = Integer.parseInt(str[str.length-1]);
             }
@@ -309,8 +348,8 @@ public class Logic {
             	taskCode = Integer.parseInt(str[str.length-1]);
             }
             else if(taskType.equals("event")) {
-            	currentLine = event.get(indexToRemove);
-            	removedItem = event.remove(indexToRemove);
+            	currentLine = eventForLogic.get(indexToRemove);
+            	removedItem = eventForLogic.remove(indexToRemove);
             	String str[] = currentLine.split("#");
             	taskCode = Integer.parseInt(str[str.length-1]);
             } else if (taskType.equals("repeat")){
@@ -343,13 +382,13 @@ public class Logic {
                 todayTask.remove(com.getTaskID()-1);
             }*/
         }catch(Exception e){
-            if(taskType.equals("deadline") && deadline.size() == 0) {
+            if(taskType.equals("deadline") && deadlineForLogic.size() == 0) {
                 msgLogger.add("There is no deadline task to delete!!");
             }
             else if(taskType.equals("floating") && floatingTask.size() == 0) {
                 msgLogger.add("There is no floating task to delete!!");
             }
-            else if(taskType.equals("event") && event.size() == 0) {
+            else if(taskType.equals("event") && eventForLogic.size() == 0) {
                 msgLogger.add("There is no event to delete!!");
             }
             else { 
@@ -372,16 +411,16 @@ public class Logic {
             
 
             if(taskType.equals("deadline")) {
-            	currentLine = deadline.get(indexToComplete);
-                completedItem = deadline.remove(indexToComplete);
+            	currentLine = deadlineForLogic.get(indexToComplete);
+                completedItem = deadlineForLogic.remove(indexToComplete);
             }
             else if(taskType.equals("floating")) {
             	currentLine = floatingTask.get(indexToComplete);
                 completedItem = floatingTask.remove(indexToComplete);
             }
             else if(taskType.equals("event")) {
-                currentLine = event.get(indexToComplete);
-                completedItem = event.remove(indexToComplete);
+                currentLine = eventForLogic.get(indexToComplete);
+                completedItem = eventForLogic.remove(indexToComplete);
             }
 
          //   taskStored.remove(new String(completedItem));
@@ -399,13 +438,13 @@ public class Logic {
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
 
         }catch(Exception e){
-            if(taskType.equals("deadline") && deadline.size() == 0) {
+            if(taskType.equals("deadline") && deadlineForLogic.size() == 0) {
                 msgLogger.add("There is no deadline task to complete!!");
             }
             else if(taskType.equals("floating") && floatingTask.size() == 0) {
                 msgLogger.add("There is no floating task to complete!!");
             }
-            else if(taskType.equals("event") && event.size() == 0) {
+            else if(taskType.equals("event") && eventForLogic.size() == 0) {
                 msgLogger.add("There is no event to complete!!");
             }
             else { 
@@ -431,7 +470,7 @@ public class Logic {
             int indexToUpdate = command.getTaskID()-1;
            
             if(taskType.equals("deadline")) {
-                existingItem = deadline.get(indexToUpdate);
+                existingItem = deadlineForLogic.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
                 taskCode = Integer.parseInt(strArr[strArr.length-1]);
             //    msgLogger.add(Integer.toString(taskCode));
@@ -467,7 +506,7 @@ public class Logic {
                 type = Task.Type.DEADLINE;
              
              //   msgLogger.add(Integer.toString(indexToUpdate));
-                deadline.set(indexToUpdate, updatedItem);
+                deadlineForLogic.set(indexToUpdate, updatedItem);
             //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
             else if(taskType.equals("floating")) {
@@ -492,7 +531,7 @@ public class Logic {
                 floatingTask.set(indexToUpdate, updatedItem);
             }
             else if(taskType.equals("event")) {
-                existingItem = event.get(indexToUpdate);
+                existingItem = eventForLogic.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
                 taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";                
@@ -525,7 +564,7 @@ public class Logic {
              //   updatedLine = new ArrayList <String> ();
              //   updatedLine.add(updatedItem);
              //   updatedTask = new Task (Task.Type.EVENT, updatedLine);
-                event.set(indexToUpdate, updatedItem);
+                eventForLogic.set(indexToUpdate, updatedItem);
                 type = Task.Type.EVENT;
             }
             else {
@@ -569,8 +608,8 @@ public class Logic {
             message = "redo successfully";
             taskStored = new ArrayList<Task>(history.redo());
             storage.saveToFile(taskStored);
-            event = initList("event", taskStored);
-            deadline = initList("deadline", taskStored);
+            eventForLogic = initList("event", taskStored);
+            deadlineForLogic = initList("deadline", taskStored);
             floatingTask = initList("floating", taskStored);
             msgLogger.add(message);  
         } catch (Exception e) {
@@ -587,8 +626,8 @@ public class Logic {
             message = "undo successfully";
             taskStored = new ArrayList<Task>(history.undo());
             storage.saveToFile(taskStored);
-            event = initList("event", taskStored);
-            deadline = initList("deadline", taskStored);
+            eventForLogic = initList("event", taskStored);
+            deadlineForLogic = initList("deadline", taskStored);
             floatingTask = initList("floating", taskStored);
             msgLogger.add(message);
         } catch (Exception e) {
@@ -661,22 +700,22 @@ public class Logic {
 
     public static String getEvents(){
         String messageToPrint = "";
-        if(event.size() == 0) {
+        if(eventForLogic.size() == 0) {
             return messageToPrint = "No events";
         }
-        for(int i=0; i<event.size(); i++) {
-            messageToPrint += "E" + (i+1) + ". "+ event.get(i) + "\n";
+        for(int i=0; i<eventForLogic.size(); i++) {
+            messageToPrint += "E" + (i+1) + ". "+ eventForLogic.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
 
     public static String getDeadline(){
         String messageToPrint = "";
-        if(deadline.size() == 0) {
+        if(deadlineForLogic.size() == 0) {
             return messageToPrint = "No tasks";
         }
-        for(int i=0; i<deadline.size(); i++) {
-            messageToPrint += "D" + (i+1) + ". "+ deadline.get(i) + "\n";
+        for(int i=0; i<deadlineForLogic.size(); i++) {
+            messageToPrint += "D" + (i+1) + ". "+ deadlineForLogic.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
