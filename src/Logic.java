@@ -481,6 +481,7 @@ public class Logic {
     private void updateTask(Command command) throws FileNotFoundException{
         String taskType = command.getTaskType();
         String updatedItem = "";
+        String updateItemForUI = "";
         String existingItem = "";
         String updatedTask = "";
         Task.Type type;
@@ -498,10 +499,12 @@ public class Logic {
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
                     updatedTask += command.getTaskDeadline()+"#";
+                    updateItemForUI +=command.getTaskDeadline()+ " ";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
                     updatedTask += strArr[1]+"#";
+                    updateItemForUI += strArr[1]+" ";
                 }
                 
                 
@@ -510,16 +513,19 @@ public class Logic {
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
                     updatedTask +=command.getTaskDescription();
+                    updateItemForUI += command.getTaskDescription();
                 //    msgLogger.add("Using new desc");
                 }
                 else{
                     updatedItem += strArr[2];
                     updatedTask += strArr[2];
+                    updateItemForUI += command.getTaskDescription();
                 //    msgLogger.add("Using current desc");
                 }
              //   msgLogger.add(updatedItem);
                 updatedItem = updatedItem +"#"+Integer.toString(taskCode);
                 updatedTask = updatedTask +"#"+Integer.toString(taskCode);
+                updateItemForUI  += " " + Integer.toString(taskCode);
               //  msgLogger.add(updatedItem);
               //  updatedLine = new ArrayList<String> ();
               //  updatedLine.add(updatedItem);
@@ -527,6 +533,7 @@ public class Logic {
              
              //   msgLogger.add(Integer.toString(indexToUpdate));
                 deadlineForLogic.set(indexToUpdate, updatedItem);
+                deadline.set(indexToUpdate, updateItemForUI);
             //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
             else if(taskType.equals("floating")) {
@@ -537,18 +544,23 @@ public class Logic {
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
                     updatedTask +=command.getTaskDescription();
+                    updateItemForUI += command.getTaskDescription();
                 }
+                
                 else{
                     updatedItem += strArr[1];
                     updatedTask += strArr[1];
+                    updateItemForUI += strArr[1];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
                 updatedTask += "#"+Integer.toString(taskCode);
+                updateItemForUI += " " + Integer.toString(taskCode);
                // updatedLine = new ArrayList<String> ();
                // updatedLine.add(updatedItem);
               //  updatedTask = new Task (Task.Type.FLOATING, updatedLine);
                 type = Task.Type.FLOATING;
                 floatingTaskForLogic.set(indexToUpdate, updatedItem);
+                floating.set(indexToUpdate, updateItemForUI);
             }
             else if(taskType.equals("event")) {
                 existingItem = eventForLogic.get(indexToUpdate);
@@ -558,33 +570,41 @@ public class Logic {
                 if(command.getTaskEventDate() != null) {
                     updatedItem += command.getTaskEventDate()+"#";
                     updatedTask += command.getTaskEventDate() + "#";
+                    updateItemForUI += command.getTaskEventDate() + " ";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
                     updatedTask += strArr[1]+"#";
+                    updateItemForUI += strArr[1] + " ";
                 }
                 if(command.getTaskEventTime() != null) {
                     updatedItem += command.getTaskEventTime()+"#";
                     updatedTask += command.getTaskEventTime()+"#";
+                    updateItemForUI += command.getTaskEventTime() + " ";
                 }
                 else{
                     updatedItem += strArr[2]+"#";
                     updatedTask += strArr[2]+"#";
+                    updateItemForUI += strArr[2] + " ";
                 }
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
                     updatedTask += command.getTaskDescription();
+                    updateItemForUI += command.getTaskDescription();
                 }
                 else{
                     updatedItem += strArr[3];
                     updatedTask += strArr[3];
+                    updateItemForUI += strArr[3];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
                 updatedTask += "#"+Integer.toString(taskCode);
+                updateItemForUI += " " + Integer.toString(taskCode);
              //   updatedLine = new ArrayList <String> ();
              //   updatedLine.add(updatedItem);
              //   updatedTask = new Task (Task.Type.EVENT, updatedLine);
                 eventForLogic.set(indexToUpdate, updatedItem);
+                event.set(indexToUpdate, updateItemForUI);
                 type = Task.Type.EVENT;
             }
             else {
