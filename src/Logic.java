@@ -16,9 +16,9 @@ public class Logic {
     private static ArrayList<String> eventForLogic = initList("event", taskStored);
     private static ArrayList<String> deadlineForLogic = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTask = initList("floating", taskStored);
-  //  private static ArrayList<String> event = new ArrayList <String>();
-  //  private static ArrayList<String> deadline = new ArrayList <String> ();
-   // private static  ArrayList<String> floating = new ArrayList<String>();
+    private static ArrayList<String> event = new ArrayList <String>();
+    private static ArrayList<String> deadline = new ArrayList <String> ();
+    private static  ArrayList<String> floating = new ArrayList<String>();
     private static ArrayList <Integer> searchList;
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
   //  private int id=1;
