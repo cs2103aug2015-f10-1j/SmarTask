@@ -16,7 +16,7 @@ public class Logic {
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTask = initList("floating", taskStored);
-    private static  ArrayList<Task> repeatedTask = new ArrayList <Task>();
+    private static  ArrayList<String> repeatedTask = new ArrayList <String>();
   //  private int id=1;
     private  int taskCode ;
 
@@ -187,8 +187,9 @@ public class Logic {
     // "Repeat task" command methods
     // ================================================================
 
-    private void addRepeatTask(Command com) throws FileNotFoundException{  
+	private void addRepeatTask(Command com) throws FileNotFoundException{  
     	ArrayList <String> detailStored = null;
+    //	ArrayList <String> detailTask = null;
     	taskCode = getID();
     	Task.Type type = Task.Type.REPEAT;
     	if (com.getTaskRepeatType().equals("day")){
@@ -203,7 +204,8 @@ public class Logic {
        // detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
     	Task task = new Task (type, detailStored);
         taskStored.add(task);
-        repeatedTask.add(task);
+        msgLogger.add(task.getDescription());
+        repeatedTask.add(detailStored.get(0));
         storage.saveToFile(taskStored);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
@@ -245,8 +247,8 @@ public class Logic {
                 String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                     //   msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
-                    	  msgLogger.add(taskStored.get(j).getDescription());
+                       // msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
+                    	//  msgLogger.add(taskStored.get(j).getDescription());
                     }
                 }
             }
@@ -613,7 +615,7 @@ public class Logic {
 
     public static String getEvents(){
         String messageToPrint = "";
-        if(deadline.size() == 0) {
+        if(event.size() == 0) {
             return messageToPrint = "No events";
         }
         for(int i=0; i<event.size(); i++) {
@@ -650,7 +652,7 @@ public class Logic {
             return messageToPrint = "No tasks";
         }
         for(int i=0; i<repeatedTask.size(); i++) {
-            messageToPrint += "F" + (i+1) + ". "+ repeatedTask.get(i) + "\n";
+            messageToPrint += "R" + (i+1) + ". "+ repeatedTask.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
