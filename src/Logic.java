@@ -198,11 +198,17 @@ public class Logic {
     		detailTask.add( taskType+"#" +com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("week")){
-    		detailTask.add(taskType +"#" +com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + taskCode);
-    		detailStored.add(com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + taskCode);
+    		detailTask.add(taskType +"#"+com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
+    		detailStored.add(com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("month")){
-    		detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
-    		detailStored.add(com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
+    		if (com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()!=null){
+    			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
+        		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
+    		} else {
+    			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
+        		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
+    		}
+    		
     	} else if (com.getTaskRepeatType().equals("year")){
     		detailTask.add(taskType +"#" +com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
@@ -285,6 +291,9 @@ public class Logic {
             else if(taskType.equals("event")) {
             	currentLine = event.get(indexToRemove);
             	removedItem = event.remove(indexToRemove);
+            } else if (taskType.equals("repeat")){
+            	currentLine = repeatedTask.get(indexToRemove);
+            	removedItem = repeatedTask.get(indexToRemove);
             }
             String str[] = currentLine.split("#");
             taskCode = Integer.parseInt(str[str.length-1]);
