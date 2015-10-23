@@ -188,24 +188,31 @@ public class Logic {
     // ================================================================
 
 	private void addRepeatTask(Command com) throws FileNotFoundException{  
-    	ArrayList <String> detailStored = null;
-    //	ArrayList <String> detailTask = null;
+    	ArrayList <String> detailStored = new ArrayList <String> ();
+    	ArrayList <String> detailTask = new ArrayList <String> ();
     	taskCode = getID();
+    	String taskType = com.getTaskRepeatType();
     	Task.Type type = Task.Type.REPEAT;
-    	if (com.getTaskRepeatType().equals("day")){
+    //	msgLogger.add(taskType);
+    	if (taskType.equals("day")){
+    		detailTask.add( taskType+"#" +com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("week")){
+    		detailTask.add(taskType +"#" +com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("month")){
+    		detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("year")){
+    		detailTask.add(taskType +"#" +com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     	}
        // detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
+    //	msgLogger.add(detailTask.get(0));
     	Task task = new Task (type, detailStored);
         taskStored.add(task);
         msgLogger.add(task.getDescription());
-        repeatedTask.add(detailStored.get(0));
+        repeatedTask.add(detailTask.get(0));
         storage.saveToFile(taskStored);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
