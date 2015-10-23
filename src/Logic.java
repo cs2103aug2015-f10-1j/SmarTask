@@ -16,6 +16,7 @@ public class Logic {
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTask = initList("floating", taskStored);
+    private static ArrayList <Integer> searchList;
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
   //  private int id=1;
     private  int taskCode ;
@@ -253,6 +254,9 @@ public class Logic {
         ArrayList<String> keyWordList = command.getSearchKeyword();
         String keyword = "";
         taskStored.clear();
+        Task.Type taskType;
+        int index = 1;
+        searchList = new ArrayList<Integer>();
         taskStored = storage.retrieveFile(); // get the latest task from the storage
         for(int i=0; i< keyWordList.size(); i++) {
             keyword = keyWordList.get(i).toLowerCase();
@@ -260,7 +264,19 @@ public class Logic {
                 String[] arr = taskStored.get(j).getDescription().split(" ");
                 for(int k=0; k<arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)){
-                       // msgLogger.add(taskStored.get(j).getID()+" "+taskStored.get(j).getDescription());
+                    	taskCode = taskStored.get(j).getID();
+                    	taskType = taskStored.get(j).getType();
+                    	if (taskType.equals(Task.Type.DEADLINE)){
+                    		msgLogger.add((index++)+" " + taskStored.get(j).getDescription() + " deadline is : " + taskStored.get(j).getDeadline());
+                    	} else if (taskType.equals(Task.Type.EVENT)){
+                    		msgLogger.add((index++)+ " "+ taskStored.get(j).getDescription() + " start time is : " + taskStored.get(j).getEventDate() + " " + taskStored.get(j).getEventTime());
+                    	} else if (taskType.equals(Task.Type.FLOATING)){
+                    		msgLogger.add((index++)+ " " + taskStored.get(j).getDescription());
+                    	} else if (taskType.equals(Task.Type.REPEAT)){
+                    		msgLogger.add((index++)+ " " + taskStored.get(j).getDescription() + " repeating peroid is : " + taskStored.get(j).getRepeatPeriod() );
+                    	}
+                        
+                        searchList.add(taskCode);
                     	//  msgLogger.add(taskStored.get(j).getDescription());
                     }
                 }
@@ -278,25 +294,39 @@ public class Logic {
         	int indexToRemove = command.getTaskID()-1;
             String  removedItem = "";
             String currentLine = "";
-            
+            if (taskType != null){
             if(taskType.equals("deadline")) {
             	 currentLine = deadline.get(indexToRemove);
             	 removedItem = deadline.remove(indexToRemove);
+            	 String str[] = currentLine.split("#");
+            	 taskCode = Integer.parseInt(str[str.length-1]);
             }
             else if(taskType.equals("floating")) {
             	currentLine = floatingTask.get(indexToRemove);
             //	msgLogger.add(currentLine);
             	removedItem = floatingTask.remove(indexToRemove);
+            	String str[] = currentLine.split("#");
+            	taskCode = Integer.parseInt(str[str.length-1]);
             }
             else if(taskType.equals("event")) {
             	currentLine = event.get(indexToRemove);
             	removedItem = event.remove(indexToRemove);
+            	String str[] = currentLine.split("#");
+            	taskCode = Integer.parseInt(str[str.length-1]);
             } else if (taskType.equals("repeat")){
             	currentLine = repeatedTask.get(indexToRemove);
             	removedItem = repeatedTask.get(indexToRemove);
+            	String str[] = currentLine.split("#");
+            	taskCode = Integer.parseInt(str[str.length-1]);
+            } 
             }
-            String str[] = currentLine.split("#");
-            taskCode = Integer.parseInt(str[str.length-1]);
+            else {
+            	msgLogger.add(Integer.toString(searchList.get(indexToRemove)));
+            	taskCode = searchList.get(indexToRemove);
+            	
+            }
+         //   String str[] = currentLine.split("#");
+         //   taskCode = Integer.parseInt(str[str.length-1]);
          //   msgLogger.add(Integer.toString(taskCode));
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){

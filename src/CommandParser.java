@@ -213,9 +213,9 @@ public class CommandParser {
 	    }
 	    else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
 		command.setTaskType("repeat");
-	    }
+	    } 
 	    else {
-		throw new Exception(MSG_NULL_POINTER);
+		   //throw new Exception(MSG_NULL_POINTER);
 	    }
 	    command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 	    if(command.getTaskID()<=0) {
