@@ -189,18 +189,22 @@ public class Logic {
 
     private void addRepeatTask(Command com) throws FileNotFoundException{  
     	ArrayList <String> detailStored = null;
+    	taskCode = getID();
+    	Task.Type type = Task.Type.REPEAT;
     	if (com.getTaskRepeatType().equals("day")){
-    		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + getID());
+    		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("week")){
-    		detailStored.add(com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + getID());
+    		detailStored.add(com.isTaskRepeatOnDayOfWeek()+"#"+ com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("month")){
-    		detailStored.add(com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + getID());
+    		detailStored.add(com.getTaskRepeatMonthFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     	} else if (com.getTaskRepeatType().equals("year")){
-    		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + getID());
+    		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     	}
-     //   detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
-        repeatedTask.add(new Task (Task.Type.REPEAT,detailStored));
-        storage.saveToFile(repeatedTask);
+       // detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
+    	Task task = new Task (type, detailStored);
+        taskStored.add(task);
+        repeatedTask.add(task);
+        storage.saveToFile(taskStored);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
 
