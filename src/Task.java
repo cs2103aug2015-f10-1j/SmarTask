@@ -63,6 +63,22 @@ public class Task {
     public String getDeadlineString (){
     	return "deadline"+ "#" + this.deadline + "#" + this.description + "#"+ Integer.toString(this.id) ;	
     }
+    public String getRepeatString (){
+    	return "repeat"+ "#" + this.repeatPeriod + "#" + this.description + "#"+ Integer.toString(this.id) ;	
+    }
+    public String getFloatingStringForUI (){
+    	return this.description +" "+ Integer.toString(this.id) ;
+    }
+    public String getEventStringForUI (){
+    	return this.eventDate + " " + this.eventTime + " " +this.description + " "+ Integer.toString(this.id) ;
+    	
+    }
+    public String getDeadlineStringForUI (){
+    	return this.deadline + " " + this.description + " "+ Integer.toString(this.id) ;	
+    }
+    public String getRepeatStringForUI (){
+    	return  this.repeatPeriod + " " + this.description + " "+ Integer.toString(this.id) ;	
+    }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) {
 	this.type = type;

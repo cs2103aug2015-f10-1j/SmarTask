@@ -15,10 +15,11 @@ public class Logic {
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> eventForLogic = initList("event", taskStored);
     private static ArrayList<String> deadlineForLogic = initList("deadline", taskStored);
-    private static  ArrayList<String> floatingTask = initList("floating", taskStored);
+    private static  ArrayList<String> floatingTaskForLogic = initList("floating", taskStored);
     private static ArrayList<String> event = new ArrayList <String>();
     private static ArrayList<String> deadline = new ArrayList <String> ();
     private static  ArrayList<String> floating = new ArrayList<String>();
+    private static ArrayList<String> repeat = new ArrayList<String>();
     private static ArrayList <Integer> searchList;
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
   //  private int id=1;
@@ -85,11 +86,16 @@ public class Logic {
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
                 if (type.equals("floating")){
                 	list.add(taskStored.get(i).getFloatingString());
+                	floating.add(taskStored.get(i).getFloatingStringForUI());
                 }else if (type.equals("event")){
                 	list.add(taskStored.get(i).getEventString());
+                	event.add(taskStored.get(i).getEventStringForUI());
                 }else if (type.equals("deadline")){
                 	list.add(taskStored.get(i).getDeadlineString());
-                	
+                	deadline.add(taskStored.get(i).getDeadlineStringForUI());
+                }else if (type.equals("repeat")){
+                	list.add(taskStored.get(i).getRepeatString());
+                	repeat.add(taskStored.get(i).getRepeatStringForUI());
                 }
              //   msgLogger.add(taskStored.get(i).toString());
             }
@@ -137,15 +143,17 @@ public class Logic {
                 type = Task.Type.FLOATING;
           //      msgLogger.add(detailStored.toString() + "\n" + detailTask.toString());
                 task = new Task (type, detailTask);
-                if (!isCollision(task)) floatingTask.add(detailStored.get(0));
+                if (!isCollision(task)) floatingTaskForLogic.add(detailStored.get(0));
+                floating.add(command.getTaskDescription());
                 
             } 
             else if(taskType.equals("event")) {
-                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ taskCode);
+                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription() +"#"+ taskCode);
                 detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.EVENT;
                 task = new Task (type, detailTask);
                 if (!isCollision(task)) eventForLogic.add(detailStored.get(0));
+                event.add(command.getTaskEventDate() + " " + command.getTaskEventTime() + " " + command.getTaskDescription()+" "+ taskCode);
             }
             else if(taskType.equals("deadline")) {
                 detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+"#"+ taskCode);
@@ -153,6 +161,7 @@ public class Logic {
                 type = Task.Type.DEADLINE;
                 task = new Task (type, detailTask);
                 if (!isCollision(task)) deadlineForLogic.add(detailStored.get(0));
+                deadline.add(command.getTaskDeadline() + " " + command.getTaskDescription());
             }
             else {
                 throw new Exception("Fail to add an invalid task");
@@ -233,29 +242,40 @@ public class Logic {
     	taskCode = getID();
     	String taskType = com.getTaskRepeatType();
     	Task.Type type = Task.Type.REPEAT;
+    	Task task = null;
     //	msgLogger.add(taskType);
     	if (taskType.equals("day")){
     		detailTask.add( taskType+"#" +com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
+    		task = new Task (type, detailStored);
+    		if (!isCollision(task)) repeat.add(com.getTaskRepeatDayFrequency() +" " + com.getTaskDescription() + " " + taskCode);
     	} else if (com.getTaskRepeatType().equals("week")){
     		detailTask.add(taskType +"#"+com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
+    		task = new Task (type, detailStored);
+    		if (!isCollision(task))repeat.add(com.getTaskRepeatDuration()+" "+ com.getTaskDescription() + " " + taskCode);
     	} else if (com.getTaskRepeatType().equals("month")){
     		if (com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()!=null){
     			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
         		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
+        		task = new Task (type, detailStored);
+        		if (!isCollision(task)) repeat.add(com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+" " + com.getTaskDescription() + " " + taskCode);
     		} else {
     			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
         		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
+        		task = new Task (type, detailStored);
+        		if (!isCollision(task)) repeat.add(com.getTaskRepeatMonthFrequencyBySpecificDate()+" " + com.getTaskDescription() + " " + taskCode);
     		}
     		
     	} else if (com.getTaskRepeatType().equals("year")){
     		detailTask.add(taskType +"#" +com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
+    		task = new Task (type, detailStored);
+    		if (!isCollision(task)) repeat.add(com.getTaskRepeatYearFrequency()+" " + com.getTaskDescription() + " " + taskCode);
     	}
        // detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
     //	msgLogger.add(detailTask.get(0));
-    	Task task = new Task (type, detailStored);
+    	
         taskStored.add(task);
         msgLogger.add(task.getDescription());
         repeatedTask.add(detailTask.get(0));
@@ -341,9 +361,9 @@ public class Logic {
             	 taskCode = Integer.parseInt(str[str.length-1]);
             }
             else if(taskType.equals("floating")) {
-            	currentLine = floatingTask.get(indexToRemove);
+            	currentLine = floatingTaskForLogic.get(indexToRemove);
             //	msgLogger.add(currentLine);
-            	removedItem = floatingTask.remove(indexToRemove);
+            	removedItem = floatingTaskForLogic.remove(indexToRemove);
             	String str[] = currentLine.split("#");
             	taskCode = Integer.parseInt(str[str.length-1]);
             }
@@ -385,7 +405,7 @@ public class Logic {
             if(taskType.equals("deadline") && deadlineForLogic.size() == 0) {
                 msgLogger.add("There is no deadline task to delete!!");
             }
-            else if(taskType.equals("floating") && floatingTask.size() == 0) {
+            else if(taskType.equals("floating") && floatingTaskForLogic.size() == 0) {
                 msgLogger.add("There is no floating task to delete!!");
             }
             else if(taskType.equals("event") && eventForLogic.size() == 0) {
@@ -415,8 +435,8 @@ public class Logic {
                 completedItem = deadlineForLogic.remove(indexToComplete);
             }
             else if(taskType.equals("floating")) {
-            	currentLine = floatingTask.get(indexToComplete);
-                completedItem = floatingTask.remove(indexToComplete);
+            	currentLine = floatingTaskForLogic.get(indexToComplete);
+                completedItem = floatingTaskForLogic.remove(indexToComplete);
             }
             else if(taskType.equals("event")) {
                 currentLine = eventForLogic.get(indexToComplete);
@@ -441,7 +461,7 @@ public class Logic {
             if(taskType.equals("deadline") && deadlineForLogic.size() == 0) {
                 msgLogger.add("There is no deadline task to complete!!");
             }
-            else if(taskType.equals("floating") && floatingTask.size() == 0) {
+            else if(taskType.equals("floating") && floatingTaskForLogic.size() == 0) {
                 msgLogger.add("There is no floating task to complete!!");
             }
             else if(taskType.equals("event") && eventForLogic.size() == 0) {
@@ -510,7 +530,7 @@ public class Logic {
             //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
             }
             else if(taskType.equals("floating")) {
-                existingItem = floatingTask.get(indexToUpdate);
+                existingItem = floatingTaskForLogic.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
                 taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";                
@@ -528,7 +548,7 @@ public class Logic {
                // updatedLine.add(updatedItem);
               //  updatedTask = new Task (Task.Type.FLOATING, updatedLine);
                 type = Task.Type.FLOATING;
-                floatingTask.set(indexToUpdate, updatedItem);
+                floatingTaskForLogic.set(indexToUpdate, updatedItem);
             }
             else if(taskType.equals("event")) {
                 existingItem = eventForLogic.get(indexToUpdate);
@@ -610,7 +630,7 @@ public class Logic {
             storage.saveToFile(taskStored);
             eventForLogic = initList("event", taskStored);
             deadlineForLogic = initList("deadline", taskStored);
-            floatingTask = initList("floating", taskStored);
+            floatingTaskForLogic = initList("floating", taskStored);
             msgLogger.add(message);  
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
@@ -628,7 +648,7 @@ public class Logic {
             storage.saveToFile(taskStored);
             eventForLogic = initList("event", taskStored);
             deadlineForLogic = initList("deadline", taskStored);
-            floatingTask = initList("floating", taskStored);
+            floatingTaskForLogic = initList("floating", taskStored);
             msgLogger.add(message);
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
@@ -722,11 +742,11 @@ public class Logic {
 
     public static String getFloatingTask(){
         String messageToPrint = "";
-        if(floatingTask.size() == 0) {
+        if(floatingTaskForLogic.size() == 0) {
             return messageToPrint = "No tasks";
         }
-        for(int i=0; i<floatingTask.size(); i++) {
-            messageToPrint += "F" + (i+1) + ". "+ floatingTask.get(i) + "\n";
+        for(int i=0; i<floatingTaskForLogic.size(); i++) {
+            messageToPrint += "F" + (i+1) + ". "+ floatingTaskForLogic.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
