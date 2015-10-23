@@ -1,6 +1,5 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -472,7 +471,6 @@ public class CommandParser {
 	String[] wk = {"mon","tue","wed","thu","fri","sat","sun"};
 	ArrayList<String> week = new ArrayList<String>(Arrays.asList(wk));
 	Arrays.fill(isDayTrue, false);
-	String day = "";
 	int index = -1;
 	for(int i=0; i<list.length; i++) {
 	    index = week.indexOf(list[i]);

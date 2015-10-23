@@ -81,6 +81,7 @@ public class CommandParserStubTest {
 
 	// Adding event task
 	try {
+	    
 	    Command add = CommandParser.parse("add Meeting with Boss>>09/10/2015>>13:00-14:00");
 	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() + " " + add.getTaskEventDate() + " " + add.getTaskEventTime());
 	}catch (Exception e) {
