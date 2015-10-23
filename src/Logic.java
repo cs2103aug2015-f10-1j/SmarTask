@@ -16,7 +16,7 @@ public class Logic {
     private static ArrayList<String> event = initList("event", taskStored);
     private static ArrayList<String> deadline = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTask = initList("floating", taskStored);
-    private  ArrayList<Task> repeatedTask = new ArrayList <Task>();
+    private static  ArrayList<Task> repeatedTask = new ArrayList <Task>();
   //  private int id=1;
     private  int taskCode ;
 
@@ -639,5 +639,17 @@ public class Logic {
         }
         return messageToPrint.trim();
     }
+    
+    public static String getRecurringTask(){
+        String messageToPrint = "";
+        if(repeatedTask.size() == 0) {
+            return messageToPrint = "No tasks";
+        }
+        for(int i=0; i<repeatedTask.size(); i++) {
+            messageToPrint += "F" + (i+1) + ". "+ repeatedTask.get(i) + "\n";
+        }
+        return messageToPrint.trim();
+    }
+    
 
 }
