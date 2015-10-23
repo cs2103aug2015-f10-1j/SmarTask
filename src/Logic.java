@@ -140,7 +140,7 @@ public class Logic {
                 event.add(detailStored.get(0));
             }
             else if(taskType.equals("deadline")) {
-                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+ taskCode);
+                detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+"#"+ taskCode);
                 detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.DEADLINE;
                 deadline.add(detailStored.get(0));
