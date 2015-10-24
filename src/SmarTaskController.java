@@ -21,18 +21,13 @@ import javafx.scene.input.KeyEvent;
 
 public class SmarTaskController implements Initializable {
 
-    @FXML private TextArea mainWindow;    //Value injected by FXML Loader
+	private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
+	
     @FXML private TextArea displayWindow;	//Value injected by FXMLoader
-    @FXML private TextArea eventWindow; //Value injected by FXMLoader
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
-    @FXML private TextArea specialTaskWindow; //Value injected by FXMLoader
-    @FXML private TextArea recurringTaskWindow; //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
     private static String logDisplay;
-    private static String eventDisplay;
-    private static String taskDeadlineDisplay;
-    private static String specialTaskDisplay;
-    private static String recurringTaskDisplay;
+    private static String taskDisplay;
     private static ArrayList<String> pastCommands;
     private static int commandCounter;
     
@@ -48,12 +43,8 @@ public class SmarTaskController implements Initializable {
 	 */
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        assert mainWindow != null : "fx:id=\"mainWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert displayWindow != null : "fx:id=\"displayWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
-        assert eventWindow != null : "fx:id=\"eventWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert taskWindow != null : "fx:id=\"taskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
-        assert specialTaskWindow != null : "fx:id=\"specialTaskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
-        assert recurringTaskWindow != null : "fx:id=\"recurringTaskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         updateDisplay();
         pastCommands = new ArrayList<String>();
@@ -65,15 +56,9 @@ public class SmarTaskController implements Initializable {
 	 */
     public void updateDisplay() {
     	logDisplay = Logic.getMessageLog();
-        eventDisplay = Logic.getEvents();
-        taskDeadlineDisplay = Logic.getDeadline();
-        specialTaskDisplay = Logic.getFloatingTask();
-        recurringTaskDisplay = Logic.getRecurringTask();
+    	taskDisplay = Logic.getDeadline();
         updateWindows(displayWindow, logDisplay);
-        updateWindows(eventWindow, eventDisplay);
-        updateWindows(taskWindow, taskDeadlineDisplay);
-        updateWindows(specialTaskWindow, specialTaskDisplay);
-        updateWindows(recurringTaskWindow, recurringTaskDisplay);
+        updateWindows(taskWindow, taskDisplay);
     }
     private void updateWindows(TextArea display, String toDisplay) {
         display.clear();
