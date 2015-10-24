@@ -1,3 +1,6 @@
+import java.util.Date;
+import java.util.List;
+
 import com.joestelmach.natty.*;
 
 /**
@@ -374,12 +377,34 @@ public class CommandParserStubTest {
         // Natty testing
         try {
             com.joestelmach.natty.Parser parserDate = new com.joestelmach.natty.Parser();
-            String date = "23 oct 2015 5 to 6pm";
-            DateGroup group = parserDate.parse(date).get(0);
-            System.out.println(group.getDates());
+            String date = "update R1 team meeting 6 to 8pm 14/02";
+            DateGroup group;
+            try {
+                group = parserDate.parse(date).get(0);
+                List<Date> dates = group.getDates();
+                String[] date1 = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+                System.out.println(date1[0]);
+                System.out.println(date1[1]);
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } 
+        
+        try {
+            com.joestelmach.natty.Parser parserDate = new com.joestelmach.natty.Parser();
+            String date = "update D1 team meeting 6pm 2 Feb 2016";
+            DateGroup group;
+            try {
+                group = parserDate.parse(date).get(0);
+                System.out.println(group.getDates());
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         /*
         // view task from a specific day
