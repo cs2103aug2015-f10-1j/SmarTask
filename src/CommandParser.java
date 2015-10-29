@@ -15,9 +15,17 @@ import com.joestelmach.natty.*;
  */
 
 public class CommandParser {
+    private static final String YEAR = "year";
+    private static final String REGEX_MINUS = "-";
+    private static final String MONTH = "month";
+    private static final String WEEK = "week";
+    private static final String DAY = "day";
+    private static final String[] WEEK_ARRAY = {"mon","tue","wed","thu","fri","sat","sun"};
+    private static final String REPEAT = "repeat";
     private static final String SMALL_CAP_F = "f";
     private static final String SMALL_CAP_E = "e";
     private static final String SMALL_CAP_D = "d";
+    private static final String SMALL_CAP_R = "r";
     private static final String FLOATING = "floating";
     private static final String EVENT = "event";
     private static final String DEADLINE = "deadline";
@@ -36,13 +44,14 @@ public class CommandParser {
     private static final String USER_COMMAND_SEARCH = "search";
     private static final String USER_COMMAND_UNDO= "undo";
     private static final String USER_COMMAND_REDO = "redo";
-    private static final String USER_COMMAND_REPEAT = "repeat";
+    private static final String USER_COMMAND_REPEAT = REPEAT;
     private static final String USER_COMMAND_STOP_REPEAT = "stop";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
     private static final String MSG_INCORRECT_FORMAT = "exception: Error in attributes: Ensure attributes are entered in valid format";
     private static final String MSG_NULL_POINTER = "exception: Error: Null pointer";
     private static ArrayList<String> parserLogger = new ArrayList<String>();
+   
 
     public static Command parse(String userInput) throws Exception {
 	addToParserLogger("command: " + userInput);
@@ -219,11 +228,12 @@ public class CommandParser {
 		command.setTaskType(FLOATING);
 	    }
 	    else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
-		command.setTaskType("repeat");
+		command.setTaskType(REPEAT);
 	    } 
 	    else {
-		   //throw new Exception(MSG_NULL_POINTER);
+		   throw new Exception(MSG_NULL_POINTER);
 	    }
+	    
 	    command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 	    if(command.getTaskID()<=0) {
 		throw new Exception(MSG_NULL_POINTER);
@@ -271,14 +281,14 @@ public class CommandParser {
 	    String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
 	    ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 
-	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith(SMALL_CAP_D)) {
+	    if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_D)) {
 		command.setTaskType(DEADLINE);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskDeadline(getDeadline(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
 		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}", "")
 			.replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());   
 	    }
-	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith(SMALL_CAP_E)) {
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_E)) {
 		command.setTaskType(EVENT);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskEventDate(getDate(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
@@ -286,13 +296,13 @@ public class CommandParser {
 		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
 			.replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
 	    }
-	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith(SMALL_CAP_F)) {
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_F)) {
 		command.setTaskType(FLOATING);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
 	    }
-	    else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
-		command.setTaskType("repeat");
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
+		command.setTaskType(REPEAT);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskEventDate(getDate(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
 		command.setTaskEventTime(getDuration(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
@@ -435,23 +445,23 @@ public class CommandParser {
 
 	    command.setTaskRepeatType(type);
 
-	    if(type.equals("day")) {
+	    if(type.equals(DAY)) {
 		command.setTaskRepeatDayFrequency(frequency);
 	    }
-	    else if(type.equals("week")) {
+	    else if(type.equals(WEEK)) {
 		String[] days = frequency.split("/");
 		command.setTaskRepeatOnDayOfWeek(createIsDayTrue(days));
 	    }
-	    else if(type.equals("month")) {
+	    else if(type.equals(MONTH)) {
 		String[] fqParam = frequency.split("\\s+");
 		if(fqParam.length == 2) {
 		    command.setTaskRepeatMonthFrequencyBySpecificDate(fqParam[1].trim());
 		}else {
-		    fqParam = fqParam[0].split("-");
+		    fqParam = fqParam[0].split(REGEX_MINUS);
 		    command.setTaskRepeatMonthFrequencyBySpecificDayOfWeek(fqParam);
 		}
 	    }
-	    else if (type.equals("year")) {
+	    else if (type.equals(YEAR)) {
 		command.setTaskRepeatYearFrequency(frequency);
 	    }
 	    else {
@@ -476,7 +486,7 @@ public class CommandParser {
 
     private static Boolean[] createIsDayTrue(String[] list) {
 	Boolean[] isDayTrue = new Boolean[7];
-	String[] wk = {"mon","tue","wed","thu","fri","sat","sun"};
+	String[] wk = WEEK_ARRAY;
 	ArrayList<String> week = new ArrayList<String>(Arrays.asList(wk));
 	Arrays.fill(isDayTrue, false);
 	int index = -1;
