@@ -15,12 +15,19 @@ import com.joestelmach.natty.*;
  */
 
 public class CommandParser {
+    private static final String SMALL_CAP_F = "f";
+    private static final String SMALL_CAP_E = "e";
+    private static final String SMALL_CAP_D = "d";
+    private static final String FLOATING = "floating";
+    private static final String EVENT = "event";
+    private static final String DEADLINE = "deadline";
     private static final int POSITION_ZERO_PARAM_ARGUMENT = 0;
     private static final int POSITION_FIRST_PARAM_ARGUMENT = 1;
     private static final int POSITION_SECOND_PARAM_ARGUMENT = 2;
     private static final int TWOPARTS = 2;
-
+    
     private static final String REGEX_WHITESPACES = " ";
+    private static final String MSG_PARSER_LOG= "==============CommandParser Log=================";
 
     private static final String USER_COMMAND_ADD = "add";
     private static final String USER_COMMAND_DELETE = "delete";
@@ -33,8 +40,8 @@ public class CommandParser {
     private static final String USER_COMMAND_STOP_REPEAT = "stop";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
-    private static final String MSG_INCORRECT_FORMAT = "Error in attributes: Ensure attributes are entered in valid format";
-    private static final String MSG_NULL_POINTER = "Error: Null pointer";
+    private static final String MSG_INCORRECT_FORMAT = "exception: Error in attributes: Ensure attributes are entered in valid format";
+    private static final String MSG_NULL_POINTER = "exception: Error: Null pointer";
     private static ArrayList<String> parserLogger = new ArrayList<String>();
 
     public static Command parse(String userInput) throws Exception {
@@ -93,7 +100,7 @@ public class CommandParser {
 	    command = initInvalidCommand();
 	}
 
-	assert command != null : "command is null"; 
+	assert command != null : MSG_NULL_POINTER; 
 
 	return command;
     }
@@ -105,12 +112,12 @@ public class CommandParser {
     }
 
     private static ArrayList<String> splitStringIntoTwoParts(String arguments) throws Exception {
-	assert arguments !=null : "String argument in splitStringIntoTwoParts(String arguments) is null";
+	assert arguments !=null : MSG_NULL_POINTER;
 	try {
 	    String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
 	    return new ArrayList<String>(Arrays.asList(strArray));
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} 
     }
@@ -151,7 +158,7 @@ public class CommandParser {
     }
 
     public static void viewCommandParserLog() {
-	System.out.println("==============CommandParser Log=================");
+	System.out.println(MSG_PARSER_LOG);
 	for(int i = 0; i < parserLogger.size(); i++) {
 	    System.out.println(parserLogger.get(i));
 	}
@@ -165,16 +172,16 @@ public class CommandParser {
 	try {
 	    Command command = new Command(Command.Type.ADD);
 	    if(arguments.size() == 1) {
-		command.setTaskType("floating");
+		command.setTaskType(FLOATING);
 		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 	    }
 	    else if(arguments.size() == 2) {
-		command.setTaskType("deadline");
+		command.setTaskType(DEADLINE);
 		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 		command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
 	    }
 	    else if(arguments.size() == 3) {
-		command.setTaskType("event");
+		command.setTaskType(EVENT);
 		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 		command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
 		command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
@@ -182,13 +189,13 @@ public class CommandParser {
 	    return command;
 
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
 
@@ -202,14 +209,14 @@ public class CommandParser {
 	try {
 	    Command command = new Command(Command.Type.DELETE);
 	    String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
-	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
-		command.setTaskType("deadline");
+	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith(SMALL_CAP_D)) {
+		command.setTaskType(DEADLINE);
 	    }
-	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
-		command.setTaskType("event");
+	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith(SMALL_CAP_E)) {
+		command.setTaskType(EVENT);
 	    }
-	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
-		command.setTaskType("floating");
+	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith(SMALL_CAP_F)) {
+		command.setTaskType(FLOATING);
 	    }
 	    else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
 		command.setTaskType("repeat");
@@ -223,13 +230,13 @@ public class CommandParser {
 	    }
 	    return command;
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
     }
@@ -243,13 +250,13 @@ public class CommandParser {
 	    Command command = new Command(Command.Type.VIEW);
 	    return command;
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
     }
@@ -264,23 +271,23 @@ public class CommandParser {
 	    String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
 	    ArrayList<String> parameters = splitStringIntoTwoParts(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 
-	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
-		command.setTaskType("deadline");
+	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith(SMALL_CAP_D)) {
+		command.setTaskType(DEADLINE);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskDeadline(getDeadline(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
 		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}", "")
 			.replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());   
 	    }
-	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
-		command.setTaskType("event");
+	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith(SMALL_CAP_E)) {
+		command.setTaskType(EVENT);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskEventDate(getDate(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
 		command.setTaskEventTime(getDuration(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
 		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
 			.replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
 	    }
-	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
-		command.setTaskType("floating");
+	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith(SMALL_CAP_F)) {
+		command.setTaskType(FLOATING);
 		command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
 	    }
@@ -302,20 +309,20 @@ public class CommandParser {
 		command.setUpdateRepeat(paramList);
 	    }
 	    else {
-		addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+		addToParserLogger(MSG_INCORRECT_FORMAT);
 		throw new Exception(MSG_INCORRECT_FORMAT);
 	    }
 
 	    return command;
 
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
     }
@@ -362,14 +369,14 @@ public class CommandParser {
 	    Command command = new Command(Command.Type.COMPLETE);
 	    String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
 
-	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith("d")) {
-		command.setTaskType("deadline");
+	    if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_D)) {
+		command.setTaskType(DEADLINE);
 	    }
-	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith("e")) {
-		command.setTaskType("event");
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_E)) {
+		command.setTaskType(EVENT);
 	    }
-	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith("f")) {
-		command.setTaskType("floating");
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_F)) {
+		command.setTaskType(FLOATING);
 	    }
 	    command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
 	    if(command.getTaskID()<=0) {
@@ -379,13 +386,13 @@ public class CommandParser {
 	    return command;
 
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
     }
@@ -400,10 +407,10 @@ public class CommandParser {
 	    command.setSearchKeyword(keywords);
 	    return command; 
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
     }
@@ -448,7 +455,7 @@ public class CommandParser {
 		command.setTaskRepeatYearFrequency(frequency);
 	    }
 	    else {
-		addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+		addToParserLogger(MSG_INCORRECT_FORMAT);
 		throw new Exception(MSG_INCORRECT_FORMAT);
 	    }
 
@@ -456,13 +463,13 @@ public class CommandParser {
 
 	    return command;
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
     }
@@ -497,13 +504,13 @@ public class CommandParser {
 	    command.setStopRepeat(paramList);
 	    return command;
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} catch (IndexOutOfBoundsException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	} catch (NumberFormatException e) {
-	    addToParserLogger("exception: " + MSG_INCORRECT_FORMAT);
+	    addToParserLogger(MSG_INCORRECT_FORMAT);
 	    throw new Exception(MSG_INCORRECT_FORMAT);
 	}
 
@@ -517,7 +524,7 @@ public class CommandParser {
 	    Command command = new Command(Command.Type.UNDO);
 	    return command;
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	} 
     }
@@ -530,7 +537,7 @@ public class CommandParser {
 	    Command command = new Command(Command.Type.REDO);
 	    return command;
 	} catch (NullPointerException e) {
-	    addToParserLogger("exception: " + MSG_NULL_POINTER);
+	    addToParserLogger(MSG_NULL_POINTER);
 	    throw new Exception(MSG_NULL_POINTER); 
 	}  
     }
@@ -548,7 +555,6 @@ public class CommandParser {
     // ================================================================
 
     private static Command initExitCommand() {
-
 	return new Command(Command.Type.EXIT);
     }
 
