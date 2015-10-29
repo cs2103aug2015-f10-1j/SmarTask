@@ -33,7 +33,10 @@ public class SmarTaskController implements Initializable {
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
     private static String logDisplay;
-    private static String taskDisplay;
+    private static String deadlineDisplay;
+    private static String eventDisplay;
+    private static String floatingDisplay;
+    private static String recurringDisplay;
     private static ArrayList<String> pastCommands;
     private static int commandCounter;
     
@@ -62,9 +65,8 @@ public class SmarTaskController implements Initializable {
 	 */
     public void updateDisplay() {
     	logDisplay = Logic.getMessageLog();
-    	taskDisplay = Logic.getDeadline();
         updateWindows(displayWindow, logDisplay);
-        updateWindows(taskWindow, taskDisplay);
+        updateTaskWindow(taskWindow);
     }
     
     private void updateWindows(TextArea display, String toDisplay) {
@@ -72,9 +74,31 @@ public class SmarTaskController implements Initializable {
         display.setText(toDisplay);
     }
     
-    private void updateDisplayWindows(TextArea display, String toDisplay) {
+    private void updateTaskWindow(TextArea display) {
         display.clear();
-        display.setText(toDisplay);
+        deadlineDisplay = Logic.getDeadline();
+    	eventDisplay = Logic.getEvents();
+    	floatingDisplay = Logic.getFloatingTask();
+    	recurringDisplay = Logic.getRecurringTask();
+    	String lineBreak = "\n";
+        display.setText(TASK_DEADLINE);
+        display.appendText(lineBreak);
+        display.appendText(deadlineDisplay);
+        display.appendText(lineBreak);
+        display.appendText(lineBreak);
+        display.appendText(TASK_EVENTS);
+        display.appendText(lineBreak);
+        display.appendText(eventDisplay);
+        display.appendText(lineBreak);
+        display.appendText(lineBreak);
+        display.appendText(TASK_FLOATING);
+        display.appendText(lineBreak);
+        display.appendText(floatingDisplay);
+        display.appendText(lineBreak);
+        display.appendText(lineBreak);
+        display.appendText(TASK_RECURRING);
+        display.appendText(lineBreak);
+        display.appendText(recurringDisplay);
     }
     
     private TreeView<String> createTree() {
