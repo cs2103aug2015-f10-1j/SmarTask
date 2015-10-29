@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -22,6 +24,10 @@ import javafx.scene.input.KeyEvent;
 public class SmarTaskController implements Initializable {
 
 	private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
+	private static final String TASK_DEADLINE = "Deadline Tasks";
+	private static final String TASK_EVENTS = "Event Tasks";
+	private static final String TASK_FLOATING = "Floating Tasks";
+	private static final String TASK_RECURRING = "Recurring Tasks";
 	
     @FXML private TextArea displayWindow;	//Value injected by FXMLoader
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
@@ -60,9 +66,40 @@ public class SmarTaskController implements Initializable {
         updateWindows(displayWindow, logDisplay);
         updateWindows(taskWindow, taskDisplay);
     }
+    
     private void updateWindows(TextArea display, String toDisplay) {
         display.clear();
         display.setText(toDisplay);
+    }
+    
+    private void updateDisplayWindows(TextArea display, String toDisplay) {
+        display.clear();
+        display.setText(toDisplay);
+    }
+    
+    private TreeView<String> createTree() {
+    	TreeItem<String> deadlineTaskTree = createSubTree(TASK_DEADLINE, Logic.getDeadline());
+        TreeItem<String> eventsTaskTree = createSubTree(TASK_EVENTS, Logic.getEvents());
+        TreeItem<String> floatingTaskTree = createSubTree(TASK_FLOATING, Logic.getFloatingTask());
+        TreeItem<String> recurringTaskTree = createSubTree(TASK_RECURRING, Logic.getRecurringTask());
+        TreeItem<String> taskTree = new TreeItem<String>("All Tasks");
+        taskTree.setExpanded(true);
+        taskTree.getChildren().add(deadlineTaskTree);
+        taskTree.getChildren().add(eventsTaskTree);
+        taskTree.getChildren().add(floatingTaskTree);
+        taskTree.getChildren().add(recurringTaskTree);
+        TreeView<String> taskList = new TreeView<String>(taskTree);
+        return taskList;
+    }
+    
+    private TreeItem<String> createSubTree(String taskTitle, String toDisplay) {
+    	TreeItem<String> taskList = new TreeItem<String>(taskTitle);
+    	taskList.setExpanded(true);
+	    for (int i = 1; i < toDisplay.length(); i++) {
+	        TreeItem<String> taskItem = new TreeItem<String>("Message" + i);            
+	        taskList.getChildren().add(taskItem);
+	    } 
+	    return taskList;
     }
 
     /**
