@@ -15,6 +15,11 @@ import com.joestelmach.natty.*;
  */
 
 public class CommandParser {
+
+    private static final String DATEFORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
+    private static final int SIZE_3 = 3;
+    private static final int SIZE_2 = 2;
+    private static final int SIZE_1 = 1;
     private static final String YEAR = "year";
     private static final String REGEX_MINUS = "-";
     private static final String MONTH = "month";
@@ -33,10 +38,8 @@ public class CommandParser {
     private static final int POSITION_FIRST_PARAM_ARGUMENT = 1;
     private static final int POSITION_SECOND_PARAM_ARGUMENT = 2;
     private static final int TWOPARTS = 2;
-    
     private static final String REGEX_WHITESPACES = " ";
-    private static final String MSG_PARSER_LOG= "==============CommandParser Log=================";
-
+    
     private static final String USER_COMMAND_ADD = "add";
     private static final String USER_COMMAND_DELETE = "delete";
     private static final String USER_COMMAND_UPDATE = "update";
@@ -48,13 +51,16 @@ public class CommandParser {
     private static final String USER_COMMAND_STOP_REPEAT = "stop";
     private static final String USER_COMMAND_COMPLETE = "complete";
     private static final String USER_COMMAND_EXIT = "exit";
+    
+    private static final String MSG_COMMAND = "command: ";
+    private static final String MSG_PARSER_LOG= "==============CommandParser Log=================";
     private static final String MSG_INCORRECT_FORMAT = "exception: Error in attributes: Ensure attributes are entered in valid format";
     private static final String MSG_NULL_POINTER = "exception: Error: Null pointer";
     private static ArrayList<String> parserLogger = new ArrayList<String>();
    
 
     public static Command parse(String userInput) throws Exception {
-	addToParserLogger("command: " + userInput);
+	addToParserLogger(MSG_COMMAND + userInput);
 	Command command;
 	ArrayList<String> parameters = splitStringIntoTwoParts(userInput);
 	String userCommand = getUserCommand(parameters);
@@ -115,9 +121,9 @@ public class CommandParser {
     }
 
     private static void addToParserLogger(String userInput) {
-	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	DateFormat dateFormat = new SimpleDateFormat(DATEFORMAT_YYYY_MM_DD_HH_MM_SS);
 	Date date = new Date();
-	parserLogger.add(dateFormat.format(date) + " --- " + userInput );
+	parserLogger.add(dateFormat.format(date) + REGEX_WHITESPACES + userInput );
     }
 
     private static ArrayList<String> splitStringIntoTwoParts(String arguments) throws Exception {
@@ -151,7 +157,7 @@ public class CommandParser {
 
     private static String[] extractParameter(ArrayList<String> parameters) {
 	String line;
-	if(parameters.size() == 1) {
+	if(parameters.size() == SIZE_1) {
 	    line = parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
 	}
 	else {
@@ -180,16 +186,16 @@ public class CommandParser {
     private static Command initAddCommand(ArrayList<String> arguments) throws Exception {
 	try {
 	    Command command = new Command(Command.Type.ADD);
-	    if(arguments.size() == 1) {
+	    if(arguments.size() == SIZE_1) {
 		command.setTaskType(FLOATING);
 		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 	    }
-	    else if(arguments.size() == 2) {
+	    else if(arguments.size() == SIZE_2) {
 		command.setTaskType(DEADLINE);
 		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 		command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
 	    }
-	    else if(arguments.size() == 3) {
+	    else if(arguments.size() == SIZE_3) {
 		command.setTaskType(EVENT);
 		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
 		command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
@@ -218,16 +224,16 @@ public class CommandParser {
 	try {
 	    Command command = new Command(Command.Type.DELETE);
 	    String alphaIndex = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
-	    if(alphaIndex.startsWith("D") || alphaIndex.startsWith(SMALL_CAP_D)) {
+	    if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_D)) {
 		command.setTaskType(DEADLINE);
 	    }
-	    else if(alphaIndex.startsWith("E") || alphaIndex.startsWith(SMALL_CAP_E)) {
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_E)) {
 		command.setTaskType(EVENT);
 	    }
-	    else if(alphaIndex.startsWith("F") || alphaIndex.startsWith(SMALL_CAP_F)) {
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_F)) {
 		command.setTaskType(FLOATING);
 	    }
-	    else if(alphaIndex.startsWith("R") || alphaIndex.startsWith("r")) {
+	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
 		command.setTaskType(REPEAT);
 	    } 
 	    else {
@@ -454,7 +460,7 @@ public class CommandParser {
 	    }
 	    else if(type.equals(MONTH)) {
 		String[] fqParam = frequency.split("\\s+");
-		if(fqParam.length == 2) {
+		if(fqParam.length == SIZE_2) {
 		    command.setTaskRepeatMonthFrequencyBySpecificDate(fqParam[1].trim());
 		}else {
 		    fqParam = fqParam[0].split(REGEX_MINUS);
