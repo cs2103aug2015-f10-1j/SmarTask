@@ -1,13 +1,11 @@
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -23,25 +21,20 @@ import javafx.scene.input.KeyEvent;
 
 public class SmarTaskController implements Initializable {
 
-	private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
-	private static final String TASK_DEADLINE = "Deadline Tasks";
-	private static final String TASK_EVENTS = "Event Tasks";
-	private static final String TASK_FLOATING = "Floating Tasks";
-	private static final String TASK_RECURRING = "Recurring Tasks";
-	
-    @FXML private TextArea displayWindow;	//Value injected by FXMLoader
+	@FXML private TextArea displayWindow;	//Value injected by FXMLoader
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
+	private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
+	private static final String TASK_DEADLINE = "Deadline Tasks:";
+	private static final String TASK_EVENTS = "Event Tasks:";
+	private static final String TASK_FLOATING = "Floating Tasks:";
+	private static final String TASK_RECURRING = "Recurring Tasks:";
+	private final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+	private final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
     private static String logDisplay;
-    private static String deadlineDisplay;
-    private static String eventDisplay;
-    private static String floatingDisplay;
-    private static String recurringDisplay;
-    private static ArrayList<String> pastCommands;
-    private static int commandCounter;
-    
-    final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-	final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+    private static String taskDisplay;
+    private static Stack<String> pastCommands;
+    private static Stack<String> poppedCommands;
 	
 	/**
 	 * Checks if the variables referenced from the fxml file have been properly referenced
@@ -57,8 +50,8 @@ public class SmarTaskController implements Initializable {
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         updateDisplay();
         displayWindow.setText(MESSAGE_WELCOME);
-        pastCommands = new ArrayList<String>();
-        commandCounter = 1;
+        pastCommands = new Stack<String>();
+        poppedCommands = new Stack<String>();
     }
     
     /**
@@ -67,7 +60,7 @@ public class SmarTaskController implements Initializable {
     public void updateDisplay() {
     	logDisplay = Logic.getMessageLog();
         updateWindows(displayWindow, logDisplay);
-        updateTaskWindow(taskWindow);
+        updateWindows(taskWindow);
     }
     
     private void updateWindows(TextArea display, String toDisplay) {
@@ -75,56 +68,31 @@ public class SmarTaskController implements Initializable {
         display.setText(toDisplay);
     }
     
-    private void updateTaskWindow(TextArea display) {
+    private void updateWindows(TextArea display) {
         display.clear();
-        deadlineDisplay = Logic.getDeadline();
-    	eventDisplay = Logic.getEvents();
-    	floatingDisplay = Logic.getFloatingTask();
-    	recurringDisplay = Logic.getRecurringTask();
+        taskDisplay = Logic.getDeadline();
     	String lineBreak = "\n";
         display.setText(TASK_DEADLINE);
         display.appendText(lineBreak);
-        display.appendText(deadlineDisplay);
+        display.appendText(taskDisplay);
         display.appendText(lineBreak);
         display.appendText(lineBreak);
+        taskDisplay = Logic.getEvents();
         display.appendText(TASK_EVENTS);
         display.appendText(lineBreak);
-        display.appendText(eventDisplay);
+        display.appendText(taskDisplay);
         display.appendText(lineBreak);
         display.appendText(lineBreak);
+        taskDisplay = Logic.getEvents();
         display.appendText(TASK_FLOATING);
         display.appendText(lineBreak);
-        display.appendText(floatingDisplay);
+        display.appendText(taskDisplay);
         display.appendText(lineBreak);
         display.appendText(lineBreak);
+        taskDisplay = Logic.getRecurringTask();
         display.appendText(TASK_RECURRING);
         display.appendText(lineBreak);
-        display.appendText(recurringDisplay);
-    }
-    
-    private TreeView<String> createTree() {
-    	TreeItem<String> deadlineTaskTree = createSubTree(TASK_DEADLINE, Logic.getDeadline());
-        TreeItem<String> eventsTaskTree = createSubTree(TASK_EVENTS, Logic.getEvents());
-        TreeItem<String> floatingTaskTree = createSubTree(TASK_FLOATING, Logic.getFloatingTask());
-        TreeItem<String> recurringTaskTree = createSubTree(TASK_RECURRING, Logic.getRecurringTask());
-        TreeItem<String> taskTree = new TreeItem<String>("All Tasks");
-        taskTree.setExpanded(true);
-        taskTree.getChildren().add(deadlineTaskTree);
-        taskTree.getChildren().add(eventsTaskTree);
-        taskTree.getChildren().add(floatingTaskTree);
-        taskTree.getChildren().add(recurringTaskTree);
-        TreeView<String> taskList = new TreeView<String>(taskTree);
-        return taskList;
-    }
-    
-    private TreeItem<String> createSubTree(String taskTitle, String toDisplay) {
-    	TreeItem<String> taskList = new TreeItem<String>(taskTitle);
-    	taskList.setExpanded(true);
-	    for (int i = 1; i < toDisplay.length(); i++) {
-	        TreeItem<String> taskItem = new TreeItem<String>("Message" + i);            
-	        taskList.getChildren().add(taskItem);
-	    } 
-	    return taskList;
+        display.appendText(taskDisplay);
     }
 
     /**
@@ -138,6 +106,8 @@ public class SmarTaskController implements Initializable {
             enterKeyEvent();
         } else if(ke.getCode() == KeyCode.UP) {
         	upKeyEvent();
+        } else if(ke.getCode() == KeyCode.DOWN) {
+        	downKeyEvent();
         } else if(crtlZ.match(ke)) {
         	controlZKeyEvent();
         } else if(crtlY.match(ke)) {
@@ -151,9 +121,11 @@ public class SmarTaskController implements Initializable {
 	 * @param ke the key pressed by the user as recorded by the system
 	 */
     @FXML
-    public void secondKeyboardLog(KeyEvent ke) {
+    public void specialKeyboardLog(KeyEvent ke) {
         if(ke.getCode() == KeyCode.UP) {
         	upKeyEvent();
+        } else if(ke.getCode() == KeyCode.DOWN) {
+        	downKeyEvent();
         } else if(crtlZ.match(ke)) {
         	controlZKeyEvent();
         } else if(crtlY.match(ke)) {
@@ -163,7 +135,11 @@ public class SmarTaskController implements Initializable {
     
     private void enterKeyEvent() {
     	String userCommand = inputWindow.getText();
-    	pastCommands.add(userCommand);
+    	if(!poppedCommands.isEmpty()) {
+    		String poppedCommand = poppedCommands.pop();
+    		pastCommands.push(poppedCommand);
+    	}
+    	pastCommands.push(userCommand);
         inputWindow.clear();
         try {
             Logic.executeCommand(userCommand);
@@ -174,13 +150,23 @@ public class SmarTaskController implements Initializable {
     }
     
     private void upKeyEvent() {
-    	int recall = pastCommands.size() - commandCounter;
-    	if(recall < 0) {
+    	if(pastCommands.isEmpty()) {
     		inputWindow.clear();
     	} else {
-    		commandCounter++;
     		inputWindow.clear();
-    		String pastCommand = pastCommands.get(recall);
+    		String pastCommand = pastCommands.pop();
+    		poppedCommands.push(pastCommand);
+    		inputWindow.setText(pastCommand);
+    	}
+    }
+    
+    private void downKeyEvent() {
+    	if(poppedCommands.isEmpty()) {
+    		inputWindow.clear();
+    	} else {
+    		inputWindow.clear();
+    		String pastCommand = poppedCommands.pop();
+    		pastCommands.push(pastCommand);
     		inputWindow.setText(pastCommand);
     	}
     }
