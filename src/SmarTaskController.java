@@ -56,6 +56,7 @@ public class SmarTaskController implements Initializable {
         assert taskWindow != null : "fx:id=\"taskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         updateDisplay();
+        displayWindow.setText(MESSAGE_WELCOME);
         pastCommands = new ArrayList<String>();
         commandCounter = 1;
     }
