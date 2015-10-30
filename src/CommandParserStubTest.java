@@ -14,7 +14,15 @@ import com.joestelmach.natty.*;
 public class CommandParserStubTest {
 
     public static void main(String[] args) throws Exception {
-
+        
+        // Set File Path      
+        try {
+            Command filepath = CommandParser.parse("setfilepath " + System.getProperty("user.home") + "/Desktop");
+            System.out.println(filepath.getCommandType() + " " + filepath.getFilePath());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
         // invalid command      
         try {
             Command invalid = CommandParser.parse("This is an invalid command");

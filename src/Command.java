@@ -11,7 +11,7 @@ import java.util.*;
 public class Command {
     public enum Type {
 	ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
-	UNDO, REDO, REPEAT, STOP_REPEAT
+	UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
     }
 
     private int taskID;
@@ -21,6 +21,7 @@ public class Command {
     private String taskDeadline;
     private String taskEventDate;
     private String taskEventTime;
+    private String filePath;
     private ArrayList<String> searchKeyword;
 
     // Additional attributes for recurrencing task
@@ -148,6 +149,10 @@ public class Command {
     public void setTaskType(String taskType) {
 	this.taskType = taskType;
     }
+    
+    public String getFilePath() {
+        return filePath;
+    }
 
     // ================================================================
     // Setters method to support recurring task
@@ -211,6 +216,10 @@ public class Command {
 
     public void setUpdateRepeat(ArrayList<String> updateRepeat) {
 	this.updateRepeat = updateRepeat;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
 }
