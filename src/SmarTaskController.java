@@ -29,10 +29,15 @@ public class SmarTaskController implements Initializable {
 	private static final String TASK_EVENTS = "Event Tasks:";
 	private static final String TASK_FLOATING = "Floating Tasks:";
 	private static final String TASK_RECURRING = "Recurring Tasks:";
+	private static final String COMMAND_UNDO = "undo";
+	private static final String COMMAND_REDO = "redo";
 	private final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	private final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
     private static String logDisplay;
-    private static String taskDisplay;
+    private static String deadlineTasks;
+    private static String eventTasks;
+    private static String floatingTasks;
+    private static String recurringTasks;
     private static Stack<String> pastCommands;
     private static Stack<String> poppedCommands;
 	
@@ -70,29 +75,29 @@ public class SmarTaskController implements Initializable {
     
     private void updateWindows(TextArea display) {
         display.clear();
-        taskDisplay = Logic.getDeadline();
+        deadlineTasks = Logic.getDeadline();
+        eventTasks = Logic.getEvents();
+        floatingTasks = Logic.getFloatingTask();
+        recurringTasks = Logic.getRecurringTask();
     	String lineBreak = "\n";
         display.setText(TASK_DEADLINE);
         display.appendText(lineBreak);
-        display.appendText(taskDisplay);
+        display.appendText(deadlineTasks);
         display.appendText(lineBreak);
         display.appendText(lineBreak);
-        taskDisplay = Logic.getEvents();
         display.appendText(TASK_EVENTS);
         display.appendText(lineBreak);
-        display.appendText(taskDisplay);
+        display.appendText(eventTasks);
         display.appendText(lineBreak);
         display.appendText(lineBreak);
-        taskDisplay = Logic.getEvents();
         display.appendText(TASK_FLOATING);
         display.appendText(lineBreak);
-        display.appendText(taskDisplay);
+        display.appendText(floatingTasks);
         display.appendText(lineBreak);
         display.appendText(lineBreak);
-        taskDisplay = Logic.getRecurringTask();
         display.appendText(TASK_RECURRING);
         display.appendText(lineBreak);
-        display.appendText(taskDisplay);
+        display.appendText(recurringTasks);
     }
 
     /**
@@ -145,7 +150,8 @@ public class SmarTaskController implements Initializable {
             Logic.executeCommand(userCommand);
             updateDisplay();
         } catch (Exception e) {
-            e.printStackTrace();
+        	e.printStackTrace();
+            System.err.println("Error! Invalid Command sent to Logic!");
         }
     }
     
@@ -173,19 +179,21 @@ public class SmarTaskController implements Initializable {
     
     private void controlZKeyEvent() {
     	try {
-    	    Logic.executeCommand("undo");
+    	    Logic.executeCommand(COMMAND_UNDO);
     	    updateDisplay();
     	} catch (Exception e) {
     		e.printStackTrace();
+    		System.err.println("Error! Invalid Undo Command sent to Logic!");
     	}
     }
     
     private void controlYKeyEvent() {
     	try {
-    	    Logic.executeCommand("redo");
+    	    Logic.executeCommand(COMMAND_REDO);
     	    updateDisplay();
     	} catch (Exception e) {
     		e.printStackTrace();
+    		System.err.println("Error! Invalid Redo Command sent to Logic!");
     	}
     }
 }
