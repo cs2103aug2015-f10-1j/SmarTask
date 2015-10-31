@@ -16,12 +16,13 @@ public class Logic {
     private static ArrayList<String> eventForLogic = initList("event", taskStored);
     private static ArrayList<String> deadlineForLogic = initList("deadline", taskStored);
     private static  ArrayList<String> floatingTaskForLogic = initList("floating", taskStored);
-    private static ArrayList<String> event = new ArrayList <String>();
-    private static ArrayList<String> deadline = new ArrayList <String> ();
-    private static  ArrayList<String> floating = new ArrayList<String>();
-    private static ArrayList<String> repeat = new ArrayList<String>();
-    private static ArrayList <Integer> searchList;
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
+    private static ArrayList<String> event;
+    private static ArrayList<String> deadline;
+    private static  ArrayList<String> floating;
+    private static ArrayList<String> repeat;
+    private static ArrayList <Integer> searchList;
+   
   //  private int id=1;
     private  int taskCode ;
 
@@ -78,10 +79,12 @@ public class Logic {
         }
     }
 
-    @SuppressWarnings("unchecked")
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
-      //  System.out.println(taskStored.size());
+        floating  = new ArrayList<String>();
+        event = new ArrayList<String>();
+        deadline = new ArrayList<String>();
+        repeat = new ArrayList<String>();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
                 if (type.equals("floating")){
@@ -740,44 +743,44 @@ public class Logic {
 
     public static String getEvents(){
         String messageToPrint = "";
-        if(eventForLogic.size() == 0) {
+        if(event.size() == 0) {
             return messageToPrint = "No events";
         }
-        for(int i=0; i<eventForLogic.size(); i++) {
-            messageToPrint += "E" + (i+1) + ". "+ eventForLogic.get(i) + "\n";
+        for(int i=0; i<event.size(); i++) {
+            messageToPrint += "E" + (i+1) + ". "+ event.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
 
     public static String getDeadline(){
         String messageToPrint = "";
-        if(deadlineForLogic.size() == 0) {
+        if(deadline.size() == 0) {
             return messageToPrint = "No tasks";
         }
-        for(int i=0; i<deadlineForLogic.size(); i++) {
-            messageToPrint += "D" + (i+1) + ". "+ deadlineForLogic.get(i) + "\n";
+        for(int i=0; i<deadline.size(); i++) {
+            messageToPrint += "D" + (i+1) + ". "+ deadline.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
 
     public static String getFloatingTask(){
         String messageToPrint = "";
-        if(floatingTaskForLogic.size() == 0) {
+        if(floating.size() == 0) {
             return messageToPrint = "No tasks";
         }
-        for(int i=0; i<floatingTaskForLogic.size(); i++) {
-            messageToPrint += "F" + (i+1) + ". "+ floatingTaskForLogic.get(i) + "\n";
+        for(int i=0; i<floating.size(); i++) {
+            messageToPrint += "F" + (i+1) + ". "+ floating.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
     
     public static String getRecurringTask(){
         String messageToPrint = "";
-        if(repeatedTask.size() == 0) {
+        if(repeat.size() == 0) {
             return messageToPrint = "No tasks";
         }
-        for(int i=0; i<repeatedTask.size(); i++) {
-            messageToPrint += "R" + (i+1) + ". "+ repeatedTask.get(i) + "\n";
+        for(int i=0; i<repeat.size(); i++) {
+            messageToPrint += "R" + (i+1) + ". "+ repeat.get(i) + "\n";
         }
         return messageToPrint.trim();
     }
