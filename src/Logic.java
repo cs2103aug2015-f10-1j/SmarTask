@@ -9,6 +9,14 @@ import javax.swing.RowFilter.ComparisonType;
 
 import org.junit.internal.Throwables;
 
+/**
+ * 
+ * 
+ * @author Liang Mengfei
+ *
+ */
+
+
 public class Logic {
 	private static Storage storage = new Storage ();
     private static  ArrayList<Task> taskStored = storage.retrieveFile();
