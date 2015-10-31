@@ -16,8 +16,8 @@ import com.joestelmach.natty.*;
 
 public class CommandParser {
 
+    private static final int SIZE_0 = 0;
     private static final String DATEFORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
-    private static final int SIZE_3 = 3;
     private static final int SIZE_2 = 2;
     private static final int SIZE_1 = 1;
     private static final String YEAR = "year";
@@ -156,21 +156,9 @@ public class CommandParser {
 
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
         assert parameters !=null;
-        String[] strArray = extractParameter(parameters);
-        return new ArrayList<String>(Arrays.asList(strArray));
-    }
-
-    private static String[] extractParameter(ArrayList<String> parameters) {
-        String line;
-        if(parameters.size() == SIZE_1) {
-            line = parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
-        }
-        else {
-            line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
-        }
-
-        String[] strArray = line.trim().split(">>");
-        return strArray;
+        ArrayList<String> list = new ArrayList<>();
+        list.add(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return list;
     }
 
     private static String getUserCommand(ArrayList<String> parameters) {
@@ -191,21 +179,33 @@ public class CommandParser {
     private static Command initAddCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.ADD);
-            if(arguments.size() == SIZE_1) {
+            com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+            List<DateGroup> dateGroup = parseDate.parse(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+
+            if(dateGroup.size() == SIZE_0) {
                 command.setTaskType(FLOATING);
                 command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
             }
-            else if(arguments.size() == SIZE_2) {
-                command.setTaskType(DEADLINE);
-                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-                command.setTaskDeadline(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            else {
+                DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+                List<Date> dates = group.getDates();
+                String[] date = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+                if(date.length == SIZE_1) {
+                    command.setTaskType(DEADLINE);
+                    command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("by")[0].trim());
+                    command.setTaskDeadline(date[0]);
+                }
+                else if(date.length == SIZE_2) {
+                    command.setTaskType(EVENT);
+                    command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("on")[0].trim());
+                    command.setTaskEventStart(date[POSITION_ZERO_PARAM_ARGUMENT]);
+                    command.setTaskEventEnd(date[POSITION_FIRST_PARAM_ARGUMENT]);
+                }
             }
-            else if(arguments.size() == SIZE_3) {
-                command.setTaskType(EVENT);
-                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-                command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-                command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
-            }
+
+            //command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
+            //command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
+
             return command;
 
         } catch (NullPointerException e) {

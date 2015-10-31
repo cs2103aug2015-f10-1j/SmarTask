@@ -19,6 +19,8 @@ public class Command {
     private String taskType;
     private String taskDescription;
     private String taskDeadline;
+    private String taskEventStart;
+    private String taskEventEnd;
     private String taskEventDate;
     private String taskEventTime;
     private String filePath;
@@ -220,6 +222,22 @@ public class Command {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getTaskEventStart() {
+        return taskEventStart;
+    }
+
+    public void setTaskEventStart(String taskEventStart) {
+        this.taskEventStart = taskEventStart;
+    }
+
+    public String getTaskEventEnd() {
+        return taskEventEnd;
+    }
+
+    public void setTaskEventEnd(String taskEventEnd) {
+        this.taskEventEnd = taskEventEnd;
     }
 
 }
