@@ -11,7 +11,6 @@ import java.util.Date;
 public class Task {
 
     private static final String empty = "-1";
-
     public enum Type {
         EVENT, DEADLINE, FLOATING, REPEAT
     }
