@@ -61,7 +61,15 @@ public class CommandParserStubTest {
             System.out.println(e.getMessage());
         }
 
-
+        // Yearly
+        try {
+            Command repeat = CommandParser.parse("repeat meeting -on 15 Dec 2 to 5 pm -every 1 year");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
+            + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         //=================================================================================
         //============================Deleting Recurrence tasks============================

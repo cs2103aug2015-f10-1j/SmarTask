@@ -22,11 +22,12 @@ public class Task {
     private String eventStart;
     private String eventEnd;
     private String repeatPeriod;
-    private Date dateAdded;
+    
     private String timeAdded;
     private Boolean isComplete;
     
     // For repeated task
+    private Date dateAdded;
     private String taskRepeatType;
     private Date taskRepeatUntil;
     private String taskRepeatStartTime;
@@ -137,10 +138,6 @@ public class Task {
         return repeatPeriod;
     }
 
-    public Date getDateAdded() {
-        return dateAdded;
-    }
-
     public String getTimeAdded() {
         return timeAdded;
     }
@@ -179,10 +176,6 @@ public class Task {
 
     public void setRepeatPeriod(String repeatPeriod) {
         this.repeatPeriod = repeatPeriod;
-    }
-
-    public void setDateAdded(Date dateAdded) {
-        this.dateAdded = dateAdded;
     }
 
     public void setTimeAdded(String timeAdded) {
@@ -247,6 +240,14 @@ public class Task {
 
     public void setTaskRepeatEndTime(String taskRepeatEndTime) {
         this.taskRepeatEndTime = taskRepeatEndTime;
+    }
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
 }
