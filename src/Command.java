@@ -33,9 +33,9 @@ public class Command {
     // Additional attributes for recurrencing task
     private String repeatType;
     private Date dateAdded;
+    private Date repeatUntil;
     private String repeatStartTime;
     private String repeatEndTime;
-    private Date repeatUntil;
     private ArrayList<String> stopRepeat;
     
     // ======= Day repeat =======

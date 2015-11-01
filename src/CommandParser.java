@@ -444,6 +444,7 @@ public class CommandParser {
     // ================================================================
     private static Command initRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Command command = new Command(Command.Type.REPEAT);
             String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("-on");
             command.setTaskDescription(param[POSITION_ZERO_PARAM_ARGUMENT].trim());
@@ -471,7 +472,6 @@ public class CommandParser {
                     command.setRepeatUntil(line.get(0));
                 }
                 else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     command.setRepeatUntil(dateFormat.parse("01/12/9999"));
                 }
             }
@@ -494,7 +494,6 @@ public class CommandParser {
                     command.setRepeatUntil(line.get(0));
                 }
                 else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     command.setRepeatUntil(dateFormat.parse("01/12/9999"));
                 }
             }
