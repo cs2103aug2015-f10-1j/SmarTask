@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -24,7 +26,7 @@ public class Storage {
 	private File taskFile;
 	private BufferedReader reader;
 	private PrintWriter writer;
-	private String savePath;
+	private String savePath = "";
 
 	private Gson gson;
 
@@ -33,7 +35,7 @@ public class Storage {
 	public Storage() {
 		gson = new Gson();
 
-		taskFile = new File(DEFAULT_FILENAME);
+		taskFile = new File(savePath + DEFAULT_FILENAME);
 		createIfNotExists(taskFile);
 	}
 	
@@ -96,19 +98,43 @@ public class Storage {
 	}
 	
 	public void setSavePath(String inputPath) {
-		//File desFile = new File(inputPath + File.separator + DEFAULT_FILENAME);
+		savePath = savePath + inputPath + File.separator;
+		File desFile = new File(savePath + DEFAULT_FILENAME);
+		System.out.println(savePath);
+		
 		try {
-			if(taskFile.renameTo(new File(inputPath + File.separator + DEFAULT_FILENAME))){
+			
+			if(taskFile.renameTo(desFile)){
 			//System.out.println(inputPath + File.separator + DEFAULT_FILENAME);
-    		System.out.println("File is moved successful!");
+    		System.out.println("Moved successful!");
             }else{
-    		System.out.println("File is failed to move!");
+    		System.out.println("Failed to move!");
             }
         } catch (Exception e) {
         	e.printStackTrace();
         }
 
 	}
+	
+	/*public void setSavePath(String inputPath){
+		try{
+			File newFile = new File(inputPath);
+			newFile.createNewFile();
+			saveToFile(retrieveFile());
+			taskFile.delete();
+			taskFile = newFile;
+			FileWriter fw = new FileWriter(taskFile, false);
+			BufferedWriter buff = new BufferedWriter(fw);
+			buff.write(inputPath);
+			buff.close();
+			fw.close();
+			System.out.println("Successful!");
+			
+		}catch(Exception e){
+			System.out.println("invalid path");
+			
+		}		
+	}*/
 
 	// Initialization Methods
 	private boolean initReader(File taskFile) {
