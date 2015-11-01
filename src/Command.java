@@ -1,3 +1,4 @@
+import java.text.DateFormat;
 import java.util.*;
 
 /**
@@ -31,10 +32,10 @@ public class Command {
 
     // Additional attributes for recurrencing task
     private String repeatType;
-    private String dateAdded;
+    private Date dateAdded;
     private String repeatStartTime;
     private String repeatEndTime;
-    private String repeatUntil;
+    private Date repeatUntil;
     private ArrayList<String> stopRepeat;
     
     // ======= Day repeat =======
@@ -182,14 +183,6 @@ public class Command {
         this.repeatType = repeatType;
     }
 
-    public String getRepeatUntil() {
-        return repeatUntil;
-    }
-
-    public void setRepeatUntil(String repeatUntil) {
-        this.repeatUntil = repeatUntil;
-    }
-
     public String getDayInterval() {
         return dayInterval;
     }
@@ -198,11 +191,19 @@ public class Command {
         this.dayInterval = dayInterval;
     }
 
-    public String getDateAdded() {
+    public String getYearInterval() {
+        return yearInterval;
+    }
+
+    public void setYearInterval(String yearInterval) {
+        this.yearInterval = yearInterval;
+    }
+
+    public Date getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(String dateAdded) {
+    public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }
 
@@ -222,12 +223,12 @@ public class Command {
         this.repeatEndTime = repeatEndTime;
     }
 
-    public String getYearInterval() {
-        return yearInterval;
+    public Date getRepeatUntil() {
+        return repeatUntil;
     }
 
-    public void setYearInterval(String yearInterval) {
-        this.yearInterval = yearInterval;
+    public void setRepeatUntil(Date repeatUntil) {
+        this.repeatUntil = repeatUntil;
     }
 
 }

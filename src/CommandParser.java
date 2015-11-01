@@ -1,4 +1,5 @@
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -59,7 +60,8 @@ public class CommandParser {
     private static final String MSG_INCORRECT_FORMAT = "exception: Error in attributes: Ensure attributes are entered in valid format";
     private static final String MSG_NULL_POINTER = "exception: Error: Null pointer";
     private static ArrayList<String> parserLogger = new ArrayList<String>();
-
+    private static String[] arr = {"Jan", "Feb", "Mar", "Apr", "May","Jun","Jul","Aug", "Sep","Oct","Nov", "Dec"};
+    private static final ArrayList<String> monthInString = new ArrayList<String>(Arrays.asList(arr));
 
     public static Command parse(String userInput) throws Exception {
         addToParserLogger(MSG_COMMAND + userInput);
@@ -449,10 +451,13 @@ public class CommandParser {
             param = param[POSITION_FIRST_PARAM_ARGUMENT].split("-every");
             String dateTimeLine = param[POSITION_ZERO_PARAM_ARGUMENT].trim();
 
-            ArrayList<String> dateTime = extractDateStartEnd(dateTimeLine);
-            command.setDateAdded(dateTime.get(0));
-            command.setRepeatStartTime(dateTime.get(1));
-            command.setRepeatEndTime(dateTime.get(2));
+            ArrayList<String> time = extractTime(dateTimeLine);
+            command.setRepeatStartTime(time.get(0));
+            command.setRepeatEndTime(time.get(1));
+            
+            ArrayList<Date> date = extractDate(dateTimeLine);
+            command.setDateAdded(date.get(0));
+            
 
             String inputOfRecurrence = param[POSITION_FIRST_PARAM_ARGUMENT].trim();
 
@@ -462,11 +467,12 @@ public class CommandParser {
                 command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
                 if(remainingParam.length > 1) {
-                    ArrayList<String> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
                 }
                 else {
-                    command.setRepeatUntil("forever");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    command.setRepeatUntil(dateFormat.parse("01/12/9999"));
                 }
             }
 
@@ -484,11 +490,12 @@ public class CommandParser {
                 command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
                 if(remainingParam.length > 1) {
-                    ArrayList<String> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
                 }
                 else {
-                    command.setRepeatUntil("forever");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    command.setRepeatUntil(dateFormat.parse("01/12/9999"));
                 }
             }
 
@@ -505,20 +512,31 @@ public class CommandParser {
         }
     }
 
-    private static ArrayList<String> extractDate(String dateTime) {
-        ArrayList<String> dateStartEnd = new ArrayList<String>(3);
+    private static ArrayList<Date> extractDate(String dateTime) throws Exception {
+        try {
+            ArrayList<Date> dateStartEnd = new ArrayList<Date>(3);
+            com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+            List<DateGroup> dateGroup = parseDate.parse(dateTime);
+            DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+            List<Date> dates = group.getDates();
+            
+            String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+            String[] param = arr[0].split(" ");
+            
+            int mth = monthInString.indexOf(param[1]) + 1;
+            
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            dateStartEnd.add(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
+            return dateStartEnd;
 
-        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-        List<DateGroup> dateGroup = parseDate.parse(dateTime);
-        DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-        List<Date> dates = group.getDates();
-        String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
-        String[] start = arr[0].split(" ");
-        dateStartEnd.add(start[2] + " " + start[1] + " " + start[5]);
-        return dateStartEnd;
+        } catch (ParseException e) {
+            addToParserLogger(MSG_INCORRECT_FORMAT);
+            throw new Exception(MSG_INCORRECT_FORMAT);
+        }
+
     }
 
-    private static ArrayList<String> extractDateStartEnd(String dateTime) {
+    private static ArrayList<String> extractTime(String dateTime) throws Exception {
         ArrayList<String> dateStartEnd = new ArrayList<String>(3);
 
         com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
@@ -528,12 +546,13 @@ public class CommandParser {
 
         String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
         String[] start = arr[0].split(" ");
-        dateStartEnd.add(start[2] + " " + start[1] + " " + start[5]);
         dateStartEnd.add(start[3]);
-
+        
         String[] end = arr[1].split(" ");
         dateStartEnd.add(end[3]);
+        
         return dateStartEnd;
+        
     }
 
     private static Boolean[] createIsDayTrue(String[] list) {
