@@ -144,6 +144,20 @@ public class Logic {
         return list;
     }
 	
+	private static boolean isOverdue(Task task){
+		boolean isOver = false;
+		if (task.getType().equals(Task.Type.FLOATING)){
+			isOver = true;
+		} else if (task.getType().equals(Task.Type.EVENT)){
+			
+		} else if (task.getType().equals(Task.Type.DEADLINE)){
+			
+		} else if (task.getType().equals(Task.Type.REPEAT)){
+			
+		}
+		return isOver;
+	}
+	
 	private static boolean compareDate(Task task){
 		boolean isToday = false;
 		
@@ -166,6 +180,8 @@ public class Logic {
 		}
 		return isToday;
 	}
+	
+	// get the year difference between two dates
 	private int getYearBetweenDates(Date d1, Date d2){
 		Calendar a = getCalendar(d1);
 		Calendar b = getCalendar(d2);
@@ -175,12 +191,13 @@ public class Logic {
 		}
 		return diff;
 	}
+	// comvert the date to calendar format
 	public static Calendar getCalendar(Date date) {
 	    Calendar cal = Calendar.getInstance(Locale.US);
 	    cal.setTime(date);
 	    return cal;
 	}
-	
+	// get the num of days different between current date and the recurring task starting date
 	private int getDifferenceDays(Date d1, Date d2){
 		int daysDiff = 0;
 		long diff = d2.getTime() - d1.getTime();
@@ -188,7 +205,7 @@ public class Logic {
 	    daysDiff = (int)diffDays;
 	    return daysDiff;
 	}
-   
+   // get the unique task code
     private int getID(){
     	DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
     	Calendar cal = Calendar.getInstance();
@@ -201,7 +218,7 @@ public class Logic {
     	taskCode = sNum + sIDNum;
     	return taskCode;
     }
-
+    // get the current date, time
     private static void initDate() throws ParseException{
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -327,8 +344,8 @@ public class Logic {
     	Task.Type type = Task.Type.REPEAT;
     	Task task = null;
     	if (taskType.equals(DAY_REC)){
-    		detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil() + "#" + taskCode);
-    		detailStored.add(com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+ "#" + taskCode);
+    		detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
+    		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
     		task = new Task (type, detailStored);
     		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     	} 
@@ -350,13 +367,15 @@ public class Logic {
         		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     		}
     		
-    	} else if (com.getTaskRepeatType().equals(YEAR_REC)){
-    		detailTask.add(taskType +"#" +com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
-    		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
-    		task = new Task (type, detailStored);
-    		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     	}
-    */	
+    	*/
+    	 else if (taskType.equals(YEAR_REC)){
+    		 detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
+     		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
+     		task = new Task (type, detailStored);
+     		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
+    	}
+    	
         taskStored.add(task);
         msgLogger.add(task.getDescription());
         repeatedTask.add(detailTask.get(0));
