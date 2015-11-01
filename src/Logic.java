@@ -111,7 +111,7 @@ public class Logic {
                 }else if (type.equals("repeat")){
                 	initDate();
                 	Task task = taskStored.get(i);
-                	msgLogger.add(task.getTaskRepeatFrequency() + "  " + task.getTaskRepeatUntil() + "   " + task.getTaskRepeatDuration());
+                //	msgLogger.add(task.get + "  " + task.getTaskRepeatUntil() + "   " + task.getTaskRepeatDuration());
                 	list.add(taskStored.get(i).getRepeatString());
                 }
              
