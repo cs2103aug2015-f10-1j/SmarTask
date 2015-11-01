@@ -24,6 +24,7 @@ public class Storage {
 	private File taskFile;
 	private BufferedReader reader;
 	private PrintWriter writer;
+	private String savePath;
 
 	private Gson gson;
 
@@ -92,6 +93,20 @@ public class Storage {
 			e.printStackTrace();
 		}
 		writer.close();
+	}
+	
+	public void setSavePath(String inputPath) {
+		//File desFile = new File(inputPath + File.separator + DEFAULT_FILENAME);
+		try {
+			if(taskFile.renameTo(new File(inputPath + File.separator + DEFAULT_FILENAME))){
+    		System.out.println("File is moved successful!");
+            }else{
+    		System.out.println("File is failed to move!");
+            }
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+
 	}
 
 	// Initialization Methods
