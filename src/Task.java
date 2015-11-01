@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Task is an object class that contains all attibutes of a task
@@ -22,7 +23,7 @@ public class Task {
     private String eventStart;
     private String eventEnd;
     private String repeatPeriod;
-    private String dateAdded;
+    private Date dateAdded;
     private String timeAdded;
     private Boolean isComplete;
     
@@ -31,7 +32,7 @@ public class Task {
     private String taskRepeatStartTime;
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
-    private String taskRepeatUntil;
+    private Date taskRepeatUntil;
     private String taskRepeatInterval_Day;
     private String taskRepeatInterval_Year;
     
@@ -137,7 +138,7 @@ public class Task {
         return repeatPeriod;
     }
 
-    public String getDateAdded() {
+    public Date getDateAdded() {
         return dateAdded;
     }
 
@@ -181,7 +182,7 @@ public class Task {
         this.repeatPeriod = repeatPeriod;
     }
 
-    public void setDateAdded(String dateAdded) {
+    public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }
 
@@ -201,11 +202,11 @@ public class Task {
         this.taskRepeatType = taskRepeatType;
     }
 
-    public String getTaskRepeatUntil() {
+    public Date getTaskRepeatUntil() {
         return taskRepeatUntil;
     }
 
-    public void setTaskRepeatUntil(String taskRepeatUntil) {
+    public void setTaskRepeatUntil(Date taskRepeatUntil) {
         this.taskRepeatUntil = taskRepeatUntil;
     }
 
