@@ -492,7 +492,6 @@ public class CommandParser {
                 }
             }
 
-
             return command;
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);

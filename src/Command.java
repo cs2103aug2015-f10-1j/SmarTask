@@ -36,11 +36,11 @@ public class Command {
     private String repeatEndTime;
     private String repeatUntil;
     private ArrayList<String> stopRepeat;
-
-    // ======= Day recurrence =======
+    
+    // ======= Day repeat =======
     private String dayInterval;
     
-    // ======= Year recurrence =======
+    // ======= Year repeat =======
     private String yearInterval;
     
     /*
