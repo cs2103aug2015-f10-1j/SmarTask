@@ -18,26 +18,37 @@ public class Command {
     private Type type;
     private String taskType;
     private String taskDescription;
+    
     private String taskDeadline;
+    
     private String taskEventStart;
     private String taskEventEnd;
     private String taskEventDate;
     private String taskEventTime;
+    
     private String filePath;
     private ArrayList<String> searchKeyword;
 
     // Additional attributes for recurrencing task
-    private String dateOfRepeatAdded;
-    private String taskRepeatDuration;
-    private String taskRepeatType;
-    private String taskRepeatDayFrequency;
+    private String repeatType;
+    private String dateAdded;
+    private String repeatStartTime;
+    private String repeatEndTime;
+    private String repeatUntil;
+    private ArrayList<String> stopRepeat;
+
+    // ======= Day recurrence =======
+    private String dayInterval;
+    
+    /*
     private String taskRepeatMonthFrequency;
     private Boolean[] isTaskRepeatOnDayOfWeek = new Boolean[7]; // Example: Mon, Tues, Fri
     private String taskRepeatMonthFrequencyBySpecificDate; // Example: on 19 of every month
     private String[] taskRepeatMonthFrequencyBySpecificDayOfWeek; //  Example: first-mon of every month
     private String taskRepeatYearFrequency;
-    private String taskRepeatEndDate;
-    private ArrayList<String> stopRepeat;
+    
+    */
+    
     private ArrayList<String> updateRepeat;
 
     public Command(Type type) {
@@ -87,38 +98,6 @@ public class Command {
     public ArrayList<String> getStopRepeat() {
 	return stopRepeat;
     }
-    
-    public String getDateOfRepeatAdded() {
-	return dateOfRepeatAdded;
-    }
-
-    public String getTaskRepeatDuration() {
-	return taskRepeatDuration;
-    }
-
-    public String getTaskRepeatEndDate() {
-	return taskRepeatEndDate;
-    }
-
-    public String getTaskRepeatType() {
-	return taskRepeatType;
-    }
-
-    public void setTaskRepeatDayFrequency(String taskRepeatDayFrequency) {
-	this.taskRepeatDayFrequency = taskRepeatDayFrequency;
-    }
-
-    public String getTaskRepeatDayFrequency() {
-	return taskRepeatDayFrequency;
-    }
-
-    public String getTaskRepeatMonthFrequency() {
-	return taskRepeatMonthFrequency;
-    }
-
-    public String getTaskRepeatYearFrequency() {
-	return taskRepeatYearFrequency;
-    }
 
     // ================================================================
     // Setters method to support CommandParser methods
@@ -164,54 +143,6 @@ public class Command {
 	this.stopRepeat = cancelRepeatDateAndTime;
     }
 
-    public void setDateOfRepeatAdded(String strings) {
-	this.dateOfRepeatAdded = strings;
-    }
-
-    public void setTaskRepeatDuration(String taskRepeatDuration) {
-	this.taskRepeatDuration = taskRepeatDuration;
-    }
-
-    public void setTaskRepeatEndDate(String taskRepeatEndDate) {
-	this.taskRepeatEndDate = taskRepeatEndDate;
-    }
-
-    public void setTaskRepeatType(String taskRepeatType) {
-	this.taskRepeatType = taskRepeatType;
-    }
-
-    public void setTaskRepeatMonthFrequency(String taskRepeatMonthFrequency) {
-	this.taskRepeatMonthFrequency = taskRepeatMonthFrequency;
-    }
-
-    public void setTaskRepeatYearFrequency(String taskRepeatYearFrequency) {
-	this.taskRepeatYearFrequency = taskRepeatYearFrequency;
-    }
-
-    public String[] getTaskRepeatMonthFrequencyBySpecificDayOfWeek() {
-	return taskRepeatMonthFrequencyBySpecificDayOfWeek;
-    }
-
-    public void setTaskRepeatMonthFrequencyBySpecificDayOfWeek(String[] taskRepeatMonthFrequencyBySpecificDayOfWeek) {
-	this.taskRepeatMonthFrequencyBySpecificDayOfWeek = taskRepeatMonthFrequencyBySpecificDayOfWeek;
-    }
-
-    public Boolean[] isTaskRepeatOnDayOfWeek() {
-	return isTaskRepeatOnDayOfWeek;
-    }
-
-    public void setTaskRepeatOnDayOfWeek(Boolean[] taskRepeatWeekFrequencyByDay) {
-	this.isTaskRepeatOnDayOfWeek = taskRepeatWeekFrequencyByDay;
-    }
-
-    public String getTaskRepeatMonthFrequencyBySpecificDate() {
-	return taskRepeatMonthFrequencyBySpecificDate;
-    }
-
-    public void setTaskRepeatMonthFrequencyBySpecificDate(String taskRepeatMonthFrequencyBySpecificDate) {
-	this.taskRepeatMonthFrequencyBySpecificDate = taskRepeatMonthFrequencyBySpecificDate;
-    }
-
     public ArrayList<String> getUpdateRepeat() {
 	return updateRepeat;
     }
@@ -238,6 +169,54 @@ public class Command {
 
     public void setTaskEventEnd(String taskEventEnd) {
         this.taskEventEnd = taskEventEnd;
+    }
+
+    public String getRepeatType() {
+        return repeatType;
+    }
+
+    public void setRepeatType(String repeatType) {
+        this.repeatType = repeatType;
+    }
+    
+    public String getRepeatUntil() {
+        return repeatUntil;
+    }
+
+    public void setRepeatUntil(String repeatUntil) {
+        this.repeatUntil = repeatUntil;
+    }
+
+    public String getDayInterval() {
+        return dayInterval;
+    }
+
+    public void setDayInterval(String dayInterval) {
+        this.dayInterval = dayInterval;
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public String getRepeatStartTime() {
+        return repeatStartTime;
+    }
+
+    public void setRepeatStartTime(String repeatStartTime) {
+        this.repeatStartTime = repeatStartTime;
+    }
+
+    public String getRepeatEndTime() {
+        return repeatEndTime;
+    }
+
+    public void setRepeatEndTime(String repeatEndTime) {
+        this.repeatEndTime = repeatEndTime;
     }
 
 }

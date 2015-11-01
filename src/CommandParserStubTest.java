@@ -24,72 +24,18 @@ public class CommandParserStubTest {
 
         // Daily: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {day , every X day, Until dd/mm/yy or forever}
         try {
-            Command repeat = CommandParser.parse("repeat team meeting 18:00-20:00 14/10/2015 {day, 1, forever}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatDayFrequency() 
-                    + " " + repeat.getTaskRepeatEndDate());
+            Command repeat = CommandParser.parse("repeat meeting -on 15 Nov 5 to 6 pm -every 2 day -until 25 Dec 15");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        // Weekly: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {week , <Mon-Sun>,  <until dd/mm/yy or forever>}
+        // Daily: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {day , every X day, Until dd/mm/yy or forever}
         try {
-            Command repeat = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, mon/tue/wed ,forever}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " + repeat.getTaskRepeatEndDate());
-            Boolean[] week = repeat.isTaskRepeatOnDayOfWeek();
-            for(int i =0; i< week.length; i++) {
-                if(week[i]) {
-                    System.out.println("Day " + (i + 1) + " of Week");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            Command repeat = CommandParser.parse("repeat team meeting 08:00-10:00 09/11/2015 {week, sun/thu/wed ,forever}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " + repeat.getTaskRepeatEndDate());
-            Boolean[] week = repeat.isTaskRepeatOnDayOfWeek();
-            for(int i =0; i< week.length; i++) {
-                if(week[i]) {
-                    System.out.println("Day " + (i + 1) + " of Week");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-
-        // Monthly: repeat month {Duration X-Y time, Repeat: Every X month, On Xst/nd/rd/th of month or every third <Mon-Sun> of month, Until Date or Forever}
-        try {
-            Command repeat = CommandParser.parse("repeat team meeting 09:00-13:00 29/10/2015 {month, on 19, 15/06/2016}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatMonthFrequency() 
-                    + " " + repeat.getTaskRepeatEndDate());
-            System.out.println("Repeating Monthly on day : " + repeat.getTaskRepeatMonthFrequencyBySpecificDate());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            Command repeat = CommandParser.parse("repeat team meeting 09:00-13:00 29/10/2015 {month, 2-sun, 15/06/2016}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatMonthFrequency() 
-                    + " " + repeat.getTaskRepeatEndDate());
-            System.out.println("Repeating monthly on : " + repeat.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1] + " of week " +
-                    repeat.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[0]);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        // Yearly: repeat <task description> hh:mm-hh:mm dd/mm/yyyy {year , every X year,  <until dd/mm/yy or forever>}
-        try {
-            Command repeat = CommandParser.parse("repeat team meeting 14:00-18:00 19/12/2015 {year, 1, forever}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getDateOfRepeatAdded() + " " + repeat.getTaskRepeatDuration() + " " 
-                    + repeat.getTaskDescription() + " " + repeat.getTaskRepeatType()  + " " +repeat.getTaskRepeatYearFrequency() 
-                    + " " + repeat.getTaskRepeatEndDate());
+            Command repeat = CommandParser.parse("repeat meeting -on 15 Nov 5 to 6 pm -every 2 day");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -122,43 +68,6 @@ public class CommandParserStubTest {
                 System.out.print(" " + repeat.getStopRepeat().get(i));
             }
             System.out.println();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        //=================================================================================
-        //============================Updating Recurrence tasks============================
-        //=================================================================================
-        try {
-            Command repeat = CommandParser.parse("update R3 team meeting");
-            System.out.println(repeat.getCommandType()  + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " " + repeat.getTaskDescription());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            Command repeat = CommandParser.parse("update R4 18:00-20:00 14/10/2015");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " "  
-                    +  repeat.getTaskEventDate() + " " + repeat.getTaskEventTime());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            Command repeat = CommandParser.parse("update R2 team meeting 18:00-20:00 14/10/2015");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " " +  repeat.getTaskEventDate() + " " 
-                    + repeat.getTaskEventTime() + " " +   repeat.getTaskDescription());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            Command repeat = CommandParser.parse("update R1 team meeting 18:00-20:00 14/10/2015 {day, 1, forever}");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID() + " " +  repeat.getTaskEventDate() + 
-                    " " + repeat.getTaskEventTime() + " " + repeat.getTaskDescription());
-            for(int i =0; i < repeat.getUpdateRepeat().size(); i++) {
-                System.out.println("Attribute "+ (i+1) +" " + repeat.getUpdateRepeat().get(i));
-            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -442,46 +442,44 @@ public class CommandParser {
     private static Command initRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
             Command command = new Command(Command.Type.REPEAT);
-            ArrayList<String> param = splitStringByLeftCurlyBracket(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-            command.setDateOfRepeatAdded(getDate(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
-            command.setTaskRepeatDuration(getDuration(param .get(POSITION_ZERO_PARAM_ARGUMENT))[POSITION_ZERO_PARAM_ARGUMENT].trim());
-            command.setTaskDescription(param.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
-                    .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
-
-            String content = param.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("\\{", "").replaceAll("\\}", "").trim();
-            String[] recurrenceParam = content.split(",");
-            String type = recurrenceParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
-            String frequency = recurrenceParam[POSITION_FIRST_PARAM_ARGUMENT].trim();
-            String endDate = recurrenceParam[POSITION_SECOND_PARAM_ARGUMENT].trim();
-
-            command.setTaskRepeatType(type);
-
-            if(type.equals(DAY)) {
-                command.setTaskRepeatDayFrequency(frequency);
-            }
-            else if(type.equals(WEEK)) {
-                String[] days = frequency.split("/");
-                command.setTaskRepeatOnDayOfWeek(createIsDayTrue(days));
-            }
-            else if(type.equals(MONTH)) {
-                String[] fqParam = frequency.split("\\s+");
-                if(fqParam.length == SIZE_2) {
-                    command.setTaskRepeatMonthFrequencyBySpecificDate(fqParam[1].trim());
-                }else {
-                    fqParam = fqParam[0].split(REGEX_MINUS);
-                    command.setTaskRepeatMonthFrequencyBySpecificDayOfWeek(fqParam);
+            String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("-on");
+            command.setTaskDescription(param[POSITION_ZERO_PARAM_ARGUMENT].trim());
+            
+            param = param[POSITION_FIRST_PARAM_ARGUMENT].split("-every");
+            String dateTimeLine = param[POSITION_ZERO_PARAM_ARGUMENT].trim();
+            
+            ArrayList<String> dateTime = extractDateTime(dateTimeLine);
+            command.setDateAdded(dateTime.get(0));
+            command.setRepeatStartTime(dateTime.get(1));
+            command.setRepeatEndTime(dateTime.get(2));
+            
+            String inputOfRecurrence = param[POSITION_FIRST_PARAM_ARGUMENT].trim();
+            if(inputOfRecurrence.contains("day")) {
+                command.setRepeatType("day");
+                String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
+                command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+                remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
+                if(remainingParam.length > 1) {
+                    command.setRepeatUntil(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                }
+                else {
+                    command.setRepeatUntil("forever");
                 }
             }
-            else if (type.equals(YEAR)) {
-                command.setTaskRepeatYearFrequency(frequency);
+            
+            else if (inputOfRecurrence.contains("week")){
+                command.setRepeatType("week");
             }
-            else {
-                addToParserLogger(MSG_INCORRECT_FORMAT);
-                throw new Exception(MSG_INCORRECT_FORMAT);
+            
+            else if (inputOfRecurrence.contains("month")) {
+                command.setRepeatType("month");
             }
-
-            command.setTaskRepeatEndDate(endDate);
-
+            
+            else if (inputOfRecurrence.contains("year")) {
+                command.setRepeatType("year");
+            }
+            
+            
             return command;
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
@@ -493,6 +491,24 @@ public class CommandParser {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
         }
+    }
+
+    private static ArrayList<String> extractDateTime(String dateTime) {
+        ArrayList<String> dateStartEnd = new ArrayList<String>(3);
+        
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup = parseDate.parse(dateTime);
+        DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+        List<Date> dates = group.getDates();
+        
+        String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+        String[] start = arr[0].split(" ");
+        dateStartEnd.add(start[2] + " " + start[1] + " " + start[5]);
+        dateStartEnd.add(start[3]);
+        
+        String[] end = arr[1].split(" ");
+        dateStartEnd.add(end[3]);
+        return dateStartEnd;
     }
 
     private static Boolean[] createIsDayTrue(String[] list) {
