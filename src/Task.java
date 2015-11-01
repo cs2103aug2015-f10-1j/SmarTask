@@ -26,10 +26,16 @@ public class Task {
     private  String timeAdded;
     private Boolean isComplete;
     
+    // For repeated task
+    private String taskRepeatType;
+    private String taskRepeatDuration;
+    private String taskRepeatFrequency;
+    private String taskRepeatUntil;
+
     public Task() {
-        
+
     }
-    
+
     public Task(Type type, ArrayList<String> attributeList) {
         setType(type);
         setAttributes(type, attributeList);
@@ -52,13 +58,13 @@ public class Task {
             return null;
         }
     }
-    
+
     public String getFloatingString (){
         return "floating"+ "#" + this.description +"#"+ Integer.toString(this.id) ;
     }
     public String getEventString (){
         return "event"+ "#" + this.eventStart + "#" + this.eventEnd + "#" +this.description + "#"+ Integer.toString(this.id) ;
-        
+
     }
     public String getDeadlineString (){
         return "deadline"+ "#" + this.deadline + "#" + this.description + "#"+ Integer.toString(this.id) ;      
@@ -71,7 +77,7 @@ public class Task {
     }
     public String getEventStringForUI (){
         return this.eventStart + " " + this.eventEnd + " " +this.description + " "+ Integer.toString(this.id) ;
-        
+
     }
     public String getDeadlineStringForUI (){
         return this.deadline + " " + this.description + " "+ Integer.toString(this.id) ;        
@@ -195,6 +201,38 @@ public class Task {
 
     public void setIsComplete(Boolean bo){
         this.isComplete = bo;
+    }
+
+    public String getTaskRepeatType() {
+        return taskRepeatType;
+    }
+
+    public void setTaskRepeatType(String taskRepeatType) {
+        this.taskRepeatType = taskRepeatType;
+    }
+
+    public String getTaskRepeatFrequency() {
+        return taskRepeatFrequency;
+    }
+
+    public void setTaskRepeatFrequency(String taskRepeatFrequency) {
+        this.taskRepeatFrequency = taskRepeatFrequency;
+    }
+
+    public String getTaskRepeatDuration() {
+        return taskRepeatDuration;
+    }
+
+    public void setTaskRepeatDuration(String taskRepeatDuration) {
+        this.taskRepeatDuration = taskRepeatDuration;
+    }
+
+    public String getTaskRepeatUntil() {
+        return taskRepeatUntil;
+    }
+
+    public void setTaskRepeatUntil(String taskRepeatUntil) {
+        this.taskRepeatUntil = taskRepeatUntil;
     }
 
 }
