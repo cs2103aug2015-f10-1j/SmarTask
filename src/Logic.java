@@ -191,7 +191,7 @@ public class Logic {
 						boo = true;
 						break;
 					} else if(taskStored.get(i).getType().equals(Task.getTypeFromString("event"))) {
-						if (taskStored.get(i).getEventDate().equals(task.getEventDate()) && taskStored.get(i).getEventTime().equals(task.getEventTime())){
+						if (taskStored.get(i).getEventStart().equals(task.getEventStart()) && taskStored.get(i).getEventEnd().equals(task.getEventEnd())){
 							boo = true;
 							break;
 						}
@@ -317,7 +317,7 @@ public class Logic {
                     	if (taskType.equals(Task.Type.DEADLINE)){
                     		msgLogger.add((index++)+" " + taskStored.get(j).getDescription() + " deadline is : " + taskStored.get(j).getDeadline());
                     	} else if (taskType.equals(Task.Type.EVENT)){
-                    		msgLogger.add((index++)+ " "+ taskStored.get(j).getDescription() + " start time is : " + taskStored.get(j).getEventDate() + " " + taskStored.get(j).getEventTime());
+                    		msgLogger.add((index++)+ " "+ taskStored.get(j).getDescription() + " start time is : " + taskStored.get(j).getEventStart() + " " + taskStored.get(j).getEventEnd());
                     	} else if (taskType.equals(Task.Type.FLOATING)){
                     		msgLogger.add((index++)+ " " + taskStored.get(j).getDescription());
                     	} else if (taskType.equals(Task.Type.REPEAT)){

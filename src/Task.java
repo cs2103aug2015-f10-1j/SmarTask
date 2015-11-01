@@ -12,101 +12,101 @@ public class Task {
     private static final String empty = "-1";
 
     public enum Type {
-	EVENT, DEADLINE, FLOATING, REPEAT
+        EVENT, DEADLINE, FLOATING, REPEAT
     }
 
     private Type type;
     private  int id;
     private  String description;
     private  String deadline;
-    private  String eventDate;
-    private  String eventTime;
+    private  String eventStart;
+    private  String eventEnd;
     private  String repeatPeriod;
     private  String dateAdded;
     private  String timeAdded;
     private Boolean isComplete;
     
     public Task() {
-	
+        
     }
     
     public Task(Type type, ArrayList<String> attributeList) {
-	setType(type);
-	setAttributes(type, attributeList);
+        setType(type);
+        setAttributes(type, attributeList);
     }
 
     public static Type getTypeFromString(String type) {
-	if(type == "floating") {
-	    return Type.FLOATING;
-	}
-	else if(type == "event") {
-	    return Type.EVENT;
-	}
-	else if(type == "deadline") {
-	    return Type.DEADLINE;
-	}
-	else if(type == "repeat") {
-	    return Type.REPEAT;
-	}
-	else {
-	    return null;
-	}
+        if(type == "floating") {
+            return Type.FLOATING;
+        }
+        else if(type == "event") {
+            return Type.EVENT;
+        }
+        else if(type == "deadline") {
+            return Type.DEADLINE;
+        }
+        else if(type == "repeat") {
+            return Type.REPEAT;
+        }
+        else {
+            return null;
+        }
     }
     
     public String getFloatingString (){
-    	return "floating"+ "#" + this.description +"#"+ Integer.toString(this.id) ;
+        return "floating"+ "#" + this.description +"#"+ Integer.toString(this.id) ;
     }
     public String getEventString (){
-    	return "event"+ "#" + this.eventDate + "#" + this.eventTime + "#" +this.description + "#"+ Integer.toString(this.id) ;
-    	
+        return "event"+ "#" + this.eventStart + "#" + this.eventEnd + "#" +this.description + "#"+ Integer.toString(this.id) ;
+        
     }
     public String getDeadlineString (){
-    	return "deadline"+ "#" + this.deadline + "#" + this.description + "#"+ Integer.toString(this.id) ;	
+        return "deadline"+ "#" + this.deadline + "#" + this.description + "#"+ Integer.toString(this.id) ;      
     }
     public String getRepeatString (){
-    	return "repeat"+ "#" + this.repeatPeriod + "#" + this.description + "#"+ Integer.toString(this.id) ;	
+        return "repeat"+ "#" + this.repeatPeriod + "#" + this.description + "#"+ Integer.toString(this.id) ;    
     }
     public String getFloatingStringForUI (){
-    	return this.description +" "+ Integer.toString(this.id) ;
+        return this.description +" "+ Integer.toString(this.id) ;
     }
     public String getEventStringForUI (){
-    	return this.eventDate + " " + this.eventTime + " " +this.description + " "+ Integer.toString(this.id) ;
-    	
+        return this.eventStart + " " + this.eventEnd + " " +this.description + " "+ Integer.toString(this.id) ;
+        
     }
     public String getDeadlineStringForUI (){
-    	return this.deadline + " " + this.description + " "+ Integer.toString(this.id) ;	
+        return this.deadline + " " + this.description + " "+ Integer.toString(this.id) ;        
     }
     public String getRepeatStringForUI (){
-    	return  this.repeatPeriod + " " + this.description + " "+ Integer.toString(this.id) ;	
+        return  this.repeatPeriod + " " + this.description + " "+ Integer.toString(this.id) ;   
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) {
-	this.type = type;
-	String[] list = null;
-	if (attributeList.size()>0){
-	    list = attributeList.get(0).trim().split("#");
-	}
-	if (type.equals(Task.Type.EVENT)){
-	    this.eventDate = list[0];
-	    this.eventTime = list[1];
-	    this.description = list[2];
-	    this.id = Integer.parseInt(list[3]);
-	    this.isComplete = false;
-	} else if (type.equals(Task.Type.DEADLINE)) {
-	    this.deadline = list[0];
-	    this.description = list[1];
-	    this.id = Integer.parseInt(list[2]);
-	    this.isComplete = false;
-	} else if (type.equals(Task.Type.FLOATING)) {
-	    this.description = list[0];
-	    this.id = Integer.parseInt(list[1]);
-	    this.isComplete = false;
-	} else {
-	    this.repeatPeriod = list[0];
-	    this.description = list[1];
-	    this.id = Integer.parseInt(list[2]);
-	    this.isComplete = false;
-	}	
+        this.type = type;
+        String[] list = null;
+        if (attributeList.size()>0){
+            list = attributeList.get(0).trim().split("#");
+        }
+        if (type.equals(Task.Type.EVENT)){
+            this.eventStart = list[0];
+            this.eventEnd = list[1];
+            this.description = list[2];
+            this.id = Integer.parseInt(list[3]);
+            this.isComplete = false;
+        } else if (type.equals(Task.Type.DEADLINE)) {
+            this.deadline = list[0];
+            this.description = list[1];
+            this.id = Integer.parseInt(list[2]);
+            this.isComplete = false;
+        } else if (type.equals(Task.Type.FLOATING)) {
+            this.description = list[0];
+            this.id = Integer.parseInt(list[1]);
+            this.isComplete = false;
+        } else {
+            this.repeatPeriod = list[0];
+            this.description = list[1];
+            this.id = Integer.parseInt(list[2]);
+            this.isComplete = false;
+        }       
     }
 
     // ================================================================
@@ -114,43 +114,43 @@ public class Task {
     // ================================================================
 
     public Type getType() {
-	return type;
+        return type;
     }
 
     public int getID() {
-	return id;
+        return id;
     }
 
     public String getDescription() {
-	return description;
+        return description;
     }
 
     public String getDeadline() {
-	return deadline;
+        return deadline;
     }
 
-    public String getEventDate() {
-	return eventDate;
+    public String getEventStart() {
+        return eventStart;
     }
 
-    public String getEventTime() {
-	return eventTime;
+    public String getEventEnd() {
+        return eventEnd;
     }
 
     public String getRepeatPeriod() {
-	return repeatPeriod;
+        return repeatPeriod;
     }
 
     public String getDateAdded() {
-	return dateAdded;
+        return dateAdded;
     }
 
     public String getTimeAdded() {
-	return timeAdded;
+        return timeAdded;
     }
 
     public Boolean getIsComplete(){
-	return isComplete;
+        return isComplete;
     }
 
     // ================================================================
@@ -158,43 +158,43 @@ public class Task {
     // ================================================================
 
     public void setType(Type type) {
-	this.type = type;
+        this.type = type;
     }
 
     public void setID(int id) {
-	this.id = id;
+        this.id = id;
     }
 
     public void setDescription(String description) {
-	this.description = description;
+        this.description = description;
     }
 
     public void setDeadline(String deadline) {
-	this.deadline = deadline;
+        this.deadline = deadline;
     }
 
-    public void setEventDate(String eventDate) {
-	this.eventDate = eventDate;
+    public void setEventStart(String eventStart) {
+        this.eventStart = eventStart;
     }
 
-    public void setEventTime(String eventTime) {
-	this.eventTime = eventTime;
+    public void setEventEnd(String eventEnd) {
+        this.eventEnd = eventEnd;
     }
 
     public void setRepeatPeriod(String repeatPeriod) {
-	this.repeatPeriod = repeatPeriod;
+        this.repeatPeriod = repeatPeriod;
     }
 
     public void setDateAdded(String dateAdded) {
-	this.dateAdded = dateAdded;
+        this.dateAdded = dateAdded;
     }
 
     public void setTimeAdded(String timeAdded) {
-	this.timeAdded = timeAdded;
+        this.timeAdded = timeAdded;
     }
 
     public void setIsComplete(Boolean bo){
-	this.isComplete = bo;
+        this.isComplete = bo;
     }
 
 }
