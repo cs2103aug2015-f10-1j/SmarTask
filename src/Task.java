@@ -29,10 +29,10 @@ public class Task {
     
     // For repeated task
     private String taskRepeatType;
+    private Date taskRepeatUntil;
     private String taskRepeatStartTime;
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
-    private Date taskRepeatUntil;
     private String taskRepeatInterval_Day;
     private String taskRepeatInterval_Year;
     
