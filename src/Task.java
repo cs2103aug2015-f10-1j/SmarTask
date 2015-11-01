@@ -28,7 +28,8 @@ public class Task {
     
     // For repeated task
     private String taskRepeatType;
-    private String taskRepeatDuration;
+    private String taskRepeatStartTime;
+    private String taskRepeatEndTime;
     private String taskNextOccurrence;
     private String taskRepeatUntil;
     private String taskRepeatInterval_Day;
@@ -200,14 +201,6 @@ public class Task {
         this.taskRepeatType = taskRepeatType;
     }
 
-    public String getTaskRepeatDuration() {
-        return taskRepeatDuration;
-    }
-
-    public void setTaskRepeatDuration(String taskRepeatDuration) {
-        this.taskRepeatDuration = taskRepeatDuration;
-    }
-
     public String getTaskRepeatUntil() {
         return taskRepeatUntil;
     }
@@ -238,6 +231,22 @@ public class Task {
 
     public void setTaskRepeatInterval_Year(String taskRepeatInterval_Year) {
         this.taskRepeatInterval_Year = taskRepeatInterval_Year;
+    }
+
+    public String getTaskRepeatStartTime() {
+        return taskRepeatStartTime;
+    }
+
+    public void setTaskRepeatStartTime(String taskRepeatStartTime) {
+        this.taskRepeatStartTime = taskRepeatStartTime;
+    }
+
+    public String getTaskRepeatEndTime() {
+        return taskRepeatEndTime;
+    }
+
+    public void setTaskRepeatEndTime(String taskRepeatEndTime) {
+        this.taskRepeatEndTime = taskRepeatEndTime;
     }
 
 }

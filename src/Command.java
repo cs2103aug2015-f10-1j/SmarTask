@@ -10,8 +10,8 @@ import java.util.*;
 
 public class Command {
     public enum Type {
-	ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
-	UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
+        ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
+        UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
     }
 
     private int taskID;
@@ -52,7 +52,7 @@ public class Command {
     private ArrayList<String> updateRepeat;
 
     public Command(Type type) {
-	this.type = type;
+        this.type = type;
     }
 
     // ================================================================
@@ -60,35 +60,35 @@ public class Command {
     // ================================================================
 
     public String getTaskDescription() {
-	return taskDescription;
+        return taskDescription;
     }
 
     public Type getCommandType() {
-	return type;
+        return type;
     }
 
     public String getTaskDeadline() {
-	return taskDeadline;
+        return taskDeadline;
     }
 
     public String getTaskEventDate() {
-	return taskEventDate;
+        return taskEventDate;
     }
 
     public String getTaskEventTime() {
-	return taskEventTime;
+        return taskEventTime;
     }
 
     public ArrayList<String> getSearchKeyword() {
-	return searchKeyword;
+        return searchKeyword;
     }
 
     public int getTaskID() {
-	return taskID;
+        return taskID;
     }
 
     public String getTaskType() {
-	return taskType;
+        return taskType;
     }
 
     // ================================================================
@@ -96,7 +96,7 @@ public class Command {
     // ================================================================
     
     public ArrayList<String> getStopRepeat() {
-	return stopRepeat;
+        return stopRepeat;
     }
 
     // ================================================================
@@ -104,31 +104,31 @@ public class Command {
     // ================================================================
 
     public void setTaskDescription(String taskDescription) {
-	this.taskDescription = taskDescription;
+        this.taskDescription = taskDescription;
     }
 
     public void setTaskDeadline(String taskDeadline) {
-	this.taskDeadline = taskDeadline;
+        this.taskDeadline = taskDeadline;
     }
 
     public void setTaskEventDate(String taskEventDate) {
-	this.taskEventDate = taskEventDate;
+        this.taskEventDate = taskEventDate;
     }
 
     public void setTaskEventTime(String taskEventTime) {
-	this.taskEventTime = taskEventTime;
+        this.taskEventTime = taskEventTime;
     }
 
     public void setSearchKeyword(ArrayList<String> searchKeyword) {
-	this.searchKeyword = searchKeyword;
+        this.searchKeyword = searchKeyword;
     }
 
     public void setTaskID(int taskID) {
-	this.taskID = taskID;
+        this.taskID = taskID;
     }
 
     public void setTaskType(String taskType) {
-	this.taskType = taskType;
+        this.taskType = taskType;
     }
     
     public String getFilePath() {
@@ -140,15 +140,15 @@ public class Command {
     // ================================================================
 
     public void setStopRepeat(ArrayList<String> cancelRepeatDateAndTime) {
-	this.stopRepeat = cancelRepeatDateAndTime;
+        this.stopRepeat = cancelRepeatDateAndTime;
     }
 
     public ArrayList<String> getUpdateRepeat() {
-	return updateRepeat;
+        return updateRepeat;
     }
 
     public void setUpdateRepeat(ArrayList<String> updateRepeat) {
-	this.updateRepeat = updateRepeat;
+        this.updateRepeat = updateRepeat;
     }
 
     public void setFilePath(String filePath) {

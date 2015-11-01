@@ -20,6 +20,7 @@ public class CommandParser {
     private static final String DATEFORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
     private static final int SIZE_2 = 2;
     private static final int SIZE_1 = 1;
+    private static final int SIZE_3 = 3;
     private static final String YEAR = "year";
     private static final String REGEX_MINUS = "-";
     private static final String MONTH = "month";
