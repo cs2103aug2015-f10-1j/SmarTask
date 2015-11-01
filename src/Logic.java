@@ -21,14 +21,10 @@ public class Logic {
 	private static Storage storage = new Storage ();
     private static  ArrayList<Task> taskStored = storage.retrieveFile();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
-    private static ArrayList<String> eventForLogic = initList("event", taskStored);
-    private static ArrayList<String> deadlineForLogic = initList("deadline", taskStored);
-    private static  ArrayList<String> floatingTaskForLogic = initList("floating", taskStored);
+    private static ArrayList<String> event= initList("event", taskStored);
+    private static ArrayList<String> deadline = initList("deadline", taskStored);
+    private static  ArrayList<String> floating = initList("floating", taskStored);
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
-    private static ArrayList<String> event;
-    private static ArrayList<String> deadline;
-    private static  ArrayList<String> floating;
-    private static ArrayList<String> repeat;
     private static ArrayList <Integer> searchList;
    
   //  private int id=1;
@@ -89,24 +85,16 @@ public class Logic {
 
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
-        floating  = new ArrayList<String>();
-        event = new ArrayList<String>();
-        deadline = new ArrayList<String>();
-        repeat = new ArrayList<String>();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
                 if (type.equals("floating")){
                 	list.add(taskStored.get(i).getFloatingString());
-                	floating.add(taskStored.get(i).getFloatingStringForUI());
                 }else if (type.equals("event")){
                 	list.add(taskStored.get(i).getEventString());
-                	event.add(taskStored.get(i).getEventStringForUI());
                 }else if (type.equals("deadline")){
                 	list.add(taskStored.get(i).getDeadlineString());
-                	deadline.add(taskStored.get(i).getDeadlineStringForUI());
                 }else if (type.equals("repeat")){
                 	list.add(taskStored.get(i).getRepeatString());
-                	repeat.add(taskStored.get(i).getRepeatStringForUI());
                 }
              //   msgLogger.add(taskStored.get(i).toString());
             }
@@ -137,7 +125,7 @@ public class Logic {
     // "Add" command methods
     // ================================================================
 
-  //  @SuppressWarnings("null")
+
 	private void addTask(Command command) throws Exception{
         try{
         	
@@ -152,27 +140,22 @@ public class Logic {
                 detailStored.add(taskType+"#"+command.getTaskDescription() + "#" + taskCode);
                 detailTask.add(command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.FLOATING;
-          //      msgLogger.add(detailStored.toString() + "\n" + detailTask.toString());
                 task = new Task (type, detailTask);
-                if (!isCollision(task)) floatingTaskForLogic.add(detailStored.get(0));
-                floating.add(command.getTaskDescription());
-                
+                if (!isCollision(task)) floating.add(detailStored.get(0));
             } 
             else if(taskType.equals("event")) {
                 detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription() +"#"+ taskCode);
                 detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.EVENT;
                 task = new Task (type, detailTask);
-                if (!isCollision(task)) eventForLogic.add(detailStored.get(0));
-                event.add(command.getTaskEventDate() + " " + command.getTaskEventTime() + " " + command.getTaskDescription()+" "+ taskCode);
+                if (!isCollision(task)) event.add(detailStored.get(0));
             }
             else if(taskType.equals("deadline")) {
                 detailStored.add(taskType + "#" + command.getTaskDeadline() + "#" + command.getTaskDescription()+"#"+ taskCode);
                 detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.DEADLINE;
                 task = new Task (type, detailTask);
-                if (!isCollision(task)) deadlineForLogic.add(detailStored.get(0));
-                deadline.add(command.getTaskDeadline() + " " + command.getTaskDescription());
+                if (!isCollision(task)) deadline.add(detailStored.get(0));
             }
             else {
                 throw new Exception("Fail to add an invalid task");
@@ -180,8 +163,6 @@ public class Logic {
             Boolean isColl = isCollision(task);
             if (!isColl) {
             	taskStored.add(task);
-                //  System.out.println(taskStored.get(0).getDescription());
-                 //  sortForAdd();
                    storage.saveToFile(taskStored);
                    msgLogger.add("add " + command.getTaskDescription() + " successful!");  
                    history.addChangeToHistory(new ArrayList<Task>(taskStored));   	
@@ -259,30 +240,30 @@ public class Logic {
     		detailTask.add( taskType+"#" +com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     		task = new Task (type, detailStored);
-    		if (!isCollision(task)) repeat.add(com.getTaskRepeatDayFrequency() +" " + com.getTaskDescription() + " " + taskCode);
+    		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     	} else if (com.getTaskRepeatType().equals("week")){
     		detailTask.add(taskType +"#"+com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
     		task = new Task (type, detailStored);
-    		if (!isCollision(task))repeat.add(com.getTaskRepeatDuration()+" "+ com.getTaskDescription() + " " + taskCode);
+    		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));;
     	} else if (com.getTaskRepeatType().equals("month")){
     		if (com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()!=null){
     			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
         		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
         		task = new Task (type, detailStored);
-        		if (!isCollision(task)) repeat.add(com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+" " + com.getTaskDescription() + " " + taskCode);
+        		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     		} else {
     			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
         		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
         		task = new Task (type, detailStored);
-        		if (!isCollision(task)) repeat.add(com.getTaskRepeatMonthFrequencyBySpecificDate()+" " + com.getTaskDescription() + " " + taskCode);
+        		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     		}
     		
     	} else if (com.getTaskRepeatType().equals("year")){
     		detailTask.add(taskType +"#" +com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatYearFrequency()+"#" + com.getTaskDescription() + "#" + taskCode);
     		task = new Task (type, detailStored);
-    		if (!isCollision(task)) repeat.add(com.getTaskRepeatYearFrequency()+" " + com.getTaskDescription() + " " + taskCode);
+    		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     	}
        // detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
     //	msgLogger.add(detailTask.get(0));
@@ -366,21 +347,21 @@ public class Logic {
             String currentLine = "";
             if (taskType != null){
             if(taskType.equals("deadline")) {
-            	 currentLine = deadlineForLogic.get(indexToRemove);
-            	 removedItem = deadlineForLogic.remove(indexToRemove);
+            	 currentLine = deadline.get(indexToRemove);
+            	 removedItem = deadline.remove(indexToRemove);
             	 String str[] = currentLine.split("#");
             	 taskCode = Integer.parseInt(str[str.length-1]);
             }
             else if(taskType.equals("floating")) {
-            	currentLine = floatingTaskForLogic.get(indexToRemove);
+            	currentLine = floating.get(indexToRemove);
             //	msgLogger.add(currentLine);
-            	removedItem = floatingTaskForLogic.remove(indexToRemove);
+            	removedItem = floating.remove(indexToRemove);
             	String str[] = currentLine.split("#");
             	taskCode = Integer.parseInt(str[str.length-1]);
             }
             else if(taskType.equals("event")) {
-            	currentLine = eventForLogic.get(indexToRemove);
-            	removedItem = eventForLogic.remove(indexToRemove);
+            	currentLine = event.get(indexToRemove);
+            	removedItem = event.remove(indexToRemove);
             	String str[] = currentLine.split("#");
             	taskCode = Integer.parseInt(str[str.length-1]);
             } else if (taskType.equals("repeat")){
@@ -413,13 +394,13 @@ public class Logic {
                 todayTask.remove(com.getTaskID()-1);
             }*/
         }catch(Exception e){
-            if(taskType.equals("deadline") && deadlineForLogic.size() == 0) {
+            if(taskType.equals("deadline") && deadline.size() == 0) {
                 msgLogger.add("There is no deadline task to delete!!");
             }
-            else if(taskType.equals("floating") && floatingTaskForLogic.size() == 0) {
+            else if(taskType.equals("floating") && floating.size() == 0) {
                 msgLogger.add("There is no floating task to delete!!");
             }
-            else if(taskType.equals("event") && eventForLogic.size() == 0) {
+            else if(taskType.equals("event") && event.size() == 0) {
                 msgLogger.add("There is no event to delete!!");
             }
             else { 
@@ -442,16 +423,16 @@ public class Logic {
             
 
             if(taskType.equals("deadline")) {
-            	currentLine = deadlineForLogic.get(indexToComplete);
-                completedItem = deadlineForLogic.remove(indexToComplete);
+            	currentLine = deadline.get(indexToComplete);
+                completedItem = deadline.remove(indexToComplete);
             }
             else if(taskType.equals("floating")) {
-            	currentLine = floatingTaskForLogic.get(indexToComplete);
-                completedItem = floatingTaskForLogic.remove(indexToComplete);
+            	currentLine = floating.get(indexToComplete);
+                completedItem = floating.remove(indexToComplete);
             }
             else if(taskType.equals("event")) {
-                currentLine = eventForLogic.get(indexToComplete);
-                completedItem = eventForLogic.remove(indexToComplete);
+                currentLine = event.get(indexToComplete);
+                completedItem = event.remove(indexToComplete);
             }
 
          //   taskStored.remove(new String(completedItem));
@@ -469,13 +450,13 @@ public class Logic {
             msgLogger.add("completed " + taskType + " index " + command.getTaskID());
 
         }catch(Exception e){
-            if(taskType.equals("deadline") && deadlineForLogic.size() == 0) {
+            if(taskType.equals("deadline") && deadline.size() == 0) {
                 msgLogger.add("There is no deadline task to complete!!");
             }
-            else if(taskType.equals("floating") && floatingTaskForLogic.size() == 0) {
+            else if(taskType.equals("floating") && floating.size() == 0) {
                 msgLogger.add("There is no floating task to complete!!");
             }
-            else if(taskType.equals("event") && eventForLogic.size() == 0) {
+            else if(taskType.equals("event") && event.size() == 0) {
                 msgLogger.add("There is no event to complete!!");
             }
             else { 
@@ -492,7 +473,6 @@ public class Logic {
     private void updateTask(Command command) throws FileNotFoundException{
         String taskType = command.getTaskType();
         String updatedItem = "";
-        String updateItemForUI = "";
         String existingItem = "";
         String updatedTask = "";
         Task.Type type;
@@ -502,7 +482,7 @@ public class Logic {
             int indexToUpdate = command.getTaskID()-1;
            
             if(taskType.equals("deadline")) {
-                existingItem = deadlineForLogic.get(indexToUpdate);
+                existingItem = deadline.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
                 taskCode = Integer.parseInt(strArr[strArr.length-1]);
             //    msgLogger.add(Integer.toString(taskCode));
@@ -510,12 +490,10 @@ public class Logic {
                 if(command.getTaskDeadline() != null) {
                     updatedItem += command.getTaskDeadline()+"#";
                     updatedTask += command.getTaskDeadline()+"#";
-                    updateItemForUI +=command.getTaskDeadline()+ " ";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
                     updatedTask += strArr[1]+"#";
-                    updateItemForUI += strArr[1]+" ";
                 }
                 
                 
@@ -524,98 +502,75 @@ public class Logic {
                 if(!command.getTaskDescription().isEmpty()) {
                     updatedItem += command.getTaskDescription();
                     updatedTask +=command.getTaskDescription();
-                    updateItemForUI += command.getTaskDescription();
                 //    msgLogger.add("Using new desc");
                 }
                 else{
                     updatedItem += strArr[2];
-                    updatedTask += strArr[2];
-                    updateItemForUI += command.getTaskDescription();
-                //    msgLogger.add("Using current desc");
+                    updatedTask += strArr[2];                 
+                
                 }
-             //   msgLogger.add(updatedItem);
+            
                 updatedItem = updatedItem +"#"+Integer.toString(taskCode);
                 updatedTask = updatedTask +"#"+Integer.toString(taskCode);
-                updateItemForUI  += " " + Integer.toString(taskCode);
-              //  msgLogger.add(updatedItem);
-              //  updatedLine = new ArrayList<String> ();
-              //  updatedLine.add(updatedItem);
-                type = Task.Type.DEADLINE;
-             
-             //   msgLogger.add(Integer.toString(indexToUpdate));
-                deadlineForLogic.set(indexToUpdate, updatedItem);
-                deadline.set(indexToUpdate, updateItemForUI);
-            //    updatedTask = new Task (Task.Type.DEADLINE, updatedLine);
+              
+                type = Task.Type.DEADLINE;          
+                deadline.set(indexToUpdate, updatedItem);
+           
             }
             else if(taskType.equals("floating")) {
-                existingItem = floatingTaskForLogic.get(indexToUpdate);
+                existingItem = floating.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
                 taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";                
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
                     updatedTask +=command.getTaskDescription();
-                    updateItemForUI += command.getTaskDescription();
                 }
                 
                 else{
                     updatedItem += strArr[1];
                     updatedTask += strArr[1];
-                    updateItemForUI += strArr[1];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
                 updatedTask += "#"+Integer.toString(taskCode);
-                updateItemForUI += " " + Integer.toString(taskCode);
                // updatedLine = new ArrayList<String> ();
                // updatedLine.add(updatedItem);
               //  updatedTask = new Task (Task.Type.FLOATING, updatedLine);
                 type = Task.Type.FLOATING;
-                floatingTaskForLogic.set(indexToUpdate, updatedItem);
-                floating.set(indexToUpdate, updateItemForUI);
+                floating.set(indexToUpdate, updatedItem);
             }
             else if(taskType.equals("event")) {
-                existingItem = eventForLogic.get(indexToUpdate);
+                existingItem = event.get(indexToUpdate);
                 String[] strArr = existingItem.split("#");
                 taskCode = Integer.parseInt(strArr[strArr.length -1]);
                 updatedItem += strArr[0]+"#";                
                 if(command.getTaskEventDate() != null) {
                     updatedItem += command.getTaskEventDate()+"#";
                     updatedTask += command.getTaskEventDate() + "#";
-                    updateItemForUI += command.getTaskEventDate() + " ";
                 }
                 else{
                     updatedItem += strArr[1]+"#";
                     updatedTask += strArr[1]+"#";
-                    updateItemForUI += strArr[1] + " ";
                 }
                 if(command.getTaskEventTime() != null) {
                     updatedItem += command.getTaskEventTime()+"#";
                     updatedTask += command.getTaskEventTime()+"#";
-                    updateItemForUI += command.getTaskEventTime() + " ";
                 }
                 else{
                     updatedItem += strArr[2]+"#";
                     updatedTask += strArr[2]+"#";
-                    updateItemForUI += strArr[2] + " ";
                 }
                 if(command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
                     updatedTask += command.getTaskDescription();
-                    updateItemForUI += command.getTaskDescription();
                 }
                 else{
                     updatedItem += strArr[3];
                     updatedTask += strArr[3];
-                    updateItemForUI += strArr[3];
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
                 updatedTask += "#"+Integer.toString(taskCode);
-                updateItemForUI += " " + Integer.toString(taskCode);
-             //   updatedLine = new ArrayList <String> ();
-             //   updatedLine.add(updatedItem);
-             //   updatedTask = new Task (Task.Type.EVENT, updatedLine);
-                eventForLogic.set(indexToUpdate, updatedItem);
-                event.set(indexToUpdate, updateItemForUI);
+                event.set(indexToUpdate, updatedItem);
                 type = Task.Type.EVENT;
             }
             else {
@@ -624,18 +579,12 @@ public class Logic {
             }
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){
-            	//	System.out.println(i);
-            	//	msgLogger.add(Integer.toString(taskStored.size()));
-            	//    msgLogger.add(Integer.toString(taskStored.get(i).getID()));
-            	//    msgLogger.add(Integer.toString(i));
+         
             		taskStored.remove(i);
-           // 		msgLogger.add(Integer.toString(taskStored.size()));
             		updatedLine = new ArrayList<String>();
             		updatedLine.add(updatedTask);
-            //		msgLogger.add(updatedLine.get(0));
             		Task task = new Task (type,updatedLine);
-                    taskStored.add(task);
-            //        msgLogger.add(Integer.toString(taskStored.size()));
+                    taskStored.add(task);   
             		storage.saveToFile(taskStored);
             		break;
             	}
@@ -659,9 +608,9 @@ public class Logic {
             message = "redo successfully";
             taskStored = new ArrayList<Task>(history.redo());
             storage.saveToFile(taskStored);
-            eventForLogic = initList("event", taskStored);
-            deadlineForLogic = initList("deadline", taskStored);
-            floatingTaskForLogic = initList("floating", taskStored);
+            event = initList("event", taskStored);
+            deadline = initList("deadline", taskStored);
+            floating = initList("floating", taskStored);
             msgLogger.add(message);  
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
@@ -677,9 +626,9 @@ public class Logic {
             message = "undo successfully";
             taskStored = new ArrayList<Task>(history.undo());
             storage.saveToFile(taskStored);
-            eventForLogic = initList("event", taskStored);
-            deadlineForLogic = initList("deadline", taskStored);
-            floatingTaskForLogic = initList("floating", taskStored);
+            event = initList("event", taskStored);
+            deadline = initList("deadline", taskStored);
+            floating = initList("floating", taskStored);
             msgLogger.add(message);
         } catch (Exception e) {
             msgLogger.add(e.getMessage());
@@ -755,7 +704,7 @@ public class Logic {
             return messageToPrint = "No events";
         }
         for(int i=0; i<event.size(); i++) {
-            messageToPrint += "E" + (i+1) + ". "+ event.get(i) + "\n";
+            messageToPrint += "E" + (i+1) + ". "+ event.get(i).replace("#"," ")+ "\n";
         }
         return messageToPrint.trim();
     }
@@ -766,7 +715,7 @@ public class Logic {
             return messageToPrint = "No tasks";
         }
         for(int i=0; i<deadline.size(); i++) {
-            messageToPrint += "D" + (i+1) + ". "+ deadline.get(i) + "\n";
+            messageToPrint += "D" + (i+1) + ". "+ deadline.get(i).replace("#"," ") + "\n";
         }
         return messageToPrint.trim();
     }
@@ -777,18 +726,18 @@ public class Logic {
             return messageToPrint = "No tasks";
         }
         for(int i=0; i<floating.size(); i++) {
-            messageToPrint += "F" + (i+1) + ". "+ floating.get(i) + "\n";
+            messageToPrint += "F" + (i+1) + ". "+ floating.get(i).replace("#"," ") + "\n";
         }
         return messageToPrint.trim();
     }
     
     public static String getRecurringTask(){
         String messageToPrint = "";
-        if(repeat.size() == 0) {
+        if(repeatedTask.size() == 0) {
             return messageToPrint = "No tasks";
         }
-        for(int i=0; i<repeat.size(); i++) {
-            messageToPrint += "R" + (i+1) + ". "+ repeat.get(i) + "\n";
+        for(int i=0; i<repeatedTask.size(); i++) {
+            messageToPrint += "R" + (i+1) + ". "+ repeatedTask.get(i).replace("#"," ") + "\n";
         }
         return messageToPrint.trim();
     }
