@@ -38,6 +38,11 @@ public class StorageUnitTest {
 		// do not know how to test...
 	}
 	
+	@Test
+	public void setPathTest() {
+		
+	}
+	
 	@After
 	public void clearTask() {
 		taskFile.delete();

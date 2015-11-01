@@ -99,6 +99,7 @@ public class Storage {
 		//File desFile = new File(inputPath + File.separator + DEFAULT_FILENAME);
 		try {
 			if(taskFile.renameTo(new File(inputPath + File.separator + DEFAULT_FILENAME))){
+			//System.out.println(inputPath + File.separator + DEFAULT_FILENAME);
     		System.out.println("File is moved successful!");
             }else{
     		System.out.println("File is failed to move!");
