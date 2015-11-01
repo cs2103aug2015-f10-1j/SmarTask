@@ -1,3 +1,6 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,11 +24,9 @@ public class Task {
     private String deadline;
     private String eventStart;
     private String eventEnd;
-    private String repeatPeriod;
-    
     private String timeAdded;
     private Boolean isComplete;
-    
+
     // For repeated task
     private Date dateAdded;
     private String taskRepeatType;
@@ -35,12 +36,12 @@ public class Task {
     private String taskNextOccurrence;
     private String taskRepeatInterval_Day;
     private String taskRepeatInterval_Year;
-    
+
     public Task() {
 
     }
 
-    public Task(Type type, ArrayList<String> attributeList) {
+    public Task(Type type, ArrayList<String> attributeList) throws Exception {
         setType(type);
         setAttributes(type, attributeList);
     }
@@ -66,43 +67,82 @@ public class Task {
     public String getFloatingString (){
         return "floating"+ "#" + this.description;
     }
+
     public String getEventString (){
         return "event"+ "#" + this.eventStart + "#" + this.eventEnd + "#" +this.description;
-
     }
+
     public String getDeadlineString (){
         return "deadline"+ "#" + this.deadline + "#" + this.description;      
     }
+
     public String getRepeatString (){
-        return "repeat"+ "#" + this.repeatPeriod + "#" + this.description;    
+        return "repeat"+ "#" + this.getDateAdded() + "#" + this.description;    
     }
 
-    private void setAttributes(Type type, ArrayList<String> attributeList) {
+    private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
         this.type = type;
         String[] list = null;
+        DateFormat yearFormat = new SimpleDateFormat("dd/MM/yyy");
+
         if (attributeList.size()>0){
             list = attributeList.get(0).trim().split("#");
         }
+
         if (type.equals(Task.Type.EVENT)){
             this.eventStart = list[0];
             this.eventEnd = list[1];
             this.description = list[2];
             this.id = Integer.parseInt(list[3]);
             this.isComplete = false;
-        } else if (type.equals(Task.Type.DEADLINE)) {
+        } 
+
+        else if (type.equals(Task.Type.DEADLINE)) {
             this.deadline = list[0];
             this.description = list[1];
             this.id = Integer.parseInt(list[2]);
             this.isComplete = false;
-        } else if (type.equals(Task.Type.FLOATING)) {
+        } 
+
+        else if (type.equals(Task.Type.FLOATING)) {
             this.description = list[0];
             this.id = Integer.parseInt(list[1]);
             this.isComplete = false;
-        } else {
-            this.repeatPeriod = list[0];
-            this.description = list[1];
-            this.id = Integer.parseInt(list[2]);
-            this.isComplete = false;
+        } 
+
+        else if (type.equals(Task.Type.REPEAT)) {
+            try {
+                if(list[0].equals("day")) {
+                    this.taskRepeatType = list[0];
+                    this.dateAdded = yearFormat.parse(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.taskRepeatInterval_Day = list[4];
+                    this.taskRepeatUntil = yearFormat.parse(list[5]);
+                    this.description = list[6];
+                    this.id = Integer.parseInt(list[7]);
+                }
+
+                else if(list[0].equals("year")) {
+                    this.taskRepeatType = list[0];
+                    this.dateAdded = yearFormat.parse(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.taskRepeatInterval_Year = list[4];
+                    this.taskRepeatUntil = yearFormat.parse(list[5]);
+                    this.description = list[6];
+                    this.id = Integer.parseInt(list[7]);
+                }
+                else if(list[0].equals("week")) {
+
+                }
+                else if (list[0].equals("month")) {
+
+                }
+            }
+            catch (ParseException e) {
+                throw new Exception("invalid format");
+            }
         }       
     }
 
@@ -132,10 +172,6 @@ public class Task {
 
     public String getEventEnd() {
         return eventEnd;
-    }
-
-    public String getRepeatPeriod() {
-        return repeatPeriod;
     }
 
     public String getTimeAdded() {
@@ -172,10 +208,6 @@ public class Task {
 
     public void setEventEnd(String eventEnd) {
         this.eventEnd = eventEnd;
-    }
-
-    public void setRepeatPeriod(String repeatPeriod) {
-        this.repeatPeriod = repeatPeriod;
     }
 
     public void setTimeAdded(String timeAdded) {
