@@ -36,6 +36,10 @@ public class Storage {
 		createIfNotExists(taskFile);
 	}
 	
+	public static void setFilePath(String path){
+		
+	}
+	
 	public static Storage getInstance() {
 		if (taskOrganiser == null) {
 			taskOrganiser = new Storage();

@@ -26,13 +26,25 @@ public class Logic {
     private static  ArrayList<String> floating = initList("floating", taskStored);
     private static  ArrayList<String> repeatedTask = new ArrayList <String>();
     private static ArrayList <Integer> searchList;
-   
-  //  private int id=1;
+    
+    // error message
+    private static final String MESSAGE_DEADLINE_EMPTY = "There is no deadline task to delete!!";
+    private static final String MESSAGE_FLOATING_EMPTY = "There is no floating task to delete!!";
+    private static final String MESSAGE_EVENT_EMPTY = "There is no event task to delete!!";
+    private static final String MESSAGE_NOTHING_TO_DELETE = "Cannot find the item to delete!!";
+    private static final String MESSAGE_DEADLINE_CANT_COMPLETE = "There is no deadline task to complete!!";
+    private static final String MESSAGE_FLOATING_CANT_COMPLETE = "There is no floating task to complete!!";
+    private static final String MESSAGE_EVENT_CANT_COMPLETE = "There is no event task to complete!!";
+    private static final String MESSAGE_NOTHING_TO_COMPLETE = "Cannot find item to complete!!";
+    private static final String MESSAGE_INVALID_INDEX = "Index choosen is not valid";
+    private static final String MESSAGE_INVALID_COMMAND = "Invalid Command. Please enter the correct command.";
+    
+    
     private  int taskCode ;
-
-    private  ArrayList<Integer> currentList = new ArrayList <Integer>();
     private  static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
-  //  private  String currentDate = initDate();
+    private static  String currentDate;
+    private  static String currentTime;
+    private static String currentDay;
 
     public static void executeCommand (String userInput) throws Exception {
     	Logic logic = new Logic ();
@@ -71,8 +83,14 @@ public class Logic {
                         break;
                     case EXIT :
                         break;
+                    case SETFILEPATH :
+                    	storage.setFilePath(userInput);
+                    	break;
+                  //  case HELP :
+                  //  	logic.help();
+                  //  	break;
                     default :
-                        msgLogger.add("invalid command");
+                        msgLogger.add(MESSAGE_INVALID_COMMAND);
                 }
             } catch (Exception e) {
                 msgLogger.add(e.getMessage());
@@ -91,9 +109,12 @@ public class Logic {
                 }else if (type.equals("deadline")){
                 	list.add(taskStored.get(i).getDeadlineString());
                 }else if (type.equals("repeat")){
+                	initDate();
+                	Task task = taskStored.get(i);
+                	msgLogger.add(task.getTaskRepeatFrequency() + "  " + task.getTaskRepeatUntil() + "   " + task.getTaskRepeatDuration());
                 	list.add(taskStored.get(i).getRepeatString());
                 }
-             //   msgLogger.add(taskStored.get(i).toString());
+             
             }
         }
         return list;
@@ -111,13 +132,19 @@ public class Logic {
     	taskCode = sNum + sIDNum;
     	return taskCode;
     }
-/*
-    private String initDate() {
+
+    private static void initDate() {
         DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Calendar cal = Calendar.getInstance();
-        return dateFormat.format(cal.getTime());
+        currentDate = dateFormat.format(cal.getTime());
+        DateFormat dateFormat2 = new SimpleDateFormat("HHmm");
+        Date date = new Date();
+    	currentTime = dateFormat2.format(date);  
+    	DateFormat dateFormat3 = new SimpleDateFormat("E");
+        Date date2 = new Date();
+    	currentDay = dateFormat2.format(date2);  
     }
-*/
+
     // ================================================================
     // "Add" command methods
     // ================================================================
@@ -262,8 +289,6 @@ public class Logic {
     		task = new Task (type, detailStored);
     		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
     	}
-       // detailStored.add(com.getTaskRepeatPeriod() +"#" + com.getTaskDescription() + "#" + getID());
-    //	msgLogger.add(detailTask.get(0));
     	
         taskStored.add(task);
         msgLogger.add(task.getDescription());
@@ -392,16 +417,16 @@ public class Logic {
             }*/
         }catch(Exception e){
             if(taskType.equals("deadline") && deadline.size() == 0) {
-                msgLogger.add("There is no deadline task to delete!!");
+                msgLogger.add(MESSAGE_DEADLINE_EMPTY);
             }
             else if(taskType.equals("floating") && floating.size() == 0) {
-                msgLogger.add("There is no floating task to delete!!");
+                msgLogger.add(MESSAGE_FLOATING_EMPTY);
             }
             else if(taskType.equals("event") && event.size() == 0) {
-                msgLogger.add("There is no event to delete!!");
+                msgLogger.add(MESSAGE_EVENT_EMPTY);
             }
             else { 
-                msgLogger.add("Cannot find item to delete!!");
+                msgLogger.add(MESSAGE_NOTHING_TO_DELETE);
             }
         }
 
@@ -448,16 +473,16 @@ public class Logic {
 
         }catch(Exception e){
             if(taskType.equals("deadline") && deadline.size() == 0) {
-                msgLogger.add("There is no deadline task to complete!!");
+                msgLogger.add(MESSAGE_DEADLINE_CANT_COMPLETE);
             }
             else if(taskType.equals("floating") && floating.size() == 0) {
-                msgLogger.add("There is no floating task to complete!!");
+                msgLogger.add(MESSAGE_FLOATING_CANT_COMPLETE);
             }
             else if(taskType.equals("event") && event.size() == 0) {
-                msgLogger.add("There is no event to complete!!");
+                msgLogger.add(MESSAGE_EVENT_CANT_COMPLETE);
             }
             else { 
-                msgLogger.add("Cannot find item to complete!!");
+                msgLogger.add(MESSAGE_NOTHING_TO_COMPLETE);
             }
         }
 
@@ -530,9 +555,6 @@ public class Logic {
                 }
                 updatedItem += "#"+Integer.toString(taskCode);
                 updatedTask += "#"+Integer.toString(taskCode);
-               // updatedLine = new ArrayList<String> ();
-               // updatedLine.add(updatedItem);
-              //  updatedTask = new Task (Task.Type.FLOATING, updatedLine);
                 type = Task.Type.FLOATING;
                 floating.set(indexToUpdate, updatedItem);
             }
@@ -571,8 +593,8 @@ public class Logic {
                 type = Task.Type.EVENT;
             }
             else {
-                msgLogger.add("Index choosen is not valid");
-                throw new Exception("Index choosen is not valid");
+                msgLogger.add(MESSAGE_INVALID_INDEX);
+                throw new Exception(MESSAGE_INVALID_INDEX);
             }
             for (int i=0; i<taskStored.size(); i++){
             	if (taskStored.get(i).getID() == taskCode){
@@ -595,6 +617,22 @@ public class Logic {
         }
 
     }
+ // ================================================================
+    // "help" command methods
+    // ================================================================
+    
+    private void help(){
+    	String helpMsg;
+    	helpMsg = "add task for floating task : <add your task > \n";
+    	helpMsg +="add task for event task with starting date and end date : <> \n";
+    	helpMsg +="add task for task that have a deadline : <> \n";
+    	helpMsg +="delete task for floating task : <F> \n";
+    	
+    }
+    
+    
+    
+    
 
     // ================================================================
     // redo command method
