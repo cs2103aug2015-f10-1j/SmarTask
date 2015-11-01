@@ -54,9 +54,6 @@ public class Logic {
                     case DELETE :
                         logic.deleteTask(command);
                         break;
-                    case VIEW :
-                    //    logic.viewTask (command);
-                        break;
                     case UPDATE :
                         logic.updateTask(command);
                         break;
@@ -144,8 +141,8 @@ public class Logic {
                 if (!isCollision(task)) floating.add(detailStored.get(0));
             } 
             else if(taskType.equals("event")) {
-                detailStored.add(taskType + "#" + command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription() +"#"+ taskCode);
-                detailTask.add(command.getTaskEventDate() + "#" + command.getTaskEventTime() + "#" + command.getTaskDescription()+ "#" + taskCode);
+                detailStored.add(taskType + "#" + command.getTaskEventStart() + "#" + command.getTaskEventEnd() + "#" + command.getTaskDescription() +"#"+ taskCode);
+                detailTask.add(command.getTaskEventStart() + "#" + command.getTaskEventEnd() + "#" + command.getTaskDescription()+ "#" + taskCode);
                 type = Task.Type.EVENT;
                 task = new Task (type, detailTask);
                 if (!isCollision(task)) event.add(detailStored.get(0));
