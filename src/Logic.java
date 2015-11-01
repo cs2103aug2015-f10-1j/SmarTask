@@ -169,8 +169,8 @@ public class Logic {
 	private int getYearBetweenDates(Date d1, Date d2){
 		Calendar a = getCalendar(d1);
 		Calendar b = getCalendar(d2);
-		int diff = b.get(YEAR) - a.get(YEAR);
-		if (a.get(MONTH)>b.get(MONTH) ||(a.get(MONTH) == b.get(MONTH) && a.get(DATE) > b.get(DATE))){
+		int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+		if (a.get(Calendar.MONTH)>b.get(Calendar.MONTH) ||(a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))){
 			diff--;
 		}
 		return diff;
