@@ -150,7 +150,7 @@ public class Logic {
 			isOver = true;
 		} else if (task.getType().equals(Task.Type.EVENT)){
 			String endTime = task.getEventEnd();
-			DateFormat format = new SimpleDateFormat()
+			DateFormat format = new SimpleDateFormat();
 		} else if (task.getType().equals(Task.Type.DEADLINE)){
 			
 		} else if (task.getType().equals(Task.Type.REPEAT)){
@@ -183,7 +183,7 @@ public class Logic {
 	}
 	
 	// get the year difference between two dates
-	private int getYearBetweenDates(Date d1, Date d2){
+	private static int getYearBetweenDates(Date d1, Date d2){
 		Calendar a = getCalendar(d1);
 		Calendar b = getCalendar(d2);
 		int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
@@ -199,7 +199,7 @@ public class Logic {
 	    return cal;
 	}
 	// get the num of days different between current date and the recurring task starting date
-	private int getDifferenceDays(Date d1, Date d2){
+	private static int getDifferenceDays(Date d1, Date d2){
 		int daysDiff = 0;
 		long diff = d2.getTime() - d1.getTime();
 		long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MICROSECONDS);
@@ -308,10 +308,10 @@ public class Logic {
 							break;
 						}
 					} else {
-						if (taskStored.get(i).getRepeatPeriod().equals(task.getRepeatPeriod())){
+				//		if (taskStored.get(i).getRepeatPeriod().equals(task.getRepeatPeriod())){
 							boo = true;
 							break;
-						}
+				//		}
 					}
 				}
 			}
@@ -337,7 +337,7 @@ public class Logic {
     // "Repeat task" command methods
     // ================================================================
 
-	private void addRepeatTask(Command com) throws FileNotFoundException{  
+	private void addRepeatTask(Command com) throws Exception{  
     	ArrayList <String> detailStored = new ArrayList <String> ();
     	ArrayList <String> detailTask = new ArrayList <String> ();
     	taskCode = getID();
@@ -433,7 +433,7 @@ public class Logic {
                     	} else if (taskType.equals(Task.Type.FLOATING)){
                     		msgLogger.add((index++)+ " " + taskStored.get(j).getDescription());
                     	} else if (taskType.equals(Task.Type.REPEAT)){
-                    		msgLogger.add((index++)+ " " + taskStored.get(j).getDescription() + " repeating peroid is : " + taskStored.get(j).getRepeatPeriod() );
+                    		msgLogger.add((index++)+ " " + taskStored.get(j).getDescription() + " repeating peroid end in : " + taskStored.get(i).getTaskRepeatEndTime());
                     	}
                         
                         searchList.add(taskCode);
@@ -832,8 +832,9 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public static String getDeadline(){
-        String messageToPrint = "";
+    public static String getDeadline() throws ParseException{
+    	Logic logic = new Logic ();
+    	String messageToPrint = "";
         if(deadline.size() == 0) {
             return messageToPrint = "No tasks";
         }
@@ -843,7 +844,8 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public static String getFloatingTask(){
+    public static String getFloatingTask() throws ParseException{
+    	Logic logic = new Logic ();
         String messageToPrint = "";
         if(floating.size() == 0) {
             return messageToPrint = "No tasks";
@@ -854,7 +856,8 @@ public class Logic {
         return messageToPrint.trim();
     }
     
-    public static String getRecurringTask(){
+    public static String getRecurringTask() throws ParseException{
+    	Logic logic = new Logic ();
         String messageToPrint = "";
         if(repeatedTask.size() == 0) {
             return messageToPrint = "No tasks";
