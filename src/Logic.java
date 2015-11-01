@@ -39,6 +39,9 @@ public class Logic {
     private static final String MESSAGE_INVALID_INDEX = "Index choosen is not valid";
     private static final String MESSAGE_INVALID_COMMAND = "Invalid Command. Please enter the correct command.";
     
+    //
+    
+    
     
     private  int taskCode ;
     private  static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
@@ -280,7 +283,6 @@ public class Logic {
     	String taskType = com.getTaskRepeatType();
     	Task.Type type = Task.Type.REPEAT;
     	Task task = null;
-    //	msgLogger.add(taskType);
     	if (taskType.equals("day")){
     		detailTask.add( taskType+"#" +com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
     		detailStored.add(com.getTaskRepeatDayFrequency() +"#" + com.getTaskDescription() + "#" + taskCode);
