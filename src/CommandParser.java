@@ -467,6 +467,7 @@ public class CommandParser {
                 String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
                 command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
+                
                 if(remainingParam.length > 1) {
                     ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
@@ -489,6 +490,7 @@ public class CommandParser {
                 String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
                 command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
+                
                 if(remainingParam.length > 1) {
                     ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
