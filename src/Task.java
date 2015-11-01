@@ -29,8 +29,9 @@ public class Task {
     // For repeated task
     private String taskRepeatType;
     private String taskRepeatDuration;
-    private String taskRepeatFrequency;
+    private String taskRepeatInterval_Day;
     private String taskRepeatUntil;
+    private String taskNextOccurrence;
 
     public Task() {
 
@@ -211,14 +212,6 @@ public class Task {
         this.taskRepeatType = taskRepeatType;
     }
 
-    public String getTaskRepeatFrequency() {
-        return taskRepeatFrequency;
-    }
-
-    public void setTaskRepeatFrequency(String taskRepeatFrequency) {
-        this.taskRepeatFrequency = taskRepeatFrequency;
-    }
-
     public String getTaskRepeatDuration() {
         return taskRepeatDuration;
     }
@@ -233,6 +226,22 @@ public class Task {
 
     public void setTaskRepeatUntil(String taskRepeatUntil) {
         this.taskRepeatUntil = taskRepeatUntil;
+    }
+
+    public String getTaskNextOccurrence() {
+        return taskNextOccurrence;
+    }
+
+    public void setTaskNextOccurrence(String taskNextOccurrence) {
+        this.taskNextOccurrence = taskNextOccurrence;
+    }
+
+    public String getTaskRepeatInterval_Day() {
+        return taskRepeatInterval_Day;
+    }
+
+    public void setTaskRepeatInterval_Day(String taskRepeatInterval_Day) {
+        this.taskRepeatInterval_Day = taskRepeatInterval_Day;
     }
 
 }
