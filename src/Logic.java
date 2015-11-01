@@ -85,9 +85,10 @@ public class Logic {
                         logic.redoCommand();
                         break;
                     case EXIT :
+                    	System.exit(-1);
                         break;
                     case SETFILEPATH :
-                    	storage.setSavePath(userInput);
+                    	storage.setSavePath(command.getFilePath());
                     	break;
                   //  case HELP :
                   //  	logic.help();
