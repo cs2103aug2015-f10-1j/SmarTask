@@ -18,14 +18,14 @@ public class Command {
     private Type type;
     private String taskType;
     private String taskDescription;
-    
+
     private String taskDeadline;
-    
+
     private String taskEventStart;
     private String taskEventEnd;
     private String taskEventDate;
     private String taskEventTime;
-    
+
     private String filePath;
     private ArrayList<String> searchKeyword;
 
@@ -40,15 +40,18 @@ public class Command {
     // ======= Day recurrence =======
     private String dayInterval;
     
+    // ======= Year recurrence =======
+    private String yearInterval;
+    
     /*
     private String taskRepeatMonthFrequency;
     private Boolean[] isTaskRepeatOnDayOfWeek = new Boolean[7]; // Example: Mon, Tues, Fri
     private String taskRepeatMonthFrequencyBySpecificDate; // Example: on 19 of every month
     private String[] taskRepeatMonthFrequencyBySpecificDayOfWeek; //  Example: first-mon of every month
     private String taskRepeatYearFrequency;
-    
-    */
-    
+
+     */
+
     private ArrayList<String> updateRepeat;
 
     public Command(Type type) {
@@ -94,7 +97,7 @@ public class Command {
     // ================================================================
     // Getters method to support recurring task
     // ================================================================
-    
+
     public ArrayList<String> getStopRepeat() {
         return stopRepeat;
     }
@@ -130,7 +133,7 @@ public class Command {
     public void setTaskType(String taskType) {
         this.taskType = taskType;
     }
-    
+
     public String getFilePath() {
         return filePath;
     }
@@ -178,7 +181,7 @@ public class Command {
     public void setRepeatType(String repeatType) {
         this.repeatType = repeatType;
     }
-    
+
     public String getRepeatUntil() {
         return repeatUntil;
     }
@@ -217,6 +220,14 @@ public class Command {
 
     public void setRepeatEndTime(String repeatEndTime) {
         this.repeatEndTime = repeatEndTime;
+    }
+
+    public String getYearInterval() {
+        return yearInterval;
+    }
+
+    public void setYearInterval(String yearInterval) {
+        this.yearInterval = yearInterval;
     }
 
 }

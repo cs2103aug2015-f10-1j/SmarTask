@@ -445,42 +445,54 @@ public class CommandParser {
             Command command = new Command(Command.Type.REPEAT);
             String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("-on");
             command.setTaskDescription(param[POSITION_ZERO_PARAM_ARGUMENT].trim());
-            
+
             param = param[POSITION_FIRST_PARAM_ARGUMENT].split("-every");
             String dateTimeLine = param[POSITION_ZERO_PARAM_ARGUMENT].trim();
-            
-            ArrayList<String> dateTime = extractDateTime(dateTimeLine);
+
+            ArrayList<String> dateTime = extractDateStartEnd(dateTimeLine);
             command.setDateAdded(dateTime.get(0));
             command.setRepeatStartTime(dateTime.get(1));
             command.setRepeatEndTime(dateTime.get(2));
-            
+
             String inputOfRecurrence = param[POSITION_FIRST_PARAM_ARGUMENT].trim();
+
             if(inputOfRecurrence.contains("day")) {
                 command.setRepeatType("day");
                 String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
                 command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
                 if(remainingParam.length > 1) {
-                    command.setRepeatUntil(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    ArrayList<String> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    command.setRepeatUntil(line.get(0));
                 }
                 else {
                     command.setRepeatUntil("forever");
                 }
             }
-            
+
             else if (inputOfRecurrence.contains("week")){
                 command.setRepeatType("week");
             }
-            
+
             else if (inputOfRecurrence.contains("month")) {
                 command.setRepeatType("month");
             }
-            
+
             else if (inputOfRecurrence.contains("year")) {
                 command.setRepeatType("year");
+                String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
+                command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+                remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
+                if(remainingParam.length > 1) {
+                    ArrayList<String> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    command.setRepeatUntil(line.get(0));
+                }
+                else {
+                    command.setRepeatUntil("forever");
+                }
             }
-            
-            
+
+
             return command;
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
@@ -494,19 +506,32 @@ public class CommandParser {
         }
     }
 
-    private static ArrayList<String> extractDateTime(String dateTime) {
+    private static ArrayList<String> extractDate(String dateTime) {
         ArrayList<String> dateStartEnd = new ArrayList<String>(3);
-        
+
         com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
         List<DateGroup> dateGroup = parseDate.parse(dateTime);
         DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
         List<Date> dates = group.getDates();
-        
+        String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+        String[] start = arr[0].split(" ");
+        dateStartEnd.add(start[2] + " " + start[1] + " " + start[5]);
+        return dateStartEnd;
+    }
+
+    private static ArrayList<String> extractDateStartEnd(String dateTime) {
+        ArrayList<String> dateStartEnd = new ArrayList<String>(3);
+
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup = parseDate.parse(dateTime);
+        DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+        List<Date> dates = group.getDates();
+
         String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
         String[] start = arr[0].split(" ");
         dateStartEnd.add(start[2] + " " + start[1] + " " + start[5]);
         dateStartEnd.add(start[3]);
-        
+
         String[] end = arr[1].split(" ");
         dateStartEnd.add(end[3]);
         return dateStartEnd;
