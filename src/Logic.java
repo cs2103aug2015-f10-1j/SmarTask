@@ -149,7 +149,8 @@ public class Logic {
 		if (task.getType().equals(Task.Type.FLOATING)){
 			isOver = true;
 		} else if (task.getType().equals(Task.Type.EVENT)){
-			
+			String endTime = task.getEventEnd();
+			DateFormat format = new SimpleDateFormat()
 		} else if (task.getType().equals(Task.Type.DEADLINE)){
 			
 		} else if (task.getType().equals(Task.Type.REPEAT)){
