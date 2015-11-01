@@ -58,12 +58,6 @@ public class Logic {
     private static  Date currentDate;
     private  static Date currentTime;
     private static  Date currentDay;
-    
-    private Logic () throws ParseException{
-    	event= initList("event", taskStored);
-    	deadline = initList("deadline", taskStored);
-    	floating = initList("floating", taskStored);
-    }
 
     public static void executeCommand (String userInput) throws Exception {
     	Logic logic = new Logic ();
@@ -125,6 +119,7 @@ public class Logic {
         Task task;
         initDate();
         for (int i = 0; i<taskStored.size(); i++){
+        	System.out.println(type);
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
             	task = taskStored.get(i);
             	if (type.equals(FLOATING_TASK)){
@@ -161,7 +156,7 @@ public class Logic {
 	
 	private static boolean compareDate(Task task){
 		boolean isToday = false;
-		
+		System.out.println("hahsd");
 		if (task.getTaskRepeatType().equals(DAY_REC)){
 			if (task.getTaskRepeatUntil().before(currentDate)){
 			   if (getDifferenceDays(task.getDateAdded(), currentDate) % Integer.parseInt(task.getTaskRepeatInterval_Day()) == 0){
@@ -179,6 +174,7 @@ public class Logic {
 				   }
 				}
 		}
+		System.out.println(isToday);
 		return isToday;
 	}
 	
@@ -204,6 +200,7 @@ public class Logic {
 		long diff = d2.getTime() - d1.getTime();
 		long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MICROSECONDS);
 	    daysDiff = (int)diffDays;
+	    msgLogger.add(Integer.toString(daysDiff));
 	    return daysDiff;
 	}
    // get the unique task code
@@ -308,10 +305,20 @@ public class Logic {
 							break;
 						}
 					} else {
-				//		if (taskStored.get(i).getRepeatPeriod().equals(task.getRepeatPeriod())){
-							boo = true;
-							break;
-				//		}
+						if (taskStored.get(i).getTimeAdded().equals(task.getTimeAdded())){
+							
+							if (taskStored.get(i).getTaskRepeatUntil().equals(task.getTaskRepeatUntil())){
+								
+								if (taskStored.get(i).getTaskRepeatType().equals(task.getTaskRepeatType())){
+									if (taskStored.get(i).getTaskRepeatType().equals(DAY_REC)){
+										if (taskStored.get(i).getTaskRepeatInterval_Day().equals(task.getTaskRepeatInterval_Day())){
+											boo = true;
+											break;
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -345,10 +352,15 @@ public class Logic {
     	Task.Type type = Task.Type.REPEAT;
     	Task task = null;
     	if (taskType.equals(DAY_REC)){
-    		detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
-    		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
+    		detailTask.add( taskType+"#" +com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription() + "#" + taskCode);
+    		detailStored.add(taskType+"#"+com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription()+ "#" + taskCode);
+    		
     		task = new Task (type, detailStored);
-    		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
+    	//	if (!isCollision(task)){
+    			repeatedTask.add(detailStored.get(0));
+    			System.out.println("here");
+    			taskStored.add(task);
+    	//	}
     	} 
    /* 	else if (com.getTaskRepeatType().equals(WEEK_REC)){
     		detailTask.add(taskType +"#"+com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
@@ -374,12 +386,13 @@ public class Logic {
     		 detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
      		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
      		task = new Task (type, detailStored);
-     		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
+     		if (!isCollision(task)) {
+     			repeatedTask.add(detailStored.get(0));
+     			taskStored.add(task);
+     		}
     	}
     	
-        taskStored.add(task);
-        msgLogger.add(task.getDescription());
-        repeatedTask.add(detailTask.get(0));
+        
         storage.saveToFile(taskStored);
         msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     }
@@ -821,7 +834,8 @@ public class Logic {
         return messageToPrint.trim();
     }
 
-    public static String getEvents(){
+    public static String getEvents() throws ParseException{
+    	event= initList("event", taskStored);
         String messageToPrint = "";
         if(event.size() == 0) {
             return messageToPrint = "No events";
@@ -833,7 +847,7 @@ public class Logic {
     }
 
     public static String getDeadline() throws ParseException{
-    	Logic logic = new Logic ();
+    	deadline= initList("deadline", taskStored);
     	String messageToPrint = "";
         if(deadline.size() == 0) {
             return messageToPrint = "No tasks";
@@ -845,7 +859,7 @@ public class Logic {
     }
 
     public static String getFloatingTask() throws ParseException{
-    	Logic logic = new Logic ();
+    	floating= initList("floating", taskStored);
         String messageToPrint = "";
         if(floating.size() == 0) {
             return messageToPrint = "No tasks";
@@ -857,7 +871,7 @@ public class Logic {
     }
     
     public static String getRecurringTask() throws ParseException{
-    	Logic logic = new Logic ();
+    	repeatedTask= initList("repeat", taskStored);
         String messageToPrint = "";
         if(repeatedTask.size() == 0) {
             return messageToPrint = "No tasks";

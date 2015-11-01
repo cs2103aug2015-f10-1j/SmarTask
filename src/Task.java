@@ -3,6 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Task is an object class that contains all attibutes of a task
@@ -83,8 +84,6 @@ public class Task {
     private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
         this.type = type;
         String[] list = null;
-        DateFormat yearFormat = new SimpleDateFormat("dd/MM/yyy");
-
         if (attributeList.size()>0){
             list = attributeList.get(0).trim().split("#");
         }
@@ -113,25 +112,27 @@ public class Task {
         else if (type.equals(Task.Type.REPEAT)) {
             try {
                 if(list[0].equals("day")) {
-                    this.taskRepeatType = list[0];
-                    this.dateAdded = yearFormat.parse(list[1]);
+                    this.taskRepeatType = list[0];             
+                    setDateAdded(list[1]);     
                     this.taskRepeatStartTime = list[2];
                     this.taskRepeatEndTime = list[3];
                     this.taskRepeatInterval_Day = list[4];
-                    this.taskRepeatUntil = yearFormat.parse(list[5]);
+                    setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    this.isComplete = false;
                 }
 
                 else if(list[0].equals("year")) {
                     this.taskRepeatType = list[0];
-                    this.dateAdded = yearFormat.parse(list[1]);
+                    setDateAdded(list[1]);
                     this.taskRepeatStartTime = list[2];
                     this.taskRepeatEndTime = list[3];
                     this.taskRepeatInterval_Year = list[4];
-                    this.taskRepeatUntil = yearFormat.parse(list[5]);
+                    setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    this.isComplete = false;
                 }
                 else if(list[0].equals("week")) {
 
@@ -230,8 +231,10 @@ public class Task {
         return taskRepeatUntil;
     }
 
-    public void setTaskRepeatUntil(Date taskRepeatUntil) {
-        this.taskRepeatUntil = taskRepeatUntil;
+    public void setTaskRepeatUntil(String taskRepeatUntil) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date = sdf.parse(taskRepeatUntil);
+    	this.taskRepeatUntil =  date;
     }
 
     public String getTaskNextOccurrence() {
@@ -278,8 +281,11 @@ public class Task {
         return dateAdded;
     }
 
-    public void setDateAdded(Date dateAdded) {
-        this.dateAdded = dateAdded;
+    public void setDateAdded(String dateAdded) throws ParseException {
+    	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date = sdf.parse(dateAdded);
+    	this.dateAdded = date;
+    	
     }
 
 }
