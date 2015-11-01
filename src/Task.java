@@ -16,23 +16,24 @@ public class Task {
     }
 
     private Type type;
-    private  int id;
-    private  String description;
-    private  String deadline;
-    private  String eventStart;
-    private  String eventEnd;
-    private  String repeatPeriod;
-    private  String dateAdded;
-    private  String timeAdded;
+    private int id;
+    private String description;
+    private String deadline;
+    private String eventStart;
+    private String eventEnd;
+    private String repeatPeriod;
+    private String dateAdded;
+    private String timeAdded;
     private Boolean isComplete;
     
     // For repeated task
     private String taskRepeatType;
     private String taskRepeatDuration;
-    private String taskRepeatInterval_Day;
-    private String taskRepeatUntil;
     private String taskNextOccurrence;
-
+    private String taskRepeatUntil;
+    private String taskRepeatInterval_Day;
+    private String taskRepeatInterval_Year;
+    
     public Task() {
 
     }
@@ -242,6 +243,14 @@ public class Task {
 
     public void setTaskRepeatInterval_Day(String taskRepeatInterval_Day) {
         this.taskRepeatInterval_Day = taskRepeatInterval_Day;
+    }
+
+    public String getTaskRepeatInterval_Year() {
+        return taskRepeatInterval_Year;
+    }
+
+    public void setTaskRepeatInterval_Year(String taskRepeatInterval_Year) {
+        this.taskRepeatInterval_Year = taskRepeatInterval_Year;
     }
 
 }
