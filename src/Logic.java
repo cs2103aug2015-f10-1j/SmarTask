@@ -84,7 +84,7 @@ public class Logic {
                     case EXIT :
                         break;
                     case SETFILEPATH :
-                    	storage.setFilePath(userInput);
+                    	storage.setSavePath(userInput);
                     	break;
                   //  case HELP :
                   //  	logic.help();
@@ -100,26 +100,47 @@ public class Logic {
 
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) {
         ArrayList<String> list = new ArrayList <String>();
+        Task task;
+        initDate();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
-                if (type.equals("floating")){
+            	task = taskStored.get(i);
+            	if (type.equals("floating")){
                 	list.add(taskStored.get(i).getFloatingString());
                 }else if (type.equals("event")){
                 	list.add(taskStored.get(i).getEventString());
                 }else if (type.equals("deadline")){
                 	list.add(taskStored.get(i).getDeadlineString());
                 }else if (type.equals("repeat")){
-                	initDate();
-                	Task task = taskStored.get(i);
-                //	msgLogger.add(task.get + "  " + task.getTaskRepeatUntil() + "   " + task.getTaskRepeatDuration());
+                    System.out.println(task.getRepeatPeriod());
+                    System.out.println(task.getRepeatString());
+                    System.out.println(task.getTaskNextOccurrence());
+                    System.out.println(task.getTaskRepeatDuration());
+                    System.out.println(task.getTaskRepeatType());
+                    System.out.println(task.getTaskRepeatUntil());
                 	list.add(taskStored.get(i).getRepeatString());
+                //	}
+                	
                 }
              
             }
         }
         return list;
     }
-    
+/*	
+	private static boolean nextOccurrence(Task task){
+		
+		if (task.getTaskRepeatType().equals("day")){
+			if (Integer.parseInt(currentDate) < Integer.parseInt(task.getTaskRepeatUntil())){
+				if ((Integer.parseInt(currentDate) - Integer.parseInt())){
+					
+				}
+			}
+		}
+		
+		return true;
+	}
+   */
     private int getID(){
     	DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
     	Calendar cal = Calendar.getInstance();

@@ -62,17 +62,17 @@ public class Task {
     }
 
     public String getFloatingString (){
-        return "floating"+ "#" + this.description +"#"+ Integer.toString(this.id) ;
+        return "floating"+ "#" + this.description;
     }
     public String getEventString (){
-        return "event"+ "#" + this.eventStart + "#" + this.eventEnd + "#" +this.description + "#"+ Integer.toString(this.id) ;
+        return "event"+ "#" + this.eventStart + "#" + this.eventEnd + "#" +this.description;
 
     }
     public String getDeadlineString (){
-        return "deadline"+ "#" + this.deadline + "#" + this.description + "#"+ Integer.toString(this.id) ;      
+        return "deadline"+ "#" + this.deadline + "#" + this.description;      
     }
     public String getRepeatString (){
-        return "repeat"+ "#" + this.repeatPeriod + "#" + this.description + "#"+ Integer.toString(this.id) ;    
+        return "repeat"+ "#" + this.repeatPeriod + "#" + this.description;    
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) {
