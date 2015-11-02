@@ -457,7 +457,7 @@ public class CommandParser {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Command command = new Command(Command.Type.REPEAT);
-            String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("-on");
+            String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("-start");
             command.setTaskDescription(param[POSITION_ZERO_PARAM_ARGUMENT].trim());
 
             param = param[POSITION_FIRST_PARAM_ARGUMENT].split("-every");
@@ -492,7 +492,7 @@ public class CommandParser {
                 String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
                 command.setWeekInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 
-                remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-for");
+                remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-on");
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
                 
                 String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
@@ -510,11 +510,15 @@ public class CommandParser {
                 command.setRepeatType("month");
                 String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
                 command.setMonthInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+                
+                remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-on");
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
+                
+                String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
+                command.setMonthRepeatPattern(line);
 
                 if(remainingParam.length > SIZE_1) {
-                    ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
-                    command.setRepeatUntil(line.get(0));
+                    command.setRepeatUntil(extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));
                 }
                 else {
                     command.setRepeatUntil(dateFormat.parse("01/12/9999"));

@@ -47,8 +47,7 @@ public class Command {
 
     // ======= Month repeat =======
     private String monthInterval;
-    private String monthByDate; // Example: on 19 of every month
-    private String[] monthByDay; //  Example: first-mon of every month
+    private String monthRepeatPattern;
 
     // ======= Year repeat =======
     private String yearInterval;
@@ -253,6 +252,14 @@ public class Command {
 
     public void setMonthInterval(String monthInterval) {
         this.monthInterval = monthInterval;
+    }
+
+    public String getMonthRepeatPattern() {
+        return monthRepeatPattern;
+    }
+
+    public void setMonthRepeatPattern(String monthRepeatPattern) {
+        this.monthRepeatPattern = monthRepeatPattern;
     }
 
 }

@@ -23,7 +23,7 @@ public class CommandParserStubTest {
 
         // Daily
         try {
-            Command repeat = CommandParser.parse("repeat daily -on 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
+            Command repeat = CommandParser.parse("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
             + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Day Interval: " 
             + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
@@ -33,7 +33,7 @@ public class CommandParserStubTest {
 
         // Daily
         try {
-            Command repeat = CommandParser.parse("repeat daily -on 15 Dec 8 to 9 pm -every 2 day");
+            Command repeat = CommandParser.parse("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
             + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Day Interval: " 
             + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
@@ -43,7 +43,7 @@ public class CommandParserStubTest {
 
         // Yearly
         try {
-            Command repeat = CommandParser.parse("repeat yearly -on 15 Dec 2 to 5 pm -every 1 year");
+            Command repeat = CommandParser.parse("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
             + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
             + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
@@ -53,7 +53,7 @@ public class CommandParserStubTest {
 
         // Yearly
         try {
-            Command repeat = CommandParser.parse("repeat yearly -on 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
+            Command repeat = CommandParser.parse("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
             + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
             + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
@@ -63,7 +63,7 @@ public class CommandParserStubTest {
 
         // Weekly
         try {
-            Command repeat = CommandParser.parse("repeat weekly -on 25 Dec 9 to 11am -every 2 week -for sun, sat, wed -until 25 Dec 15");
+            Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
             + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
             + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
@@ -79,7 +79,7 @@ public class CommandParserStubTest {
 
         // Weekly
         try {
-            Command repeat = CommandParser.parse("repeat weekly -on 25 Dec 9 to 11am -every 2 week -for mon");
+            Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
             + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
             + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
@@ -95,25 +95,36 @@ public class CommandParserStubTest {
 
         // Monthly
         try {
-            Command repeat = CommandParser.parse("repeat monthly -on 25 Dec 9 to 11am -every 2 week -for mon");
+            Command repeat = CommandParser.parse("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -on 23 -until 25 Dec");
             System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Month Interval: " 
+            + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
             + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
-
-            for(int i = 0; i<repeat.getIsDaySelected().length; i++) {
-                if(repeat.getIsDaySelected()[i] == true)
-                    System.out.println("DAY " + (i+1));
-            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        /*repeat meeting -on 15 Dec 4 to 6pm -every 1 month -for 2 mon
-          repeat meeting -on 27 Dec 1 to 2pm -every 2 month -for 23 -until 25 Dec
-          repeat meeting -on 20 Dec 9 to 10am -every 2 month -for last 
-          repeat meeting -on 21 Dec 8 to 11am -every 1 month -for 1 sun -until 25 Dec
-         */
+        // Monthly
+        try {
+            Command repeat = CommandParser.parse("repeat meeting -start 15 Dec 4 to 6pm -every 1 month -on second mon");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+            + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
+            + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Monthly
+        try {
+            Command repeat = CommandParser.parse("repeat meeting -start 15 Dec 4 to 6pm -every 1 month -on last");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+            + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
+            + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         //=================================================================================
         //============================Deleting Recurrence tasks============================

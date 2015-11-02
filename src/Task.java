@@ -153,7 +153,7 @@ public class Task {
                     this.taskRepeatStartTime = list[2];
                     this.taskRepeatEndTime = list[3];
                     this.setTaskRepeatInterval_Week(list[4]);
-                    setIsDaySelected(list[5]);
+                    setIsDaySelected(list[5]); // list[5] contains selected day index {0,1,2...6}
                     setTaskRepeatUntil(list[6]);
                     this.description = list[7];
                     this.id = Integer.parseInt(list[8]);
