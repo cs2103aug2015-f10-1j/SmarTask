@@ -92,7 +92,7 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         // Monthly
         try {
             Command repeat = CommandParser.parse("repeat monthly -on 25 Dec 9 to 11am -every 2 week -for mon");
@@ -108,6 +108,12 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        /*repeat meeting -on 15 Dec 4 to 6pm -every 1 month -for 2 mon
+          repeat meeting -on 27 Dec 1 to 2pm -every 2 month -for 23
+          repeat meeting -on 20 Dec 9 to 10am -every 2 month -for last 
+          repeat meeting -on 21 Dec 8 to 11am -every 1 month -for 1 mon -until 25 Dec
+         */
 
         //=================================================================================
         //============================Deleting Recurrence tasks============================

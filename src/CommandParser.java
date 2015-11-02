@@ -206,20 +206,20 @@ public class CommandParser {
                 }
             }
 
-            //command.setTaskEventDate(arguments.get(POSITION_FIRST_PARAM_ARGUMENT));
-            //command.setTaskEventTime(arguments.get(POSITION_SECOND_PARAM_ARGUMENT));
-
             return command;
 
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
-            throw new Exception(MSG_NULL_POINTER); 
+            throw new Exception(MSG_NULL_POINTER);
+            
         } catch (IndexOutOfBoundsException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         } catch (NumberFormatException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         }
 
     }
@@ -253,15 +253,19 @@ public class CommandParser {
                 throw new Exception(MSG_NULL_POINTER);
             }
             return command;
+            
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
+            
         } catch (IndexOutOfBoundsException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         } catch (NumberFormatException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         }
     }
 
@@ -273,15 +277,19 @@ public class CommandParser {
         try {
             Command command = new Command(Command.Type.VIEW);
             return command;
+            
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
+            
         } catch (IndexOutOfBoundsException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         } catch (NumberFormatException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         }
     }
 
@@ -342,12 +350,15 @@ public class CommandParser {
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
+            
         } catch (IndexOutOfBoundsException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         } catch (NumberFormatException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         }
     }
 
@@ -515,11 +526,12 @@ public class CommandParser {
                 String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
                 command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
-
+                
                 if(remainingParam.length > SIZE_1) {
                     ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
                 }
+                
                 else {
                     command.setRepeatUntil(dateFormat.parse("01/12/9999"));
                 }
