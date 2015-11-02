@@ -28,22 +28,27 @@ public class Task {
     private String eventEnd;
     private String timeAdded;
 
-    // For repeated task
+    // Repeated task
     private String taskRepeatType;
     private Date dateAdded;
     private String taskRepeatStartTime;
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
+
+    // For day repeat
     private String taskRepeatInterval_Day;
-    
+
+    // For week repeat
     private String taskRepeatInterval_Week;
     private Boolean[] isDaySelected;
-    
+
+    // For month repeat
     private String taskRepeatInterval_Month;
-    
+
+    // For year repeat
     private String taskRepeatInterval_Year;
-    private Date taskRepeatUntil;
     
+    private Date taskRepeatUntil;
     private Boolean isComplete;
 
     public Task() {
@@ -259,7 +264,7 @@ public class Task {
     public void setTaskRepeatUntil(String taskRepeatUntil) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
         Date date = sdf.parse(taskRepeatUntil);
-    	this.taskRepeatUntil =  date;
+        this.taskRepeatUntil =  date;
     }
 
     public String getTaskNextOccurrence() {
@@ -307,10 +312,10 @@ public class Task {
     }
 
     public void setDateAdded(String dateAdded) throws ParseException {
-    	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
         Date date = sdf.parse(dateAdded);
-    	this.dateAdded = date;
-    	
+        this.dateAdded = date;
+
     }
 
     public String getTaskRepeatInterval_Week() {
@@ -336,13 +341,13 @@ public class Task {
     public void setIsDaySelected(String list) {
         isDaySelected = new Boolean[7];
         Arrays.fill(isDaySelected, false);
-        
+
         String[] days = list.split(",");
-        
+
         for(int i=0; i< days.length; i++) {
             this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
         }
-         
+
     }
 
 }
