@@ -37,22 +37,22 @@ public class Command {
     private String repeatStartTime;
     private String repeatEndTime;
     private ArrayList<String> stopRepeat;
-    
+
     // ======= Day repeat =======
     private String dayInterval;
-    
+
+    // ======= Week repeat =======
+    private String weekInterval;
+    private Boolean[] isDaySelected;
+
+    // ======= Month repeat =======
+    private String monthInterval;
+    private String monthByDate; // Example: on 19 of every month
+    private String[] monthByDay; //  Example: first-mon of every month
+
     // ======= Year repeat =======
     private String yearInterval;
     
-    /*
-    private String taskRepeatMonthFrequency;
-    private Boolean[] isTaskRepeatOnDayOfWeek = new Boolean[7]; // Example: Mon, Tues, Fri
-    private String taskRepeatMonthFrequencyBySpecificDate; // Example: on 19 of every month
-    private String[] taskRepeatMonthFrequencyBySpecificDayOfWeek; //  Example: first-mon of every month
-    private String taskRepeatYearFrequency;
-
-     */
-
     private ArrayList<String> updateRepeat;
 
     public Command(Type type) {
@@ -229,6 +229,30 @@ public class Command {
 
     public void setRepeatUntil(Date repeatUntil) {
         this.repeatUntil = repeatUntil;
+    }
+
+    public String getWeekInterval() {
+        return weekInterval;
+    }
+
+    public void setWeekInterval(String weekInterval) {
+        this.weekInterval = weekInterval;
+    }
+
+    public Boolean[] getIsDaySelected() {
+        return isDaySelected;
+    }
+
+    public void setIsDaySelected(Boolean[] isDaySelected) {
+        this.isDaySelected = isDaySelected;
+    }
+
+    public String getMonthInterval() {
+        return monthInterval;
+    }
+
+    public void setMonthInterval(String monthInterval) {
+        this.monthInterval = monthInterval;
     }
 
 }
