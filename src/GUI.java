@@ -34,17 +34,27 @@ public class GUI extends Application {
     }
     
     public void start(Stage primaryStage) {
-    	stage = primaryStage;
-    	Scene scene = chooseFileScene(primaryStage);
-    	primaryStage.setTitle("SmarTask");
-    	primaryStage.setScene(scene);
-        primaryStage.show();
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+			Scene scene = new Scene(root, 700, 800);
+			primaryStage.setTitle("SmarTask");
+	    	primaryStage.setScene(scene);
+	        primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//stage = primaryStage;
+    	//Scene scene = chooseFileScene(primaryStage);
+    	//primaryStage.setTitle("SmarTask");
+    	//primaryStage.setScene(scene);
+        //primaryStage.show();
     }
     
     private Scene chooseFileScene(Stage primaryStage) {
         final FileChooser fileChooser = new FileChooser();
         final Button createFileButton = new Button("Create new file");
         final Button openFileButton = new Button("Open a file");
+        final Button defaultFileButton = new Button("Default file location");
  
         createFileButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
@@ -75,13 +85,25 @@ public class GUI extends Application {
                 }
             }
         });
+        
+        defaultFileButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(final ActionEvent e) {
+        		try {
+        			stage.setScene(createSmarTaskScene());
+        		} catch (IOException e3) {
+        			e3.printStackTrace();
+        		}
+        	}
+        });
  
         final GridPane inputGridPane = new GridPane();
         GridPane.setConstraints(createFileButton, 0, 0);
         GridPane.setConstraints(openFileButton, 1, 0);
+        GridPane.setConstraints(defaultFileButton, 2, 0);
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(createFileButton, openFileButton);
+        inputGridPane.getChildren().addAll(createFileButton, openFileButton, defaultFileButton);
 
         final Pane rootGroup = new VBox(12);
         rootGroup.getChildren().addAll(inputGridPane);
