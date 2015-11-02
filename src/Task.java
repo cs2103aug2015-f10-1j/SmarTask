@@ -2,6 +2,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -34,6 +35,12 @@ public class Task {
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
     private String taskRepeatInterval_Day;
+    
+    private String taskRepeatInterval_Week;
+    private Boolean[] isDaySelected;
+    
+    private String taskRepeatInterval_Month;
+    
     private String taskRepeatInterval_Year;
     private Date taskRepeatUntil;
     
@@ -136,10 +143,27 @@ public class Task {
                     this.isComplete = false;
                 }
                 else if(list[0].equals("week")) {
-
+                    this.taskRepeatType = list[0];
+                    setDateAdded(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.setTaskRepeatInterval_Week(list[4]);
+                    setIsDaySelected(list[5]);
+                    setTaskRepeatUntil(list[6]);
+                    this.description = list[7];
+                    this.id = Integer.parseInt(list[8]);
+                    this.isComplete = false;
                 }
                 else if (list[0].equals("month")) {
-
+                    this.taskRepeatType = list[0];
+                    setDateAdded(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.setTaskRepeatInterval_Month(list[4]);
+                    setTaskRepeatUntil(list[5]);
+                    this.description = list[6];
+                    this.id = Integer.parseInt(list[7]);
+                    this.isComplete = false;
                 }
             }
             catch (ParseException e) {
@@ -287,6 +311,38 @@ public class Task {
         Date date = sdf.parse(dateAdded);
     	this.dateAdded = date;
     	
+    }
+
+    public String getTaskRepeatInterval_Week() {
+        return taskRepeatInterval_Week;
+    }
+
+    public void setTaskRepeatInterval_Week(String taskRepeatInterval_Week) {
+        this.taskRepeatInterval_Week = taskRepeatInterval_Week;
+    }
+
+    public String getTaskRepeatInterval_Month() {
+        return taskRepeatInterval_Month;
+    }
+
+    public void setTaskRepeatInterval_Month(String taskRepeatInterval_Month) {
+        this.taskRepeatInterval_Month = taskRepeatInterval_Month;
+    }
+
+    public Boolean[] getIsDaySelected() {
+        return isDaySelected;
+    }
+
+    public void setIsDaySelected(String list) {
+        isDaySelected = new Boolean[7];
+        Arrays.fill(isDaySelected, false);
+        
+        String[] days = list.split(",");
+        
+        for(int i=0; i< days.length; i++) {
+            this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
+        }
+         
     }
 
 }
