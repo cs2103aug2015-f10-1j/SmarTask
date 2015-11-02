@@ -3,8 +3,6 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
