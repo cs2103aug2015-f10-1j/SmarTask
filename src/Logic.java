@@ -116,7 +116,7 @@ public class Logic {
 
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) throws ParseException {
         ArrayList<String> list = new ArrayList <String>();
-        Task task;
+        Task task = null;
         initDate();
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
@@ -185,7 +185,7 @@ public class Logic {
 		}
 		return diff;
 	}
-	// comvert the date to calendar format
+	// convert the date to calendar format
 	public static Calendar getCalendar(Date date) {
 	    Calendar cal = Calendar.getInstance(Locale.US);
 	    cal.setTime(date);
@@ -197,7 +197,6 @@ public class Logic {
 		long diff = d1.getTime() - d2.getTime();
 		long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	    daysDiff = (int)diffDays;
-	    msgLogger.add(Integer.toString(daysDiff));
 	    return daysDiff;
 	}
    // get the unique task code
@@ -302,13 +301,27 @@ public class Logic {
 							break;
 						}
 					} else {
-						if (taskStored.get(i).getTimeAdded().equals(task.getTimeAdded())){
-							
-							if (taskStored.get(i).getTaskRepeatUntil().equals(task.getTaskRepeatUntil())){
+						// handle recurring task
+						String recurringType = task.getTaskRepeatType();
+						if (taskStored.get(i).getTaskRepeatType().equals(recurringType)){
+							if (recurringType.equals(DAY_REC)){
+								if (taskStored.get(i).getTaskRepeatInterval_Day().equals(task.getTaskRepeatInterval_Day())){
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil())==0){
+										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded())==0){
+											boo = true;
+											break;
+										}
+									}
+								}
+												
+							} else if (recurringType.equals(WEEK_REC)){
 								
-								if (taskStored.get(i).getTaskRepeatType().equals(task.getTaskRepeatType())){
-									if (taskStored.get(i).getTaskRepeatType().equals(DAY_REC)){
-										if (taskStored.get(i).getTaskRepeatInterval_Day().equals(task.getTaskRepeatInterval_Day())){
+							} else if (recurringType.equals(MONTH_REC)){
+								
+							} else if (recurringType.equals(YEAR_REC)){
+								if (taskStored.get(i).getTaskRepeatInterval_Year().equals(task.getTaskRepeatInterval_Year())){
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil())==0){
+										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded())==0){
 											boo = true;
 											break;
 										}
@@ -353,11 +366,15 @@ public class Logic {
     		detailStored.add(taskType+"#"+com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription()+ "#" + taskCode);
     		
     		task = new Task (type, detailStored);
-    	//	if (!isCollision(task)){
+
+    		if (!isCollision(task)){
     			repeatedTask.add(detailStored.get(0));
-    			System.out.println("here");
     			taskStored.add(task);
-    	//	}
+    			storage.saveToFile(taskStored);
+    	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
+    		} else {
+    			msgLogger.add("Collision Task!");
+    		}
     	} 
    /* 	else if (com.getTaskRepeatType().equals(WEEK_REC)){
     		detailTask.add(taskType +"#"+com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
@@ -383,15 +400,18 @@ public class Logic {
     		 detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
      		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
      		task = new Task (type, detailStored);
-     	//	if (!isCollision(task)) {
+     		if (!isCollision(task)) {
      			repeatedTask.add(detailStored.get(0));
      			taskStored.add(task);
-     	//	}
+     			storage.saveToFile(taskStored);
+    	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
+     		} else {
+     			msgLogger.add("Collision Task!");
+     		}
     	}
     	
         
-        storage.saveToFile(taskStored);
-        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
+        
     }
 
     /* 
