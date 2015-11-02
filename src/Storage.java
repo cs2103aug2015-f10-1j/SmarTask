@@ -32,20 +32,20 @@ public class Storage {
 
 
 
-	public Storage() {
+	public Storage(String inputPath) {
 		gson = new Gson();
-
+		savePath = inputPath;
 		taskFile = new File(savePath + DEFAULT_FILENAME);
 		createIfNotExists(taskFile);
 	}
 	
-	public static void setFilePath(String path){
+	/*public void setFilePath(String path){
 		
-	}
+	}*/
 	
-	public static Storage getInstance() {
+	public Storage getInstance() {
 		if (taskOrganiser == null) {
-			taskOrganiser = new Storage();
+			taskOrganiser = new Storage(savePath);
 		}
 		return taskOrganiser;
 	}
@@ -116,26 +116,6 @@ public class Storage {
 
 	}
 	
-	/*public void setSavePath(String inputPath){
-		try{
-			File newFile = new File(inputPath);
-			newFile.createNewFile();
-			saveToFile(retrieveFile());
-			taskFile.delete();
-			taskFile = newFile;
-			FileWriter fw = new FileWriter(taskFile, false);
-			BufferedWriter buff = new BufferedWriter(fw);
-			buff.write(inputPath);
-			buff.close();
-			fw.close();
-			System.out.println("Successful!");
-			
-		}catch(Exception e){
-			System.out.println("invalid path");
-			
-		}		
-	}*/
-
 	// Initialization Methods
 	private boolean initReader(File taskFile) {
 		try {
