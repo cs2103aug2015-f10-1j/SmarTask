@@ -167,7 +167,6 @@ public class SmarTaskController implements Initializable {
             Logic.executeCommand(userCommand);
             updateDisplay();
         } catch (Exception e) {
-        	e.printStackTrace();
             System.err.println("Error! Invalid Command sent to Logic!");
         }
     }

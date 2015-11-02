@@ -41,7 +41,7 @@ public class GUI extends Application {
 	    	primaryStage.setScene(scene);
 	        primaryStage.show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Error! SmarTaskUI.fxml cannot be found!");
 		}
 		//stage = primaryStage;
     	//Scene scene = chooseFileScene(primaryStage);
