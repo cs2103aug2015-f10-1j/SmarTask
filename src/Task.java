@@ -26,17 +26,18 @@ public class Task {
     private String eventStart;
     private String eventEnd;
     private String timeAdded;
-    private Boolean isComplete;
 
     // For repeated task
-    private Date dateAdded;
     private String taskRepeatType;
-    private Date taskRepeatUntil;
+    private Date dateAdded;
     private String taskRepeatStartTime;
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
     private String taskRepeatInterval_Day;
     private String taskRepeatInterval_Year;
+    private Date taskRepeatUntil;
+    
+    private Boolean isComplete;
 
     public Task() {
 

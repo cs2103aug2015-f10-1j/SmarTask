@@ -37,7 +37,7 @@ public class JSonStorage {
 	private static String DEFAULT_INNERIMAGEFILE = "InnerImagePath.txt";
 	private String oldLocation;
 
-	public JSonStorage() {
+	public JSonStorage() throws Exception {
 		taskList = new ArrayList<Task>();
 		initializeStorage();
 	}
@@ -87,7 +87,7 @@ public class JSonStorage {
 		return taskList;
 	}
 
-	public void initializeStorage() {
+	public void initializeStorage() throws Exception {
 
 		if (checkPathFileExist()) {
 			oldFileName = getPath();
