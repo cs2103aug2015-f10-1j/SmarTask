@@ -364,8 +364,24 @@ public class Logic {
 								}
 												
 							} else if (recurringType.equals(WEEK_REC)){
+								if (taskStored.get(i).getTaskRepeatInterval_Week().equals(task.getTaskRepeatInterval_Week())){
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil())==0){
+										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded())==0){
+											boo = true;
+											break;
+										}
+									}
+								}
 								
 							} else if (recurringType.equals(MONTH_REC)){
+								if (taskStored.get(i).getTaskRepeatInterval_Month().equals(task.getTaskRepeatInterval_Month())){
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil())==0){
+										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded())==0){
+											boo = true;
+											break;
+										}
+									}
+								}
 								
 							} else if (recurringType.equals(YEAR_REC)){
 								if (taskStored.get(i).getTaskRepeatInterval_Year().equals(task.getTaskRepeatInterval_Year())){
