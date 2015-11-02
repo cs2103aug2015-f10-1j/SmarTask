@@ -29,19 +29,22 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 	
-	//private static boolean fileChose;
-	
 	private Desktop desktop = Desktop.getDesktop();
+	private Stage stage;
 	
     public static void main(String[] args) {
     	launch(args);
-    	//fileChose = false;
     }
     
     public void start(Stage primaryStage) {
-    	/*if(!fileChose) {
-    	primaryStage.setTitle("File Chooser Sample");
-    	 
+    	stage = primaryStage;
+    	Scene scene = chooseFileScene(primaryStage);
+    	primaryStage.setTitle("SmarTask");
+    	primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    
+    private Scene chooseFileScene(Stage primaryStage) {
         final FileChooser fileChooser = new FileChooser();
         final Button createFileButton = new Button("Create new file");
         final Button openFileButton = new Button("Open a file");
@@ -53,7 +56,11 @@ public class GUI extends Application {
                     File file = fileChooser.showOpenDialog(primaryStage);
                     if (file != null) {
                         openFile(file);
-                        fileChose = true;
+                        try {
+							stage.setScene(createSmarTaskScene());
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
                     }
                 }
             });
@@ -65,7 +72,11 @@ public class GUI extends Application {
                     File file = fileChooser.showOpenDialog(primaryStage);
                     if (file != null) {
                         openFile(file);
-                        fileChose = true;
+                        try {
+							stage.setScene(createSmarTaskScene());
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						}
                     }
                 }
             });
@@ -82,27 +93,23 @@ public class GUI extends Application {
         final Pane rootGroup = new VBox(12);
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding(new Insets(12, 12, 12, 12));
- 
-        primaryStage.setScene(new Scene(rootGroup));
-        primaryStage.show();
-    	} else {*/
-    	try {
-    		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-    		Scene scene = new Scene(root, 700, 800);
-    		primaryStage.setTitle("SmarTask Main Window");
-    		primaryStage.setScene(scene);
-    		primaryStage.show();
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
+        Scene scene = new Scene(rootGroup);
+        return scene;
+    }
+    
+    protected Scene createSmarTaskScene() throws IOException {
+    	Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+    	Scene scene = new Scene(root, 700, 800);
+    	return scene;
     }
     
     private void openFile(File file) {
         try {
+        	String fileName = file.getAbsolutePath();
             desktop.open(file);
-        } catch (IOException ex) {
+        } catch (Exception e) {
             Logger.getLogger(
-                GUI.class.getName()).log(Level.SEVERE, null, ex);
+                GUI.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }
