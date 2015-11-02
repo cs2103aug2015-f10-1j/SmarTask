@@ -56,7 +56,7 @@ public class Logic {
     private  int taskCode ;
     private  static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
     private static  Date currentDate;
-    private  static Date currentTime;
+    private  static String currentTime;
     private static  Date currentDay;
 
     public static void executeCommand (String userInput) throws Exception {
@@ -138,19 +138,30 @@ public class Logic {
         return list;
     }
 	
-	private static boolean isOverdue(Task task){
+	private static boolean isOverdue(Task task) throws ParseException{
 		boolean isOver = false;
+		initDate();
 		if (task.getType().equals(Task.Type.FLOATING)){
 			isOver = true;
 		} else if (task.getType().equals(Task.Type.EVENT)){
-			String endTime = task.getEventEnd();
-			DateFormat format = new SimpleDateFormat();
+			Date date = convertStringToDate(task.getEventEnd());
+			if (date.before(currentDate)){
+				isOver = true;
+			}
 		} else if (task.getType().equals(Task.Type.DEADLINE)){
-			
-		} else if (task.getType().equals(Task.Type.REPEAT)){
+			Date date = convertStringToDate(task.getDeadline());
+			if (date.before(currentDate)){
+				isOver = true;
+			}
 			
 		}
 		return isOver;
+	}
+	
+	private static Date convertStringToDate(String dateStr) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date = sdf.parse(dateStr);
+        return date;
 	}
 	
 	private static boolean compareDate(Task task){
@@ -218,7 +229,7 @@ public class Logic {
         Calendar cal = Calendar.getInstance();
         currentDate = dateFormat.parse(dateFormat.format((cal.getTime())));
         DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
-    	currentTime = dateFormat2.parse(dateFormat2.format(cal.getTime()));  
+    	currentTime = dateFormat2.format(cal.getTime());  
     	DateFormat dateFormat3 = new SimpleDateFormat("E");
     	currentDay = dateFormat3.parse(dateFormat3.format(cal.getTime()));;  
     }

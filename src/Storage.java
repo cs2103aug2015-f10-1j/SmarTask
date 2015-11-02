@@ -30,7 +30,9 @@ public class Storage {
 
 	private Gson gson;
 
-
+   public Storage (){
+	   
+   }
 
 	public Storage(String inputPath) {
 		gson = new Gson();
