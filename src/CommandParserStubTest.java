@@ -144,24 +144,11 @@ public class CommandParserStubTest {
 
         // Stop recurrence on specifc frequency
         try {
-            Command repeat = CommandParser.parse("stop R1 {15/10/15, 20/10/15}");
-            System.out.print(repeat.getCommandType());
-            for(int i=0; i< repeat.getStopRepeat().size(); i++ ) {
-                System.out.print(" " + repeat.getStopRepeat().get(i));
+            Command repeat = CommandParser.parse("stop 1511151245 15 oct, 25 nov, 6 aug");
+            System.out.println(repeat.getCommandType() + " ID: " + repeat.getTaskID() + " ");
+            for(int i=0; i< repeat.getStopRepeat().size(); i++) {
+                System.out.println(repeat.getStopRepeat().get(i).toString());
             }
-            System.out.println();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        // Stop recurrence on specifc frequency
-        try {
-            Command repeat = CommandParser.parse("stop R1 {mon, tue, sat}");
-            System.out.print(repeat.getCommandType());
-            for(int i=0; i< repeat.getStopRepeat().size(); i++ ) {
-                System.out.print(" " + repeat.getStopRepeat().get(i));
-            }
-            System.out.println();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

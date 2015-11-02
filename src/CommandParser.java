@@ -338,7 +338,7 @@ public class CommandParser {
                 for(int i =0; i< updateParam.length; i++) {
                     paramList.add(i, updateParam[i].trim());
                 }
-                command.setUpdateRepeat(paramList);
+                
             }
             else {
                 addToParserLogger(MSG_INCORRECT_FORMAT);
@@ -467,7 +467,7 @@ public class CommandParser {
             command.setRepeatStartTime(time.get(0));
             command.setRepeatEndTime(time.get(1));
 
-            ArrayList<Date> date = extractDate(dateTimeLine);
+            ArrayList<Date> date = extractNattyTwoDates(dateTimeLine);
             command.setDateAdded(date.get(0));
 
             String inputOfRecurrence = param[POSITION_FIRST_PARAM_ARGUMENT].trim();
@@ -479,7 +479,7 @@ public class CommandParser {
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
 
                 if(remainingParam.length > 1) {
-                    ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    ArrayList<Date> line = extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
                 }
                 else {
@@ -499,7 +499,7 @@ public class CommandParser {
                 command.setIsDaySelected(setSelectedDay(line, new Boolean[7]));
                 
                 if(remainingParam.length > SIZE_1) {
-                    command.setRepeatUntil(extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));
+                    command.setRepeatUntil(extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));
                 }
                 else {
                     command.setRepeatUntil(dateFormat.parse("01/12/9999"));
@@ -518,7 +518,7 @@ public class CommandParser {
                 command.setMonthRepeatPattern(line);
 
                 if(remainingParam.length > SIZE_1) {
-                    command.setRepeatUntil(extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));
+                    command.setRepeatUntil(extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));
                 }
                 else {
                     command.setRepeatUntil(dateFormat.parse("01/12/9999"));
@@ -532,7 +532,7 @@ public class CommandParser {
                 remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
                 
                 if(remainingParam.length > SIZE_1) {
-                    ArrayList<Date> line = extractDate(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+                    ArrayList<Date> line = extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
                     command.setRepeatUntil(line.get(0));
                 }
                 
@@ -558,7 +558,7 @@ public class CommandParser {
         }
     }
 
-    private static Boolean[] setSelectedDay(String line, Boolean[] isSelected) {
+    private static Boolean[] setSelectedDay(String line, Boolean[] isSelected) throws Exception {
         String[] days = line.split(",");
         Arrays.fill(isSelected, false);
         int dayNum;
@@ -570,7 +570,7 @@ public class CommandParser {
         return isSelected;
     }
 
-    private static int getDayIndex(String day) {
+    private static int getDayIndex(String day) throws Exception {
         if(day.toLowerCase().equals("mon")) {
             return 0;
         }
@@ -593,12 +593,13 @@ public class CommandParser {
             return 6;
         }
         else {
-            return -1;
+            addToParserLogger(MSG_INCORRECT_FORMAT);
+            throw new Exception(MSG_INCORRECT_FORMAT);
         }
         
     }
 
-    private static ArrayList<Date> extractDate(String dateTime) throws Exception {
+    private static ArrayList<Date> extractNattyTwoDates(String dateTime) throws Exception {
         try {
             ArrayList<Date> dateStartEnd = new ArrayList<Date>(3);
             com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
@@ -646,26 +647,51 @@ public class CommandParser {
     // ================================================================
     private static Command initStopRepeatCommand(ArrayList<String> arguments) throws Exception {
         try {
-            Command command = new Command(Command.Type.STOP_REPEAT);            
-            String info = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("\\{", "").replaceAll("\\}", "").trim();
-            String[] params = info.trim().split("[?=\\,]");
-            ArrayList<String> paramList = new ArrayList<String>();
-            for(int i =0; i< params.length; i++) {
-                paramList.add(i, params[i].trim());
-            }
-            command.setStopRepeat(paramList);
+            Command command = new Command(Command.Type.STOP_REPEAT);
+            String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(REGEX_WHITESPACES, SIZE_2);
+            command.setTaskID(Integer.parseInt(param[POSITION_ZERO_PARAM_ARGUMENT]));
+            String[] dateParam = param[POSITION_FIRST_PARAM_ARGUMENT].split(",");
+            ArrayList<Date> listOfDates = extractDatesIntoArrayList(dateParam);
+            command.setStopRepeat(listOfDates);
+            
             return command;
+            
         } catch (NullPointerException e) {
             addToParserLogger(MSG_NULL_POINTER);
             throw new Exception(MSG_NULL_POINTER); 
+            
         } catch (IndexOutOfBoundsException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         } catch (NumberFormatException e) {
             addToParserLogger(MSG_INCORRECT_FORMAT);
             throw new Exception(MSG_INCORRECT_FORMAT);
+            
         }
 
+    }
+
+    private static ArrayList<Date> extractDatesIntoArrayList(String[] dateParam) throws ParseException {
+        ArrayList<Date> list = new ArrayList<Date>();
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup;
+        DateGroup group;
+        List<Date> dates;
+        
+        for(int i =0; i< dateParam.length; i++) {
+            dateGroup = parseDate.parse(dateParam[i].trim());
+            group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+            dates = group.getDates();
+
+            String[] param = dates.toString().replace("[", "").replace("]", "").split(" ");
+            int mth = monthInString.indexOf(param[1]) + 1;
+            
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            list.add(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
+        }
+        
+        return list;
     }
 
     // ================================================================

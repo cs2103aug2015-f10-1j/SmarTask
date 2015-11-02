@@ -36,8 +36,8 @@ public class Command {
     private Date repeatUntil;
     private String repeatStartTime;
     private String repeatEndTime;
-    private ArrayList<String> stopRepeat;
-
+    private ArrayList<Date> stopRepeat;
+    
     // ======= Day repeat =======
     private String dayInterval;
 
@@ -52,8 +52,6 @@ public class Command {
     // ======= Year repeat =======
     private String yearInterval;
     
-    private ArrayList<String> updateRepeat;
-
     public Command(Type type) {
         this.type = type;
     }
@@ -98,9 +96,6 @@ public class Command {
     // Getters method to support recurring task
     // ================================================================
 
-    public ArrayList<String> getStopRepeat() {
-        return stopRepeat;
-    }
 
     // ================================================================
     // Setters method to support CommandParser methods
@@ -142,17 +137,6 @@ public class Command {
     // Setters method to support recurring task
     // ================================================================
 
-    public void setStopRepeat(ArrayList<String> cancelRepeatDateAndTime) {
-        this.stopRepeat = cancelRepeatDateAndTime;
-    }
-
-    public ArrayList<String> getUpdateRepeat() {
-        return updateRepeat;
-    }
-
-    public void setUpdateRepeat(ArrayList<String> updateRepeat) {
-        this.updateRepeat = updateRepeat;
-    }
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -260,6 +244,14 @@ public class Command {
 
     public void setMonthRepeatPattern(String monthRepeatPattern) {
         this.monthRepeatPattern = monthRepeatPattern;
+    }
+
+    public ArrayList<Date> getStopRepeat() {
+        return stopRepeat;
+    }
+
+    public void setStopRepeat(ArrayList<Date> stopRepeat) {
+        this.stopRepeat = stopRepeat;
     }
 
 }
