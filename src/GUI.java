@@ -1,4 +1,3 @@
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -100,8 +99,9 @@ public class GUI extends Application {
     
     private void createFile(File file) {
     	try {
-    		String command = "setFilePath " + file.getAbsolutePath();
+    		String command = "setfilepath " + file.getAbsolutePath();
     		Logic.executeCommand(command);
+    		System.out.println(command);
     	} catch (Exception e) {
     		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
     	}
@@ -109,8 +109,9 @@ public class GUI extends Application {
     
     private void openFile(File file) {
         try {
-        	String command = "setFilePath " + file.getAbsolutePath();
+        	String command = "setfilepath " + file.getAbsolutePath();
         	Logic.executeCommand(command);
+        	System.out.println(command);
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         }
