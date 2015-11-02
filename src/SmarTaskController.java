@@ -3,6 +3,10 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -54,15 +58,23 @@ public class SmarTaskController implements Initializable {
         assert displayWindow != null : "fx:id=\"displayWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert taskWindow != null : "fx:id=\"taskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
+        pastCommands = new Stack<String>();
+        poppedCommands = new Stack<String>();
+        
         try {
 			updateDisplay();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         displayWindow.setText(MESSAGE_WELCOME);
-        pastCommands = new Stack<String>();
-        poppedCommands = new Stack<String>();
+        
+        displayWindow.textProperty().addListener(new ChangeListener<Object>() {
+        	@Override
+        	public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+        		displayWindow.selectPositionCaret(displayWindow.getLength());
+        		displayWindow.deselect();
+        	}
+        });
     }
     
     /**
