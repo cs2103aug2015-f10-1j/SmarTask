@@ -119,7 +119,6 @@ public class Logic {
         Task task;
         initDate();
         for (int i = 0; i<taskStored.size(); i++){
-        	System.out.println(type);
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
             	task = taskStored.get(i);
             	if (type.equals(FLOATING_TASK)){
@@ -156,9 +155,8 @@ public class Logic {
 	
 	private static boolean compareDate(Task task){
 		boolean isToday = false;
-		System.out.println("hahsd");
 		if (task.getTaskRepeatType().equals(DAY_REC)){
-			if (task.getTaskRepeatUntil().before(currentDate)){
+			if (task.getTaskRepeatUntil().after(currentDate)){
 			   if (getDifferenceDays(task.getDateAdded(), currentDate) % Integer.parseInt(task.getTaskRepeatInterval_Day()) == 0){
 				   isToday = true;
 			   }
@@ -168,13 +166,12 @@ public class Logic {
 		} else if (task.getTaskRepeatType().equals(MONTH_REC)){
 			
 		} else if (task.getTaskRepeatType().equals(YEAR_REC)){
-			if (task.getTaskRepeatUntil().before(currentDate)){
+			if (task.getTaskRepeatUntil().after(currentDate)){
 				if (getYearBetweenDates(task.getDateAdded(), currentDate)>0){
 					   isToday = true;
 				   }
 				}
 		}
-		System.out.println(isToday);
 		return isToday;
 	}
 	
@@ -197,8 +194,8 @@ public class Logic {
 	// get the num of days different between current date and the recurring task starting date
 	private static int getDifferenceDays(Date d1, Date d2){
 		int daysDiff = 0;
-		long diff = d2.getTime() - d1.getTime();
-		long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MICROSECONDS);
+		long diff = d1.getTime() - d2.getTime();
+		long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	    daysDiff = (int)diffDays;
 	    msgLogger.add(Integer.toString(daysDiff));
 	    return daysDiff;
@@ -386,10 +383,10 @@ public class Logic {
     		 detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
      		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
      		task = new Task (type, detailStored);
-     		if (!isCollision(task)) {
+     	//	if (!isCollision(task)) {
      			repeatedTask.add(detailStored.get(0));
      			taskStored.add(task);
-     		}
+     	//	}
     	}
     	
         
