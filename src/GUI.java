@@ -27,8 +27,7 @@ import javafx.stage.Stage;
  */
 
 public class GUI extends Application {
-	
-	private Desktop desktop = Desktop.getDesktop();
+
 	private Stage stage;
 	
     public static void main(String[] args) {
@@ -112,7 +111,6 @@ public class GUI extends Application {
         try {
         	String command = "setFilePath " + file.getAbsolutePath();
         	Logic.executeCommand(command);
-            desktop.open(file);
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         }
