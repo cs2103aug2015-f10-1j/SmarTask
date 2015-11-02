@@ -1,3 +1,4 @@
+import java.text.DateFormat;
 import java.util.*;
 
 /**
@@ -10,38 +11,51 @@ import java.util.*;
 
 public class Command {
     public enum Type {
-	ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
-	UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
+        ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
+        UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
     }
 
     private int taskID;
     private Type type;
     private String taskType;
     private String taskDescription;
+
     private String taskDeadline;
+
     private String taskEventStart;
     private String taskEventEnd;
     private String taskEventDate;
     private String taskEventTime;
+
     private String filePath;
     private ArrayList<String> searchKeyword;
 
     // Additional attributes for recurrencing task
-    private String dateOfRepeatAdded;
-    private String taskRepeatDuration;
-    private String taskRepeatType;
-    private String taskRepeatDayFrequency;
-    private String taskRepeatMonthFrequency;
-    private Boolean[] isTaskRepeatOnDayOfWeek = new Boolean[7]; // Example: Mon, Tues, Fri
-    private String taskRepeatMonthFrequencyBySpecificDate; // Example: on 19 of every month
-    private String[] taskRepeatMonthFrequencyBySpecificDayOfWeek; //  Example: first-mon of every month
-    private String taskRepeatYearFrequency;
-    private String taskRepeatEndDate;
+    private String repeatType;
+    private Date dateAdded;
+    private Date repeatUntil;
+    private String repeatStartTime;
+    private String repeatEndTime;
     private ArrayList<String> stopRepeat;
+
+    // ======= Day repeat =======
+    private String dayInterval;
+
+    // ======= Week repeat =======
+    private String weekInterval;
+    private Boolean[] isDaySelected;
+
+    // ======= Month repeat =======
+    private String monthInterval;
+    private String monthRepeatPattern;
+
+    // ======= Year repeat =======
+    private String yearInterval;
+    
     private ArrayList<String> updateRepeat;
 
     public Command(Type type) {
-	this.type = type;
+        this.type = type;
     }
 
     // ================================================================
@@ -49,75 +63,43 @@ public class Command {
     // ================================================================
 
     public String getTaskDescription() {
-	return taskDescription;
+        return taskDescription;
     }
 
     public Type getCommandType() {
-	return type;
+        return type;
     }
 
     public String getTaskDeadline() {
-	return taskDeadline;
+        return taskDeadline;
     }
 
     public String getTaskEventDate() {
-	return taskEventDate;
+        return taskEventDate;
     }
 
     public String getTaskEventTime() {
-	return taskEventTime;
+        return taskEventTime;
     }
 
     public ArrayList<String> getSearchKeyword() {
-	return searchKeyword;
+        return searchKeyword;
     }
 
     public int getTaskID() {
-	return taskID;
+        return taskID;
     }
 
     public String getTaskType() {
-	return taskType;
+        return taskType;
     }
 
     // ================================================================
     // Getters method to support recurring task
     // ================================================================
-    
+
     public ArrayList<String> getStopRepeat() {
-	return stopRepeat;
-    }
-    
-    public String getDateOfRepeatAdded() {
-	return dateOfRepeatAdded;
-    }
-
-    public String getTaskRepeatDuration() {
-	return taskRepeatDuration;
-    }
-
-    public String getTaskRepeatEndDate() {
-	return taskRepeatEndDate;
-    }
-
-    public String getTaskRepeatType() {
-	return taskRepeatType;
-    }
-
-    public void setTaskRepeatDayFrequency(String taskRepeatDayFrequency) {
-	this.taskRepeatDayFrequency = taskRepeatDayFrequency;
-    }
-
-    public String getTaskRepeatDayFrequency() {
-	return taskRepeatDayFrequency;
-    }
-
-    public String getTaskRepeatMonthFrequency() {
-	return taskRepeatMonthFrequency;
-    }
-
-    public String getTaskRepeatYearFrequency() {
-	return taskRepeatYearFrequency;
+        return stopRepeat;
     }
 
     // ================================================================
@@ -125,33 +107,33 @@ public class Command {
     // ================================================================
 
     public void setTaskDescription(String taskDescription) {
-	this.taskDescription = taskDescription;
+        this.taskDescription = taskDescription;
     }
 
     public void setTaskDeadline(String taskDeadline) {
-	this.taskDeadline = taskDeadline;
+        this.taskDeadline = taskDeadline;
     }
 
     public void setTaskEventDate(String taskEventDate) {
-	this.taskEventDate = taskEventDate;
+        this.taskEventDate = taskEventDate;
     }
 
     public void setTaskEventTime(String taskEventTime) {
-	this.taskEventTime = taskEventTime;
+        this.taskEventTime = taskEventTime;
     }
 
     public void setSearchKeyword(ArrayList<String> searchKeyword) {
-	this.searchKeyword = searchKeyword;
+        this.searchKeyword = searchKeyword;
     }
 
     public void setTaskID(int taskID) {
-	this.taskID = taskID;
+        this.taskID = taskID;
     }
 
     public void setTaskType(String taskType) {
-	this.taskType = taskType;
+        this.taskType = taskType;
     }
-    
+
     public String getFilePath() {
         return filePath;
     }
@@ -161,63 +143,15 @@ public class Command {
     // ================================================================
 
     public void setStopRepeat(ArrayList<String> cancelRepeatDateAndTime) {
-	this.stopRepeat = cancelRepeatDateAndTime;
-    }
-
-    public void setDateOfRepeatAdded(String strings) {
-	this.dateOfRepeatAdded = strings;
-    }
-
-    public void setTaskRepeatDuration(String taskRepeatDuration) {
-	this.taskRepeatDuration = taskRepeatDuration;
-    }
-
-    public void setTaskRepeatEndDate(String taskRepeatEndDate) {
-	this.taskRepeatEndDate = taskRepeatEndDate;
-    }
-
-    public void setTaskRepeatType(String taskRepeatType) {
-	this.taskRepeatType = taskRepeatType;
-    }
-
-    public void setTaskRepeatMonthFrequency(String taskRepeatMonthFrequency) {
-	this.taskRepeatMonthFrequency = taskRepeatMonthFrequency;
-    }
-
-    public void setTaskRepeatYearFrequency(String taskRepeatYearFrequency) {
-	this.taskRepeatYearFrequency = taskRepeatYearFrequency;
-    }
-
-    public String[] getTaskRepeatMonthFrequencyBySpecificDayOfWeek() {
-	return taskRepeatMonthFrequencyBySpecificDayOfWeek;
-    }
-
-    public void setTaskRepeatMonthFrequencyBySpecificDayOfWeek(String[] taskRepeatMonthFrequencyBySpecificDayOfWeek) {
-	this.taskRepeatMonthFrequencyBySpecificDayOfWeek = taskRepeatMonthFrequencyBySpecificDayOfWeek;
-    }
-
-    public Boolean[] isTaskRepeatOnDayOfWeek() {
-	return isTaskRepeatOnDayOfWeek;
-    }
-
-    public void setTaskRepeatOnDayOfWeek(Boolean[] taskRepeatWeekFrequencyByDay) {
-	this.isTaskRepeatOnDayOfWeek = taskRepeatWeekFrequencyByDay;
-    }
-
-    public String getTaskRepeatMonthFrequencyBySpecificDate() {
-	return taskRepeatMonthFrequencyBySpecificDate;
-    }
-
-    public void setTaskRepeatMonthFrequencyBySpecificDate(String taskRepeatMonthFrequencyBySpecificDate) {
-	this.taskRepeatMonthFrequencyBySpecificDate = taskRepeatMonthFrequencyBySpecificDate;
+        this.stopRepeat = cancelRepeatDateAndTime;
     }
 
     public ArrayList<String> getUpdateRepeat() {
-	return updateRepeat;
+        return updateRepeat;
     }
 
     public void setUpdateRepeat(ArrayList<String> updateRepeat) {
-	this.updateRepeat = updateRepeat;
+        this.updateRepeat = updateRepeat;
     }
 
     public void setFilePath(String filePath) {
@@ -238,6 +172,94 @@ public class Command {
 
     public void setTaskEventEnd(String taskEventEnd) {
         this.taskEventEnd = taskEventEnd;
+    }
+
+    public String getRepeatType() {
+        return repeatType;
+    }
+
+    public void setRepeatType(String repeatType) {
+        this.repeatType = repeatType;
+    }
+
+    public String getDayInterval() {
+        return dayInterval;
+    }
+
+    public void setDayInterval(String dayInterval) {
+        this.dayInterval = dayInterval;
+    }
+
+    public String getYearInterval() {
+        return yearInterval;
+    }
+
+    public void setYearInterval(String yearInterval) {
+        this.yearInterval = yearInterval;
+    }
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public String getRepeatStartTime() {
+        return repeatStartTime;
+    }
+
+    public void setRepeatStartTime(String repeatStartTime) {
+        this.repeatStartTime = repeatStartTime;
+    }
+
+    public String getRepeatEndTime() {
+        return repeatEndTime;
+    }
+
+    public void setRepeatEndTime(String repeatEndTime) {
+        this.repeatEndTime = repeatEndTime;
+    }
+
+    public Date getRepeatUntil() {
+        return repeatUntil;
+    }
+
+    public void setRepeatUntil(Date repeatUntil) {
+        this.repeatUntil = repeatUntil;
+    }
+
+    public String getWeekInterval() {
+        return weekInterval;
+    }
+
+    public void setWeekInterval(String weekInterval) {
+        this.weekInterval = weekInterval;
+    }
+
+    public Boolean[] getIsDaySelected() {
+        return isDaySelected;
+    }
+
+    public void setIsDaySelected(Boolean[] isDaySelected) {
+        this.isDaySelected = isDaySelected;
+    }
+
+    public String getMonthInterval() {
+        return monthInterval;
+    }
+
+    public void setMonthInterval(String monthInterval) {
+        this.monthInterval = monthInterval;
+    }
+
+    public String getMonthRepeatPattern() {
+        return monthRepeatPattern;
+    }
+
+    public void setMonthRepeatPattern(String monthRepeatPattern) {
+        this.monthRepeatPattern = monthRepeatPattern;
     }
 
 }

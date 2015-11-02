@@ -1,7 +1,10 @@
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -53,16 +56,30 @@ public class SmarTaskController implements Initializable {
         assert displayWindow != null : "fx:id=\"displayWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert taskWindow != null : "fx:id=\"taskWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
         assert inputWindow != null : "fx:id=\"inputWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
-        updateDisplay();
-        displayWindow.setText(MESSAGE_WELCOME);
         pastCommands = new Stack<String>();
         poppedCommands = new Stack<String>();
+        
+        try {
+			updateDisplay();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        displayWindow.setText(MESSAGE_WELCOME);
+        
+        displayWindow.textProperty().addListener(new ChangeListener<Object>() {
+        	@Override
+        	public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+        		displayWindow.selectPositionCaret(displayWindow.getLength());
+        		displayWindow.deselect();
+        	}
+        });
     }
     
     /**
 	 * Method updates the information display from Logic to the user so they can preview the information stored in SmarTask.
+     * @throws ParseException 
 	 */
-    public void updateDisplay() {
+    public void updateDisplay() throws ParseException {
     	logDisplay = Logic.getMessageLog();
         updateWindows(displayWindow, logDisplay);
         updateWindows(taskWindow);
@@ -73,7 +90,7 @@ public class SmarTaskController implements Initializable {
         display.setText(toDisplay);
     }
     
-    private void updateWindows(TextArea display) {
+    private void updateWindows(TextArea display) throws ParseException {
         display.clear();
         deadlineTasks = Logic.getDeadline();
         eventTasks = Logic.getEvents();
