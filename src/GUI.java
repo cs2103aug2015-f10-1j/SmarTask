@@ -1,7 +1,7 @@
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,50 +49,47 @@ public class GUI extends Application {
         final Button createFileButton = new Button("Create new file");
         final Button openFileButton = new Button("Open a file");
  
-        createFileButton.setOnAction(
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    File file = fileChooser.showOpenDialog(primaryStage);
-                    if (file != null) {
-                        createFile(file);
-                        try {
-							stage.setScene(createSmarTaskScene());
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-                    }
+        createFileButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(final ActionEvent e) {
+        		File file = fileChooser.showSaveDialog(primaryStage);
+        		if (file != null) {
+        			createFile(file);
+        			try {
+        				stage.setScene(createSmarTaskScene());
+        			} catch (IOException e1) {
+						e1.printStackTrace();
+					}
                 }
-            });
+           }
+        });
  
-        openFileButton.setOnAction(
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    File file = fileChooser.showOpenDialog(primaryStage);
-                    if (file != null) {
-                        openFile(file);
-                        try {
-							stage.setScene(createSmarTaskScene());
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						}
-                    }
+        openFileButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(final ActionEvent e) {
+        		File file = fileChooser.showOpenDialog(primaryStage);
+        		if (file != null) {
+        			openFile(file);
+        			try {
+        				stage.setScene(createSmarTaskScene());
+        			} catch (IOException e2) {
+        				e2.printStackTrace();
+        			}
                 }
-            });
- 
+            }
+        });
  
         final GridPane inputGridPane = new GridPane();
- 
         GridPane.setConstraints(createFileButton, 0, 0);
         GridPane.setConstraints(openFileButton, 1, 0);
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
         inputGridPane.getChildren().addAll(createFileButton, openFileButton);
- 
+
         final Pane rootGroup = new VBox(12);
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding(new Insets(12, 12, 12, 12));
+
         Scene scene = new Scene(rootGroup);
         return scene;
     }
@@ -104,7 +101,12 @@ public class GUI extends Application {
     }
     
     private void createFile(File file) {
-    	
+    	try {
+    		String command = "setFilePath " + file.getAbsolutePath();
+    		Logic.executeCommand(command);
+    	} catch (Exception e) {
+    		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
+    	}
     }
     
     private void openFile(File file) {
@@ -113,8 +115,7 @@ public class GUI extends Application {
         	Logic.executeCommand(command);
             desktop.open(file);
         } catch (Exception e) {
-            Logger.getLogger(
-                GUI.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }
