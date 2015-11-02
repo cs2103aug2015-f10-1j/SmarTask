@@ -121,18 +121,19 @@ public class Logic {
         for (int i = 0; i<taskStored.size(); i++){
             if(taskStored.get(i).getType().equals(Task.getTypeFromString(type)) && taskStored.get(i).getIsComplete()==false){
             	task = taskStored.get(i);
-            	if (type.equals(FLOATING_TASK)){
-                	list.add(taskStored.get(i).getFloatingString());
-                }else if (type.equals(EVENT_TASK)){
-                	list.add(taskStored.get(i).getEventString());
-                }else if (type.equals(DEADLINE_TASK)){
-                	list.add(taskStored.get(i).getDeadlineString());
-                }else if (type.equals(RECURRING_TASK)){
-                	if (compareDate(task)){
-                		list.add(taskStored.get(i).getRepeatString());
-                	}	
-                }
-             
+            	if (!isOverdue(task)){
+            		if (type.equals(FLOATING_TASK)){
+                    	list.add(taskStored.get(i).getFloatingString());
+                    }else if (type.equals(EVENT_TASK)){
+                    	list.add(taskStored.get(i).getEventString());
+                    }else if (type.equals(DEADLINE_TASK)){
+                    	list.add(taskStored.get(i).getDeadlineString());
+                    }else if (type.equals(RECURRING_TASK)){
+                    	if (compareDate(task)){
+                    		list.add(taskStored.get(i).getRepeatString());
+                    	}	
+                    }
+            	}
             }
         }
         return list;
@@ -142,7 +143,7 @@ public class Logic {
 		boolean isOver = false;
 		initDate();
 		if (task.getType().equals(Task.Type.FLOATING)){
-			isOver = true;
+			
 		} else if (task.getType().equals(Task.Type.EVENT)){
 			Date date = convertStringToDate(task.getEventEnd());
 			if (date.before(currentDate)){
@@ -153,6 +154,8 @@ public class Logic {
 			if (date.before(currentDate)){
 				isOver = true;
 			}
+			
+		} else if (task.getType().equals(Task.Type.REPEAT)){
 			
 		}
 		return isOver;
@@ -173,6 +176,11 @@ public class Logic {
 			   }
 			}
 		} else if (task.getTaskRepeatType().equals(WEEK_REC)){
+			if(task.getTaskRepeatUntil().after(currentDate)){
+				if (getWeeksBetween(task.getDateAdded(),currentDate)%Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0){
+					isToday = true;
+				}
+			}
 			
 		} else if (task.getTaskRepeatType().equals(MONTH_REC)){
 			
@@ -185,6 +193,36 @@ public class Logic {
 		}
 		return isToday;
 	}
+	
+	// get the week difference between two dates
+	private static int getWeeksBetween(Date a, Date b){
+		 if (b.before(a)) {
+		        return -getWeeksBetween(b, a);
+		    }
+		    a = resetTime(a);
+		    b = resetTime(b);
+
+		    Calendar cal = new GregorianCalendar();
+		    cal.setTime(a);
+		    int weeks = 0;
+		    while (cal.getTime().before(b)) {
+		        // add another week
+		        cal.add(Calendar.WEEK_OF_YEAR, 1);
+		        weeks++;
+		    }
+		    return weeks;
+		}
+
+	private static Date resetTime (Date d) {
+		   Calendar cal = new GregorianCalendar();
+		   cal.setTime(d);
+		   cal.set(Calendar.HOUR_OF_DAY, 0);
+		   cal.set(Calendar.MINUTE, 0);
+		   cal.set(Calendar.SECOND, 0);
+		   cal.set(Calendar.MILLISECOND, 0);
+		   return cal.getTime();
+	}
+	
 	
 	// get the year difference between two dates
 	private static int getYearBetweenDates(Date d1, Date d2){
@@ -387,26 +425,40 @@ public class Logic {
     			msgLogger.add("Collision Task!");
     		}
     	} 
-   /* 	else if (com.getTaskRepeatType().equals(WEEK_REC)){
-    		detailTask.add(taskType +"#"+com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
-    		detailStored.add(com.getTaskRepeatDuration()+"#"+ com.getTaskDescription() + "#" + taskCode);
+    	else if (taskType.equals(WEEK_REC)){
+    		detailTask.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
+    	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getIsDaySelected()
+    	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
+    		detailStored.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
+	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getIsDaySelected()
+	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
     		task = new Task (type, detailStored);
-    		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));;
-    	} else if (com.getTaskRepeatType().equals(MONTH_REC)){
-    		if (com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()!=null){
-    			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
-        		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDayOfWeek()[1]+"#" + com.getTaskDescription() + "#" + taskCode);
-        		task = new Task (type, detailStored);
-        		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
+    		if (!isCollision(task)){
+    			repeatedTask.add(detailStored.get(0));
+    			taskStored.add(task);
+    			storage.saveToFile(taskStored);
+    	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     		} else {
-    			detailTask.add(taskType +"#" +com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
-        		detailStored.add(com.getTaskRepeatMonthFrequencyBySpecificDate()+"#" + com.getTaskDescription() + "#" + taskCode);
-        		task = new Task (type, detailStored);
-        		if (!isCollision(task)) repeatedTask.add(detailStored.get(0));
+    			msgLogger.add("Collision Task!");
     		}
-    		
+    			
     	}
-    	*/
+    	else if (taskType.equals(MONTH_REC)){
+    		detailTask.add(taskType +"#" +com.getDateAdded()+"#" + com.getRepeatStartTime() +"#"+com.getRepeatEndTime()+"#"+
+    	                   com.getMonthInterval()+"#"+com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
+    		detailTask.add(taskType +"#" +com.getDateAdded()+"#" + com.getRepeatStartTime() +"#"+com.getRepeatEndTime()+"#"+
+	                   com.getMonthInterval()+"#"+com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
+    		task = new Task (type, detailStored);
+    		if (!isCollision(task)){
+    			repeatedTask.add(detailStored.get(0));
+    			taskStored.add(task);
+    			storage.saveToFile(taskStored);
+    	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
+    		} else {
+    			msgLogger.add("Collision Task!");
+    		}
+    	}
+    	
     	 else if (taskType.equals(YEAR_REC)){
     		 detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
      		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
