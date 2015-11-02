@@ -55,7 +55,7 @@ public class GUI extends Application {
                 public void handle(final ActionEvent e) {
                     File file = fileChooser.showOpenDialog(primaryStage);
                     if (file != null) {
-                        openFile(file);
+                        createFile(file);
                         try {
 							stage.setScene(createSmarTaskScene());
 						} catch (IOException e1) {
@@ -103,9 +103,14 @@ public class GUI extends Application {
     	return scene;
     }
     
+    private void createFile(File file) {
+    	
+    }
+    
     private void openFile(File file) {
         try {
-        	String fileName = file.getAbsolutePath();
+        	String command = "setFilePath " + file.getAbsolutePath();
+        	Logic.executeCommand(command);
             desktop.open(file);
         } catch (Exception e) {
             Logger.getLogger(
