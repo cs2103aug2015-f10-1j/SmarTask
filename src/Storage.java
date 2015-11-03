@@ -21,9 +21,12 @@ import com.google.gson.JsonSyntaxException;
 public class Storage {
 	private static final String DEFAULT_FILENAME = "storage.txt";
 
+	private static final String DEFAULT_PATHFILENAME = "filepath.txt";
+
 	private static Storage taskOrganiser;
 
 	private File taskFile;
+	private File pathFile;
 	private BufferedReader reader;
 	private PrintWriter writer;
 	private String savePath = "";
@@ -34,9 +37,11 @@ public class Storage {
 	   
    }
 
-	public Storage(String inputPath) {
+	public Storage() {
 		gson = new Gson();
-		savePath = inputPath;
+		pathFile = new File(DEFAULT_PATHFILENAME);
+		createIfNotExists(pathFile);
+		retrieveSavePath();
 		taskFile = new File(savePath + DEFAULT_FILENAME);
 		createIfNotExists(taskFile);
 	}
@@ -44,10 +49,11 @@ public class Storage {
 	/*public void setFilePath(String path){
 		
 	}*/
-	
+
+
 	public Storage getInstance() {
 		if (taskOrganiser == null) {
-			taskOrganiser = new Storage(savePath);
+			taskOrganiser = new Storage();
 		}
 		return taskOrganiser;
 	}
@@ -62,8 +68,22 @@ public class Storage {
 		}
 	}
 	
+	
+	
 //-------------------------------------------------------------------------------------------
 
+	
+	private void retrieveSavePath() {
+		String path = "";
+		try {
+			initReader(pathFile);
+			path = reader.readLine();
+			savePath = savePath + path;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<Task> retrieveFile() {
 		String text = "";
 		ArrayList<Task> taskList = new ArrayList<Task>();
@@ -100,21 +120,38 @@ public class Storage {
 	}
 	
 	public void setSavePath(String inputPath) {
-		savePath = savePath + inputPath + File.separator;
-		File desFile = new File(savePath + DEFAULT_FILENAME);
-		System.out.println(savePath);
-		
 		try {
+			File tempFile = new File(pathFile.getAbsolutePath());
+		    PrintWriter pw = new PrintWriter(tempFile);
+		    pw.print("");
+		    pw.close();
+		    pathFile.delete();
+		    tempFile.renameTo(pathFile);
+		    FileWriter fileW = new FileWriter(pathFile);
+		    BufferedWriter buffW = new BufferedWriter(fileW);
+			buffW.write(inputPath);
+			buffW.newLine();
+		    buffW.close();
 			
-			if(taskFile.renameTo(desFile)){
-			//System.out.println(inputPath + File.separator + DEFAULT_FILENAME);
-    		System.out.println("Moved successful!");
-            }else{
-    		System.out.println("Failed to move!");
-            }
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
+			savePath = inputPath;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		/*if(taskFile.exists()) {
+			System.out.println(savePath);
+			try {
+				
+				if(taskFile.renameTo(new File(savePath + inputPath + File.separator + DEFAULT_FILENAME))){
+				//System.out.println(inputPath + File.separator + DEFAULT_FILENAME);
+	    		System.out.println("Moved successful!");
+	            }else{
+	    		System.out.println("Failed to move!");
+	            }
+	        } catch (Exception e) {
+	        	e.printStackTrace();
+	        }
+		}*/
 
 	}
 	
