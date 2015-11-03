@@ -183,6 +183,9 @@ public class Logic {
 			}
 			
 		} else if (task.getTaskRepeatType().equals(MONTH_REC)){
+			if(task.getTaskRepeatUntil().after(currentDate)){
+			
+			}
 			
 		} else if (task.getTaskRepeatType().equals(YEAR_REC)){
 			if (task.getTaskRepeatUntil().after(currentDate)){
