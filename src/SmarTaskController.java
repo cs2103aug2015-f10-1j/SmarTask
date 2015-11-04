@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * SmarTask Controller acts as a initializer and gives the action properties to the fxml file.
@@ -34,6 +35,7 @@ public class SmarTaskController implements Initializable {
     private static final String TASK_RECURRING = "Recurring Tasks:";
     private static final String COMMAND_UNDO = "undo";
     private static final String COMMAND_REDO = "redo";
+    private static final String COMMAND_EXIT = "exit";
     private final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
     private final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
     private static String logDisplay;
@@ -164,6 +166,12 @@ public class SmarTaskController implements Initializable {
     	}
     	pastCommands.push(userCommand);
         inputWindow.clear();
+        
+        if(userCommand.toLowerCase().equals(COMMAND_EXIT)) {
+        	Stage stage = (Stage) inputWindow.getScene().getWindow();
+        	stage.close();
+        }
+        
         try {
             Logic.executeCommand(userCommand);
             updateDisplay();
