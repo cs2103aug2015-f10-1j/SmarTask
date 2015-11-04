@@ -872,7 +872,7 @@ public class Logic {
 
     }
  // ================================================================
-    // "help" command methods
+    // "help" command methods  --> need to complete
     // ================================================================
     
     private void help(){
@@ -892,7 +892,7 @@ public class Logic {
     	int taskID = command.getTaskID();
     	for (int i=0; i<taskStored.size(); i++){
     		if (taskStored.get(i).getID() == taskID){
-    			
+    			taskStored.get(i).set
     		}
     	}
     	
