@@ -160,6 +160,10 @@ public class CommandParser {
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
 	assert parameters !=null;
 	ArrayList<String> list = new ArrayList<>();
+	if(parameters.size() == 1) {
+	    return list ;
+	}
+	
 	list.add(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
 	return list;
     }
