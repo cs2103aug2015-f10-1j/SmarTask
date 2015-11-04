@@ -34,16 +34,16 @@ public class GUI extends Application {
     }
     
     public void start(Stage primaryStage) {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-			Scene scene = new Scene(root, 700, 800);
-			primaryStage.setTitle("SmarTask");
+	try {
+		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+		Scene scene = new Scene(root, 700, 800);
+		primaryStage.setTitle("SmarTask");
 	    	primaryStage.setScene(scene);
 	        primaryStage.show();
-		} catch (IOException e) {
-			System.err.println("Error! SmarTaskUI.fxml cannot be found!");
-		}
-		//stage = primaryStage;
+	} catch (IOException e) {
+		System.err.println("Error! SmarTaskUI.fxml cannot be found!");
+        }
+	//stage = primaryStage;
     	//Scene scene = chooseFileScene(primaryStage);
     	//primaryStage.setTitle("SmarTask");
     	//primaryStage.setScene(scene);
