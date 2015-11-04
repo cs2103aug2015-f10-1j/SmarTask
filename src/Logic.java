@@ -57,66 +57,71 @@ public class Logic {
     
     
     
-    private  int taskCode ;
+    private static  int taskCode ;
     private  static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
     private static  Date currentDate;
     private  static String currentTime;
     private static  Date currentDay;
 
     public static void executeCommand (String userInput) throws Exception {
-    	Logic logic = new Logic ();
-        if(userInput.trim().isEmpty()) {
-            msgLogger.add("Please enter a command.");
-        }
-        else {
-            try {
-                msgLogger.add("command : " + userInput);
-                Command command = CommandParser.parse(userInput);
 
-                switch (command.getCommandType()){
-                    case ADD : 
-                        logic.addTask(command);
-                        break;
-                    case REPEAT : 
-                        logic.addRepeatTask(command);
-                        break;
-                    case DELETE :
-                        logic.deleteTask(command);
-                        break;
-                    case UPDATE :
-                        logic.updateTask(command);
-                        break;
-                    case SEARCH:
-                        logic.searchTask(command);
-                        break;
-                    case COMPLETE :
-                        logic.completeTask(command);
-                        break;
-                    case UNDO :
-                        logic.undoCommand();
-                        break;
-                    case REDO :
-                        logic.redoCommand();
-                        break;
-                    case STOP_REPEAT :
-                    	logic.stopRec(command);
-                    case EXIT :
-                  //      System.exit(-1);
-                        break;
-                    case SETFILEPATH :
-                    	storage.setSavePath(command.getFilePath());
-                    	break;
-                  //  case HELP :
-                  //  	logic.help();
-                  //  	break;
-                    default :
-                        msgLogger.add(MESSAGE_INVALID_COMMAND);
-                }
-            } catch (Exception e) {
-                msgLogger.add(e.getMessage());
-            }
+    	if(userInput.trim().isEmpty()) {
+    	    msgLogger.add("Please enter a command.");
+    	}
+    	else {
+    	    try {
+    		msgLogger.add("command : " + userInput);
+    		Command command = CommandParser.parse(userInput);
+    		msgLogger.add(command.getCommandType().toString());
+    		
+    		switch (command.getCommandType()){
+    		case ADD : 
+    		    addTask(command);
+    		    break;
+    		case REPEAT : 
+    		    addRepeatTask(command);
+    		    break;
+    		case DELETE :
+    		    deleteTask(command);
+    		    break;
+    		case UPDATE :
+    		    updateTask(command);
+    		    break;
+    		case SEARCH:
+    		    searchTask(command);
+    		    break;
+    		case COMPLETE :
+    		    completeTask(command);
+    		    break;
+    		case UNDO :
+    		    undoCommand();
+    		    break;
+    		case REDO :
+    		    redoCommand();
+    		    break;
+    		case STOP_REPEAT :
+    		    stopRec(command);
+    		    break;
+    		case EXIT :
+    		    //      System.exit(-1);
+    		    break;
+    		case SETFILEPATH :
+    		    storage.setSavePath(command.getFilePath());
+    		    break;
+    		    //  case HELP :
+    			//  	logic.help();
+    			//  	break;
+    		case INVALID :
+    		    msgLogger.add(MESSAGE_INVALID_COMMAND);
+    		    break;
+    		
+    		}
+    	    } catch (Exception e) {
+    		msgLogger.add(e.getMessage());
+    	    }
+    	}
         }
-    }
+
 
 	private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) throws ParseException {
         ArrayList<String> list = new ArrayList <String>();
@@ -324,7 +329,7 @@ public class Logic {
 	    return daysDiff;
 	}
    // get the unique task code
-    private int getID(){
+    private static int getID(){
     	DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
     	Calendar cal = Calendar.getInstance();
     	String s = dateFormat.format(cal.getTime());
@@ -352,7 +357,7 @@ public class Logic {
     // ================================================================
 
 
-	private void addTask(Command command) throws Exception{
+	private static void addTask(Command command) throws Exception{
         try{
         	
             String taskType = command.getTaskType();
@@ -494,7 +499,7 @@ public class Logic {
     // "Repeat task" command methods
     // ================================================================
 
-	private void addRepeatTask(Command com) throws Exception{  
+	private static void addRepeatTask(Command com) throws Exception{  
     	ArrayList <String> detailStored = new ArrayList <String> ();
     //	ArrayList <String> detailTask = new ArrayList <String> ();
     	taskCode = getID();
@@ -514,6 +519,7 @@ public class Logic {
     			taskStored.add(task);
     			msgLogger.add("here1");
     			storage.saveToFile(taskStored);
+    			history.addChangeToHistory(new ArrayList<Task>(taskStored)); 
     	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     		} else {
     			msgLogger.add("Collision Task!");
@@ -531,6 +537,7 @@ public class Logic {
     			repeatedTask.add(detailStored.get(0));
     			taskStored.add(task);
     			storage.saveToFile(taskStored);
+    			history.addChangeToHistory(new ArrayList<Task>(taskStored)); 
     	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     		} else {
     			msgLogger.add("Collision Task!");
@@ -547,6 +554,7 @@ public class Logic {
     			repeatedTask.add(detailStored.get(0));
     			taskStored.add(task);
     			storage.saveToFile(taskStored);
+    			history.addChangeToHistory(new ArrayList<Task>(taskStored)); 
     	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     		} else {
     			msgLogger.add("Collision Task!");
@@ -562,6 +570,7 @@ public class Logic {
      			repeatedTask.add(detailStored.get(0));
      			taskStored.add(task);
      			storage.saveToFile(taskStored);
+     			history.addChangeToHistory(new ArrayList<Task>(taskStored)); 
     	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
      		} else {
      			msgLogger.add("Collision Task!");
@@ -598,7 +607,7 @@ public class Logic {
     // "search" command methods
     // ================================================================
 
-    private void searchTask(Command command) throws FileNotFoundException{
+    private static void searchTask(Command command) throws FileNotFoundException{
         ArrayList<String> keyWordList = command.getSearchKeyword();
         String keyword = "";
         taskStored.clear();
@@ -637,7 +646,7 @@ public class Logic {
     // "Delete" command methods
     // ================================================================
 
-    private void deleteTask(Command command){
+    private static void deleteTask(Command command){
         String taskType = command.getTaskType();
         try{
         	int indexToRemove = command.getTaskID()-1;
@@ -708,7 +717,7 @@ public class Logic {
     // "Complete" command method
     // ================================================================
 
-    private void completeTask(Command command) {
+    private static void completeTask(Command command) {
         String taskType = command.getTaskType();
         try{
             int indexToComplete = command.getTaskID()-1;
@@ -764,7 +773,7 @@ public class Logic {
     // "Update" command methods
     // ================================================================
 
-    private void updateTask(Command command) throws FileNotFoundException{
+    private static void updateTask(Command command) throws FileNotFoundException{
         String taskType = command.getTaskType();
         String updatedItem = "";
         String existingItem = "";
@@ -901,7 +910,7 @@ public class Logic {
  // ================================================================
     // stop recurring task command method
     // ================================================================
-    private void stopRec(Command command) throws ParseException{
+    private static void stopRec(Command command) throws ParseException{
     	
     	int taskID = command.getTaskID();
     	for (int i=0; i<taskStored.size(); i++){
@@ -922,7 +931,7 @@ public class Logic {
     // ================================================================
     // redo command method
     // ================================================================
-    private void redoCommand() throws FileNotFoundException {
+    private static void redoCommand() throws FileNotFoundException {
         String message = "";
         try {
             message = "redo successfully";
@@ -940,7 +949,7 @@ public class Logic {
     // ================================================================
     // undo command method
     // ================================================================
-    private void undoCommand() throws FileNotFoundException {
+    private static void undoCommand() throws FileNotFoundException {
         String message = "";
         try {
             message = "undo successfully";
