@@ -586,7 +586,7 @@ public class CommandParser {
 	}
 	return isSelected;
     }
-
+    
     private static int getDayIndex(String day) throws Exception {
 	if(day.toLowerCase().equals("mon")) {
 	    return 2;
