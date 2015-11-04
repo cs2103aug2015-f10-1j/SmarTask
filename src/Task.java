@@ -350,7 +350,7 @@ public class Task {
         Arrays.fill(isDaySelected, false);
 
         String[] days = list.split(" ");
-
+        this.isDaySelected[0] = null;
         for(int i=0; i< days.length; i++) {
             this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
         }
