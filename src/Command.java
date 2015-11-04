@@ -10,8 +10,8 @@ import java.util.*;
 
 public class Command {
     public enum Type {
-        ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
-        UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
+	ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH,
+	UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
     }
 
     private int taskID;
@@ -37,7 +37,7 @@ public class Command {
     private String repeatEndTime;
     private ArrayList<Date> stopRepeat;
     private String stopRepeatInString;
-    
+
     // ======= Day repeat =======
     private String dayInterval;
 
@@ -51,9 +51,9 @@ public class Command {
 
     // ======= Year repeat =======
     private String yearInterval;
-    
+
     public Command(Type type) {
-        this.type = type;
+	this.type = type;
     }
 
     // ================================================================
@@ -61,35 +61,35 @@ public class Command {
     // ================================================================
 
     public String getTaskDescription() {
-        return taskDescription;
+	return taskDescription;
     }
 
     public Type getCommandType() {
-        return type;
+	return type;
     }
 
     public String getTaskDeadline() {
-        return taskDeadline;
+	return taskDeadline;
     }
 
     public String getTaskEventDate() {
-        return taskEventDate;
+	return taskEventDate;
     }
 
     public String getTaskEventTime() {
-        return taskEventTime;
+	return taskEventTime;
     }
 
     public ArrayList<String> getSearchKeyword() {
-        return searchKeyword;
+	return searchKeyword;
     }
 
     public int getTaskID() {
-        return taskID;
+	return taskID;
     }
 
     public String getTaskType() {
-        return taskType;
+	return taskType;
     }
 
     // ================================================================
@@ -97,143 +97,143 @@ public class Command {
     // ================================================================
 
     public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
+	this.taskDescription = taskDescription;
     }
 
     public void setTaskDeadline(String taskDeadline) {
-        this.taskDeadline = taskDeadline;
+	this.taskDeadline = taskDeadline;
     }
 
     public void setTaskEventDate(String taskEventDate) {
-        this.taskEventDate = taskEventDate;
+	this.taskEventDate = taskEventDate;
     }
 
     public void setTaskEventTime(String taskEventTime) {
-        this.taskEventTime = taskEventTime;
+	this.taskEventTime = taskEventTime;
     }
 
     public void setSearchKeyword(ArrayList<String> searchKeyword) {
-        this.searchKeyword = searchKeyword;
+	this.searchKeyword = searchKeyword;
     }
 
     public void setTaskID(int taskID) {
-        this.taskID = taskID;
+	this.taskID = taskID;
     }
 
     public void setTaskType(String taskType) {
-        this.taskType = taskType;
+	this.taskType = taskType;
     }
 
     public String getFilePath() {
-        return filePath;
+	return filePath;
     }
-    
+
     public void setFilePath(String filePath) {
-        this.filePath = filePath;
+	this.filePath = filePath;
     }
 
     public String getTaskEventStart() {
-        return taskEventStart;
+	return taskEventStart;
     }
 
     public void setTaskEventStart(String taskEventStart) {
-        this.taskEventStart = taskEventStart;
+	this.taskEventStart = taskEventStart;
     }
 
     public String getTaskEventEnd() {
-        return taskEventEnd;
+	return taskEventEnd;
     }
 
     public void setTaskEventEnd(String taskEventEnd) {
-        this.taskEventEnd = taskEventEnd;
+	this.taskEventEnd = taskEventEnd;
     }
 
     public String getRepeatType() {
-        return repeatType;
+	return repeatType;
     }
 
     public void setRepeatType(String repeatType) {
-        this.repeatType = repeatType;
+	this.repeatType = repeatType;
     }
 
     public String getDayInterval() {
-        return dayInterval;
+	return dayInterval;
     }
 
     public void setDayInterval(String dayInterval) {
-        this.dayInterval = dayInterval;
+	this.dayInterval = dayInterval;
     }
 
     public String getYearInterval() {
-        return yearInterval;
+	return yearInterval;
     }
 
     public void setYearInterval(String yearInterval) {
-        this.yearInterval = yearInterval;
+	this.yearInterval = yearInterval;
     }
 
     public Date getDateAdded() {
-        return dateAdded;
+	return dateAdded;
     }
 
     public void setDateAdded(Date dateAdded) {
-        this.dateAdded = dateAdded;
+	this.dateAdded = dateAdded;
     }
 
     public String getRepeatStartTime() {
-        return repeatStartTime;
+	return repeatStartTime;
     }
 
     public void setRepeatStartTime(String repeatStartTime) {
-        this.repeatStartTime = repeatStartTime;
+	this.repeatStartTime = repeatStartTime;
     }
 
     public String getRepeatEndTime() {
-        return repeatEndTime;
+	return repeatEndTime;
     }
 
     public void setRepeatEndTime(String repeatEndTime) {
-        this.repeatEndTime = repeatEndTime;
+	this.repeatEndTime = repeatEndTime;
     }
 
     public Date getRepeatUntil() {
-        return repeatUntil;
+	return repeatUntil;
     }
 
     public void setRepeatUntil(Date repeatUntil) {
-        this.repeatUntil = repeatUntil;
+	this.repeatUntil = repeatUntil;
     }
 
     public String getWeekInterval() {
-        return weekInterval;
+	return weekInterval;
     }
 
     public void setWeekInterval(String weekInterval) {
-        this.weekInterval = weekInterval;
+	this.weekInterval = weekInterval;
     }
 
     public Boolean[] getIsDaySelected() {
-        return isDaySelected;
+	return isDaySelected;
     }
 
     public void setIsDaySelected(Boolean[] isDaySelected) {
-        this.isDaySelected = isDaySelected;
+	this.isDaySelected = isDaySelected;
     }
 
     public String getMonthInterval() {
-        return monthInterval;
+	return monthInterval;
     }
 
     public void setMonthInterval(String monthInterval) {
-        this.monthInterval = monthInterval;
+	this.monthInterval = monthInterval;
     }
 
     public ArrayList<Date> getStopRepeat() {
-        return stopRepeat;
+	return stopRepeat;
     }
 
     public void setStopRepeat(ArrayList<Date> stopRepeat) {
-        this.stopRepeat = stopRepeat;
+	this.stopRepeat = stopRepeat;
     }
 
     public String getGetDaySelectedString() {
@@ -243,14 +243,17 @@ public class Command {
     public void setGetDaySelectedString() {
 	String index = "";
 	for(int i =0; i < this.isDaySelected.length; i++) {
-	    if(i != this.isDaySelected.length -1) {
-		if(isDaySelected[i] == true) {
-			index +=  i;
-		    }
+	    if(isDaySelected[i] == true) {
+		if(i != this.isDaySelected.length -1) {
+		    index +=  i;
+		}
+		else {
+		    index +=  i + " ";
+		}
+
 	    }
-	    else {
-		index +=  i + " ";
-	    }
+
+
 	}
 	this.getDaySelectedString = index;
     }
@@ -268,7 +271,7 @@ public class Command {
 	    else {
 		dates += stopRepeat.get(i).toString();
 	    }
-	    
+
 	}
 	this.stopRepeatInString = dates;
     }
