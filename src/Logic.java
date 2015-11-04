@@ -534,7 +534,7 @@ public class Logic {
     	//                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
         //               + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode +"#"+ com.getStopRepeatInString());
     		detailStored.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
-	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
+	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getDaySelectedString()
 	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode+"#" + com.getStopRepeatInString());
     		task = new Task (type, detailStored);
     		if (!isCollision(task)){
