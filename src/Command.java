@@ -44,6 +44,7 @@ public class Command {
     // ======= Week repeat =======
     private String weekInterval;
     private Boolean[] isDaySelected;
+    private String getDaySelectedString;
 
     // ======= Month repeat =======
     private String monthInterval;
@@ -252,6 +253,20 @@ public class Command {
 
     public void setStopRepeat(ArrayList<Date> stopRepeat) {
         this.stopRepeat = stopRepeat;
+    }
+
+    public String getGetDaySelectedString() {
+	return getDaySelectedString;
+    }
+
+    public void setGetDaySelectedString() {
+	String index = "";
+	for(int i =0; i < this.isDaySelected.length; i++) {
+	    if(isDaySelected[i] == true) {
+		index += " " + i;
+	    }
+	}
+	this.getDaySelectedString = index;
     }
 
 }

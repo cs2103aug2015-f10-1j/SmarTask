@@ -41,6 +41,7 @@ public class Task {
     // For week repeat
     private String taskRepeatInterval_Week;
     private Boolean[] isDaySelected;
+    private String getDaySelectedString;
 
     // For month repeat
     private String taskRepeatInterval_Month;
@@ -79,19 +80,19 @@ public class Task {
     }
 
     public String getFloatingString (){
-        return "floating"+ "#" + this.description;
+        return this.description +"#" + this.id;
     }
 
     public String getEventString (){
-        return "event"+ "#" + this.eventStart + "#" + this.eventEnd + "#" +this.description;
+        return this.eventStart + "#" + this.eventEnd + "#" +this.description+"#" + this.id;
     }
 
     public String getDeadlineString (){
-        return "deadline"+ "#" + this.deadline + "#" + this.description;      
+        return this.deadline + "#" + this.description+"#" + this.id;      
     }
 
     public String getRepeatString (){
-        return "repeat"+ "#" + this.getDateAdded() + "#" + this.description;    
+        return this.getDateAdded() + "#" + this.description+"#" + this.id;    
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
@@ -342,12 +343,26 @@ public class Task {
         isDaySelected = new Boolean[7];
         Arrays.fill(isDaySelected, false);
 
-        String[] days = list.split(",");
+        String[] days = list.split(" ");
 
         for(int i=0; i< days.length; i++) {
             this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
         }
 
+    }
+
+    public String getGetDaySelectedString() {
+	return getDaySelectedString;
+    }
+
+    public void setGetDaySelectedString() {
+	String index = "";
+	for(int i =0; i < this.isDaySelected.length; i++) {
+	    if(isDaySelected[i] == true) {
+		index += " " + i;
+	    }
+	}
+	this.getDaySelectedString = index;
     }
 
 }

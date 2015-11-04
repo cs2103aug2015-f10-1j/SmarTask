@@ -24,18 +24,18 @@ import javafx.scene.input.KeyEvent;
 
 public class SmarTaskController implements Initializable {
 
-	@FXML private TextArea displayWindow;	//Value injected by FXMLoader
+    @FXML private TextArea displayWindow;	//Value injected by FXMLoader
     @FXML private TextArea taskWindow;    //Value injected by FXMLoader
     @FXML private TextField inputWindow;   //Value injected by FXMLoader
-	private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
-	private static final String TASK_DEADLINE = "Deadline Tasks:";
-	private static final String TASK_EVENTS = "Event Tasks:";
-	private static final String TASK_FLOATING = "Floating Tasks:";
-	private static final String TASK_RECURRING = "Recurring Tasks:";
-	private static final String COMMAND_UNDO = "undo";
-	private static final String COMMAND_REDO = "redo";
-	private final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-	private final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+    private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
+    private static final String TASK_DEADLINE = "Deadline Tasks:";
+    private static final String TASK_EVENTS = "Event Tasks:";
+    private static final String TASK_FLOATING = "Floating Tasks:";
+    private static final String TASK_RECURRING = "Recurring Tasks:";
+    private static final String COMMAND_UNDO = "undo";
+    private static final String COMMAND_REDO = "redo";
+    private final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+    private final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
     private static String logDisplay;
     private static String deadlineTasks;
     private static String eventTasks;
@@ -44,13 +44,13 @@ public class SmarTaskController implements Initializable {
     private static Stack<String> pastCommands;
     private static Stack<String> poppedCommands;
 	
-	/**
-	 * Checks if the variables referenced from the fxml file have been properly referenced
-	 * If not, method will return a error message
-	 * 
-	 * @param fxmlFileLocation	the file location of the fxml file in the system
-	 * @param resources the resources associated with the fxml file
-	 */
+    /**
+     * Checks if the variables referenced from the fxml file have been properly referenced
+     * If not, method will return a error message
+     * 
+     * @param fxmlFileLocation	the file location of the fxml file in the system
+     * @param resources the resources associated with the fxml file
+     */
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         assert displayWindow != null : "fx:id=\"displayWindow\" was not injected: check your FXML file 'SmarTaskUI.fxml'.";
@@ -60,10 +60,10 @@ public class SmarTaskController implements Initializable {
         poppedCommands = new Stack<String>();
         
         try {
-			updateDisplay();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+             updateDisplay();
+        } catch (ParseException e) {
+        	e.printStackTrace();
+	}
         displayWindow.setText(MESSAGE_WELCOME);
         
         displayWindow.textProperty().addListener(new ChangeListener<Object>() {
@@ -76,9 +76,9 @@ public class SmarTaskController implements Initializable {
     }
     
     /**
-	 * Method updates the information display from Logic to the user so they can preview the information stored in SmarTask.
+     * Method updates the information display from Logic to the user so they can preview the information stored in SmarTask.
      * @throws ParseException 
-	 */
+     */
     public void updateDisplay() throws ParseException {
     	logDisplay = Logic.getMessageLog();
         updateWindows(displayWindow, logDisplay);
@@ -118,10 +118,10 @@ public class SmarTaskController implements Initializable {
     }
 
     /**
-	 * Checks the keys pressed by the user and activates certain events according to which keys have been pressed.
-	 * 
-	 * @param ke the key pressed by the user as recorded by the system
-	 */
+     * Checks the keys pressed by the user and activates certain events according to which keys have been pressed.
+     * 
+     * @param ke the key pressed by the user as recorded by the system
+     */
     @FXML
     public void keyboardLog(KeyEvent ke) {
         if(ke.getCode() == KeyCode.ENTER) {
@@ -138,10 +138,10 @@ public class SmarTaskController implements Initializable {
     }
     
     /**
-	 * Checks the keys pressed by the user and activates certain events according to which keys have been pressed.
-	 * 
-	 * @param ke the key pressed by the user as recorded by the system
-	 */
+     * Checks the keys pressed by the user and activates certain events according to which keys have been pressed.
+     * 
+     * @param ke the key pressed by the user as recorded by the system
+     */
     @FXML
     public void specialKeyboardLog(KeyEvent ke) {
         if(ke.getCode() == KeyCode.UP) {
