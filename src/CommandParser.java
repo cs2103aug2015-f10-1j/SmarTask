@@ -245,7 +245,7 @@ public class CommandParser {
                 command.setTaskType(REPEAT);
             } 
             else {
-                throw new Exception(MSG_NULL_POINTER);
+               // throw new Exception(MSG_NULL_POINTER);
             }
 
             command.setTaskID(extractTaskIdParam(arguments));
