@@ -28,38 +28,51 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 
 	private Stage stage;
+	private String defaultFileLocation = System.getProperty("user.home") + "/Desktop";
+	private String currentFileLocation;
 	
     public static void main(String[] args) {
     	launch(args);
     }
     
     public void start(Stage primaryStage) {
-	try {
-		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-		Scene scene = new Scene(root, 700, 800);
-		primaryStage.setTitle("SmarTask");
-	    	primaryStage.setScene(scene);
-	        primaryStage.show();
-	} catch (IOException e) {
-		System.err.println("Error! SmarTaskUI.fxml cannot be found!");
-        }
-	//stage = primaryStage;
-    	//Scene scene = chooseFileScene(primaryStage);
-    	//primaryStage.setTitle("SmarTask");
-    	//primaryStage.setScene(scene);
-        //primaryStage.show();
+    	if(checkFileExists(currentFileLocation)) {
+    		try {
+        		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+        		Scene scene = new Scene(root, 700, 800);
+        		primaryStage.setTitle("SmarTask");
+    	    	primaryStage.setScene(scene);
+    	        primaryStage.show();
+    	    } catch (IOException e) {
+    	    	System.err.println("Error! SmarTaskUI.fxml cannot be found!");
+    	    }
+    	} else {
+    		stage = primaryStage;
+        	Scene scene = chooseFileScene(primaryStage);
+        	primaryStage.setTitle("SmarTask");
+        	primaryStage.setScene(scene);
+            primaryStage.show();
+    	}
+    }
+    
+    private static boolean checkFileExists(String fileName) {
+    	if(fileName != null) {
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
     
     private Scene chooseFileScene(Stage primaryStage) {
         final FileChooser fileChooser = new FileChooser();
         final Button createFileButton = new Button("Create new file");
-        final Button openFileButton = new Button("Open a file");
         final Button defaultFileButton = new Button("Default file location");
  
         createFileButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
         	public void handle(final ActionEvent e) {
         		File file = fileChooser.showSaveDialog(primaryStage);
+        		currentFileLocation = file.getAbsolutePath();
         		if (file != null) {
         			createFile(file);
         			try {
@@ -70,40 +83,27 @@ public class GUI extends Application {
                 }
            }
         });
- 
-        openFileButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(final ActionEvent e) {
-        		File file = fileChooser.showOpenDialog(primaryStage);
-        		if (file != null) {
-        			openFile(file);
-        			try {
-        				stage.setScene(createSmarTaskScene());
-        			} catch (IOException e2) {
-        				e2.printStackTrace();
-        			}
-                }
-            }
-        });
-        
+
         defaultFileButton.setOnAction(new EventHandler<ActionEvent>() {
         	@Override
         	public void handle(final ActionEvent e) {
         		try {
+        			File file = new File(defaultFileLocation);
+        			currentFileLocation = defaultFileLocation;
+        			defaultFile(file);
         			stage.setScene(createSmarTaskScene());
-        		} catch (IOException e3) {
-        			e3.printStackTrace();
+        		} catch (IOException e2) {
+        			e2.printStackTrace();
         		}
         	}
         });
  
         final GridPane inputGridPane = new GridPane();
         GridPane.setConstraints(createFileButton, 0, 0);
-        GridPane.setConstraints(openFileButton, 1, 0);
-        GridPane.setConstraints(defaultFileButton, 2, 0);
+        GridPane.setConstraints(defaultFileButton, 1, 0);
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(createFileButton, openFileButton, defaultFileButton);
+        inputGridPane.getChildren().addAll(createFileButton, defaultFileButton);
 
         final Pane rootGroup = new VBox(12);
         rootGroup.getChildren().addAll(inputGridPane);
@@ -129,13 +129,13 @@ public class GUI extends Application {
     	}
     }
     
-    private void openFile(File file) {
-        try {
-        	String command = "setfilepath " + file.getAbsolutePath();
-        	Logic.executeCommand(command);
-        	System.out.println(command);
-        } catch (Exception e) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
-        }
+    private void defaultFile(File file) {
+    	try {
+    		String command = "setfilepath " + file.getAbsolutePath();
+    		Logic.executeCommand(command);
+    		System.out.println(command);
+    	} catch (Exception e) {
+    		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
+    	}
     }
 }
