@@ -54,7 +54,7 @@ public class Storage {
 	
 
 
-	public Storage getInstance() {
+	public static Storage getInstance() {
 		if (taskOrganiser == null) {
 			taskOrganiser = new Storage();
 		}
@@ -75,7 +75,6 @@ public class Storage {
 	
 //-------------------------------------------------------------------------------------------
 
-	//not getting the string from the file
 	private String retrieveSavePath() {
 		initReader(pathFile);
 		try {
