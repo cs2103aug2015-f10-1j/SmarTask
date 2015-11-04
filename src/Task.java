@@ -346,7 +346,7 @@ public class Task {
     }
 
     public void setIsDaySelected(String list) {
-        isDaySelected = new Boolean[7];
+        isDaySelected = new Boolean[8];
         Arrays.fill(isDaySelected, false);
 
         String[] days = list.split(" ");
@@ -386,7 +386,6 @@ public class Task {
     }
 
     public void setDaySelectedString(String daySelectedString) {
-	
 	this.daySelectedString = daySelectedString;
     }
 }

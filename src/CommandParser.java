@@ -586,28 +586,28 @@ public class CommandParser {
 	}
 	return isSelected;
     }
-
+    
     private static int getDayIndex(String day) throws Exception {
 	if(day.toLowerCase().equals("mon")) {
-	    return 0;
-	}
-	else if(day.toLowerCase().equals("tue")) {
-	    return 1;
-	}
-	else if(day.toLowerCase().equals("wed")) {
 	    return 2;
 	}
-	else if(day.toLowerCase().equals("thu")) {
+	else if(day.toLowerCase().equals("tue")) {
 	    return 3;
 	}
-	else if(day.toLowerCase().equals("fri")) {
+	else if(day.toLowerCase().equals("wed")) {
 	    return 4;
 	}
-	else if(day.toLowerCase().equals("sat")) {
+	else if(day.toLowerCase().equals("thu")) {
 	    return 5;
 	}
-	else if(day.toLowerCase().equals("sun")) {
+	else if(day.toLowerCase().equals("fri")) {
 	    return 6;
+	}
+	else if(day.toLowerCase().equals("sat")) {
+	    return 7;
+	}
+	else if(day.toLowerCase().equals("sun")) {
+	    return 1;
 	}
 	else {
 	    addToParserLogger(MSG_INCORRECT_FORMAT);
