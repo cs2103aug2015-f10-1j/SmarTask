@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,14 +31,14 @@ public class GUI extends Application {
 
 	private Stage stage;
 	private String defaultFileLocation = System.getProperty("user.home") + "/Desktop";
-	private String currentFileLocation;
+	private static String filePath = "../main/" + "filepath.txt";
 	
     public static void main(String[] args) {
     	launch(args);
     }
     
     public void start(Stage primaryStage) {
-    	if(checkFileExists(currentFileLocation)) {
+    	if(checkFile(filePath)) {
     		try {
         		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
         		Scene scene = new Scene(root, 700, 800);
@@ -55,12 +57,25 @@ public class GUI extends Application {
     	}
     }
     
-    private static boolean checkFileExists(String fileName) {
-    	if(fileName != null) {
-    		return true;
-    	} else {
-    		return false;
+    private static boolean checkFile(String fileName) {
+    	File file = new File(fileName);
+    	FileReader fr = null;
+    	BufferedReader br = null;
+    	try {
+    		fr = new FileReader(file);
+    		br = new BufferedReader(fr);
+    		System.out.println(file.getAbsolutePath());
+    		if(br.readLine() != null) {
+    			br.close();
+    			return true;
+    		} else {
+    			br.close();
+    			return false;
+    		}
+    	} catch (IOException e) {
+    		System.err.println("Error! Filepath.txt cannot be read!");
     	}
+    	return false;
     }
     
     private Scene chooseFileScene(Stage primaryStage) {
@@ -72,7 +87,6 @@ public class GUI extends Application {
         	@Override
         	public void handle(final ActionEvent e) {
         		File file = fileChooser.showSaveDialog(primaryStage);
-        		currentFileLocation = file.getAbsolutePath();
         		if (file != null) {
         			createFile(file);
         			try {
@@ -89,7 +103,6 @@ public class GUI extends Application {
         	public void handle(final ActionEvent e) {
         		try {
         			File file = new File(defaultFileLocation);
-        			currentFileLocation = defaultFileLocation;
         			defaultFile(file);
         			stage.setScene(createSmarTaskScene());
         		} catch (IOException e2) {

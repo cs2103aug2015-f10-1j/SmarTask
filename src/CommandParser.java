@@ -160,6 +160,10 @@ public class CommandParser {
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
 	assert parameters !=null;
 	ArrayList<String> list = new ArrayList<>();
+	if(parameters.size() == 1) {
+	    return list ;
+	}
+	
 	list.add(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
 	return list;
     }
@@ -246,7 +250,7 @@ public class CommandParser {
 		command.setTaskType(REPEAT);
 	    } 
 	    else {
-		throw new Exception(MSG_NULL_POINTER);
+	//	throw new Exception(MSG_NULL_POINTER);
 	    }
 	    command.setTaskID(extractTaskIdParam(arguments));
 	    if(command.getTaskID()<=0) {
@@ -324,7 +328,21 @@ public class CommandParser {
 	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
 		command.setTaskType(REPEAT);
 		command.setTaskID(extractTaskIdParam(parameters));
+		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-until")) {
 
+		}
+
+		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-on")) {
+
+		}
+
+		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-every")) {
+
+		}
+
+		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-start")) {
+
+		}
 
 	    }
 	    else {
@@ -465,6 +483,12 @@ public class CommandParser {
 
 	    ArrayList<Date> date = extractNattyTwoDates(dateTimeLine);
 	    command.setDateAdded(date.get(0));
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    Date inf_date = sdf.parse("12/12/9999");
+	    ArrayList<Date> list = new ArrayList<Date>();
+	    list.add(inf_date);
+	    command.setStopRepeat(list);
+	    command.setStopRepeatInString();
 
 	    String inputOfRecurrence = param[POSITION_FIRST_PARAM_ARGUMENT].trim();
 
@@ -507,9 +531,9 @@ public class CommandParser {
 		command.setRepeatType("month");
 		String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
 		command.setMonthInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
-		
+
 		remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
-		
+
 		if(remainingParam.length > SIZE_1) {
 		    command.setRepeatUntil(extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));
 		}

@@ -1,4 +1,3 @@
-import java.text.DateFormat;
 import java.util.*;
 
 /**
@@ -94,11 +93,6 @@ public class Command {
     }
 
     // ================================================================
-    // Getters method to support recurring task
-    // ================================================================
-
-
-    // ================================================================
     // Setters method to support CommandParser methods
     // ================================================================
 
@@ -133,12 +127,7 @@ public class Command {
     public String getFilePath() {
         return filePath;
     }
-
-    // ================================================================
-    // Setters method to support recurring task
-    // ================================================================
-
-
+    
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }

@@ -64,7 +64,14 @@ public class IntegrationTest {
 		// add deadline tasks
 		logic.executeCommand("add Finish assignment by 10 Dec 12pm");
 		output = logic.getMessageLog();
-		expected = "add Meeting with Boss successful!";
+		expected = "add Finish assignment successful!";
+		
+		assertEquals(expected, output);
+		initialize();
+		
+		logic.executeCommand("add Meeting with Boss on 10 Nov 5 to 6pm");
+		output = readFile(testFile);
+		expected = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
 		
 		assertEquals(expected, output);
 		initialize();
