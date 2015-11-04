@@ -43,7 +43,7 @@ public class Task {
     // For week repeat
     private String taskRepeatInterval_Week;
     private Boolean[] isDaySelected;
-    private String getDaySelectedString;
+    private String daySelectedString;
 
     // For month repeat
     private String taskRepeatInterval_Month;
@@ -357,22 +357,6 @@ public class Task {
 
     }
 
-    public String getGetDaySelectedString() {
-	return getDaySelectedString;
-    }
-
-    public void setGetDaySelectedString() {
-	String index = "";
-	int num = 0;
-	for(int i =0; i < this.isDaySelected.length; i++) {
-	    if(isDaySelected[i] == true) {
-		num = i + 1;
-		index += num + " ";
-	    }
-	}
-	this.getDaySelectedString = index.trim();
-    }
-
     public String getStopRepeatInString() {
 	return stopRepeatInString;
     }
@@ -395,5 +379,14 @@ public class Task {
 	    date = sdf.parse(dateArr[i]);
 	    this.stopRepeat.add(date);
 	}
+    }
+
+    public String getDaySelectedString() {
+	return daySelectedString;
+    }
+
+    public void setDaySelectedString(String daySelectedString) {
+	
+	this.daySelectedString = daySelectedString;
     }
 }

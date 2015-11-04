@@ -243,8 +243,13 @@ public class Command {
     public void setGetDaySelectedString() {
 	String index = "";
 	for(int i =0; i < this.isDaySelected.length; i++) {
-	    if(isDaySelected[i] == true) {
-		index += " " + i;
+	    if(i != this.isDaySelected.length -1) {
+		if(isDaySelected[i] == true) {
+			index +=  i;
+		    }
+	    }
+	    else {
+		index +=  i + " ";
 	    }
 	}
 	this.getDaySelectedString = index;
