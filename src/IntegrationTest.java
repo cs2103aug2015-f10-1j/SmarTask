@@ -6,6 +6,9 @@ import org.junit.Test;
 
 public class IntegrationTest {
 	
+	String output = "";
+	String expected = "";
+	
 	@Test
 	// Test the features including add different types of tasks
 	public void testphase1() throws IOException {
@@ -22,15 +25,17 @@ public class IntegrationTest {
 	public void testphase2() throws IOException {
 		// update tasks
 		
+		initialize();
 		// delete tasks
 		
+		initialize();
 		// complete tasks
 	}
 	
 	@Test
 	// Test the features including recurring tasks
 	public void testphase3() throws IOException {
-		
+		initialize();
 	}
 	
 	@Test
@@ -38,8 +43,14 @@ public class IntegrationTest {
 	public void testphase4() throws IOException {
 		// search task
 		
+		initialize();
 		// set file path
+		
+		initialize();
 	}
 	
-
+	private void initialize() {
+		output = "";
+		expected = "";
+	}
 }
