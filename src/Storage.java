@@ -23,19 +23,21 @@ public class Storage {
 
 	private static final String DEFAULT_PATHFILENAME = "filepath.txt";
 
+	private static final String DEFAULT_PATH = System.getProperty("user.home") + "/Desktop";
+
 	private static Storage taskOrganiser;
 
 	private File taskFile;
 	private File pathFile;
 	private BufferedReader reader;
 	private PrintWriter writer;
-	private String savePath = "";
+	//private String savePath = ""; // This is the FUCKING problem!!!
 
 	private Gson gson;
 
 
 	public Storage() {
-
+		System.out.println("Storage constructed");
 		gson = new Gson();
 		pathFile = new File(DEFAULT_PATHFILENAME);
 		createIfNotExists(pathFile);
@@ -45,10 +47,12 @@ public class Storage {
 		//createIfNotExists(taskFile);
 		
 		if (retrieveSavePath() == null) {
-			taskFile = new File(DEFAULT_FILENAME);
+			System.out.println("The save path retrieved from path file is null, task file is created in main folder");
+			taskFile = new File(DEFAULT_PATH + File.separator + DEFAULT_FILENAME);
 			createIfNotExists(taskFile);
 		}
 		else {
+			System.out.println("The save path retrieved from path file is not null, task file is created in a set location");
 			taskFile = new File(retrieveSavePath() + File.separator + DEFAULT_FILENAME);
 		}
 	}
@@ -77,6 +81,7 @@ public class Storage {
 //-------------------------------------------------------------------------------------------
 
 	private String retrieveSavePath() {
+		String savePath = "";
 		initReader(pathFile);
 		try {
 			savePath = reader.readLine();
@@ -94,6 +99,7 @@ public class Storage {
 	public ArrayList<Task> retrieveFile() {
 		String text = "";
 		ArrayList<Task> taskList = new ArrayList<Task>();
+		System.out.println("retrieve from " + taskFile.getAbsolutePath());
 		
 		try {
 			if (!initReader(taskFile)) {
@@ -115,6 +121,7 @@ public class Storage {
 	}
 
 	public void saveToFile(ArrayList<Task> taskList) {
+		System.out.println("save to " + taskFile.getAbsolutePath());
 		try {
 			writer = new PrintWriter(taskFile, "UTF-8");
 			for (Task task : taskList) {
@@ -127,6 +134,7 @@ public class Storage {
 	}
 	
 	public void setSavePath(String inputPath) {
+		String savePath = "";
 		try {
 			File tempFile = new File(pathFile.getAbsolutePath());
 		    PrintWriter pw = new PrintWriter(tempFile);

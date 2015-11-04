@@ -15,7 +15,6 @@ import org.junit.Test;
 
 public class IntegrationTest {
 	
-	IntegrationTest inte = new IntegrationTest();
 	Logic logic = new Logic();
 	
 	File testFile;
@@ -82,12 +81,15 @@ public class IntegrationTest {
 	public void testphase2() throws IOException {
 		// update tasks
 		
+		assertEquals(expected, output);
 		initialize();
 		// delete tasks
 		
+		assertEquals(expected, output);
 		initialize();
 		// complete tasks
 		
+		assertEquals(expected, output);
 		initialize();
 	}
 	
