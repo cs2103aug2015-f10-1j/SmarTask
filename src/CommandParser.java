@@ -248,7 +248,7 @@ public class CommandParser {
                 throw new Exception(MSG_NULL_POINTER);
             }
 
-            command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            command.setTaskID(extractTaskIdParam(arguments));
             if(command.getTaskID()<=0) {
                 throw new Exception(MSG_NULL_POINTER);
             }
@@ -305,39 +305,26 @@ public class CommandParser {
 
             if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_D)) {
                 command.setTaskType(DEADLINE);
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+                command.setTaskID(extractTaskIdParam(parameters));
                 command.setTaskDeadline(getDeadline(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
-                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}", "")
-                        .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());   
+                command.setTaskDescription(extractDescriptionParam(parameters));   
             }
             else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_E)) {
                 command.setTaskType(EVENT);
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+                command.setTaskID(extractTaskIdParam(parameters));
                 command.setTaskEventDate(getDate(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
                 command.setTaskEventTime(getDuration(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
-                command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
-                        .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim());
+                command.setTaskDescription(extractDescriptionParam(parameters));
             }
             else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_F)) {
                 command.setTaskType(FLOATING);
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+                command.setTaskID(extractTaskIdParam(parameters));
                 command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
             }
             else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
                 command.setTaskType(REPEAT);
-                command.setTaskID(Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
-                command.setTaskEventDate(getDate(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
-                command.setTaskEventTime(getDuration(parameters.get(POSITION_FIRST_PARAM_ARGUMENT))[0]);
-                String[] params = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}[- -.][0-9]{1,2}:[0-9]{2}", "")
-                        .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").split("\\{");
-                command.setTaskDescription(params[0].trim());
-                String content = params[1].trim();
-                content = content.replaceAll("\\{", "").replaceAll("\\}", "").trim();
-                String[] updateParam = content.trim().split("[?=\\,]");
-                ArrayList<String> paramList = new ArrayList<String>();
-                for(int i =0; i< updateParam.length; i++) {
-                    paramList.add(i, updateParam[i].trim());
-                }
+                command.setTaskID(extractTaskIdParam(parameters));
+                
                 
             }
             else {
@@ -360,6 +347,15 @@ public class CommandParser {
             throw new Exception(MSG_INCORRECT_FORMAT);
             
         }
+    }
+
+    private static int extractTaskIdParam(ArrayList<String> parameters) {
+	return Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", ""));
+    }
+
+    private static String extractDescriptionParam(ArrayList<String> parameters) {
+	return parameters.get(POSITION_FIRST_PARAM_ARGUMENT).replaceAll("[0-9]{1,2}:[0-9]{2}", "")
+	        .replaceAll("(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d", "").trim();
     }
 
     private static String[] getDate(String desc) {
@@ -413,7 +409,7 @@ public class CommandParser {
             else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_F)) {
                 command.setTaskType(FLOATING);
             }
-            command.setTaskID(Integer.parseInt(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")));
+            command.setTaskID(extractTaskIdParam(arguments));
             if(command.getTaskID()<=0) {
                 throw new Exception(MSG_NULL_POINTER);
             }
@@ -497,6 +493,7 @@ public class CommandParser {
                 
                 String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
                 command.setIsDaySelected(setSelectedDay(line, new Boolean[7]));
+                command.setGetDaySelectedString();
                 
                 if(remainingParam.length > SIZE_1) {
                     command.setRepeatUntil(extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));

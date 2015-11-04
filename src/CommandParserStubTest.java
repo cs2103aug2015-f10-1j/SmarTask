@@ -17,171 +17,184 @@ public class CommandParserStubTest {
 
     public static void main(String[] args) throws Exception {
 
-        //=================================================================================
-        //============================Adding Recurrence tasks==============================
-        //=================================================================================
+	//==================================================
+	// Adding day recurrence tasks
+	//==================================================
 
-        // Daily
-        try {
-            Command repeat = CommandParser.parse("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Day Interval: " 
-            + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Day Interval: " 
+	    + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Daily
-        try {
-            Command repeat = CommandParser.parse("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Day Interval: " 
-            + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Day Interval: " 
+	    + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Yearly
-        try {
-            Command repeat = CommandParser.parse("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
-            + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	//==================================================
+	// Adding year recurrence tasks
+	//==================================================
 
-        // Yearly
-        try {
-            Command repeat = CommandParser.parse("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
-            + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
+	    + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Weekly
-        try {
-            Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
-            + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
+	try {
+	    Command repeat = CommandParser.parse("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Year Interval: " 
+	    + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-            for(int i =0; i<repeat.getIsDaySelected().length; i++) {
-                if(repeat.getIsDaySelected()[i] == true)
-                    System.out.println("DAY " + (i+1));
-            }
+	//==================================================
+	// Adding week recurrence tasks
+	//==================================================
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
+	    + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
 
-        // Weekly
-        try {
-            Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
-            + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
+	    for(int i =0; i<repeat.getIsDaySelected().length; i++) {
+		if(repeat.getIsDaySelected()[i] == true)
+		    System.out.println("DAY " + (i+1));
+	    }
 
-            for(int i = 0; i<repeat.getIsDaySelected().length; i++) {
-                if(repeat.getIsDaySelected()[i] == true)
-                    System.out.println("DAY " + (i+1));
-            }
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
+	    + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
 
-        // Monthly
-        try {
-            Command repeat = CommandParser.parse("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -on 23 -until 25 Dec");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
-            + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
+	    for(int i = 0; i<repeat.getIsDaySelected().length; i++) {
+		if(repeat.getIsDaySelected()[i] == true)
+		    System.out.println("DAY " + (i+1));
+	    }
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Monthly
-        try {
-            Command repeat = CommandParser.parse("repeat meeting -start 15 Dec 4 to 6pm -every 1 month -on second mon");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
-            + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
+	//==================================================
+	// Adding month recurrence tasks
+	//==================================================
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -on 23 -until 25 Dec");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
+	    + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
 
-        // Monthly
-        try {
-            Command repeat = CommandParser.parse("repeat meeting -start 15 Dec 4 to 6pm -every 1 month -on last");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
-            + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
-            + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat meeting -start 15 Dec 4 to 6pm -every 1 month -on second mon");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
+	    + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
 
-        //=================================================================================
-        //============================Deleting Recurrence tasks============================
-        //=================================================================================
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // This will delete the whole recurrence task
-        try {
-            Command repeat = CommandParser.parse("delete R1");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("repeat meeting -start 15 Dec 4 to 6pm -every 1 month -on last");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
+	    + " " + repeat.getRepeatEndTime() + " Repeat: " + repeat.getMonthRepeatPattern() + ", " + repeat.getRepeatType() + " ==Month Interval: " 
+	    + repeat.getMonthInterval() + " ==Until:" + repeat.getRepeatUntil());
 
-        //=================================================================================
-        //============================Temporarily stop recurrence==========================
-        //=================================================================================
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Stop recurrence on specifc frequency
-        try {
-            Command repeat = CommandParser.parse("stop 1511151245 15 oct, 25 nov, 6 aug");
-            System.out.println(repeat.getCommandType() + " ID: " + repeat.getTaskID() + " ");
-            for(int i=0; i< repeat.getStopRepeat().size(); i++) {
-                System.out.println(repeat.getStopRepeat().get(i).toString());
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	//=========================================================================
+	// Updating a recurrence task
+	//=========================================================================
 
-        //=================================================================================
-        //================================Adding tasks=====================================
-        //=================================================================================
+	try {
+	    Command repeat = CommandParser.parse("update r10111512 team project meeting");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID());
+	    
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Adding event task
-        try {
-            Command add = CommandParser.parse("add Meeting with Boss on 10 Nov 5 to 6pm");
-            System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() 
-            + " ==Start== " + add.getTaskEventStart() + " ==End== " + add.getTaskEventEnd());
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	//=========================================================================
+	// Deleting whole recurrence task
+	//=========================================================================
 
-        // Adding deadline task
-        try {
-            Command add = CommandParser.parse("add Finish assignment by 10 Dec 12pm");
-            System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() 
-            + " " + add.getTaskDeadline());
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	try {
+	    Command repeat = CommandParser.parse("delete R1");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
-        // Adding floating task
-        try {
-            Command add = CommandParser.parse("add Read textbook");
-            System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription());
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	//=========================================================================
+	// Temporarily stop recurrence
+	//=========================================================================
+
+	try {
+	    Command repeat = CommandParser.parse("stop 1511151245 15 oct, 25 nov, 6 aug");
+	    System.out.println(repeat.getCommandType() + " ID: " + repeat.getTaskID() + " ");
+	    for(int i=0; i< repeat.getStopRepeat().size(); i++) {
+		System.out.println(repeat.getStopRepeat().get(i).toString());
+	    }
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+
+	//=================================================================================
+	// Adding tasks
+	//=================================================================================
+
+	// Adding event task
+	try {
+	    Command add = CommandParser.parse("add Meeting with Boss on 10 Nov 5 to 6pm");
+	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() 
+	    + " ==Start== " + add.getTaskEventStart() + " ==End== " + add.getTaskEventEnd());
+	}catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+
+	// Adding deadline task
+	try {
+	    Command add = CommandParser.parse("add Finish assignment by 10 Dec 12pm");
+	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription() 
+	    + " " + add.getTaskDeadline());
+	}catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+
+	// Adding floating task
+	try {
+	    Command add = CommandParser.parse("add Read textbook");
+	    System.out.println(add.getCommandType() + " " + add.getTaskType() +" " + add.getTaskDescription());
+	}catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
 
     } 
 
