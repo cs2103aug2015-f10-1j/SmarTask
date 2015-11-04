@@ -526,9 +526,9 @@ public class Logic {
     		}
     	} 
     	else if (taskType.equals(WEEK_REC)){
-    	//	msgLogger.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
-    	//                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getIsDaySelected()
-    	//                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
+    		msgLogger.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
+    	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
+                       + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode +"#"+ com.getStopRepeatInString());
     		detailStored.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
 	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
 	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode+"#" + com.getStopRepeatInString());
