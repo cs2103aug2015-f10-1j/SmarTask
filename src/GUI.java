@@ -56,9 +56,14 @@ public class GUI extends Application {
     }
     
     private static boolean checkFileExists(String fileName) {
-    	if(fileName != null) {
-    		return true;
-    	} else {
+    	try {
+    		File file = new File(fileName);
+    		if(file.exists()) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+    	} catch (Exception e) {
     		return false;
     	}
     }
