@@ -50,6 +50,7 @@ public class Logic {
     private static final String WEEK_REC = "week";
     private static final String MONTH_REC = "month";
     private static final String YEAR_REC = "year";
+    private static final String STOP_REC = "stop";
     
     
     
@@ -129,9 +130,12 @@ public class Logic {
                     }else if (type.equals(DEADLINE_TASK)){
                     	list.add(taskStored.get(i).getDeadlineString());
                     }else if (type.equals(RECURRING_TASK)){
-                    	if (compareDate(task)){
+                    	if(!isStop(task)){
+                    		if (compareDate(task)){
                     		list.add(taskStored.get(i).getRepeatString());
                     	}	
+                    	}
+                    	
                     }
             	}
             }
@@ -139,6 +143,27 @@ public class Logic {
         return list;
     }
 	
+	// check whether the recurring task need to stop today
+	private static boolean isStop(Task task){
+		boolean boo = false;
+		ArrayList <Date> stopDate
+		Calendar calTask = Calendar.getInstance();
+		calTask.setTime(task.getDateAdded());
+		int monthForTask = calTask.get(Calendar.MONTH);
+		int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
+		Calendar calCur = Calendar.getInstance();
+		calCur.setTime(currentDate);
+		int monthCur = calCur.get(Calendar.MONTH);
+		int dayCur = calTask.get(Calendar.DAY_OF_MONTH);
+		for (int i=0; i<stopDate.size(); i++){
+			if ()
+		}
+		
+		return boo;
+	}
+	
+	
+	// check whther the task is overdue
 	private static boolean isOverdue(Task task) throws ParseException{
 		boolean isOver = false;
 		initDate();
@@ -209,7 +234,16 @@ public class Logic {
 		calTask.setTime(task.getDateAdded());
 		int monthForTask = calTask.get(Calendar.MONTH);
 		int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
+		Calendar calCur = Calendar.getInstance();
+		calCur.setTime(currentDate);
+		int monthCur = calCur.get(Calendar.MONTH);
+		int dayCur = calTask.get(Calendar.DAY_OF_MONTH);
 		
+		if ((Math.abs(monthForTask-monthCur) % Integer.parseInt(task.getTaskRepeatInterval_Month())) == 0){
+			if (dayForTask == dayCur){
+				boo = true;
+			}
+		}
 		return boo;
 	}
 		
@@ -477,7 +511,7 @@ public class Logic {
     	//                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getIsDaySelected()
     	//                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
     		detailStored.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
-	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getDaySelectedString()
+	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
 	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
     		task = new Task (type, detailStored);
     		if (!isCollision(task)){
@@ -854,7 +888,20 @@ public class Logic {
     // stop recurring task command method
     // ================================================================
     private void stopRec(Command command){
-    	repeatedTask.remove(command.getStopRepeat());
+    	
+    	int taskID = command.getTaskID();
+    	for (int i=0; i<taskStored.size(); i++){
+    		if (taskStored.get(i).getID() == taskID){
+    			
+    		}
+    	}
+    	
+    	
+    //	ArrayList <String> taskList = new ArrayList <String>();
+    //	taskList.add(command.getTaskID()+"#"+command.getStopRepeat());
+    //	Task task = new Task (Task.Type.STOP, taskStored.get(0));
+    //	taskStored.add(task);
+    //	storage.saveToFile(taskStored);
     }
    
     
