@@ -484,6 +484,7 @@ public class CommandParser {
 	    ArrayList<Date> list = new ArrayList<Date>();
 	    list.add(inf_date);
 	    command.setStopRepeat(list);
+	    command.setStopRepeatInString();
 
 	    String inputOfRecurrence = param[POSITION_FIRST_PARAM_ARGUMENT].trim();
 
