@@ -34,6 +34,8 @@ public class Task {
     private String taskRepeatStartTime;
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
+    private ArrayList<Date> stopRepeat;
+    private String stopRepeatInString;
 
     // For day repeat
     private String taskRepeatInterval_Day;
@@ -365,4 +367,26 @@ public class Task {
 	this.getDaySelectedString = index;
     }
 
+    public String getStopRepeatInString() {
+	return stopRepeatInString;
+    }
+
+    public void setStopRepeatInString(String stopRepeatInString) {
+	this.stopRepeatInString = stopRepeatInString;
+    }
+
+    public ArrayList<Date> getStopRepeat() {
+	return stopRepeat;
+    }
+
+    public void setStopRepeat(String input) throws ParseException {
+	String[] dateArr = input.split("@");
+	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date;
+	
+	for(int i = 0; i< dateArr.length; i++ ) {
+	    date = sdf.parse(dateArr[i]);
+	    this.stopRepeat.add(date);
+	}
+    }
 }
