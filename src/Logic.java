@@ -907,8 +907,8 @@ public class Logic {
     	for (int i=0; i<taskStored.size(); i++){
     		if (taskStored.get(i).getID() == taskID){
     			String str;
-    			str = taskStored.get(i).getStopRepeatInString() + command.getStopRepeatInString();
-    			taskStored.get(i).setStopRepeat(str);
+    			str = taskStored.get(i).getStopRepeatInString() +"@"+ command.getStopRepeatInString();
+    			taskStored.get(i).setStopRepeat(command.getStopRepeatInString());
     			break;
     		}
     	}
