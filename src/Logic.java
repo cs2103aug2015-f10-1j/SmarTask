@@ -20,7 +20,7 @@ import org.junit.internal.Throwables;
 
 
 public class Logic {
-	private static Storage storage = new Storage ();
+	private static Storage storage = new Storage();
     private static  ArrayList<Task> taskStored = storage.retrieveFile();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event;
@@ -51,6 +51,9 @@ public class Logic {
     private static final String MONTH_REC = "month";
     private static final String YEAR_REC = "year";
     private static final String STOP_REC = "stop";
+    
+    // success message
+    private static final String ADD_STOP_SUC = "Add stop command to recurring task successfully!";
     
     
     
@@ -146,19 +149,24 @@ public class Logic {
 	// check whether the recurring task need to stop today
 	private static boolean isStop(Task task){
 		boolean boo = false;
-		ArrayList <Date> stopDate
-		Calendar calTask = Calendar.getInstance();
-		calTask.setTime(task.getDateAdded());
-		int monthForTask = calTask.get(Calendar.MONTH);
-		int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
+		ArrayList <Date> stopDate = new ArrayList<Date>();
+		stopDate = task.getStopRepeat();
+		
 		Calendar calCur = Calendar.getInstance();
 		calCur.setTime(currentDate);
 		int monthCur = calCur.get(Calendar.MONTH);
-		int dayCur = calTask.get(Calendar.DAY_OF_MONTH);
-		for (int i=0; i<stopDate.size(); i++){
-			if ()
-		}
+		int dayCur = calCur.get(Calendar.DAY_OF_MONTH);
 		
+		for (int i=0; i<stopDate.size(); i++){
+			Calendar calTask = Calendar.getInstance();
+			calTask.setTime(stopDate.get(0));
+			int monthForTask = calTask.get(Calendar.MONTH);
+			int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
+			
+			if (monthForTask == monthCur && dayForTask == dayCur){
+				boo = true;
+			}
+		}
 		return boo;
 	}
 	
@@ -237,7 +245,7 @@ public class Logic {
 		Calendar calCur = Calendar.getInstance();
 		calCur.setTime(currentDate);
 		int monthCur = calCur.get(Calendar.MONTH);
-		int dayCur = calTask.get(Calendar.DAY_OF_MONTH);
+		int dayCur = calCur.get(Calendar.DAY_OF_MONTH);
 		
 		if ((Math.abs(monthForTask-monthCur) % Integer.parseInt(task.getTaskRepeatInterval_Month())) == 0){
 			if (dayForTask == dayCur){
@@ -863,7 +871,7 @@ public class Logic {
             	}
             }
             
-          //  storage.saveToFile(taskStored);
+            storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("task updated!");
         } catch (Exception e) {
@@ -887,21 +895,20 @@ public class Logic {
  // ================================================================
     // stop recurring task command method
     // ================================================================
-    private void stopRec(Command command){
+    private void stopRec(Command command) throws ParseException{
     	
     	int taskID = command.getTaskID();
     	for (int i=0; i<taskStored.size(); i++){
     		if (taskStored.get(i).getID() == taskID){
-    			taskStored.get(i).set
+    			String str;
+    			str = taskStored.get(i).getStopRepeatInString() + command.getStopRepeatInString();
+    			taskStored.get(i).setStopRepeat(str);
+    			break;
     		}
     	}
-    	
-    	
-    //	ArrayList <String> taskList = new ArrayList <String>();
-    //	taskList.add(command.getTaskID()+"#"+command.getStopRepeat());
-    //	Task task = new Task (Task.Type.STOP, taskStored.get(0));
-    //	taskStored.add(task);
-    //	storage.saveToFile(taskStored);
+    	storage.saveToFile(taskStored);
+    	history.addChangeToHistory(new ArrayList<Task>(taskStored));
+        msgLogger.add(ADD_STOP_SUC);
     }
    
     

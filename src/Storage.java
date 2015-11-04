@@ -33,12 +33,9 @@ public class Storage {
 
 	private Gson gson;
 
-<<<<<<< HEAD
-	private Storage() {
-=======
 
 	public Storage() {
->>>>>>> origin/master
+
 		gson = new Gson();
 		pathFile = new File(DEFAULT_PATHFILENAME);
 		createIfNotExists(pathFile);
