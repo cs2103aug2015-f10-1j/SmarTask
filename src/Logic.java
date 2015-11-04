@@ -500,14 +500,17 @@ public class Logic {
     	Task.Type type = Task.Type.REPEAT;
     	Task task = null;
     	if (taskType.equals(DAY_REC)){
-    	//	detailTask.add( taskType+"#" +com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription() + "#" + taskCode);
-    		detailStored.add(taskType+"#"+com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription()+ "#" + taskCode);
-    		
+    		msgLogger.add( taskType+"#" +com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription() + "#" + taskCode+"#" + com.getStopRepeatInString());
+    		detailStored.add(taskType+"#"+com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()
+    		                 +"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription()+ "#" 
+    				         + taskCode+"#" + com.getStopRepeatInString());
+    	//	msgLogger.add("here");
     		task = new Task (type, detailStored);
-
+       //     msgLogger.add(task.getDescription());
     		if (!isCollision(task)){
     			repeatedTask.add(detailStored.get(0));
     			taskStored.add(task);
+    			msgLogger.add("here1");
     			storage.saveToFile(taskStored);
     	        msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
     		} else {
@@ -520,7 +523,7 @@ public class Logic {
     	//                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
     		detailStored.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
 	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
-	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode);
+	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode+"#" + com.getStopRepeatInString());
     		task = new Task (type, detailStored);
     		if (!isCollision(task)){
     			repeatedTask.add(detailStored.get(0));
@@ -534,7 +537,7 @@ public class Logic {
     	}
     	else if (taskType.equals(MONTH_REC)){
     		detailStored.add(taskType +"#" +com.getDateAdded()+"#" + com.getRepeatStartTime() +"#"+com.getRepeatEndTime()+"#"+
-    	                   com.getMonthInterval()+"#"+com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
+    	                   com.getMonthInterval()+"#"+com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode+"#" + com.getStopRepeatInString());
     	//	detailTask.add(taskType +"#" +com.getDateAdded()+"#" + com.getRepeatStartTime() +"#"+com.getRepeatEndTime()+"#"+
 	     //              com.getMonthInterval()+"#"+com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
     		task = new Task (type, detailStored);
@@ -550,7 +553,8 @@ public class Logic {
     	
     	 else if (taskType.equals(YEAR_REC)){
     	//	 detailTask.add( taskType+"#" +com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" + taskCode);
-     		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode);
+     		detailStored.add(taskType+"#"+com.getDateAdded() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+
+    	                     com.getDayInterval()+"#" + com.getRepeatUntil()+"#"+com.getTaskDescription()+ "#" + taskCode+"#" + com.getStopRepeatInString());
      		task = new Task (type, detailStored);
      		if (!isCollision(task)) {
      			repeatedTask.add(detailStored.get(0));
