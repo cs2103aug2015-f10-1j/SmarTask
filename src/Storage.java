@@ -33,7 +33,10 @@ public class Storage {
 
 	private Gson gson;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	public Storage() {
 
 		gson = new Gson();

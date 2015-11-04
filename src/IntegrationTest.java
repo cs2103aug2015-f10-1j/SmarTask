@@ -6,18 +6,28 @@ import org.junit.Test;
 
 public class IntegrationTest {
 	
+	IntegrationTest inte = new IntegrationTest();
+	Logic logic = new Logic();
+	
 	String output = "";
 	String expected = "";
 	
 	@Test
 	// Test the features including add different types of tasks
-	public void testphase1() throws IOException {
+	public void testphase1() throws Exception {
+
 		// add floating tasks
-		
+		logic.executeCommand("add buy patatoes");
+		output = logic.getFloatingTask();
+	//	expected = 
+
+		initialize();
 		// add event tasks
 		
+		initialize();
 		// add deadline tasks
 		
+		initialize();
 	}
 	
 	@Test
@@ -30,6 +40,8 @@ public class IntegrationTest {
 		
 		initialize();
 		// complete tasks
+		
+		initialize();
 	}
 	
 	@Test
