@@ -33,7 +33,7 @@ public class Storage {
 
 	private Gson gson;
 
-	public Storage() {
+	private Storage() {
 		gson = new Gson();
 		pathFile = new File(DEFAULT_PATHFILENAME);
 		createIfNotExists(pathFile);
