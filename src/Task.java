@@ -136,6 +136,7 @@ public class Task {
                     setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    setStopRepeat(list[8]);
                     this.isComplete = false;
                 }
 
@@ -148,6 +149,7 @@ public class Task {
                     setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    setStopRepeat(list[8]);
                     this.isComplete = false;
                 }
                 else if(list[0].equals("week")) {
@@ -160,6 +162,7 @@ public class Task {
                     setTaskRepeatUntil(list[6]);
                     this.description = list[7];
                     this.id = Integer.parseInt(list[8]);
+                    setStopRepeat(list[9]);
                     this.isComplete = false;
                 }
                 else if (list[0].equals("month")) {
@@ -171,6 +174,7 @@ public class Task {
                     setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    setStopRepeat(list[8]);
                     this.isComplete = false;
                 }
             }
