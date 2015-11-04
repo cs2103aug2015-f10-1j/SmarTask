@@ -177,16 +177,17 @@ public class Logic {
 			}
 		} else if (task.getTaskRepeatType().equals(WEEK_REC)){
 			if(task.getTaskRepeatUntil().after(currentDate)){
-				if (getWeeksBetween(task.getDateAdded(),currentDate)%Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0){
-				    if (isSameDate(task)){
+				if (getWeeksBetween(task.getDateAdded(),currentDate) % Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0){
+				    if (isSameDay(task)){
 				    	isToday = true ;
 				    }
 				}
-			}
-			
+			}	
 		} else if (task.getTaskRepeatType().equals(MONTH_REC)){
 			if(task.getTaskRepeatUntil().after(currentDate)){
-			
+				if (getMonthBetweenDates(task.getDateAdded(),currentDate) % Integer.parseInt(task.getTaskRepeatInterval_Month())==0){
+					
+				}
 			}
 			
 		} else if (task.getTaskRepeatType().equals(YEAR_REC)){
@@ -199,11 +200,17 @@ public class Logic {
 		return isToday;
 	}
 	
+	
+	
 	// check the date
-	private static boolean isSameDate(Task task){
+	private static boolean isSameDay(Task task){
 		boolean boo = false;
-		
-		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentDate);
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		if (task.getIsDaySelected()[dayOfWeek]==true){
+			boo = true;
+		}
 		return boo;
 	}
 	
