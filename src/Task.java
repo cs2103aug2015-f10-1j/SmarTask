@@ -94,7 +94,7 @@ public class Task {
     }
 
     public String getRepeatString (){
-        return this.getDateAdded() + "#" + this.description+"#" + this.id;    
+        return this.getDateAdded() + "#" + this.description + "#" + this.id;    
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
