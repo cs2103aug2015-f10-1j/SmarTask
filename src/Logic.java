@@ -165,6 +165,8 @@ public class Logic {
 			
 			if (monthForTask == monthCur && dayForTask == dayCur){
 				boo = true;
+				break;
+				
 			}
 		}
 		return boo;
@@ -500,7 +502,7 @@ public class Logic {
     	Task.Type type = Task.Type.REPEAT;
     	Task task = null;
     	if (taskType.equals(DAY_REC)){
-    		msgLogger.add( taskType+"#" +com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription() + "#" + taskCode+"#" + com.getStopRepeatInString());
+    	//	msgLogger.add( taskType+"#" +com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription() + "#" + taskCode+"#" + com.getStopRepeatInString());
     		detailStored.add(taskType+"#"+com.getDateAdded().toString() +"#" + com.getRepeatStartTime()+"#" +com.getRepeatEndTime()
     		                 +"#"+com.getDayInterval()+"#" + com.getRepeatUntil().toString()+"#"+com.getTaskDescription()+ "#" 
     				         + taskCode+"#" + com.getStopRepeatInString());
