@@ -679,9 +679,13 @@ public class Logic {
             }
             
             else {
+            	if (searchList.size()!=0){
+            		msgLogger.add(Integer.toString(searchList.get(indexToRemove)));
+            	    taskCode = searchList.get(indexToRemove);
+            	} else {
+            		msgLogger.add(MESSAGE_INVALID_INDEX);
+            	}
             	
-            	msgLogger.add(Integer.toString(searchList.get(indexToRemove)));
-            	taskCode = searchList.get(indexToRemove);
             	
             }
           //  String str[] = currentLine.split("#");
