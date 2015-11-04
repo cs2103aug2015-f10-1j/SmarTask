@@ -250,7 +250,7 @@ public class CommandParser {
 		command.setTaskType(REPEAT);
 	    } 
 	    else {
-		//	throw new Exception(MSG_NULL_POINTER);
+		throw new Exception(MSG_NULL_POINTER);
 	    }
 	    command.setTaskID(extractTaskIdParam(arguments));
 	    if(command.getTaskID()<=0) {
@@ -471,7 +471,12 @@ public class CommandParser {
 	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_F)) {
 		command.setTaskType(FLOATING);
 	    }
+	    else if (alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
+		command.setTaskType(REPEAT);
+	    }
+	    
 	    command.setTaskID(extractTaskIdParam(arguments));
+	    
 	    if(command.getTaskID()<=0) {
 		throw new Exception(MSG_NULL_POINTER);
 	    }
