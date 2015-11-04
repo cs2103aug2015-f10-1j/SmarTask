@@ -217,7 +217,9 @@ public class Logic {
 			}
 		} else if (task.getTaskRepeatType().equals(WEEK_REC)){
 			if(task.getTaskRepeatUntil().after(currentDate)){
+				
 				if (getWeeksBetween(task.getDateAdded(),currentDate) % Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0){
+				    System.out.println("here");
 				    if (isSameDay(task)){
 				    	isToday = true ;
 				    }
@@ -268,6 +270,7 @@ public class Logic {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		System.out.println(dayOfWeek);
 		if (task.getIsDaySelected()[dayOfWeek]==true){
 			boo = true;
 		}
@@ -290,6 +293,7 @@ public class Logic {
 		        cal.add(Calendar.WEEK_OF_YEAR, 1);
 		        weeks++;
 		    }
+		    msgLogger.add("num of week: " + weeks);
 		    return weeks;
 		}
 
@@ -526,9 +530,9 @@ public class Logic {
     		}
     	} 
     	else if (taskType.equals(WEEK_REC)){
-    		msgLogger.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
-    	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
-                       + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode +"#"+ com.getStopRepeatInString());
+    	//	msgLogger.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
+    	//                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
+        //               + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode +"#"+ com.getStopRepeatInString());
     		detailStored.add(taskType +"#"+com.getDateAdded()+"#"+ com.getRepeatStartTime() +"#"+ 
 	                   com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
 	                   + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" + taskCode+"#" + com.getStopRepeatInString());
