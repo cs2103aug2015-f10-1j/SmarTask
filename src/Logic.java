@@ -178,7 +178,9 @@ public class Logic {
 		} else if (task.getTaskRepeatType().equals(WEEK_REC)){
 			if(task.getTaskRepeatUntil().after(currentDate)){
 				if (getWeeksBetween(task.getDateAdded(),currentDate)%Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0){
-					isToday = true;
+				    if (isSameDate(task)){
+				    	isToday = true ;
+				    }
 				}
 			}
 			
@@ -195,6 +197,14 @@ public class Logic {
 				}
 		}
 		return isToday;
+	}
+	
+	// check the date
+	private static boolean isSameDate(Task task){
+		boolean boo = false;
+		
+		
+		return boo;
 	}
 	
 	// get the week difference between two dates
