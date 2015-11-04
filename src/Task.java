@@ -363,12 +363,14 @@ public class Task {
 
     public void setGetDaySelectedString() {
 	String index = "";
+	int num = 0;
 	for(int i =0; i < this.isDaySelected.length; i++) {
 	    if(isDaySelected[i] == true) {
-		index += " " + i;
+		num = i + 1;
+		index += num + " ";
 	    }
 	}
-	this.getDaySelectedString = index;
+	this.getDaySelectedString = index.trim();
     }
 
     public String getStopRepeatInString() {
