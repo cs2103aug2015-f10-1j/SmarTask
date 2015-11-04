@@ -88,6 +88,7 @@ public class SmarTaskController implements Initializable {
     private void updateWindows(TextArea display, String toDisplay) {
         display.clear();
         display.setText(toDisplay);
+        display.appendText("");
     }
     
     private void updateWindows(TextArea display) throws ParseException {
