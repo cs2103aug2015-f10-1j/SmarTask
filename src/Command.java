@@ -242,7 +242,7 @@ public class Command {
 
     public void setDaySelectedString() {
 	String index = "";
-	for(int i =0; i < this.isDaySelected.length; i++) {
+	for(int i = 1; i < this.isDaySelected.length; i++) {
 	    if(isDaySelected[i] == true) {
 		if(i != this.isDaySelected.length -1) {
 		    index +=  i + " ";

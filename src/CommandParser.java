@@ -163,7 +163,7 @@ public class CommandParser {
 	if(parameters.size() == 1) {
 	    return list ;
 	}
-	
+
 	list.add(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
 	return list;
     }
@@ -250,7 +250,7 @@ public class CommandParser {
 		command.setTaskType(REPEAT);
 	    } 
 	    else {
-	//	throw new Exception(MSG_NULL_POINTER);
+		//	throw new Exception(MSG_NULL_POINTER);
 	    }
 	    command.setTaskID(extractTaskIdParam(arguments));
 	    if(command.getTaskID()<=0) {
@@ -328,20 +328,64 @@ public class CommandParser {
 	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
 		command.setTaskType(REPEAT);
 		command.setTaskID(extractTaskIdParam(parameters));
-		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-until")) {
+		command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+		String input = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
 
+		if(input.contains("-until")) {
+		    String[] line = input.split("-until");
+		    com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+		    List<DateGroup> dateGroup = parseDate.parse(line[POSITION_FIRST_PARAM_ARGUMENT]);
+		    DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+		    List<Date> dates = group.getDates();
+		    String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+		    String[] param = arr[0].split(" ");
+		    int mth = monthInString.indexOf(param[1]) + 1;
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		    command.setRepeatUntil(dateFormat.parse("31/12/2015"));
+		    input = line[0];
 		}
 
-		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-on")) {
-
+		if(input.contains("-on")) {
+		    String[] paramArr = input.split("-on");
+		    String line = paramArr[POSITION_FIRST_PARAM_ARGUMENT].trim();
+		    command.setIsDaySelected(setSelectedDay(line));
+		    command.setDaySelectedString();
+		    input = paramArr[0];
 		}
 
-		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-every")) {
-
+		if(input.contains("-every")) {
+		    String[] paramArr = input.split("-every");
+		    String[] remainingParam =paramArr[1].trim().split(REGEX_WHITESPACES, SIZE_2);
+		    String type = remainingParam[1];
+		    if(type.equals("day")) {
+			command.setDayInterval(remainingParam[0]);
+		    }
+		    else if(type.equals("week")) {
+			command.setWeekInterval(remainingParam[0]);
+		    }
+		    else if (type.equals("month")) {
+			command.setMonthInterval(remainingParam[0]);
+		    }
+		    else if (type.equals("year")) {
+			command.setYearInterval(remainingParam[0]);
+		    }
+		    input = paramArr[0];
 		}
 
-		if(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).contains("-start")) {
+		if(input.contains("-start")) {
+		    String[] line = input.split("-start");
+		    String dateTimeLine = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
+		    
+		    ArrayList<String> time = extractTime(dateTimeLine);
+		    command.setRepeatStartTime(time.get(0));
+		    command.setRepeatEndTime(time.get(1));
 
+		    ArrayList<Date> date = extractNattyTwoDates(dateTimeLine);
+		    command.setDateAdded(date.get(0));
+		    
+		    if(!line[0].isEmpty()) {
+			command.setTaskDescription(line[0].trim());
+		    }
 		}
 
 	    }
@@ -516,7 +560,7 @@ public class CommandParser {
 		remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split("-until");
 
 		String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
-		command.setIsDaySelected(setSelectedDay(line, new Boolean[7]));
+		command.setIsDaySelected(setSelectedDay(line));
 		command.setDaySelectedString();
 
 		if(remainingParam.length > SIZE_1) {
@@ -575,10 +619,12 @@ public class CommandParser {
 	}
     }
 
-    private static Boolean[] setSelectedDay(String line, Boolean[] isSelected) throws Exception {
+    private static Boolean[] setSelectedDay(String line) throws Exception {
 	String[] days = line.split(",");
+	Boolean[] isSelected = new Boolean[8];
 	Arrays.fill(isSelected, false);
 	int dayNum;
+	isSelected[0] = null;
 	for(int i = 0; i <days.length; i++) {
 	    days[i] = days[i].trim();
 	    dayNum = getDayIndex(days[i]);
@@ -586,7 +632,7 @@ public class CommandParser {
 	}
 	return isSelected;
     }
-    
+
     private static int getDayIndex(String day) throws Exception {
 	if(day.toLowerCase().equals("mon")) {
 	    return 2;

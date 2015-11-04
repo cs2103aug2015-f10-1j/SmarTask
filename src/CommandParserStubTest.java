@@ -124,8 +124,27 @@ public class CommandParserStubTest {
 	//=========================================================================
 
 	try {
-	    Command repeat = CommandParser.parse("update r10111512 team project meeting");
-	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + repeat.getTaskID());
+	    Command repeat = CommandParser.parse("update r10111512 team project meeting -start 19 Nov 9 to 11am -every 5 week -on sun, mon, sat -until 25 Dec 15");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + " " + repeat.getTaskID()  + " " + repeat.getTaskDescription() + " " + " Day selected: " + repeat.getDaySelectedString()
+	    +" Interval " + repeat.getWeekInterval() + " "+ repeat.getRepeatUntil() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() );
+
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+	
+	try {
+	    Command repeat = CommandParser.parse("update r10111512 team project meeting -start 19 Nov 9 to 11am");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + " " + repeat.getTaskID()  + " " + repeat.getTaskDescription() + " " + " Day selected: " + repeat.getDaySelectedString()
+	    +" Interval " + repeat.getWeekInterval() + " "+ repeat.getRepeatUntil() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() );
+
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+	
+	try {
+	    Command repeat = CommandParser.parse("update r10111512 team project meeting -every 5 week -until 25 Dec");
+	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskType() + " " + " " + repeat.getTaskID()  + " " + repeat.getTaskDescription() + " " + " Day selected: " + repeat.getDaySelectedString()
+	    +" Interval " + repeat.getWeekInterval() + " "+ repeat.getRepeatUntil() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() );
 
 	} catch (Exception e) {
 	    System.out.println(e.getMessage());
