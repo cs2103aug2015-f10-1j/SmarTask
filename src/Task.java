@@ -80,7 +80,7 @@ public class Task {
             return null;
         }
     }
-
+    
     public String getFloatingString (){
         return this.description +"#" + this.id;
     }
@@ -387,6 +387,7 @@ public class Task {
 	String[] dateArr = input.split("@");
 	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
         Date date;
+        this.stopRepeat = new ArrayList<Date>();
 	
 	for(int i = 0; i< dateArr.length; i++ ) {
 	    date = sdf.parse(dateArr[i]);

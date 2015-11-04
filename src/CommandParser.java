@@ -324,7 +324,7 @@ public class CommandParser {
 	    else if(alphaIndex.toLowerCase().startsWith(SMALL_CAP_R)) {
 		command.setTaskType(REPEAT);
 		command.setTaskID(extractTaskIdParam(parameters));
-
+		
 
 	    }
 	    else {
@@ -647,7 +647,7 @@ public class CommandParser {
 	    ArrayList<Date> listOfDates = extractDatesIntoArrayList(dateParam);
 	    command.setStopRepeat(listOfDates);
 	    command.setStopRepeatInString();
-
+	    
 	    return command;
 
 	} catch (NullPointerException e) {
