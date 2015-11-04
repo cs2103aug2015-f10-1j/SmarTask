@@ -33,22 +33,24 @@ public class Storage {
 
 	private Gson gson;
 
-   public Storage (){
-	   
-   }
-
 	public Storage() {
 		gson = new Gson();
 		pathFile = new File(DEFAULT_PATHFILENAME);
 		createIfNotExists(pathFile);
-		retrieveSavePath();
-		taskFile = new File(savePath + DEFAULT_FILENAME);
-		createIfNotExists(taskFile);
+
+		//taskFile = new File(retrieveSavePath() + File.separator + DEFAULT_FILENAME);
+		//System.out.println(retrieveSavePath() + File.separator + DEFAULT_FILENAME);
+		//createIfNotExists(taskFile);
+		
+		if (retrieveSavePath() == null) {
+			taskFile = new File(DEFAULT_FILENAME);
+			createIfNotExists(taskFile);
+		}
+		else {
+			taskFile = new File(retrieveSavePath() + File.separator + DEFAULT_FILENAME);
+		}
 	}
 	
-	/*public void setFilePath(String path){
-		
-	}*/
 
 
 	public Storage getInstance() {
@@ -72,16 +74,20 @@ public class Storage {
 	
 //-------------------------------------------------------------------------------------------
 
-	
-	private void retrieveSavePath() {
-		String path = "";
+	//not getting the string from the file
+	private String retrieveSavePath() {
+		initReader(pathFile);
 		try {
-			initReader(pathFile);
-			path = reader.readLine();
-			savePath = savePath + path;
+			savePath = reader.readLine();
+			if (!(savePath == null)) {
+			System.out.println(savePath);
+			//savePath = savePath + path;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		closeReader();
+		return savePath;
 	}
 	
 	public ArrayList<Task> retrieveFile() {
@@ -133,7 +139,17 @@ public class Storage {
 			buffW.newLine();
 		    buffW.close();
 			
-			savePath = inputPath;
+		    initReader(pathFile);
+			savePath = reader.readLine();
+			closeReader();
+			
+			if(taskFile.renameTo(new File(savePath + File.separator + DEFAULT_FILENAME))){
+				System.out.println(savePath + File.separator + DEFAULT_FILENAME);
+	    		System.out.println("Moved successful!");
+	            }else{
+	    		System.out.println("Failed to move!");
+	            }
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
