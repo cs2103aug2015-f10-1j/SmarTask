@@ -517,7 +517,7 @@ public class CommandParser {
 
 		String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
 		command.setIsDaySelected(setSelectedDay(line, new Boolean[7]));
-		command.setGetDaySelectedString();
+		command.setDaySelectedString();
 
 		if(remainingParam.length > SIZE_1) {
 		    command.setRepeatUntil(extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim()).get(0));

@@ -81,15 +81,10 @@ public class CommandParserStubTest {
 	}
 
 	try {
-	    Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon");
+	    Command repeat = CommandParser.parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon, wed, fri");
 	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime()
 	    + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType() + " ==Week Interval: " 
-	    + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
-
-	    for(int i = 0; i<repeat.getIsDaySelected().length; i++) {
-		if(repeat.getIsDaySelected()[i] == true)
-		    System.out.println("DAY " + (i+1));
-	    }
+	    + repeat.getWeekInterval() + " Day selected: " +  repeat. getDaySelectedString() + " ==Until:" + repeat.getRepeatUntil());
 
 	} catch (Exception e) {
 	    System.out.println(e.getMessage());
