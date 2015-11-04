@@ -123,7 +123,6 @@ public class GUI extends Application {
     	try {
     		String command = "setfilepath " + file.getAbsolutePath();
     		Logic.executeCommand(command);
-    		System.out.println(command);
     	} catch (Exception e) {
     		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
     	}
@@ -133,7 +132,6 @@ public class GUI extends Application {
     	try {
     		String command = "setfilepath " + file.getAbsolutePath();
     		Logic.executeCommand(command);
-    		System.out.println(command);
     	} catch (Exception e) {
     		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
     	}

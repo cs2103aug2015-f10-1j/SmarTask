@@ -37,6 +37,7 @@ public class Command {
     private String repeatStartTime;
     private String repeatEndTime;
     private ArrayList<Date> stopRepeat;
+    private String stopRepeatInString;
     
     // ======= Day repeat =======
     private String dayInterval;
@@ -48,7 +49,6 @@ public class Command {
 
     // ======= Month repeat =======
     private String monthInterval;
-    private String monthRepeatPattern;
 
     // ======= Year repeat =======
     private String yearInterval;
@@ -239,14 +239,6 @@ public class Command {
         this.monthInterval = monthInterval;
     }
 
-    public String getMonthRepeatPattern() {
-        return monthRepeatPattern;
-    }
-
-    public void setMonthRepeatPattern(String monthRepeatPattern) {
-        this.monthRepeatPattern = monthRepeatPattern;
-    }
-
     public ArrayList<Date> getStopRepeat() {
         return stopRepeat;
     }
@@ -267,6 +259,24 @@ public class Command {
 	    }
 	}
 	this.getDaySelectedString = index;
+    }
+
+    public String getStopRepeatInString() {
+	return stopRepeatInString;
+    }
+
+    public void setStopRepeatInString() {
+	String dates = "";
+	for(int i =0; i<stopRepeat.size(); i++) {
+	    if(i != stopRepeat.size() -1) {
+		dates += stopRepeat.get(i).toString() + "@";
+	    }
+	    else {
+		dates += stopRepeat.get(i).toString();
+	    }
+	    
+	}
+	this.stopRepeatInString = dates;
     }
 
 }

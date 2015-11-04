@@ -34,6 +34,8 @@ public class Task {
     private String taskRepeatStartTime;
     private String taskRepeatEndTime;
     private String taskNextOccurrence;
+    private ArrayList<Date> stopRepeat;
+    private String stopRepeatInString;
 
     // For day repeat
     private String taskRepeatInterval_Day;
@@ -92,7 +94,7 @@ public class Task {
     }
 
     public String getRepeatString (){
-        return this.getDateAdded() + "#" + this.description+"#" + this.id;    
+        return this.getDateAdded() + "#" + this.description + "#" + this.id;    
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
@@ -134,6 +136,7 @@ public class Task {
                     setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    setStopRepeat(list[8]);
                     this.isComplete = false;
                 }
 
@@ -146,6 +149,7 @@ public class Task {
                     setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    setStopRepeat(list[8]);
                     this.isComplete = false;
                 }
                 else if(list[0].equals("week")) {
@@ -158,6 +162,7 @@ public class Task {
                     setTaskRepeatUntil(list[6]);
                     this.description = list[7];
                     this.id = Integer.parseInt(list[8]);
+                    setStopRepeat(list[9]);
                     this.isComplete = false;
                 }
                 else if (list[0].equals("month")) {
@@ -169,6 +174,7 @@ public class Task {
                     setTaskRepeatUntil(list[5]);
                     this.description = list[6];
                     this.id = Integer.parseInt(list[7]);
+                    setStopRepeat(list[8]);
                     this.isComplete = false;
                 }
             }
@@ -365,4 +371,26 @@ public class Task {
 	this.getDaySelectedString = index;
     }
 
+    public String getStopRepeatInString() {
+	return stopRepeatInString;
+    }
+
+    public void setStopRepeatInString(String stopRepeatInString) {
+	this.stopRepeatInString = stopRepeatInString;
+    }
+
+    public ArrayList<Date> getStopRepeat() {
+	return stopRepeat;
+    }
+
+    public void setStopRepeat(String input) throws ParseException {
+	String[] dateArr = input.split("@");
+	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date;
+	
+	for(int i = 0; i< dateArr.length; i++ ) {
+	    date = sdf.parse(dateArr[i]);
+	    this.stopRepeat.add(date);
+	}
+    }
 }

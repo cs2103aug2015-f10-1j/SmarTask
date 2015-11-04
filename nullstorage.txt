@@ -1,9 +1,0 @@
-{"type":"REPEAT","id":4265335,"description":"daily","taskRepeatType":"day","dateAdded":"Nov 15, 2015 12:00:00 AM","taskRepeatStartTime":"17:00:00","taskRepeatEndTime":"18:00:00","taskRepeatInterval_Day":"2","taskRepeatUntil":"Dec 15, 2016 12:00:00 AM","isComplete":false}
-{"type":"REPEAT","id":4265349,"description":"daily","taskRepeatType":"day","dateAdded":"Dec 15, 2015 12:00:00 AM","taskRepeatStartTime":"20:00:00","taskRepeatEndTime":"21:00:00","taskRepeatInterval_Day":"2","taskRepeatUntil":"Dec 1, 9999 12:00:00 AM","isComplete":false}
-{"type":"REPEAT","id":4265371,"description":"yearly","taskRepeatType":"year","dateAdded":"Oct 14, 2015 12:00:00 AM","taskRepeatStartTime":"14:00:00","taskRepeatEndTime":"17:00:00","taskRepeatInterval_Year":"1","taskRepeatUntil":"Dec 1, 9999 12:00:00 AM","isComplete":false}
-{"type":"REPEAT","id":4265544,"description":"test for day","taskRepeatType":"day","dateAdded":"Nov 1, 2015 12:00:00 AM","taskRepeatStartTime":"17:00:00","taskRepeatEndTime":"18:00:00","taskRepeatInterval_Day":"1","taskRepeatUntil":"Dec 15, 2016 12:00:00 AM","isComplete":false}
-{"type":"EVENT","id":4265572,"description":"Meeting with Boss","eventStart":"Tue Nov 10 17:00:00 SGT 2015","eventEnd":"Tue Nov 10 18:00:00 SGT 2015","isComplete":false}
-{"type":"DEADLINE","id":4265617,"description":"Finish assignment","deadline":"Thu Dec 10 12:00:00 SGT 2015","isComplete":false}
-{"type":"FLOATING","id":4265623,"description":"Read textbook","isComplete":false}
-{"type":"FLOATING","id":4265629,"description":"meeting boss","isComplete":false}
-{"type":"REPEAT","id":4267044,"description":"meeting","taskRepeatType":"month","dateAdded":"Dec 15, 2015 12:00:00 AM","taskRepeatStartTime":"16:00:00","taskRepeatEndTime":"18:00:00","taskRepeatInterval_Month":"1","taskRepeatUntil":"Dec 1, 9999 12:00:00 AM","isComplete":false}
