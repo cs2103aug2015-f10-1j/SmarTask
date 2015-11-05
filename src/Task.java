@@ -4,21 +4,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 
 /**
- * Task is an object class that contains all attibutes of a task
+ * Task is an object class that contains all attributes of a task
  * 
  * @author Bobby Lin
  */
 
 public class Task {
 
-	private static final String empty = "-1";
-
 	public enum Type {
 		EVENT, DEADLINE, FLOATING, REPEAT
 	}
+	
+	private static final String EMPTY = "-1";
 
 	private Type type;
 	private int id;
@@ -55,7 +54,6 @@ public class Task {
 	private Boolean isComplete;
 
 	public Task() {
-
 	}
 
 	public Task(Type type, ArrayList<String> attributeList) throws Exception {
@@ -96,6 +94,7 @@ public class Task {
 	private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
 		this.type = type;
 		String[] list = null;
+		
 		if (attributeList.size() > 0) {
 			list = attributeList.get(0).trim().split("#");
 		}
@@ -106,22 +105,16 @@ public class Task {
 			this.description = list[2];
 			this.id = Integer.parseInt(list[3]);
 			this.isComplete = false;
-		}
-
-		else if (type.equals(Task.Type.DEADLINE)) {
+		} else if (type.equals(Task.Type.DEADLINE)) {
 			this.deadline = list[0];
 			this.description = list[1];
 			this.id = Integer.parseInt(list[2]);
 			this.isComplete = false;
-		}
-
-		else if (type.equals(Task.Type.FLOATING)) {
+		} else if (type.equals(Task.Type.FLOATING)) {
 			this.description = list[0];
 			this.id = Integer.parseInt(list[1]);
 			this.isComplete = false;
-		}
-
-		else if (type.equals(Task.Type.REPEAT)) {
+		} else if (type.equals(Task.Type.REPEAT)) {
 			try {
 				if (list[0].equals("day")) {
 					this.taskRepeatType = list[0];
@@ -134,9 +127,7 @@ public class Task {
 					this.id = Integer.parseInt(list[7]);
 					setStopRepeat(list[8]);
 					this.isComplete = false;
-				}
-
-				else if (list[0].equals("year")) {
+				} else if (list[0].equals("year")) {
 					this.taskRepeatType = list[0];
 					setDateAdded(list[1]);
 					this.taskRepeatStartTime = list[2];
@@ -153,8 +144,7 @@ public class Task {
 					this.taskRepeatStartTime = list[2];
 					this.taskRepeatEndTime = list[3];
 					this.setTaskRepeatInterval_Week(list[4]);
-					setIsDaySelected(list[5]); // list[5] contains selected day
-												// index {0,1,2...6}
+					setIsDaySelected(list[5]); // list[5] contains selected day index {0,1,2...6}
 					setTaskRepeatUntil(list[6]);
 					this.description = list[7];
 					this.id = Integer.parseInt(list[8]);
@@ -181,7 +171,6 @@ public class Task {
 	// ================================================================
 	// Getter methods to get attributes of Task object
 	// ================================================================
-
 	public Type getType() {
 		return type;
 	}
@@ -217,7 +206,6 @@ public class Task {
 	// ================================================================
 	// Setter methods to initialize Task object
 	// ================================================================
-
 	public void setType(Type type) {
 		this.type = type;
 	}
@@ -316,7 +304,6 @@ public class Task {
 		DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
 		Date date = sdf.parse(dateAdded);
 		this.dateAdded = date;
-
 	}
 
 	public String getTaskRepeatInterval_Week() {
@@ -342,13 +329,12 @@ public class Task {
 	public void setIsDaySelected(String list) {
 		isDaySelected = new Boolean[8];
 		Arrays.fill(isDaySelected, false);
-
 		String[] days = list.split(" ");
 		this.isDaySelected[0] = null;
+		
 		for (int i = 0; i < days.length; i++) {
 			this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
 		}
-
 	}
 
 	public String getStopRepeatInString() {
