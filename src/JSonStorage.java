@@ -18,11 +18,6 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
-
-
-
-
-
 public class JSonStorage {
 
 	private static boolean OVERWRITE = false;
@@ -117,7 +112,7 @@ public class JSonStorage {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private String retrieveFile(String filePathInput) {
 		String currLine = "", pathOut = null;
 		File file = new File(filePathInput);
@@ -158,9 +153,9 @@ public class JSonStorage {
 		String path = retrieveFile(DEFAULT_FILEPATH);
 		return path;
 	}
-	
+
 	public void addPath(String newPath) {
-//		SaveFile sf = new SaveFile();
+		// SaveFile sf = new SaveFile();
 		createFile(DEFAULT_FILEPATH);
 		File file = new File(DEFAULT_FILEPATH);
 		if (checkPathFileExist() && file.length() > 0) {
@@ -176,25 +171,21 @@ public class JSonStorage {
 
 	public void addSetting(String input) {
 		createFile(DEFAULT_CONFIG);
-//		SaveFile sf = new SaveFile();
+		// SaveFile sf = new SaveFile();
 		saveToFile(DEFAULT_CONFIG, input);
 	}
 
 	public void addInnerImage() {
 		createFile(DEFAULT_INNERIMAGEFILE);
 		/*
-		 * Gson gson = new Gson();
-		 * 
-		 * ImagePath imagePath = new ImagePath();
-		 * 
-		 * try { BufferedReader reader = new BufferedReader(new
+		 * Gson gson = new Gson(); ImagePath imagePath = new ImagePath(); try {
+		 * BufferedReader reader = new BufferedReader(new
 		 * FileReader(DEFAULT_INNERIMAGEFILE)); String currentLine =
 		 * reader.readLine(); while (currentLine != null) { imagePath =
 		 * gson.fromJson(currentLine, ImagePath.class); currentLine =
-		 * reader.readLine(); } reader.close();
-		 * 
-		 * } catch (FileNotFoundException e) { e.printStackTrace(); } catch
-		 * (IOException e) { e.printStackTrace(); }
+		 * reader.readLine(); } reader.close(); } catch (FileNotFoundException
+		 * e) { e.printStackTrace(); } catch (IOException e) {
+		 * e.printStackTrace(); }
 		 */
 	}
 
@@ -254,19 +245,20 @@ public class JSonStorage {
 		File f = new File(name);
 		return f.getAbsolutePath();
 	}
-	
-	private void sortByDate(){
-        Collections.sort(taskList, new Comparator<Task>() {
-            DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            @Override
-            public int compare(Task task1, Task task2) {
-                try {
-                    return f.parse(task1.getDeadline()).compareTo(f.parse(task2.getDeadline()));
-                } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
-                }
-            }
-        });
-    }
+
+	private void sortByDate() {
+		Collections.sort(taskList, new Comparator<Task>() {
+			DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+			@Override
+			public int compare(Task task1, Task task2) {
+				try {
+					return f.parse(task1.getDeadline()).compareTo(f.parse(task2.getDeadline()));
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(e);
+				}
+			}
+		});
+	}
 
 }
