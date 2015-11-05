@@ -26,21 +26,26 @@ import javafx.stage.Stage;
 public class SmarTaskController implements Initializable {
 
 	@FXML
-	private TextArea displayWindow; // Value injected by FXMLoader
+	private TextArea displayWindow;
 	@FXML
-	private TextArea taskWindow; // Value injected by FXMLoader
+	private TextArea taskWindow;
 	@FXML
-	private TextField inputWindow; // Value injected by FXMLoader
+	private TextField inputWindow;
+	
+	private static final String COMMAND_UNDO = "undo";
+	private static final String COMMAND_REDO = "redo";
+	private static final String COMMAND_EXIT = "exit";
 	private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
+	private static final String MESSAGE_INVALIDCOMMAND = "Error! Invalid Command sent to Logic!";
+	private static final String MESSAGE_INVALIDUNDO = "Error! Invalid Undo Command sent to Logic!";
+	private static final String MESSAGE_INVALIDREDO = "Error! Invalid Redo Command sent to Logic!";
 	private static final String TASK_DEADLINE = "Deadline Tasks:";
 	private static final String TASK_EVENTS = "Event Tasks:";
 	private static final String TASK_FLOATING = "Floating Tasks:";
 	private static final String TASK_RECURRING = "Recurring Tasks:";
-	private static final String COMMAND_UNDO = "undo";
-	private static final String COMMAND_REDO = "redo";
-	private static final String COMMAND_EXIT = "exit";
 	private final KeyCombination crtlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
 	private final KeyCombination crtlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+	
 	private static String logDisplay;
 	private static String deadlineTasks;
 	private static String eventTasks;
@@ -71,6 +76,7 @@ public class SmarTaskController implements Initializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
 		displayWindow.setText(MESSAGE_WELCOME);
 
 		displayWindow.textProperty().addListener(new ChangeListener<Object>() {
@@ -90,6 +96,10 @@ public class SmarTaskController implements Initializable {
 	 */
 	public void updateDisplay() throws ParseException {
 		logDisplay = Logic.getMessageLog();
+		deadlineTasks = Logic.getDeadline();
+		eventTasks = Logic.getEvents();
+		floatingTasks = Logic.getFloatingTask();
+		recurringTasks = Logic.getRecurringTask();
 		updateWindows(displayWindow, logDisplay);
 		updateWindows(taskWindow);
 	}
@@ -97,15 +107,12 @@ public class SmarTaskController implements Initializable {
 	private void updateWindows(TextArea display, String toDisplay) {
 		display.clear();
 		display.setText(toDisplay);
-		display.appendText("");
+		String emptyString = "";
+		display.appendText(emptyString);
 	}
 
-	private void updateWindows(TextArea display) throws ParseException {
+	private void updateWindows(TextArea display) {
 		display.clear();
-		deadlineTasks = Logic.getDeadline();
-		eventTasks = Logic.getEvents();
-		floatingTasks = Logic.getFloatingTask();
-		recurringTasks = Logic.getRecurringTask();
 		String lineBreak = "\n";
 		display.setText(TASK_DEADLINE);
 		display.appendText(lineBreak);
@@ -187,7 +194,7 @@ public class SmarTaskController implements Initializable {
 			Logic.executeCommand(userCommand);
 			updateDisplay();
 		} catch (Exception e) {
-			System.err.println("Error! Invalid Command sent to Logic!");
+			System.err.println(MESSAGE_INVALIDCOMMAND);
 		}
 	}
 
@@ -219,7 +226,7 @@ public class SmarTaskController implements Initializable {
 			updateDisplay();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("Error! Invalid Undo Command sent to Logic!");
+			System.err.println(MESSAGE_INVALIDUNDO);
 		}
 	}
 
@@ -229,7 +236,7 @@ public class SmarTaskController implements Initializable {
 			updateDisplay();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("Error! Invalid Redo Command sent to Logic!");
+			System.err.println(MESSAGE_INVALIDREDO);
 		}
 	}
 }

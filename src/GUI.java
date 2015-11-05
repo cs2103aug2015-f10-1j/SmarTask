@@ -29,6 +29,14 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 
+	private static final String BUTTON_CHOOSELOCATION = "Choose Storage Location";
+	private static final String BUTTON_DEFAULTLOCATION = "Use Default Location";
+	private static final String COMMAND_FILEPATH = "setfilepath ";
+	private static final String FILE_SMARTASKUI = "SmarTaskUI.fxml";
+	private static final String MESSAGE_FXMLERROR = "Error! SmarTaskUI.fxml cannot be found!";
+	private static final String MESSAGE_FILEPATHERROR = "Error! Filepath.txt cannot be read!";
+	private static final String SCENE_TITLE = "SmarTask";
+
 	private Stage stage;
 	private String defaultFileLocation = System.getProperty("user.home") + "/Desktop";
 	private static String filePath = "../main/" + "filepath.txt";
@@ -40,18 +48,18 @@ public class GUI extends Application {
 	public void start(Stage primaryStage) {
 		if (checkFile(filePath)) {
 			try {
-				Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+				Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
 				Scene scene = new Scene(root, 700, 800);
-				primaryStage.setTitle("SmarTask");
+				primaryStage.setTitle(SCENE_TITLE);
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (IOException e) {
-				System.err.println("Error! SmarTaskUI.fxml cannot be found!");
+				System.err.println(MESSAGE_FXMLERROR);
 			}
 		} else {
 			stage = primaryStage;
 			Scene scene = chooseFileScene(primaryStage);
-			primaryStage.setTitle("SmarTask");
+			primaryStage.setTitle(SCENE_TITLE);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		}
@@ -61,10 +69,12 @@ public class GUI extends Application {
 		File file = new File(fileName);
 		FileReader fr = null;
 		BufferedReader br = null;
+		
 		try {
 			fr = new FileReader(file);
 			br = new BufferedReader(fr);
 			System.out.println(file.getAbsolutePath());
+			
 			if (br.readLine() != null) {
 				br.close();
 				return true;
@@ -73,22 +83,25 @@ public class GUI extends Application {
 				return false;
 			}
 		} catch (IOException e) {
-			System.err.println("Error! Filepath.txt cannot be read!");
+			System.err.println(MESSAGE_FILEPATHERROR);
 		}
+		
 		return false;
 	}
 
 	private Scene chooseFileScene(Stage primaryStage) {
 		final FileChooser fileChooser = new FileChooser();
-		final Button createFileButton = new Button("Create new file");
-		final Button defaultFileButton = new Button("Default file location");
+		final Button createFileButton = new Button(BUTTON_CHOOSELOCATION);
+		final Button defaultFileButton = new Button(BUTTON_DEFAULTLOCATION);
 
 		createFileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent e) {
 				File file = fileChooser.showSaveDialog(primaryStage);
+				
 				if (file != null) {
 					createFile(file);
+					
 					try {
 						stage.setScene(createSmarTaskScene());
 					} catch (IOException e1) {
@@ -127,14 +140,14 @@ public class GUI extends Application {
 	}
 
 	protected Scene createSmarTaskScene() throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
 		Scene scene = new Scene(root, 700, 800);
 		return scene;
 	}
 
 	private void createFile(File file) {
 		try {
-			String command = "setfilepath " + file.getAbsolutePath();
+			String command = COMMAND_FILEPATH + file.getAbsolutePath();
 			Logic.executeCommand(command);
 		} catch (Exception e) {
 			Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
@@ -143,7 +156,7 @@ public class GUI extends Application {
 
 	private void defaultFile(File file) {
 		try {
-			String command = "setfilepath " + file.getAbsolutePath();
+			String command = COMMAND_FILEPATH + file.getAbsolutePath();
 			Logic.executeCommand(command);
 		} catch (Exception e) {
 			Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
