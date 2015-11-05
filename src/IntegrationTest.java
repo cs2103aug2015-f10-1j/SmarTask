@@ -13,6 +13,11 @@ import java.util.Date;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author A0130034A and 
+ */
+
 public class IntegrationTest {
 
 	Logic logic = new Logic();

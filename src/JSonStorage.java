@@ -19,7 +19,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 /**
- * @author Kevin Zhang
+ * @author A0130034A
  */
 
 public class JSonStorage {

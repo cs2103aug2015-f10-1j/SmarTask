@@ -15,7 +15,7 @@ import com.google.gson.JsonSyntaxException;
 /**
  * Storage component - Nothing should be stored in Storage
  * 
- * @author Kevin Zhang
+ * @author A0130034A
  */
 
 public class Storage {
