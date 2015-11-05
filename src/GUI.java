@@ -20,11 +20,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * GUI is a class that loads up the fxml file to display to the user.
- * This program will serve as the main window of interaction between user and SmarTask.
+ * GUI is a class that loads up the fxml file to display to the user. This
+ * program will serve as the main window of interaction between user and
+ * SmarTask.
  * 
  * @author David Chong
- *
  */
 
 public class GUI extends Application {
@@ -32,121 +32,121 @@ public class GUI extends Application {
 	private Stage stage;
 	private String defaultFileLocation = System.getProperty("user.home") + "/Desktop";
 	private static String filePath = "../main/" + "filepath.txt";
-	
-    public static void main(String[] args) {
-    	launch(args);
-    }
-    
-    public void start(Stage primaryStage) {
-    	if(checkFile(filePath)) {
-    		try {
-        		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-        		Scene scene = new Scene(root, 700, 800);
-        		primaryStage.setTitle("SmarTask");
-    	    	primaryStage.setScene(scene);
-    	        primaryStage.show();
-    	    } catch (IOException e) {
-    	    	System.err.println("Error! SmarTaskUI.fxml cannot be found!");
-    	    }
-    	} else {
-    		stage = primaryStage;
-        	Scene scene = chooseFileScene(primaryStage);
-        	primaryStage.setTitle("SmarTask");
-        	primaryStage.setScene(scene);
-            primaryStage.show();
-    	}
-    }
-    
-    private static boolean checkFile(String fileName) {
-    	File file = new File(fileName);
-    	FileReader fr = null;
-    	BufferedReader br = null;
-    	try {
-    		fr = new FileReader(file);
-    		br = new BufferedReader(fr);
-    		System.out.println(file.getAbsolutePath());
-    		if(br.readLine() != null) {
-    			br.close();
-    			return true;
-    		} else {
-    			br.close();
-    			return false;
-    		}
-    	} catch (IOException e) {
-    		System.err.println("Error! Filepath.txt cannot be read!");
-    	}
-    	return false;
-    }
-    
-    private Scene chooseFileScene(Stage primaryStage) {
-        final FileChooser fileChooser = new FileChooser();
-        final Button createFileButton = new Button("Create new file");
-        final Button defaultFileButton = new Button("Default file location");
- 
-        createFileButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(final ActionEvent e) {
-        		File file = fileChooser.showSaveDialog(primaryStage);
-        		if (file != null) {
-        			createFile(file);
-        			try {
-        				stage.setScene(createSmarTaskScene());
-        			} catch (IOException e1) {
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	public void start(Stage primaryStage) {
+		if (checkFile(filePath)) {
+			try {
+				Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+				Scene scene = new Scene(root, 700, 800);
+				primaryStage.setTitle("SmarTask");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (IOException e) {
+				System.err.println("Error! SmarTaskUI.fxml cannot be found!");
+			}
+		} else {
+			stage = primaryStage;
+			Scene scene = chooseFileScene(primaryStage);
+			primaryStage.setTitle("SmarTask");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		}
+	}
+
+	private static boolean checkFile(String fileName) {
+		File file = new File(fileName);
+		FileReader fr = null;
+		BufferedReader br = null;
+		try {
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			System.out.println(file.getAbsolutePath());
+			if (br.readLine() != null) {
+				br.close();
+				return true;
+			} else {
+				br.close();
+				return false;
+			}
+		} catch (IOException e) {
+			System.err.println("Error! Filepath.txt cannot be read!");
+		}
+		return false;
+	}
+
+	private Scene chooseFileScene(Stage primaryStage) {
+		final FileChooser fileChooser = new FileChooser();
+		final Button createFileButton = new Button("Create new file");
+		final Button defaultFileButton = new Button("Default file location");
+
+		createFileButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				File file = fileChooser.showSaveDialog(primaryStage);
+				if (file != null) {
+					createFile(file);
+					try {
+						stage.setScene(createSmarTaskScene());
+					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-                }
-           }
-        });
+				}
+			}
+		});
 
-        defaultFileButton.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(final ActionEvent e) {
-        		try {
-        			File file = new File(defaultFileLocation);
-        			defaultFile(file);
-        			stage.setScene(createSmarTaskScene());
-        		} catch (IOException e2) {
-        			e2.printStackTrace();
-        		}
-        	}
-        });
- 
-        final GridPane inputGridPane = new GridPane();
-        GridPane.setConstraints(createFileButton, 0, 0);
-        GridPane.setConstraints(defaultFileButton, 1, 0);
-        inputGridPane.setHgap(6);
-        inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(createFileButton, defaultFileButton);
+		defaultFileButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent e) {
+				try {
+					File file = new File(defaultFileLocation);
+					defaultFile(file);
+					stage.setScene(createSmarTaskScene());
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
 
-        final Pane rootGroup = new VBox(12);
-        rootGroup.getChildren().addAll(inputGridPane);
-        rootGroup.setPadding(new Insets(12, 12, 12, 12));
+		final GridPane inputGridPane = new GridPane();
+		GridPane.setConstraints(createFileButton, 0, 0);
+		GridPane.setConstraints(defaultFileButton, 1, 0);
+		inputGridPane.setHgap(6);
+		inputGridPane.setVgap(6);
+		inputGridPane.getChildren().addAll(createFileButton, defaultFileButton);
 
-        Scene scene = new Scene(rootGroup);
-        return scene;
-    }
-    
-    protected Scene createSmarTaskScene() throws IOException {
-    	Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
-    	Scene scene = new Scene(root, 700, 800);
-    	return scene;
-    }
-    
-    private void createFile(File file) {
-    	try {
-    		String command = "setfilepath " + file.getAbsolutePath();
-    		Logic.executeCommand(command);
-    	} catch (Exception e) {
-    		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
-    	}
-    }
-    
-    private void defaultFile(File file) {
-    	try {
-    		String command = "setfilepath " + file.getAbsolutePath();
-    		Logic.executeCommand(command);
-    	} catch (Exception e) {
-    		Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
-    	}
-    }
+		final Pane rootGroup = new VBox(12);
+		rootGroup.getChildren().addAll(inputGridPane);
+		rootGroup.setPadding(new Insets(12, 12, 12, 12));
+
+		Scene scene = new Scene(rootGroup);
+		return scene;
+	}
+
+	protected Scene createSmarTaskScene() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("SmarTaskUI.fxml"));
+		Scene scene = new Scene(root, 700, 800);
+		return scene;
+	}
+
+	private void createFile(File file) {
+		try {
+			String command = "setfilepath " + file.getAbsolutePath();
+			Logic.executeCommand(command);
+		} catch (Exception e) {
+			Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
+		}
+	}
+
+	private void defaultFile(File file) {
+		try {
+			String command = "setfilepath " + file.getAbsolutePath();
+			Logic.executeCommand(command);
+		} catch (Exception e) {
+			Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
+		}
+	}
 }
