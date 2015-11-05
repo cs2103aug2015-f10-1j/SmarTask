@@ -8,6 +8,7 @@ import java.util.*;
  */
 
 public class Command {
+	
 	public enum Type {
 		ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH, UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
 	}
@@ -16,18 +17,15 @@ public class Command {
 	private Type type;
 	private String taskType;
 	private String taskDescription;
-
 	private String taskDeadline;
-
 	private String taskEventStart;
 	private String taskEventEnd;
 	private String taskEventDate;
 	private String taskEventTime;
-
 	private String filePath;
 	private ArrayList<String> searchKeyword;
 
-	// Additional attributes for recurrencing task
+	// Additional attributes for recurring task
 	private String repeatType;
 	private Date dateAdded;
 	private Date repeatUntil;
@@ -57,7 +55,6 @@ public class Command {
 	// ================================================================
 	// Getters method to support Logic methods
 	// ================================================================
-
 	public String getTaskDescription() {
 		return taskDescription;
 	}
@@ -93,7 +90,6 @@ public class Command {
 	// ================================================================
 	// Setters method to support CommandParser methods
 	// ================================================================
-
 	public void setTaskDescription(String taskDescription) {
 		this.taskDescription = taskDescription;
 	}
@@ -240,16 +236,17 @@ public class Command {
 
 	public void setDaySelectedString() {
 		String index = "";
+		
 		for (int i = 1; i < this.isDaySelected.length; i++) {
 			if (isDaySelected[i] == true) {
 				if (i != this.isDaySelected.length - 1) {
 					index += i + " ";
-
 				} else {
 					index += i;
 				}
 			}
 		}
+		
 		this.daySelectedString = index;
 	}
 
@@ -259,15 +256,15 @@ public class Command {
 
 	public void setStopRepeatInString() {
 		String dates = "";
+		
 		for (int i = 0; i < stopRepeat.size(); i++) {
 			if (i != stopRepeat.size() - 1) {
 				dates += stopRepeat.get(i).toString() + "@";
 			} else {
 				dates += stopRepeat.get(i).toString();
 			}
-
 		}
+		
 		this.stopRepeatInString = dates;
 	}
-
 }

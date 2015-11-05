@@ -12,10 +12,11 @@ import java.util.Stack;
 
 public class CommandHistory {
 
-	Stack<ArrayList<Task>> undoStack;
-	Stack<ArrayList<Task>> redoStack;
 	private final String MSG_UNDO_FAIL = "cannot undo!!!";
 	private final String MSG_REDO_FAIL = "cannot redo!!!";
+	
+	public Stack<ArrayList<Task>> undoStack;
+	public Stack<ArrayList<Task>> redoStack;
 
 	public CommandHistory(ArrayList<Task> storedTask) {
 		undoStack = new Stack<ArrayList<Task>>();
@@ -31,11 +32,13 @@ public class CommandHistory {
 		if (undoStack.empty() || undoStack.peek() == null || undoStack.size() == 1) {
 			throw new Exception(MSG_UNDO_FAIL);
 		}
+		
 		try {
 			redoStack.push(undoStack.pop());
 		} catch (Exception e) {
 			throw new Exception(MSG_UNDO_FAIL);
 		}
+		
 		return undoStack.peek();
 	}
 
@@ -43,12 +46,13 @@ public class CommandHistory {
 		if (redoStack.empty() || redoStack.peek() == null) {
 			throw new Exception(MSG_REDO_FAIL);
 		}
+		
 		try {
 			undoStack.push(redoStack.pop());
 		} catch (Exception e) {
 			throw new Exception(MSG_REDO_FAIL);
 		}
+		
 		return undoStack.peek();
 	}
-
 }
