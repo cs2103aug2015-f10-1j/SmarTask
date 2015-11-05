@@ -18,6 +18,10 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+/**
+ * @author Kevin Zhang
+ */
+
 public class JSonStorage {
 
 	private static boolean OVERWRITE = false;
@@ -26,7 +30,6 @@ public class JSonStorage {
 	private ArrayList<Task> taskList;
 	private static String fileName;
 	private static String oldFileName;
-
 	private static String DEFAULT_FILEPATH = "Path.txt";
 	private static String DEFAULT_CONFIG = "Config.txt";
 	private static String DEFAULT_INNERIMAGEFILE = "InnerImagePath.txt";
@@ -44,7 +47,6 @@ public class JSonStorage {
 			writer.write(gson.toJson(task));
 			writer.write('\n');
 			writer.close();
-
 			taskList.add(task);
 			System.out.println(taskList.size());
 			sortByDate();
@@ -60,6 +62,7 @@ public class JSonStorage {
 				taskList.remove(i);
 			}
 		}
+		
 		sortByDate();
 		rewriteFile();
 	}
@@ -68,10 +71,12 @@ public class JSonStorage {
 		try {
 			Gson gson = new Gson();
 			FileWriter writer = new FileWriter(fileName, OVERWRITE);
+			
 			for (int i = 0; i < taskList.size(); i++) {
 				writer.write(gson.toJson(taskList.get(i)));
 				writer.write('\n');
 			}
+			
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -83,7 +88,6 @@ public class JSonStorage {
 	}
 
 	public void initializeStorage() throws Exception {
-
 		if (checkPathFileExist()) {
 			oldFileName = getPath();
 			fileName = getPath();
@@ -99,13 +103,14 @@ public class JSonStorage {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 			String currentLine = reader.readLine();
+			
 			while (currentLine != null) {
 				task = gson.fromJson(currentLine, Task.class);
 				taskList.add(task);
 				currentLine = reader.readLine();
 			}
+			
 			reader.close();
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -116,15 +121,17 @@ public class JSonStorage {
 	private String retrieveFile(String filePathInput) {
 		String currLine = "", pathOut = null;
 		File file = new File(filePathInput);
+		
 		try {
 			FileReader fr = new FileReader(file);
 			BufferedReader br = new BufferedReader(fr);
+			
 			while ((currLine = br.readLine()) != null) {
 				pathOut = currLine;
 			}
+			
 			fr.close();
 			br.close();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -134,13 +141,12 @@ public class JSonStorage {
 
 	public void saveToFile(String fileInput, String newPath) {
 		File file = new File(fileInput);
+		
 		try {
 			FileWriter fw = new FileWriter(file);
 			fw.flush();
-
 			fw.write(newPath);
 			fw.write('\n');
-
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -148,14 +154,12 @@ public class JSonStorage {
 	}
 
 	// ------------------------------------------------------------------------------------------------//
-
 	public String getPath() {
 		String path = retrieveFile(DEFAULT_FILEPATH);
 		return path;
 	}
 
 	public void addPath(String newPath) {
-		// SaveFile sf = new SaveFile();
 		createFile(DEFAULT_FILEPATH);
 		File file = new File(DEFAULT_FILEPATH);
 		if (checkPathFileExist() && file.length() > 0) {
@@ -171,22 +175,11 @@ public class JSonStorage {
 
 	public void addSetting(String input) {
 		createFile(DEFAULT_CONFIG);
-		// SaveFile sf = new SaveFile();
 		saveToFile(DEFAULT_CONFIG, input);
 	}
 
 	public void addInnerImage() {
 		createFile(DEFAULT_INNERIMAGEFILE);
-		/*
-		 * Gson gson = new Gson(); ImagePath imagePath = new ImagePath(); try {
-		 * BufferedReader reader = new BufferedReader(new
-		 * FileReader(DEFAULT_INNERIMAGEFILE)); String currentLine =
-		 * reader.readLine(); while (currentLine != null) { imagePath =
-		 * gson.fromJson(currentLine, ImagePath.class); currentLine =
-		 * reader.readLine(); } reader.close(); } catch (FileNotFoundException
-		 * e) { e.printStackTrace(); } catch (IOException e) {
-		 * e.printStackTrace(); }
-		 */
 	}
 
 	// Copy and delete
@@ -197,26 +190,19 @@ public class JSonStorage {
 		try {
 			File afile = new File(oldPath); // original path
 			File bfile = new File(newFilePath); // new path
-
 			inStream = new FileInputStream(afile);
 			outStream = new FileOutputStream(bfile);
-
 			byte[] buffer = new byte[65536];
-
 			int length;
-			// copy the file content in bytes
+			
 			while ((length = inStream.read(buffer)) > 0) {
 				outStream.write(buffer, 0, length);
 			}
 
 			inStream.close();
 			outStream.close();
-
-			// delete the original file
 			afile.delete();
-
 			fileName = newFilePath;
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -224,6 +210,7 @@ public class JSonStorage {
 
 	public void createFile(String fileName) {
 		File file = new File(fileName);
+		
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -235,6 +222,7 @@ public class JSonStorage {
 
 	public boolean checkPathFileExist() {
 		File file = new File(DEFAULT_FILEPATH);
+		
 		if (file.exists()) {
 			return true;
 		}
@@ -249,7 +237,7 @@ public class JSonStorage {
 	private void sortByDate() {
 		Collections.sort(taskList, new Comparator<Task>() {
 			DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
+			
 			@Override
 			public int compare(Task task1, Task task2) {
 				try {
@@ -260,5 +248,4 @@ public class JSonStorage {
 			}
 		});
 	}
-
 }
