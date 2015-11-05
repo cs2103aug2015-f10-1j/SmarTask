@@ -24,7 +24,7 @@ import javafx.stage.Stage;
  * program will serve as the main window of interaction between user and
  * SmarTask.
  * 
- * @author David Chong
+ * @author A0116633L
  */
 
 public class GUI extends Application {

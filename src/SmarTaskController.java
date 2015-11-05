@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  * the fxml file. It determines the behavior of the fxml file and is the main
  * class to add UI enhancements.
  * 
- * @author David Chong
+ * @author A0116633L
  */
 
 public class SmarTaskController implements Initializable {
