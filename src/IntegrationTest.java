@@ -21,9 +21,11 @@ public class IntegrationTest {
 
 	private BufferedReader reader;
 	private PrintWriter writer;
-
-	private String output = "";
-	private String expected = "";
+	
+	private String outputCommand = "";
+	private String expectedCommand = "";
+	private String outputStorage = "";
+	private String expectedStorage = "";
 
 	@Test
 	// Test the features including add different types of tasks
@@ -31,64 +33,83 @@ public class IntegrationTest {
 
 		// add floating tasks
 		logic.executeCommand("add buy potatoes");
-		output = logic.getMessageLog();
-		expected = "add buy potatoes successful!";
-
-		assertEquals(expected, output);
-		initialize();
-
-		logic.executeCommand("add buy potatoes");
-		output = readFile(testFile);
-		expected = "{\"type\":\"FLOATING\",\"id\":4284924,\"description\":\"buy patatoes\",\"isComplete\":false}";
-
-		assertEquals(expected, output);
+		
+		outputCommand = logic.getMessageLog();
+		expectedCommand = "add buy potatoes successful!";
+//		initialize();
+//		logic.executeCommand("add buy potatoes");
+		outputStorage = readFile(testFile);
+		expectedStorage = "{\"type\":\"FLOATING\",\"id\":4284924,\"description\":\"buy patatoes\",\"isComplete\":false}";
+		
+		assertEquals(expectedCommand, outputCommand);
+		assertEquals(expectedStorage, outputStorage);
+		
 		initialize();
 
 		// add event tasks
 		logic.executeCommand("add Meeting with Boss on 10 Nov 5 to 6pm");
-		output = logic.getMessageLog();
-		expected = "add Meeting with Boss successful!";
+		
+		outputCommand = logic.getMessageLog();
+		expectedCommand = "add Meeting with Boss successful!";
 
-		assertEquals(expected, output);
-		initialize();
-
-		logic.executeCommand("add Meeting with Boss on 10 Nov 5 to 6pm");
-		output = readFile(testFile);
-		expected = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
-
-		assertEquals(expected, output);
+		outputStorage = readFile(testFile);
+		expectedStorage = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
+		
+		assertEquals(expectedCommand, outputCommand);
+		assertEquals(expectedStorage, outputStorage);
+		
 		initialize();
 
 		// add deadline tasks
 		logic.executeCommand("add Finish assignment by 10 Dec 12pm");
-		output = logic.getMessageLog();
-		expected = "add Finish assignment successful!";
+		
+		outputCommand = logic.getMessageLog();
+		expectedCommand = "add Finish assignment successful!";
 
-		assertEquals(expected, output);
-		initialize();
-
-		logic.executeCommand("add Meeting with Boss on 10 Nov 5 to 6pm");
-		output = readFile(testFile);
-		expected = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
-
-		assertEquals(expected, output);
+		outputStorage = readFile(testFile);
+		expectedStorage = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
+		
+		assertEquals(expectedCommand, outputCommand);
+		assertEquals(expectedStorage, outputStorage);
+		
 		initialize();
 	}
 
 	@Test
 	// Test the features including modifying or deleting tasks
-	public void testphase2() throws IOException {
+	public void testphase2() throws Exception {
 		// update tasks
-
-		assertEquals(expected, output);
+		
+		assertEquals(expectedCommand, outputCommand);
+		assertEquals(expectedStorage, outputStorage);
 		initialize();
 		// delete tasks
+		logic.executeCommand("add buy potatoes");
+		logic.executeCommand("delete F1");
+		
+		outputCommand = logic.getMessageLog();
+		expectedCommand = "deleted floating index 1 successfully!";
+		outputStorage = readFile(testFile);
+		expectedStorage = "";
+		
+		assertEquals(expectedCommand, outputCommand);
+		assertEquals(expectedStorage, outputStorage);
 
-		assertEquals(expected, output);
 		initialize();
+		
 		// complete tasks
 
-		assertEquals(expected, output);
+		logic.executeCommand("add Finish assignment by 10 Dec 12pm");
+		logic.executeCommand("complete D1");
+		
+		outputCommand = logic.getMessageLog();
+		expectedCommand = "completed deadline index 1";
+		outputStorage = readFile(testFile);
+		expectedStorage = "{\"type\":\"DEADLINE\",\"id\":4336029,\"description\":\"Finish assignment\",\"deadline\":\"Thu Dec 10 12:00:00 SGT 2015\",\"isComplete\":true}";
+		
+		assertEquals(expectedCommand, outputCommand);
+		assertEquals(expectedStorage, outputStorage);
+
 		initialize();
 	}
 
@@ -148,8 +169,12 @@ public class IntegrationTest {
 		testFile.delete();
 		tempFile.renameTo(testFile);
 
-		output = "";
-		expected = "";
+		
+		outputCommand = "";
+		expectedCommand = "";
+		outputStorage = "";
+		expectedStorage = "";
+
 	}
 
 	private boolean initReader(File taskFile) {
