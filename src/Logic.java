@@ -141,7 +141,7 @@ public class Logic {
 		return list;
 	}
 
-	// check whether the recurring task need to stop today
+	// Check whether the recurring task need to stop today
 	private static boolean isStop(Task task) {
 		boolean boo = false;
 		ArrayList<Date> stopDate = new ArrayList<Date>();
@@ -191,6 +191,7 @@ public class Logic {
 			}
 		} else if (task.getType().equals(Task.Type.REPEAT)) {
 		}
+		
 		return isOver;
 	}
 
@@ -231,6 +232,7 @@ public class Logic {
 				}
 			}
 		}
+		
 		return isToday;
 	}
 
@@ -251,6 +253,7 @@ public class Logic {
 				boo = true;
 			}
 		}
+		
 		return boo;
 	}
 
@@ -260,9 +263,11 @@ public class Logic {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDateAndTime);
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		
 		if (task.getIsDaySelected()[dayOfWeek] == true) {
 			boo = true;
 		}
+		
 		return boo;
 	}
 
@@ -271,9 +276,9 @@ public class Logic {
 		if (b.before(a)) {
 			return -getWeeksBetween(b, a);
 		}
+		
 		a = resetTime(a);
 		b = resetTime(b);
-
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(a);
 		int weeks = 0;
@@ -283,6 +288,7 @@ public class Logic {
 			cal.add(Calendar.WEEK_OF_YEAR, 1);
 			weeks++;
 		}
+		
 		msgLogger.add("num of week: " + weeks);
 		return weeks;
 	}
@@ -302,10 +308,11 @@ public class Logic {
 		Calendar a = getCalendar(d1);
 		Calendar b = getCalendar(d2);
 		int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
-		if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH)
-				|| (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
+		
+		if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
 			diff--;
 		}
+		
 		return diff;
 	}
 
@@ -316,8 +323,7 @@ public class Logic {
 		return cal;
 	}
 
-	// Get the num of days different between current date and the recurring task
-	// starting date
+	// Get the number of days different between current date and the recurring task starting date
 	private static int getDifferenceDays(Date d1, Date d2) {
 		int daysDiff = 0;
 		long diff = d1.getTime() - d2.getTime();
@@ -364,6 +370,7 @@ public class Logic {
 				detailTask.add(command.getTaskDescription() + "#" + taskCode);
 				type = Task.Type.FLOATING;
 				task = new Task(type, detailTask);
+				
 				if (!isCollision(task)) {
 					floating.add(detailTask.get(0));
 				}
@@ -372,6 +379,7 @@ public class Logic {
 						+ command.getTaskDescription() + "#" + taskCode);
 				type = Task.Type.EVENT;
 				task = new Task(type, detailTask);
+				
 				if (!isCollision(task)) {
 					event.add(detailTask.get(0));
 				}
@@ -379,6 +387,7 @@ public class Logic {
 				detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription() + "#" + taskCode);
 				type = Task.Type.DEADLINE;
 				task = new Task(type, detailTask);
+				
 				if (!isCollision(task)) {
 					deadline.add(detailTask.get(0));
 				}
@@ -427,10 +436,8 @@ public class Logic {
 						String recurringType = task.getTaskRepeatType();
 						if (taskStored.get(i).getTaskRepeatType().equals(recurringType)) {
 							if (recurringType.equals(DAY_REC)) {
-								if (taskStored.get(i).getTaskRepeatInterval_Day()
-										.equals(task.getTaskRepeatInterval_Day())) {
-									if (taskStored.get(i).getTaskRepeatUntil()
-											.compareTo(task.getTaskRepeatUntil()) == 0) {
+								if (taskStored.get(i).getTaskRepeatInterval_Day().equals(task.getTaskRepeatInterval_Day())) {
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
 										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
 											boo = true;
 											break;
@@ -438,10 +445,8 @@ public class Logic {
 									}
 								}
 							} else if (recurringType.equals(WEEK_REC)) {
-								if (taskStored.get(i).getTaskRepeatInterval_Week()
-										.equals(task.getTaskRepeatInterval_Week())) {
-									if (taskStored.get(i).getTaskRepeatUntil()
-											.compareTo(task.getTaskRepeatUntil()) == 0) {
+								if (taskStored.get(i).getTaskRepeatInterval_Week().equals(task.getTaskRepeatInterval_Week())) {
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
 										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
 											boo = true;
 											break;
@@ -449,22 +454,17 @@ public class Logic {
 									}
 								}
 							} else if (recurringType.equals(MONTH_REC)) {
-								if (taskStored.get(i).getTaskRepeatInterval_Month()
-										.equals(task.getTaskRepeatInterval_Month())) {
-									if (taskStored.get(i).getTaskRepeatUntil()
-											.compareTo(task.getTaskRepeatUntil()) == 0) {
+								if (taskStored.get(i).getTaskRepeatInterval_Month().equals(task.getTaskRepeatInterval_Month())) {
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
 										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
 											boo = true;
 											break;
 										}
 									}
 								}
-
 							} else if (recurringType.equals(YEAR_REC)) {
-								if (taskStored.get(i).getTaskRepeatInterval_Year()
-										.equals(task.getTaskRepeatInterval_Year())) {
-									if (taskStored.get(i).getTaskRepeatUntil()
-											.compareTo(task.getTaskRepeatUntil()) == 0) {
+								if (taskStored.get(i).getTaskRepeatInterval_Year().equals(task.getTaskRepeatInterval_Year())) {
+									if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
 										if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
 											boo = true;
 											break;
@@ -483,30 +483,20 @@ public class Logic {
 	// ================================================================
 	// "Repeat task" command methods
 	// ================================================================
-
 	private static void addRepeatTask(Command com) throws Exception {
 		ArrayList<String> detailStored = new ArrayList<String>();
-
 		taskCode = getID();
 		String taskType = com.getRepeatType();
 		Task.Type type = Task.Type.REPEAT;
 		Task task = null;
+		
 		if (taskType.equals(DAY_REC)) {
-			// msgLogger.add( taskType+"#" +com.getDateAdded().toString() +"#" +
-			// com.getRepeatStartTime()+"#"
-			// +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" +
-			// com.getRepeatUntil().toString()+"#"+com.getTaskDescription() +
-			// "#" + taskCode+"#" + com.getStopRepeatInString());
-			detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#"
-					+ com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil().toString() + "#"
-					+ com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
-
+			detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil().toString() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 			task = new Task(type, detailStored);
 
 			if (!isCollision(task)) {
 				repeatedTask.add(detailStored.get(0));
 				taskStored.add(task);
-
 				storage.saveToFile(taskStored);
 				history.addChangeToHistory(new ArrayList<Task>(taskStored));
 				msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
@@ -514,16 +504,9 @@ public class Logic {
 				msgLogger.add("Collision Task!");
 			}
 		} else if (taskType.equals(WEEK_REC)) {
-			// msgLogger.add(taskType +"#"+com.getDateAdded()+"#"+
-			// com.getRepeatStartTime() +"#"+
-			// com.getRepeatEndTime()+"#"+com.getWeekInterval()+"#"+com.getGetDaySelectedString()
-			// + "#"+com.getRepeatUntil()+"#" +com.getTaskDescription()+"#" +
-			// taskCode +"#"+ com.getStopRepeatInString());
-			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#"
-					+ com.getRepeatEndTime() + "#" + com.getWeekInterval() + "#" + com.getDaySelectedString() + "#"
-					+ com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#"
-					+ com.getStopRepeatInString());
+			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getWeekInterval() + "#" + com.getDaySelectedString() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 			task = new Task(type, detailStored);
+			
 			if (!isCollision(task)) {
 				repeatedTask.add(detailStored.get(0));
 				taskStored.add(task);
@@ -533,16 +516,10 @@ public class Logic {
 			} else {
 				msgLogger.add("Collision Task!");
 			}
-
 		} else if (taskType.equals(MONTH_REC)) {
-			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#"
-					+ com.getRepeatEndTime() + "#" + com.getMonthInterval() + "#" + com.getRepeatUntil() + "#"
-					+ com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
-			// detailTask.add(taskType +"#" +com.getDateAdded()+"#" +
-			// com.getRepeatStartTime() +"#"+com.getRepeatEndTime()+"#"+
-			// com.getMonthInterval()+"#"+com.getRepeatUntil()+"#"+com.getTaskDescription()
-			// + "#" + taskCode);
+			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getMonthInterval() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 			task = new Task(type, detailStored);
+			
 			if (!isCollision(task)) {
 				repeatedTask.add(detailStored.get(0));
 				taskStored.add(task);
@@ -555,15 +532,9 @@ public class Logic {
 		}
 
 		else if (taskType.equals(YEAR_REC)) {
-			// detailTask.add( taskType+"#" +com.getDateAdded() +"#" +
-			// com.getRepeatStartTime()+"#"
-			// +com.getRepeatEndTime()+"#"+com.getDayInterval()+"#" +
-			// com.getRepeatUntil()+"#"+com.getTaskDescription() + "#" +
-			// taskCode);
-			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#"
-					+ com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil() + "#"
-					+ com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 			task = new Task(type, detailStored);
+			
 			if (!isCollision(task)) {
 				repeatedTask.add(detailStored.get(0));
 				taskStored.add(task);
@@ -580,7 +551,6 @@ public class Logic {
 	// ================================================================
 	// "search" command methods
 	// ================================================================
-
 	private static void searchTask(Command command) throws FileNotFoundException {
 		ArrayList<String> keyWordList = command.getSearchKeyword();
 		String keyword = "";
@@ -588,32 +558,29 @@ public class Logic {
 		Task.Type taskType;
 		int index = 1;
 		searchList = new ArrayList<Integer>();
-		taskStored = storage.retrieveFile(); // get the latest task from the
-												// storage
+		taskStored = storage.retrieveFile(); // Get the latest task from the storage
+		
 		for (int i = 0; i < keyWordList.size(); i++) {
 			keyword = keyWordList.get(i).toLowerCase();
+			
 			for (int j = 0; j < taskStored.size(); j++) {
 				String[] arr = taskStored.get(j).getDescription().split(" ");
+				
 				for (int k = 0; k < arr.length; k++) {
 					if (arr[k].toLowerCase().contains(keyword)) {
 						taskCode = taskStored.get(j).getID();
 						taskType = taskStored.get(j).getType();
+						
 						if (taskType.equals(Task.Type.DEADLINE)) {
-							msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " deadline is : "
-									+ taskStored.get(j).getDeadline());
+							msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " deadline is : " + taskStored.get(j).getDeadline());
 						} else if (taskType.equals(Task.Type.EVENT)) {
-							msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " start time is : "
-									+ taskStored.get(j).getEventStart() + " " + taskStored.get(j).getEventEnd());
+							msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " start time is : " + taskStored.get(j).getEventStart() + " " + taskStored.get(j).getEventEnd());
 						} else if (taskType.equals(Task.Type.FLOATING)) {
 							msgLogger.add((index++) + " " + taskStored.get(j).getDescription());
 						} else if (taskType.equals(Task.Type.REPEAT)) {
-							msgLogger.add((index++) + " " + taskStored.get(j).getDescription()
-									+ " repeating peroid end in : " + taskStored.get(i).getTaskRepeatEndTime());
+							msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " repeating peroid end in : " + taskStored.get(i).getTaskRepeatEndTime());
 						}
-
 						searchList.add(taskCode);
-
-						// msgLogger.add(taskStored.get(j).getDescription());
 					}
 				}
 			}
@@ -623,13 +590,14 @@ public class Logic {
 	// ================================================================
 	// "Delete" command methods
 	// ================================================================
-
 	private static void deleteTask(Command command) {
 		String taskType = command.getTaskType();
+		
 		try {
 			int indexToRemove = command.getTaskID() - 1;
 			String removedItem = "";
 			String currentLine = "";
+			
 			if (taskType != null) {
 				if (taskType.equals(DEADLINE_TASK)) {
 					currentLine = deadline.get(indexToRemove);
@@ -652,9 +620,7 @@ public class Logic {
 					String str[] = currentLine.split("#");
 					taskCode = Integer.parseInt(str[str.length - 1]);
 				}
-			}
-
-			else {
+			} else {
 				if (searchList.size() != 0) {
 					msgLogger.add(Integer.toString(searchList.get(indexToRemove)));
 					taskCode = searchList.get(indexToRemove);
@@ -670,6 +636,7 @@ public class Logic {
 					break;
 				}
 			}
+			
 			storage.saveToFile(taskStored);
 			history.addChangeToHistory(new ArrayList<Task>(taskStored));
 			msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
@@ -684,15 +651,14 @@ public class Logic {
 				msgLogger.add(MESSAGE_NOTHING_TO_DELETE);
 			}
 		}
-
 	}
 
 	// ================================================================
 	// "Complete" command method
-	// ================================================================
-
+	// ===============================================================
 	private static void completeTask(Command command) {
 		String taskType = command.getTaskType();
+		
 		try {
 			int indexToComplete = command.getTaskID() - 1;
 			String completedItem = "";
@@ -720,27 +686,25 @@ public class Logic {
 					if (taskType.equals("repeat")) {
 						String stopStr = "";
 						DateFormat df = new SimpleDateFormat("dd/MM");
+						
 						if (taskStored.get(i).getStopRepeatInString() != null) {
 							stopStr = taskStored.get(i).getStopRepeatInString() + "@" + df.format(currentDate);
-
 						} else {
 							stopStr = df.format(currentDate);
-
 						}
+						
 						taskStored.get(i).setStopRepeat(stopStr);
 						break;
-
 					} else {
 						taskStored.get(i).setIsComplete(true);
 						break;
 					}
-
 				}
 			}
+			
 			storage.saveToFile(taskStored);
 			history.addChangeToHistory(new ArrayList<Task>(taskStored));
 			msgLogger.add("completed " + taskType + " index " + command.getTaskID());
-
 		} catch (Exception e) {
 			if (taskType.equals("deadline") && deadline.size() == 0) {
 				msgLogger.add(MESSAGE_DEADLINE_CANT_COMPLETE);
@@ -752,13 +716,11 @@ public class Logic {
 				msgLogger.add(MESSAGE_NOTHING_TO_COMPLETE);
 			}
 		}
-
 	}
 
 	// ================================================================
 	// "Update" command methods
 	// ================================================================
-
 	private static void updateTask(Command command) throws FileNotFoundException {
 		String taskType = command.getTaskType();
 		String updatedItem = "";
@@ -774,8 +736,8 @@ public class Logic {
 				existingItem = deadline.get(indexToUpdate);
 				String[] strArr = existingItem.split("#");
 				taskCode = Integer.parseInt(strArr[strArr.length - 1]);
-
 				updatedItem += strArr[0] + "#";
+				
 				if (command.getTaskDeadline() != null) {
 					updatedItem += command.getTaskDeadline() + "#";
 					updatedTask += command.getTaskDeadline() + "#";
@@ -790,29 +752,26 @@ public class Logic {
 				} else {
 					updatedItem += strArr[2];
 					updatedTask += strArr[2];
-
 				}
 
 				updatedItem = updatedItem + "#" + Integer.toString(taskCode);
 				updatedTask = updatedTask + "#" + Integer.toString(taskCode);
-
 				type = Task.Type.DEADLINE;
 				deadline.set(indexToUpdate, updatedItem);
-
 			} else if (taskType.equals("floating")) {
 				existingItem = floating.get(indexToUpdate);
 				String[] strArr = existingItem.split("#");
 				taskCode = Integer.parseInt(strArr[strArr.length - 1]);
 				updatedItem += strArr[0] + "#";
+				
 				if (command.getTaskDescription() != null) {
 					updatedItem += command.getTaskDescription();
 					updatedTask += command.getTaskDescription();
-				}
-
-				else {
+				} else {
 					updatedItem += strArr[1];
 					updatedTask += strArr[1];
 				}
+				
 				updatedItem += "#" + Integer.toString(taskCode);
 				updatedTask += "#" + Integer.toString(taskCode);
 				type = Task.Type.FLOATING;
@@ -822,6 +781,7 @@ public class Logic {
 				String[] strArr = existingItem.split("#");
 				taskCode = Integer.parseInt(strArr[strArr.length - 1]);
 				updatedItem += strArr[0] + "#";
+				
 				if (command.getTaskEventDate() != null) {
 					updatedItem += command.getTaskEventDate() + "#";
 					updatedTask += command.getTaskEventDate() + "#";
@@ -829,6 +789,7 @@ public class Logic {
 					updatedItem += strArr[1] + "#";
 					updatedTask += strArr[1] + "#";
 				}
+				
 				if (command.getTaskEventTime() != null) {
 					updatedItem += command.getTaskEventTime() + "#";
 					updatedTask += command.getTaskEventTime() + "#";
@@ -836,6 +797,7 @@ public class Logic {
 					updatedItem += strArr[2] + "#";
 					updatedTask += strArr[2] + "#";
 				}
+				
 				if (command.getTaskDescription() != null) {
 					updatedItem += command.getTaskDescription();
 					updatedTask += command.getTaskDescription();
@@ -843,6 +805,7 @@ public class Logic {
 					updatedItem += strArr[3];
 					updatedTask += strArr[3];
 				}
+				
 				updatedItem += "#" + Integer.toString(taskCode);
 				updatedTask += "#" + Integer.toString(taskCode);
 				event.set(indexToUpdate, updatedItem);
@@ -851,9 +814,9 @@ public class Logic {
 				msgLogger.add(MESSAGE_INVALID_INDEX);
 				throw new Exception(MESSAGE_INVALID_INDEX);
 			}
+			
 			for (int i = 0; i < taskStored.size(); i++) {
 				if (taskStored.get(i).getID() == taskCode) {
-
 					taskStored.remove(i);
 					updatedLine = new ArrayList<String>();
 					updatedLine.add(updatedTask);
@@ -870,18 +833,18 @@ public class Logic {
 		} catch (Exception e) {
 			msgLogger.add(e.getMessage());
 		}
-
 	}
 
 	// ================================================================
 	// stop recurring task command method
 	// ================================================================
 	private static void stopRec(Command command) throws ParseException {
-
 		int taskID = command.getTaskID();
+		
 		for (int i = 0; i < taskStored.size(); i++) {
 			if (taskStored.get(i).getID() == taskID) {
-				String str;
+				String str = "";
+				
 				if (taskStored.get(i).getStopRepeatInString() != null) {
 					str = taskStored.get(i).getStopRepeatInString() + "@" + command.getStopRepeatInString();
 				} else {
@@ -892,6 +855,7 @@ public class Logic {
 				break;
 			}
 		}
+		
 		storage.saveToFile(taskStored);
 		history.addChangeToHistory(new ArrayList<Task>(taskStored));
 		msgLogger.add(ADD_STOP_SUC);
@@ -902,6 +866,7 @@ public class Logic {
 	// ================================================================
 	private static void redoCommand() throws FileNotFoundException {
 		String message = "";
+		
 		try {
 			message = "redo successfully";
 			taskStored = new ArrayList<Task>(history.redo());
@@ -920,6 +885,7 @@ public class Logic {
 	// ================================================================
 	private static void undoCommand() throws FileNotFoundException {
 		String message = "";
+		
 		try {
 			message = "undo successfully";
 			taskStored = new ArrayList<Task>(history.undo());
@@ -938,58 +904,71 @@ public class Logic {
 	// ================================================================
 	public static String getMessageLog() {
 		String messageToPrint = "";
+		
 		for (int i = 0; i < msgLogger.size(); i++) {
 			messageToPrint += msgLogger.get(i) + "\n";
 		}
+		
 		return messageToPrint.trim();
 	}
 
 	public static String getEvents() throws ParseException {
 		event = initList("event", taskStored);
 		String messageToPrint = "";
+		
 		if (event.size() == 0) {
 			return messageToPrint = "No events";
 		}
+		
 		for (int i = 0; i < event.size(); i++) {
 			messageToPrint += "E" + (i + 1) + ". " + event.get(i).replace("#", " ") + "\n";
 		}
+		
 		return messageToPrint.trim();
 	}
 
 	public static String getDeadline() throws ParseException {
 		deadline = initList("deadline", taskStored);
 		String messageToPrint = "";
+		
 		if (deadline.size() == 0) {
 			return messageToPrint = "No tasks";
 		}
+		
 		for (int i = 0; i < deadline.size(); i++) {
 			messageToPrint += "D" + (i + 1) + ". " + deadline.get(i).replace("#", " ") + "\n";
 		}
+		
 		return messageToPrint.trim();
 	}
 
 	public static String getFloatingTask() throws ParseException {
 		floating = initList("floating", taskStored);
 		String messageToPrint = "";
+		
 		if (floating.size() == 0) {
 			return messageToPrint = "No tasks";
 		}
+		
 		for (int i = 0; i < floating.size(); i++) {
 			messageToPrint += "F" + (i + 1) + ". " + floating.get(i).replace("#", " ") + "\n";
 		}
+		
 		return messageToPrint.trim();
 	}
 
 	public static String getRecurringTask() throws ParseException {
 		repeatedTask = initList("repeat", taskStored);
 		String messageToPrint = "";
+		
 		if (repeatedTask.size() == 0) {
 			return messageToPrint = "No tasks";
 		}
+		
 		for (int i = 0; i < repeatedTask.size(); i++) {
 			messageToPrint += "R" + (i + 1) + ". " + repeatedTask.get(i).replace("#", " ") + "\n";
 		}
+		
 		return messageToPrint.trim();
 	}
-
 }
