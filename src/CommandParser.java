@@ -404,6 +404,7 @@ public class CommandParser {
     private static void setStopRepeatCommandAttribute(Command command, ArrayList<String> arguments) throws Exception {
         try {
             String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(REGEX_WHITESPACES, SIZE_2);
+            setCommandTaskType(command, param[POSITION_ZERO_PARAM_ARGUMENT]);    
             setCommandTaskID(command, param);
             String[] dateParam = param[POSITION_FIRST_PARAM_ARGUMENT].split(",");
             setStopRepeatDate(command, dateParam);
@@ -447,7 +448,7 @@ public class CommandParser {
     }
 
     private static void setCommandTaskID(Command command, String[] param) {
-        command.setTaskID(Integer.parseInt(param[POSITION_ZERO_PARAM_ARGUMENT]));
+        command.setTaskID(Integer.parseInt(param[POSITION_ZERO_PARAM_ARGUMENT].replaceAll("[a-zA-Z]", "")));
     }
 
     private static void setStopRepeatDate(Command command, ArrayList<Date> list) throws Exception {

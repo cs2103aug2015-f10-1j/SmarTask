@@ -158,9 +158,9 @@ public class CommandParserStubTest {
         // =========================================================================
 
         try {
-            Command repeat = CommandParser.parse("stop 1511151245 15 oct, 25 nov, 6 aug");
+            Command repeat = CommandParser.parse("stop r1 15 oct, 25 nov, 6 aug");
             System.out.println(
-                    repeat.getCommandType() + " ID: " + repeat.getTaskID() + " " + repeat.getStopRepeatInString());
+                    repeat.getCommandType() + " ID: " + repeat.getTaskID() + " " + repeat.getTaskType() + " " + repeat.getStopRepeatInString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -212,13 +212,13 @@ public class CommandParserStubTest {
         // =========================================================================
 
         try {
-            Command event = CommandParser.parse("update d1 team project meeting 5 Nov");
+            Command event = CommandParser.parse("update d1 team project meeting 5/11/2015");
             System.out.println(event.getCommandType() + " " + event.getTaskDescription() + "==" + 
                     event.getTaskDeadline());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        
         // =========================================================================
         // Completing a task
         // =========================================================================
