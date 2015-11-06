@@ -179,8 +179,6 @@ public class Logic {
 		if (task.getType().equals(Task.Type.FLOATING)) {
 		} else if (task.getType().equals(Task.Type.EVENT)) {
 			Date date = convertStringToDate(task.getEventEnd());
-			System.out.println(date.toString());
-			System.out.println(currentDateAndTime.toString());
 			if (date.before(currentDateAndTime)) {
 				isOver = true;
 			}
@@ -288,8 +286,6 @@ public class Logic {
 			cal.add(Calendar.WEEK_OF_YEAR, 1);
 			weeks++;
 		}
-		
-		msgLogger.add("num of week: " + weeks);
 		return weeks;
 	}
 
@@ -663,8 +659,7 @@ public class Logic {
 			int indexToComplete = command.getTaskID() - 1;
 			String completedItem = "";
 			String currentLine = " ";
-			msgLogger.add(taskType);
-
+			
 			if (taskType.equals("deadline")) {
 				currentLine = deadline.get(indexToComplete);
 				completedItem = deadline.remove(indexToComplete);
@@ -675,6 +670,7 @@ public class Logic {
 				currentLine = event.get(indexToComplete);
 				completedItem = event.remove(indexToComplete);
 			} else if (taskType.equals("repeat")) {
+				currentLine = repeatedTask.get(indexToComplete);
 				completedItem = repeatedTask.remove(indexToComplete);
 			}
 
@@ -685,10 +681,10 @@ public class Logic {
 				if (taskStored.get(i).getID() == taskCode) {
 					if (taskType.equals("repeat")) {
 						String stopStr = "";
-						DateFormat df = new SimpleDateFormat("dd/MM");
-						
+						DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
 						if (taskStored.get(i).getStopRepeatInString() != null) {
 							stopStr = taskStored.get(i).getStopRepeatInString() + "@" + df.format(currentDate);
+							System.out.println(stopStr);
 						} else {
 							stopStr = df.format(currentDate);
 						}
@@ -839,16 +835,20 @@ public class Logic {
 	// stop recurring task command method
 	// ================================================================
 	private static void stopRec(Command command) throws ParseException {
-		int taskID = command.getTaskID();
+		int taskID = command.getTaskID()-1;
+		String stopItem = repeatedTask.get(taskID);
+		String [] stop = stopItem.split("#");
+		taskID = Integer.parseInt(stop[stop.length-1]);
 		
 		for (int i = 0; i < taskStored.size(); i++) {
 			if (taskStored.get(i).getID() == taskID) {
 				String str = "";
-				
 				if (taskStored.get(i).getStopRepeatInString() != null) {
 					str = taskStored.get(i).getStopRepeatInString() + "@" + command.getStopRepeatInString();
+					System.out.println(str);
 				} else {
 					str = command.getStopRepeatInString();
+					System.out.println(str);
 				}
 
 				taskStored.get(i).setStopRepeat(command.getStopRepeatInString());
@@ -921,7 +921,12 @@ public class Logic {
 		}
 		
 		for (int i = 0; i < event.size(); i++) {
-			messageToPrint += "E" + (i + 1) + ". " + event.get(i).replace("#", " ") + "\n";
+			String [] str = event.get(i).split("#");
+			SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+			SimpleDateFormat getTime = new SimpleDateFormat("HH:mm");
+			Date timeStart = df.parse(str[0]);
+			Date timeEnd = df.parse(str[1]);
+			messageToPrint += "E" + (i + 1) + ". " + str[2]+" from "+getTime.format(timeStart)+" to " +getTime.format(timeEnd) + "\n";
 		}
 		
 		return messageToPrint.trim();
@@ -936,7 +941,8 @@ public class Logic {
 		}
 		
 		for (int i = 0; i < deadline.size(); i++) {
-			messageToPrint += "D" + (i + 1) + ". " + deadline.get(i).replace("#", " ") + "\n";
+			String [] str = deadline.get(i).split("#");
+			messageToPrint += "D" + (i + 1) + ". " + str[1] +" due on "+ str[0]+ "\n";
 		}
 		
 		return messageToPrint.trim();
@@ -944,14 +950,15 @@ public class Logic {
 
 	public static String getFloatingTask() throws ParseException {
 		floating = initList("floating", taskStored);
+		
 		String messageToPrint = "";
 		
 		if (floating.size() == 0) {
 			return messageToPrint = "No tasks";
 		}
-		
 		for (int i = 0; i < floating.size(); i++) {
-			messageToPrint += "F" + (i + 1) + ". " + floating.get(i).replace("#", " ") + "\n";
+			String [] str = floating.get(i).split("#");
+			messageToPrint += "F" + (i + 1) + ". " + str[0] + "\n";
 		}
 		
 		return messageToPrint.trim();
@@ -966,7 +973,11 @@ public class Logic {
 		}
 		
 		for (int i = 0; i < repeatedTask.size(); i++) {
-			messageToPrint += "R" + (i + 1) + ". " + repeatedTask.get(i).replace("#", " ") + "\n";
+			String [] str = repeatedTask.get(i).split("#");
+			for (int j=0; j<str.length; j++){
+			//	System.out.println(str[j]);
+			}
+			messageToPrint += "R" + (i + 1) + ". " + str[1]  + "\n";
 		}
 		
 		return messageToPrint.trim();
