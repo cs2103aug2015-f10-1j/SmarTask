@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  * 
- * @author A0130034A and A0116633L
+ * @author A0130034A and 
  */
 
 public class IntegrationTest {
@@ -26,13 +26,16 @@ public class IntegrationTest {
 
 	private BufferedReader reader;
 	private PrintWriter writer;
+<<<<<<< HEAD
 	
 	private String outputCommand = "";
 	private String expectedCommand = "";
 	private String outputStorage = "";
 	private String expectedStorage = "";
+=======
 	private String output = "";
 	private String expected = "";
+>>>>>>> 1ebd9348f9204ac17bfee4347dfa80ff6ee1ceb2
 
 	@Test
 	// Test the features including add different types of tasks
@@ -303,8 +306,6 @@ public class IntegrationTest {
 		expectedCommand = "";
 		outputStorage = "";
 		expectedStorage = "";
-		output = "";
-		expected = "";
 
 	}
 
