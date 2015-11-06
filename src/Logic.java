@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Liang Mengfei
+ * @author A0125994R
  */
 
 public class Logic {
