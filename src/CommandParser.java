@@ -648,7 +648,7 @@ public class CommandParser {
 	command.setTaskType(DEADLINE);
 	setCommandTaskID(command, parameters);
 	String line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
-	System.out.println(line);
+	
 	if (line.contains("-by")) {
 	    String date;
 	    String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split("-by");
@@ -674,7 +674,9 @@ public class CommandParser {
 	setCommandTaskID(command, parameters);
 	command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
 	String input = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
-
+	
+	System.out.println(input);
+	
 	if (input.contains(KEYWORD_UNTIL)) {
 	    String[] line = input.split(KEYWORD_UNTIL);
 	    com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
@@ -720,11 +722,11 @@ public class CommandParser {
 	    String dateTimeLine = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
 	    setStartAndEndTime(command, dateTimeLine);
 	    setDateAdded(command, dateTimeLine);
-
-	    if (!line[0].isEmpty()) {
-		command.setTaskDescription(line[0].trim());
-	    }
+	    input = line[0];
 	}
+	
+	command.setTaskDescription(input.trim());
+	
     }
 
     // ================================================================
@@ -780,7 +782,7 @@ public class CommandParser {
 
     private static ArrayList<String> extractTime(String dateTime) throws Exception {
 	ArrayList<String> dateStartEnd = new ArrayList<String>(SIZE_3);
-
+	
 	com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
 	List<DateGroup> dateGroup = parseDate.parse(dateTime);
 	DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);

@@ -489,7 +489,9 @@ public class Logic {
 	Task task = null;
 
 	if (taskType.equals(DAY_REC)) {
-	    detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil().toString() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+	    detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + 
+		    "#" + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil().toString() + "#" 
+		    + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 	    task = new Task(type, detailStored);
 
 	    if (!isCollision(task)) {
@@ -502,7 +504,9 @@ public class Logic {
 		msgLogger.add(MESSAGE_COLLISION_TASK);
 	    }
 	} else if (taskType.equals(WEEK_REC)) {
-	    detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getWeekInterval() + "#" + com.getDaySelectedString() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+	    detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + 
+		    "#" + com.getRepeatEndTime() + "#" + com.getWeekInterval() + "#" + com.getDaySelectedString() + 
+		    "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 	    task = new Task(type, detailStored);
 
 	    if (!isCollision(task)) {
@@ -515,7 +519,9 @@ public class Logic {
 		msgLogger.add(MESSAGE_COLLISION_TASK);
 	    }
 	} else if (taskType.equals(MONTH_REC)) {
-	    detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getMonthInterval() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+	    detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + 
+		    "#" + com.getRepeatEndTime() + "#" + com.getMonthInterval() + "#" + com.getRepeatUntil() + 
+		    "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 	    task = new Task(type, detailStored);
 
 	    if (!isCollision(task)) {
@@ -530,7 +536,9 @@ public class Logic {
 	}
 
 	else if (taskType.equals(YEAR_REC)) {
-	    detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+	    detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + 
+		    "#" + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil() + 
+		    "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
 	    task = new Task(type, detailStored);
 
 	    if (!isCollision(task)) {
@@ -807,23 +815,160 @@ public class Logic {
 		type = Task.Type.EVENT;
 	    } else if (taskType.equals("repeat")) {
 		existingItem = repeatedTask.get(indexToUpdate);
-
-		msgLogger.add(existingItem);
-
+		
 		String[] strArr = existingItem.split("#");
-		taskCode = Integer.parseInt(strArr[strArr.length - 1]);
+		
+		String repeatType = strArr[0];
 		updatedItem += strArr[0] + "#";
+		updatedTask += strArr[0] + "#";
 
-		if (command.getRepeatUntil() != null) {
-		    updatedItem += command.getRepeatUntil()  + "#";
-		    updatedTask += command.getRepeatUntil() + "#";
+		if (command.getDateAdded() != null) {
+		    updatedItem += command.getDateAdded().toString()  + "#";
+		    updatedTask += command.getDateAdded().toString() + "#";
 		} else {
 		    updatedItem += strArr[1] + "#";
 		    updatedTask += strArr[1] + "#";
 		}
 
-		updatedItem += "#" + Integer.toString(taskCode);
-		updatedTask += "#" + Integer.toString(taskCode);
+		if (command.getRepeatStartTime() != null) {
+		    updatedItem += command.getRepeatStartTime().toString() + "#";
+		    updatedTask += command.getRepeatStartTime().toString() + "#";
+		} else {
+		    updatedItem += strArr[2] + "#";
+		    updatedTask += strArr[2] + "#";
+		}
+
+		if (command.getRepeatEndTime() != null) {
+		    updatedItem += command.getRepeatEndTime().toString() + "#";
+		    updatedTask += command.getRepeatEndTime().toString() + "#";
+		} else {
+		    updatedItem += strArr[3] + "#";
+		    updatedTask += strArr[3] + "#";
+		}		
+
+		//msgLogger.add(repeatType);
+
+		if (repeatType.equals("day")) {
+		    if (command.getDayInterval() != null) {
+			updatedItem += command.getDayInterval() + "#";
+			updatedTask += command.getDayInterval()+ "#";
+		    } else {
+			updatedItem += strArr[4] + "#";
+			updatedTask += strArr[4] + "#";
+		    }
+
+		    if (command.getRepeatUntil() != null) {
+			updatedItem += command.getRepeatUntil()+ "#";
+			updatedTask += command.getRepeatUntil()+ "#";
+		    } else {
+			updatedItem += strArr[5] + "#";
+			updatedTask += strArr[5] + "#";
+		    }
+
+		    if (command.getTaskDescription() != null) {
+			updatedItem += command.getTaskDescription()+ "#";
+			updatedTask += command.getTaskDescription()+ "#";
+		    } else {
+			updatedItem += strArr[6] + "#";
+			updatedTask += strArr[6] + "#";
+		    }
+		    taskCode = Integer.parseInt(strArr[7].trim());
+		    updatedItem += Integer.toString(taskCode) + "#" + strArr[8];
+		    updatedTask += Integer.toString(taskCode) + "#" + strArr[8];
+
+		} else if (repeatType.equals("week")) {
+		    if (command.getWeekInterval() != null) {
+			updatedItem += command.getWeekInterval() + "#";
+			updatedTask += command.getWeekInterval()+ "#";
+		    } else {
+			updatedItem += strArr[4] + "#";
+			updatedTask += strArr[4] + "#";
+		    }
+		    
+		    if (command.getDaySelectedString() != null) {
+			updatedItem += command.getDaySelectedString() + "#";
+			updatedTask += command.getDaySelectedString()+ "#";
+		    } else {
+			updatedItem += strArr[5] + "#";
+			updatedTask += strArr[5] + "#";
+		    }
+		    
+		    if (command.getRepeatUntil() != null) {
+			updatedItem += command.getRepeatUntil()+ "#";
+			updatedTask += command.getRepeatUntil()+ "#";
+		    } else {
+			updatedItem += strArr[6] + "#";
+			updatedTask += strArr[6] + "#";
+		    }
+
+		    if (command.getTaskDescription() != null) {
+			updatedItem += command.getTaskDescription()+ "#";
+			updatedTask += command.getTaskDescription()+ "#";
+		    } else {
+			updatedItem += strArr[7] + "#";
+			updatedTask += strArr[7] + "#";
+		    }
+		    taskCode = Integer.parseInt(strArr[8].trim());
+		    updatedItem += Integer.toString(taskCode) + "#" + strArr[9];
+		    updatedTask += Integer.toString(taskCode) + "#" + strArr[9];
+
+		} else if (repeatType.equals("month")) {
+		    if (command.getMonthInterval() != null) {
+			updatedItem += command.getMonthInterval() + "#";
+			updatedTask += command.getMonthInterval()+ "#";
+		    } else {
+			updatedItem += strArr[4] + "#";
+			updatedTask += strArr[4] + "#";
+		    }
+
+		    if (command.getRepeatUntil() != null) {
+			updatedItem += command.getRepeatUntil()+ "#";
+			updatedTask += command.getRepeatUntil()+ "#";
+		    } else {
+			updatedItem += strArr[5] + "#";
+			updatedTask += strArr[5] + "#";
+		    }
+
+		    if (command.getTaskDescription() != null) {
+			updatedItem += command.getTaskDescription()+ "#";
+			updatedTask += command.getTaskDescription()+ "#";
+		    } else {
+			updatedItem += strArr[6] + "#";
+			updatedTask += strArr[6] + "#";
+		    }
+		    taskCode = Integer.parseInt(strArr[7].trim());
+		    updatedItem += Integer.toString(taskCode) + "#" + strArr[8];
+		    updatedTask += Integer.toString(taskCode) + "#" + strArr[8];
+
+		} else if (repeatType.equals("year")) {
+		    if (command.getYearInterval() != null) {
+			updatedItem += command.getYearInterval() + "#";
+			updatedTask += command.getYearInterval()+ "#";
+		    } else {
+			updatedItem += strArr[4] + "#";
+			updatedTask += strArr[4] + "#";
+		    }
+
+		    if (command.getRepeatUntil() != null) {
+			updatedItem += command.getRepeatUntil()+ "#";
+			updatedTask += command.getRepeatUntil()+ "#";
+		    } else {
+			updatedItem += strArr[5] + "#";
+			updatedTask += strArr[5] + "#";
+		    }
+
+		    if (command.getTaskDescription() != null) {
+			updatedItem += command.getTaskDescription()+ "#";
+			updatedTask += command.getTaskDescription()+ "#";
+		    } else {
+			updatedItem += strArr[6] + "#";
+			updatedTask += strArr[6] + "#";
+		    }
+		    taskCode = Integer.parseInt(strArr[7].trim());
+		    updatedItem += Integer.toString(taskCode) + "#" + strArr[8];
+		    updatedTask += Integer.toString(taskCode) + "#" + strArr[8];
+		}
+		
 		repeatedTask.set(indexToUpdate, updatedItem);
 		type = Task.Type.REPEAT;
 	    } else {
@@ -858,7 +1003,7 @@ public class Logic {
 	int taskID = command.getTaskID()-1;
 	String stopItem = repeatedTask.get(taskID);
 	String [] stop = stopItem.split("#");
-	taskID = Integer.parseInt(stop[stop.length-1]);
+	taskID = Integer.parseInt(stop[stop.length-2]);
 
 	for (int i = 0; i < taskStored.size(); i++) {
 	    if (taskStored.get(i).getID() == taskID) {
