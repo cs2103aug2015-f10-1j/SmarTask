@@ -31,6 +31,8 @@ public class Logic {
 	private static final String MESSAGE_NOTHING_TO_COMPLETE = "Cannot find item to complete!!";
 	private static final String MESSAGE_INVALID_INDEX = "Index choosen is not valid";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid Command. Please enter the correct command.";
+	private static final String MESSAGE_COLLISION_TASK = "Collision Task!";
+	private static final String MESSAGE_FAIL_TO_ADD = "Fail to add an invalid task";
 
 	// Successful messages to display to the user
 	private static final String ADD_STOP_SUC = "Add stop command to recurring task successfully!";
@@ -388,7 +390,7 @@ public class Logic {
 					deadline.add(detailTask.get(0));
 				}
 			} else {
-				throw new Exception("Fail to add an invalid task");
+				throw new Exception(MESSAGE_FAIL_TO_ADD);
 			}
 
 			Boolean isColl = isCollision(task);
@@ -399,7 +401,7 @@ public class Logic {
 				msgLogger.add("add " + command.getTaskDescription() + " successful!");
 				history.addChangeToHistory(new ArrayList<Task>(taskStored));
 			} else {
-				msgLogger.add("Collision Task!");
+				msgLogger.add(MESSAGE_COLLISION_TASK);
 				return;
 			}
 		} catch (FileNotFoundException e) {
@@ -497,7 +499,7 @@ public class Logic {
 				history.addChangeToHistory(new ArrayList<Task>(taskStored));
 				msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
 			} else {
-				msgLogger.add("Collision Task!");
+				msgLogger.add(MESSAGE_COLLISION_TASK);
 			}
 		} else if (taskType.equals(WEEK_REC)) {
 			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getWeekInterval() + "#" + com.getDaySelectedString() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
@@ -510,7 +512,7 @@ public class Logic {
 				history.addChangeToHistory(new ArrayList<Task>(taskStored));
 				msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
 			} else {
-				msgLogger.add("Collision Task!");
+				msgLogger.add(MESSAGE_COLLISION_TASK);
 			}
 		} else if (taskType.equals(MONTH_REC)) {
 			detailStored.add(taskType + "#" + com.getDateAdded() + "#" + com.getRepeatStartTime() + "#" + com.getRepeatEndTime() + "#" + com.getMonthInterval() + "#" + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
@@ -523,7 +525,7 @@ public class Logic {
 				history.addChangeToHistory(new ArrayList<Task>(taskStored));
 				msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
 			} else {
-				msgLogger.add("Collision Task!");
+				msgLogger.add(MESSAGE_COLLISION_TASK);
 			}
 		}
 
@@ -538,7 +540,7 @@ public class Logic {
 				history.addChangeToHistory(new ArrayList<Task>(taskStored));
 				msgLogger.add("addrc " + com.getTaskDescription() + " successful!");
 			} else {
-				msgLogger.add("Collision Task!");
+				msgLogger.add(MESSAGE_COLLISION_TASK);
 			}
 		}
 
@@ -657,21 +659,20 @@ public class Logic {
 		
 		try {
 			int indexToComplete = command.getTaskID() - 1;
-			String completedItem = "";
 			String currentLine = " ";
 			
 			if (taskType.equals("deadline")) {
 				currentLine = deadline.get(indexToComplete);
-				completedItem = deadline.remove(indexToComplete);
+				deadline.remove(indexToComplete);
 			} else if (taskType.equals("floating")) {
 				currentLine = floating.get(indexToComplete);
-				completedItem = floating.remove(indexToComplete);
+				floating.remove(indexToComplete);
 			} else if (taskType.equals("event")) {
 				currentLine = event.get(indexToComplete);
-				completedItem = event.remove(indexToComplete);
+				event.remove(indexToComplete);
 			} else if (taskType.equals("repeat")) {
 				currentLine = repeatedTask.get(indexToComplete);
-				completedItem = repeatedTask.remove(indexToComplete);
+				repeatedTask.remove(indexToComplete);
 			}
 
 			String str[] = currentLine.split("#");
@@ -974,10 +975,7 @@ public class Logic {
 		
 		for (int i = 0; i < repeatedTask.size(); i++) {
 			String [] str = repeatedTask.get(i).split("#");
-			for (int j=0; j<str.length; j++){
-			//	System.out.println(str[j]);
-			}
-			messageToPrint += "R" + (i + 1) + ". " + str[1]  + "\n";
+			messageToPrint += "R" + (i + 1) + ". " + str[1] + " " +str[0]  + "\n";
 		}
 		
 		return messageToPrint.trim();
