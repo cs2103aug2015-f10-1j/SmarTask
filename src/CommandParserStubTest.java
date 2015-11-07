@@ -14,17 +14,21 @@ public class CommandParserStubTest {
         // ==================================================
 
         try {
-            Command repeat = CommandParser.parse("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
-            + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
-            + " ==Day Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil() + " " + repeat.getStopRepeatInString());
+            Command repeat = CommandParser.parse("repeat daily -start 15 Nov 5 to 6 pm "
+                    + "-every 2 day -until 15 Dec 2016");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() 
+            + " " + repeat.getDateAdded()            + " " + repeat.getRepeatStartTime() 
+            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
+            + " ==Day Interval: " + repeat.getDayInterval() + " ==Until:" 
+            + repeat.getRepeatUntil() + " " + repeat.getStopRepeatInString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         try {
             Command repeat = CommandParser.parse("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " 
+            + repeat.getDateAdded()
             + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
             + " ==Day Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
         } catch (Exception e) {
@@ -37,9 +41,10 @@ public class CommandParserStubTest {
 
         try {
             Command repeat = CommandParser.parse("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
-            + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
-            + " ==Year Interval: " + repeat.getYearInterval() + " ==Until:" + repeat.getRepeatUntil());
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " 
+            + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() 
+            + " " + repeat.getRepeatType() + " ==Year Interval: " + repeat.getYearInterval() 
+            + " ==Until:" + repeat.getRepeatUntil());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -47,8 +52,9 @@ public class CommandParserStubTest {
         try {
             Command repeat = CommandParser
                     .parse("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
-            + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " 
+                    + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " 
+                    + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
             + " ==Year Interval: " + repeat.getYearInterval() + " ==Until:" + repeat.getRepeatUntil());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -60,9 +66,11 @@ public class CommandParserStubTest {
 
         try {
             Command repeat = CommandParser
-                    .parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
-            + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
+                    .parse("repeat weekly -start 25 Dec 9 to 11am -every 2 week "
+                            + "-on sun, sat, wed -until 25 Dec");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " 
+                            + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " 
+                    + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
             + " ==Week Interval: " + repeat.getWeekInterval() + " ==Until:" + repeat.getRepeatUntil());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -161,7 +169,8 @@ public class CommandParserStubTest {
         try {
             Command repeat = CommandParser.parse("stop r1 15 oct, 25 nov, 6 aug");
             System.out.println(
-                    repeat.getCommandType() + " ID: " + repeat.getTaskID() + " " + repeat.getTaskType() + " " + repeat.getStopRepeatInString());
+                    repeat.getCommandType() + " ID: " + repeat.getTaskID() + " " 
+            + repeat.getTaskType() + " " + repeat.getStopRepeatInString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -290,10 +299,12 @@ public class CommandParserStubTest {
         // Wrong sequence of repeat day
 
         try {
-            Command repeat = CommandParser.parse("update r1 email daily report -until 15 Dec 2016 -start 15 Nov 5 to 6 pm -every 1 day");
-            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
-            + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
-            + " ==Day Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil() + " " + repeat.getStopRepeatInString());
+            Command repeat = CommandParser.parse("update r1 email daily report -until 15 Dec 2016 "
+                    + "-start 15 Nov 5 to 6 pm -every 1 day");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() 
+            + " " + repeat.getDateAdded() + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() 
+            + " " + repeat.getRepeatType() + " ==Day Interval: " + repeat.getDayInterval() + " ==Until:" 
+            + repeat.getRepeatUntil() + " " + repeat.getStopRepeatInString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
