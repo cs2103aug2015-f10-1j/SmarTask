@@ -284,10 +284,6 @@ public class CommandParserStubTest {
 
         try {
             Command add = CommandParser.parse("add     -on 6 Nov 9pm");
-            String description = "";
-            if(add.getTaskDescription().trim().isEmpty()) {
-                description = "BLANK";
-            }
             System.out.println(add.getCommandType() + " " + add.getTaskType() + " " 
                     + add.getTaskDescription() + " ==Start== " + add.getTaskEventStart() + 
                     " ==End== " + add.getTaskEventEnd());

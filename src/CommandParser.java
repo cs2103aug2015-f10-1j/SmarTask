@@ -2,10 +2,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.junit.internal.Throwables;
 
 import com.joestelmach.natty.*;
 

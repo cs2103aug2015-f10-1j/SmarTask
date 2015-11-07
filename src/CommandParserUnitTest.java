@@ -7,8 +7,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.joestelmach.natty.generated.DateParser.date_return;
-
 /**
  * Unit test for CommandParser
  * 
