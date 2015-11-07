@@ -32,6 +32,7 @@ public class SmarTaskController implements Initializable {
 	@FXML
 	private TextField inputWindow;
 	
+	private static final String COMMAND_HELP = "help";
 	private static final String COMMAND_UNDO = "undo";
 	private static final String COMMAND_REDO = "redo";
 	private static final String COMMAND_EXIT = "exit";
@@ -94,7 +95,7 @@ public class SmarTaskController implements Initializable {
 	 * 
 	 * @throws ParseException
 	 */
-	public void updateDisplay() throws ParseException {
+	private void updateDisplay() throws ParseException {
 		logDisplay = Logic.getMessageLog();
 		deadlineTasks = Logic.getDeadline();
 		eventTasks = Logic.getEvents();
@@ -178,16 +179,19 @@ public class SmarTaskController implements Initializable {
 
 	private void enterKeyEvent() {
 		String userCommand = inputWindow.getText();
+		
 		if (!poppedCommands.isEmpty()) {
 			String poppedCommand = poppedCommands.pop();
 			pastCommands.push(poppedCommand);
 		}
+		
 		pastCommands.push(userCommand);
 		inputWindow.clear();
 
 		if (userCommand.toLowerCase().equals(COMMAND_EXIT)) {
-			Stage stage = (Stage) inputWindow.getScene().getWindow();
-			stage.close();
+			exitCommand();
+		} else if (userCommand.toLowerCase().equals(COMMAND_HELP)) {
+			helpCommand();
 		}
 
 		try {
@@ -196,6 +200,16 @@ public class SmarTaskController implements Initializable {
 		} catch (Exception e) {
 			System.err.println(MESSAGE_INVALIDCOMMAND);
 		}
+	}
+	
+	private void exitCommand() {
+		Stage stage = (Stage) inputWindow.getScene().getWindow();
+		stage.close();
+	}
+	
+	private void helpCommand() {
+		String helpManual = Help.getHelpManual();
+		updateWindows(displayWindow, helpManual);
 	}
 
 	private void upKeyEvent() {
