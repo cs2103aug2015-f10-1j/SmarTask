@@ -332,6 +332,26 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        try {
+            Command event = CommandParser.parse("update e1 -on adadsad adasd adsssss");
+            System.out.println(event.getCommandType() + " " + event.getTaskDescription() + " " + 
+                    event.getTaskEventStart() + " " + event.getTaskEventEnd());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        try {
+            Command repeat = CommandParser.parse("repeat daily -start 15 Nov 5 to 6 pm "
+                    + "-every 2 day -until 15 Dec 2016");
+            System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() 
+            + " " + repeat.getDateAdded()            + " " + repeat.getRepeatStartTime() 
+            + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
+            + " ==Day Interval: " + repeat.getDayInterval() + " ==Until:" 
+            + repeat.getRepeatUntil() + " " + repeat.getStopRepeatInString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 

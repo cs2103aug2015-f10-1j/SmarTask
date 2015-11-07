@@ -671,9 +671,7 @@ public class CommandParser {
 
     // ================================================================
     // Set attributes of individual update command
-    // ================================================================
-
-    
+    // ================================================================ 
 
     private static void setAttributeForUpdateType(Command command, String type, ArrayList<String> parameters)
             throws Exception{

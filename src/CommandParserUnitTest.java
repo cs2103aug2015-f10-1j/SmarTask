@@ -375,11 +375,13 @@ public class CommandParserUnitTest {
 
         System.out.println(HEADER_REPEAT_COMMAND);
 
+        Command repeatDay;
+
         // Repeat by day
 
         input = "repeat submit daily report -start 15 Nov 5 to 6 pm -every 1 day -until 15 Dec 2016";
         actual = new ArrayList<String>();
-        Command repeatDay = CommandParser.parse(input);
+        repeatDay = CommandParser.parse(input);
         actual.add(repeatDay.getCommandType().toString());
         actual.add(repeatDay.getTaskDescription());
         actual.add(repeatDay.getDateAdded().toString());
@@ -391,6 +393,25 @@ public class CommandParserUnitTest {
         expected = new ArrayList<String>(Arrays.asList("REPEAT","submit daily report",
                 "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
                 "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016",
+                "Sun Dec 12 00:00:00 SGT 9999"));
+        executeTestWithArrayList();
+
+        // Repeat by day without stating repeatUntil (Result: repeat forever)
+
+        input = "repeat submit daily report -start 15 Nov 5 to 6 pm -every 1 day";
+        actual = new ArrayList<String>();
+        repeatDay = CommandParser.parse(input);
+        actual.add(repeatDay.getCommandType().toString());
+        actual.add(repeatDay.getTaskDescription());
+        actual.add(repeatDay.getDateAdded().toString());
+        actual.add(repeatDay.getRepeatStartTime());
+        actual.add(repeatDay.getRepeatEndTime());
+        actual.add(repeatDay.getDayInterval());
+        actual.add(repeatDay.getRepeatUntil().toString());
+        actual.add(repeatDay.getStopRepeatInString());
+        expected = new ArrayList<String>(Arrays.asList("REPEAT","submit daily report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", "Sun Dec 12 00:00:00 SGT 9999",
                 "Sun Dec 12 00:00:00 SGT 9999"));
         executeTestWithArrayList();
 
@@ -1000,7 +1021,7 @@ public class CommandParserUnitTest {
         System.out.println(HEADER_ERRORS_SETFILEPATH);
 
         // setfilepath using whitespaces
-        
+
         try {
             input = "setfilepath            ";
             filePath = CommandParser.parse(input);
@@ -1012,7 +1033,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using random string
-        
+
         try {
             input = "setfilepath abcdefgh asdoaskjdkasld asjdlasldj";
             filePath = CommandParser.parse(input);
@@ -1023,8 +1044,8 @@ public class CommandParserUnitTest {
             executeTestWithString();
         }
 
-        // setfilepath using MAC filepath
-        
+        // setfilepath using MAC / UNIX filepath
+
         try {
             input = "setfilepath C:/Users/Jim/SmarTask/bin/storage.txt";
             filePath = CommandParser.parse(input);
@@ -1036,7 +1057,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using without naming text file
-        
+
         try {
             input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin";
             filePath = CommandParser.parse(input);
@@ -1048,7 +1069,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using without naming text file
-        
+
         try {
             input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin\\.txt";
             filePath = CommandParser.parse(input);
@@ -1178,6 +1199,121 @@ public class CommandParserUnitTest {
 
         System.out.println(HEADER_ERRORS_REPEAT);
 
+        // Repeat without recurring attributes
+
+        try {
+            input = "repeat asdasdasdad";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat asdasdasdad -start 15 Nov 5 to 6 pm";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat asdasdasdad -every 1 day";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // Entering with whitespaces in attributes
+
+        try {
+            input = "repeat         -start 15 Nov 5 to 6 pm";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat      -start          ";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat      -start          -every           ";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat      -start          -every         -until      ";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat      -every    aaa    -until      ";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat   -start  -every  -on    -until   ";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+
+        try {
+            input = "repeat      word     -until      ";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "repeat      word     -until  wrong*!#*&^#!*^";
+            repeat = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
     }
 
     @Test
@@ -1187,6 +1323,50 @@ public class CommandParserUnitTest {
         Command update;
 
         System.out.println(HEADER_ERRORS_UPDATE);
+
+        // Update event with random string in date, start and end time
+
+        try {
+            input = "update e1 meeting at KL -on asdjjadsljd asjdalsd";
+            update = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update e1 -on asdjjadsljd asjdalsd";
+            update = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // Update deadline with random string in date, start and end time
+
+        try {
+            input = "update d1 submit application -by asdjjadsljd asjdalsd";
+            update = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update d1 -by asdjjadsljd asjdalsd";
+            update = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
 
     }
 
@@ -1220,6 +1400,68 @@ public class CommandParserUnitTest {
             executeTestWithString();
         }
 
+        try {
+            input = "update r1 -every adadsasd day -until adsasdasd -start asdasdad";
+            repeatDay = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update r1 -every 1 day -start asdasdad";
+            repeatDay = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // Wrong keyword
+
+        try {
+            input = "update r1 daily report -every 2 days -start 15 Nov 5 to 6 pm";
+            repeatDay = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update r1 daily report -everysa 2 days -started 15 Nov 5 to 6 pm";
+            repeatDay = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update r1 daily report -everysa 2 days -started 15 Nov 5 to 6 pm";
+            repeatDay = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update r1 daily report -every NINE days -start 15 Nov 5 to 6 pm";
+            repeatDay = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
     }
 
     @Test
@@ -1233,8 +1475,66 @@ public class CommandParserUnitTest {
         // Wrong sequence: day selected
 
         try {
-            input = "update r4 email yearly report -on mon, sun -every 1 month email daily report "
+            input = "update r4 email weekly report -on mon, sun -every 1 month email daily report "
                     + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
+            repeatWeek = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+        
+        // Wrong keywords
+        
+        try {
+            input = "update r4 email weekly report -onnnnnnn mon, sun -every 1 month email daily report "
+                    + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
+            repeatWeek = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+        
+        try {
+            input = "update r4 email weekly report -on mon, sun -every 1 month email daily report "
+                    + "-starting 15 Nov 5 to 6 pm untilwwwwww 15 Dec 2016 ";
+            repeatWeek = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // Random string in attributes
+
+        try {
+            input = "update r4 email weekly report -on afasfafaf -every asfffaff"
+                    + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
+            repeatWeek = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update r4 email weekly report -on afasfafaf -every asfffaff"
+                    + " -start afsasffasf -until afasfafsaf ";
+            repeatWeek = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        try {
+            input = "update r4 -start afsasffasf -until afasfafsaf ";
             repeatWeek = CommandParser.parse(input);
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
@@ -1256,8 +1556,42 @@ public class CommandParserUnitTest {
         // Wrong sequence: start
 
         try {
-            input = "update r4 email yearly report -every 1 month email daily report "
+            input = "update r4 email monthly report -every 1 month email daily report "
                     + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
+            repeatMonth = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+        
+        // Random String in attributes
+        
+        try {
+            input = "update r4 email monthly report -every 1 afsasfsfafs "
+                    + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
+            repeatMonth = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+        
+        try {
+            input = "update r4 email monthly report -every adssadsadasd "
+                    + "-start asdadasdasd -until asdasdasd ";
+            repeatMonth = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+        
+        try {
+            input = "update r4 -every adssadsadasd -start asdadasdasd ";
             repeatMonth = CommandParser.parse(input);
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
@@ -1280,6 +1614,18 @@ public class CommandParserUnitTest {
 
         try {
             input = "update r4 email yearly report -every 1 year email daily report -until 15 Dec 2016 -start 15 Nov 5 to 6 pm";
+            repeatYear = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // Random String in attributes
+
+        try {
+            input = "update r4 email yearly report -every afafaf until afsafasf -start afasfaf";
             repeatYear = CommandParser.parse(input);
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
