@@ -73,7 +73,6 @@ public class GUI extends Application {
         try {
             fr = new FileReader(file);
             br = new BufferedReader(fr);
-            System.out.println(file.getAbsolutePath());
             
             if (br.readLine() != null) {
                 br.close();

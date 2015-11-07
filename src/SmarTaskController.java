@@ -1,5 +1,10 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -36,6 +41,7 @@ public class SmarTaskController implements Initializable {
     private static final String COMMAND_UNDO = "undo";
     private static final String COMMAND_REDO = "redo";
     private static final String COMMAND_EXIT = "exit";
+    private static final String FILE_HELPMANUAL = "../main/" + "helpManual.txt";
     private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
     private static final String MESSAGE_INVALIDCOMMAND = "Error! Invalid Command sent to Logic!";
     private static final String MESSAGE_INVALIDUNDO = "Error! Invalid Undo Command sent to Logic!";
@@ -134,6 +140,19 @@ public class SmarTaskController implements Initializable {
 	    display.appendText(lineBreak);
 	    display.appendText(recurringTasks);
 	}
+    
+    private void updateWindows(TextArea display, ArrayList<String> toDisplay) {
+        display.clear();
+        String lineBreak = "\n";
+        
+        for (int i = 0; i< toDisplay.size(); i++) {
+        	String tempString = toDisplay.get(i);
+        	display.appendText(tempString);
+        	display.appendText(lineBreak);
+        }
+        String emptyString = "";
+        display.appendText(emptyString);
+    }
 
     /**
      * Checks the keys pressed by the user and activates certain events
@@ -192,13 +211,13 @@ public class SmarTaskController implements Initializable {
             exitCommand();
         } else if (userCommand.toLowerCase().equals(COMMAND_HELP)) {
             helpCommand();
-        }
-        
-        try {
-            Logic.executeCommand(userCommand);
-            updateDisplay();
-        } catch (Exception e) {
-            System.err.println(MESSAGE_INVALIDCOMMAND);
+        } else {
+        	try {
+                Logic.executeCommand(userCommand);
+                updateDisplay();
+            } catch (Exception e) {
+                System.err.println(MESSAGE_INVALIDCOMMAND);
+            }
         }
     }
     
@@ -208,7 +227,23 @@ public class SmarTaskController implements Initializable {
     }
     
     private void helpCommand() {
-        String helpManual = Help.getHelpManual();
+        File file = new File(FILE_HELPMANUAL);
+        FileReader fr = null;
+        BufferedReader br = null;
+        ArrayList<String> helpManual = new ArrayList<String>();
+        
+        try {
+            fr = new FileReader(file);
+            br = new BufferedReader(fr);
+            String fileOutput = null;
+            
+            while ((fileOutput = br.readLine()) != null) {
+            	helpManual.add(fileOutput);
+            }
+        } catch (IOException e) {
+        	System.err.println("Error! Cannot find help file!");
+        }
+        
         updateWindows(displayWindow, helpManual);
     }
     

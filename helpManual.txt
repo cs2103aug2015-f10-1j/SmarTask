@@ -1,0 +1,6 @@
+add task for floating task : <add your task >
+add task for event task with starting date and end date : <>
+add task for task that have a deadline : <>
+delete task for floating task : <F>
+delete task for event task with starting date and end date : <E>
+delete task for task that have a deadline : <D>
