@@ -94,6 +94,10 @@ public class Logic {
 		case REDO:
 		    redoCommand();
 		    break;
+		    
+		case VIEW:
+			viewTodayTask();
+			break;
 
 		case STOP_REPEAT:
 		    stopRec(command);
@@ -721,6 +725,31 @@ public class Logic {
 		msgLogger.add(MESSAGE_NOTHING_TO_COMPLETE);
 	    }
 	}
+    }
+    
+    private static void viewTodayTask() throws ParseException{
+    	for (int i = 0; i < deadline.size(); i++){
+    		String [] str = deadline.get(i).split("#");
+    	    SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+    	    Date timeDue = df.parse(str[1]);
+    	    if (timeDue.before(currentDateAndTime)){
+    	        msgLogger.add("D"+(i+1)+ ". "+ str[1] + " due on " + str[0]);
+    	    }
+    	}
+    	for (int i = 0; i <event.size(); i++){
+    		String [] str = event.get(i).split("#");
+    	    SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+    	    SimpleDateFormat getTime = new SimpleDateFormat("HH:mm");
+    	    Date timeStart = df.parse(str[0]);
+    	    Date timeEnd = df.parse(str[1]);
+    	    if(df.parse(str[1]).before(currentDateAndTime)){
+    	       msgLogger.add("E" + (i + 1) + ". " + str[2]+" from "+getTime.format(timeStart)+" to " +getTime.format(timeEnd))	;
+    	    }
+    	}
+    	for(int i = 0; i < repeatedTask.size(); i++){
+    		String [] str = repeatedTask.get(i).split("#");
+    	    msgLogger.add("R" + (i + 1) + ". " + str[1] + " " +str[0]);
+    	}  
     }
 
     // ================================================================
