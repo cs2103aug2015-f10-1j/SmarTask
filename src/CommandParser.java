@@ -14,7 +14,7 @@ import com.joestelmach.natty.*;
  * appropriate fields initialised. For example, the "add" command requires the
  * taskDetail and taskTime field to be initialised.
  * 
- * @author A0108235M-Sebastian Quek
+ * @author A0108235M-Sebastian Quek (Collate Project)
  */
 
 public class CommandParser {
@@ -375,7 +375,7 @@ public class CommandParser {
     // Set set filepath command attributes
     // ================================================================
 
-    private static void setFilePathCommandAttribute(Command command, ArrayList<String> arguments) {
+    private static void setFilePathCommandAttribute(Command command, ArrayList<String> arguments) throws Exception {
         setFilePath(command, arguments);
     }
 
@@ -653,13 +653,27 @@ public class CommandParser {
         }
     }
 
-    private static void setFilePath(Command command, ArrayList<String> arguments) {
-        command.setFilePath(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+    private static void setFilePath(Command command, ArrayList<String> arguments) throws Exception {
+        String line = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("/", "\\");
+        if(checkFilePath(line)) {
+            command.setFilePath(line);
+        } else {
+            System.out.println(line);
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        };                
+        
+    }
+    
+    private static boolean checkFilePath(String line) {
+        return Pattern.compile("([a-zA-Z]:)?(\\\\[a-zA-Z0-9._-]+)+\\\\?[a-zA-Z0-9._-].(?i)(txt)").matcher(line).find();
     }
 
     // ================================================================
     // Set attributes of individual update command
     // ================================================================
+
+    
 
     private static void setAttributeForUpdateType(Command command, String type, ArrayList<String> parameters)
             throws Exception{

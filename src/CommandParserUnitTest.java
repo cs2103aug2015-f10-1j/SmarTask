@@ -28,7 +28,8 @@ public class CommandParserUnitTest {
     private static final String HEADER_SINGLE_PARAM_COMMANDS = "\n----Single param----";
 
     private static final String HEADER_ADD_COMMAND = "\n----Add----";
-    private static final String HEADER_REPEAT_COMMAND = "\n----REPEAT commands----";
+    private static final String HEADER_SETFILEPATH_COMMAND = "\n----SetFilePath commands----";
+    private static final String HEADER_REPEAT_COMMAND = "\n----Repeat commands----";
     private static final String HEADER_UPDATE_COMMAND = "\n----Update----";
     private static final String HEADER_UPDATE_COMMAND_SELECTED_PARAM = "\n----Update selected param----";
 
@@ -250,14 +251,46 @@ public class CommandParserUnitTest {
         expected = new ArrayList<String>(Arrays.asList("SEARCH","meeting","office"));
         executeTestWithArrayList();
 
+
+    }
+
+    @Test
+    public final void testSetFilePathCommand() throws Exception {
+
+        System.out.println(HEADER_SETFILEPATH_COMMAND);
+
         // set filepath command
 
-        input = "setfilepath C:/Users/Jim/Dropbox";
+        Command setFilepath;
+
+        input = "setfilepath C:\\Users\\Jim\\Dropbox\\storage.txt";
         actual = new ArrayList<String>();
-        Command setFilepath = CommandParser.parse(input);
+        setFilepath = CommandParser.parse(input);
         actual.add(setFilepath.getCommandType().toString());
         actual.add(setFilepath.getFilePath());
-        expected = new ArrayList<String>(Arrays.asList("SETFILEPATH","C:/Users/Jim/Dropbox"));
+        expected = new ArrayList<String>(Arrays.asList(
+                "SETFILEPATH","C:\\Users\\Jim\\Dropbox\\storage.txt"));
+        executeTestWithArrayList();
+
+        // set filepath command
+
+        input = "setfilepath C:\\Users\\Jim\\Desktop\\storage.txt";
+        actual = new ArrayList<String>();
+        setFilepath = CommandParser.parse(input);
+        actual.add(setFilepath.getCommandType().toString());
+        actual.add(setFilepath.getFilePath());
+        expected = new ArrayList<String>(Arrays.asList(
+                "SETFILEPATH","C:\\Users\\Jim\\Desktop\\storage.txt"));
+
+        // set filepath command
+
+        input = "setfilepath C:\\Users\\Jim\\Dropbox\\SmarTask\\Work\\worktask.txt";
+        actual = new ArrayList<String>();
+        setFilepath = CommandParser.parse(input);
+        actual.add(setFilepath.getCommandType().toString());
+        actual.add(setFilepath.getFilePath());
+        expected = new ArrayList<String>(Arrays.asList("SETFILEPATH",
+                "C:\\Users\\Jim\\Dropbox\\SmarTask\\Work\\worktask.txt"));
         executeTestWithArrayList();
 
     }
@@ -961,7 +994,65 @@ public class CommandParserUnitTest {
     @Test
     public final void testSetFilePathErrors() throws Exception {
 
+        @SuppressWarnings("unused")
+        Command filePath;
+
         System.out.println(HEADER_ERRORS_SETFILEPATH);
+
+        // setfilepath using whitespaces
+        try {
+            input = "setfilepath            ";
+            filePath = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // setfilepath using random string
+        try {
+            input = "setfilepath abcdefgh asdoaskjdkasld asjdlasldj";
+            filePath = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // setfilepath using MAC filepath
+        try {
+            input = "setfilepath C:/Users/Jim/SmarTask/bin/storage.txt";
+            filePath = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // setfilepath using without naming text file
+        try {
+            input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin";
+            filePath = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+        // setfilepath using without naming text file
+        try {
+            input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin\\.txt";
+            filePath = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
 
     }
 
@@ -1075,7 +1166,10 @@ public class CommandParserUnitTest {
     }
 
     @Test
-    public final void testRepeatErrors() throws Exception {
+    public final void testAddRepeatErrors() throws Exception {
+
+        @SuppressWarnings("unused")
+        Command repeat;
 
         System.out.println(HEADER_ERRORS_REPEAT);
 
@@ -1084,12 +1178,15 @@ public class CommandParserUnitTest {
     @Test
     public final void testUpdateErrors() throws Exception {
 
+        @SuppressWarnings("unused")
+        Command update;
+
         System.out.println(HEADER_ERRORS_UPDATE);
 
     }
 
     @Test
-    public final void testRepeatDayErrors() throws Exception {
+    public final void testUpdateRepeatDayErrors() throws Exception {
 
         @SuppressWarnings("unused")
         Command repeatDay;
@@ -1121,7 +1218,7 @@ public class CommandParserUnitTest {
     }
 
     @Test
-    public final void testRepeatWeekErrors() throws Exception {
+    public final void testUpdateRepeatWeekErrors() throws Exception {
 
         @SuppressWarnings("unused")
         Command repeatWeek;
@@ -1141,11 +1238,10 @@ public class CommandParserUnitTest {
             executeTestWithString();
         }
 
-
     }
 
     @Test
-    public final void testRepeatMonthErrors() throws Exception {
+    public final void testUpdateRepeatMonthErrors() throws Exception {
 
         @SuppressWarnings("unused")
         Command repeatMonth;
@@ -1168,7 +1264,7 @@ public class CommandParserUnitTest {
     }
 
     @Test
-    public final void testRepeatYearErrors() throws Exception {
+    public final void testUpdateRepeatYearErrors() throws Exception {
 
         @SuppressWarnings("unused")
         Command repeatYear;
@@ -1195,10 +1291,10 @@ public class CommandParserUnitTest {
 
     private String todayDate() {
         Calendar today = Calendar.getInstance();
-        today.clear(Calendar.HOUR); 
-        today.clear(Calendar.MINUTE); 
-        today.clear(Calendar.SECOND);
-
+        today.set(Calendar.HOUR, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.HOUR_OF_DAY, 0);
         Date todayDate = today.getTime();
         String todayString = todayDate.toString();
 
@@ -1207,10 +1303,11 @@ public class CommandParserUnitTest {
 
     private String tomorrowDate() {
         Calendar tomorrowDate = Calendar.getInstance();
-        tomorrowDate.clear(Calendar.HOUR); 
-        tomorrowDate.clear(Calendar.MINUTE); 
-        tomorrowDate.clear(Calendar.SECOND);
         tomorrowDate.add(Calendar.DATE, 1);
+        tomorrowDate.set(Calendar.HOUR, 0);
+        tomorrowDate.set(Calendar.MINUTE, 0);
+        tomorrowDate.set(Calendar.SECOND, 0);
+        tomorrowDate.set(Calendar.HOUR_OF_DAY, 0);
 
         Date date = tomorrowDate.getTime();
         String tomorrowString = date.toString();

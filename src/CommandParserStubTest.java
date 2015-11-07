@@ -308,6 +308,30 @@ public class CommandParserStubTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        try {
+            Command filepath = CommandParser.parse("setfilepath        ");
+            System.out.println(filepath.getCommandType() + " " + filepath.getFilePath());
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        try {
+            Command filepath = CommandParser.parse("setfilepath aaaaaaaaaa");
+            System.out.println(filepath.getCommandType() + " " + filepath.getFilePath());
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        try {
+            Command filepath = CommandParser.parse("setfilepath C:\\users\\desktop");
+            System.out.println(filepath.getCommandType() + " " + filepath.getFilePath());
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
