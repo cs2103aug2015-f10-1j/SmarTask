@@ -656,8 +656,6 @@ public class CommandParserUnitTest {
                 "Sun Nov 15 18:00:00 SGT 2015", null, "Thu Dec 15 00:00:00 SGT 2016", null));
         executeUnitTest();
 
-        //"update r1 email daily report -start 15 Nov 5 to 6 pm -every 1 day -until 15 Dec 2016";
-
     }
 
     @Test
@@ -666,6 +664,8 @@ public class CommandParserUnitTest {
         Command repeatWeek;
 
         System.out.println(HEADER_UPDATE_REPEAT_WEEK_PARAM);
+
+        // All attributes
 
         input = "update r2 email weekly report -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec";
         repeatWeek = CommandParser.parse(input);
@@ -694,6 +694,35 @@ public class CommandParserUnitTest {
                 "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
                 "Fri Dec 25 11:00:00 SGT 2015", null, "3 5" ,null, null));
         executeUnitTest();
+
+        // Only description
+
+        input = "update r2 email weekly report";
+        repeatWeek = CommandParser.parse(input);
+        actual = initWeekRepeat(repeatWeek);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "2","email weekly report",
+                null, null, null, null, null, null, null));
+        executeUnitTest();
+
+        // Only description and day selected
+
+        input = "update r2 email weekly report -on tue, thu";
+        repeatWeek = CommandParser.parse(input);
+        actual = initWeekRepeat(repeatWeek);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "2","email weekly report",
+                null, null, null, null, "3 5", null, null));
+        executeUnitTest();
+
+        // Only description and day selected
+
+        input = "update r2 -on tue, thu";
+        repeatWeek = CommandParser.parse(input);
+        actual = initWeekRepeat(repeatWeek);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "2",null,
+                null, null, null, null, "3 5", null, null));
+        executeUnitTest();
+        
+        
 
     }
 
