@@ -12,7 +12,7 @@ import com.joestelmach.natty.generated.DateParser.date_return;
 /**
  * Unit test for CommandParser
  * 
- * Testing is divided into two main parts:
+ * Test is divided into two main parts:
  * 1) Testing whether input can be processed correctly
  * 2) How CommandParser handles errors in inputs
  * 
@@ -1123,22 +1123,17 @@ public class CommandParserUnitTest {
     @Test
     public final void testRepeatWeekErrors() throws Exception {
 
+        @SuppressWarnings("unused")
+        Command repeatWeek;
+
         System.out.println(HEADER_ERRORS_UPDATE_WEEK_PARAM);
 
+        // Wrong sequence: day selected
 
-    }
-
-    @Test
-    public final void testRepeatMonthErrors() throws Exception {
-        
-        Command repeatMonth;
-
-        System.out.println(HEADER_ERRORS_UPDATE_MONTH_PARAM);
-        
         try {
-            input = "update r4 email yearly report -every 1 month email daily report "
+            input = "update r4 email yearly report -on mon, sun -every 1 month email daily report "
                     + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
-            repeatMonth = CommandParser.parse(input);
+            repeatWeek = CommandParser.parse(input);
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
@@ -1150,8 +1145,31 @@ public class CommandParserUnitTest {
     }
 
     @Test
+    public final void testRepeatMonthErrors() throws Exception {
+
+        @SuppressWarnings("unused")
+        Command repeatMonth;
+
+        System.out.println(HEADER_ERRORS_UPDATE_MONTH_PARAM);
+
+        // Wrong sequence: start
+
+        try {
+            input = "update r4 email yearly report -every 1 month email daily report "
+                    + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
+            repeatMonth = CommandParser.parse(input);
+            fail("Should have thrown exception but did not!");
+        } catch (Exception e) {
+            actualMsg = e.getMessage();
+            expectedMsg = INVALID_FORMAT;
+            executeTestWithString();
+        }
+
+    }
+
+    @Test
     public final void testRepeatYearErrors() throws Exception {
-        
+
         @SuppressWarnings("unused")
         Command repeatYear;
 
@@ -1168,7 +1186,6 @@ public class CommandParserUnitTest {
             expectedMsg = INVALID_FORMAT;
             executeTestWithString();
         }
-
 
     }
 
