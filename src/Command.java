@@ -8,263 +8,263 @@ import java.util.*;
  */
 
 public class Command {
-	
-	public enum Type {
-		ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH, UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
-	}
 
-	private int taskID;
-	private Type type;
-	private String taskType;
-	private String taskDescription;
-	private String taskDeadline;
-	private String taskEventStart;
-	private String taskEventEnd;
-	private String taskEventDate;
-	private String taskEventTime;
-	private String filePath;
-	private ArrayList<String> searchKeyword;
+    public enum Type {
+        ADD, DELETE, UPDATE, COMPLETE, VIEW, EXIT, INVALID, SEARCH, UNDO, REDO, REPEAT, STOP_REPEAT, SETFILEPATH
+    }
 
-	// Additional attributes for recurring task
-	private String repeatType;
-	private Date dateAdded;
-	private Date repeatUntil;
-	private String repeatStartTime;
-	private String repeatEndTime;
-	private ArrayList<Date> stopRepeat;
-	private String stopRepeatInString;
+    private int taskID;
+    private Type type;
+    private String taskType;
+    private String taskDescription;
+    private String taskDeadline;
+    private String taskEventStart;
+    private String taskEventEnd;
+    private String taskEventDate;
+    private String taskEventTime;
+    private String filePath;
+    private ArrayList<String> searchKeyword;
 
-	// ======= Day repeat =======
-	private String dayInterval;
+    // Additional attributes for recurring task
+    private String repeatType;
+    private Date dateAdded;
+    private Date repeatUntil;
+    private String repeatStartTime;
+    private String repeatEndTime;
+    private ArrayList<Date> stopRepeat;
+    private String stopRepeatInString;
 
-	// ======= Week repeat =======
-	private String weekInterval;
-	private Boolean[] isDaySelected;
-	private String daySelectedString;
+    // ======= Day repeat =======
+    private String dayInterval;
 
-	// ======= Month repeat =======
-	private String monthInterval;
+    // ======= Week repeat =======
+    private String weekInterval;
+    private Boolean[] isDaySelected;
+    private String daySelectedString;
 
-	// ======= Year repeat =======
-	private String yearInterval;
+    // ======= Month repeat =======
+    private String monthInterval;
 
-	public Command(Type type) {
-		this.type = type;
-	}
+    // ======= Year repeat =======
+    private String yearInterval;
 
-	// ================================================================
-	// Getters method to support Logic methods
-	// ================================================================
-	public String getTaskDescription() {
-		return taskDescription;
-	}
+    public Command(Type type) {
+        this.type = type;
+    }
 
-	public Type getCommandType() {
-		return type;
-	}
+    // ================================================================
+    // Getters method to support Logic methods
+    // ================================================================
+    public String getTaskDescription() {
+        return taskDescription;
+    }
 
-	public String getTaskDeadline() {
-		return taskDeadline;
-	}
+    public Type getCommandType() {
+        return type;
+    }
 
-	public String getTaskEventDate() {
-		return taskEventDate;
-	}
+    public String getTaskDeadline() {
+        return taskDeadline;
+    }
 
-	public String getTaskEventTime() {
-		return taskEventTime;
-	}
+    public String getTaskEventDate() {
+        return taskEventDate;
+    }
 
-	public ArrayList<String> getSearchKeyword() {
-		return searchKeyword;
-	}
+    public String getTaskEventTime() {
+        return taskEventTime;
+    }
 
-	public int getTaskID() {
-		return taskID;
-	}
+    public ArrayList<String> getSearchKeyword() {
+        return searchKeyword;
+    }
 
-	public String getTaskType() {
-		return taskType;
-	}
+    public int getTaskID() {
+        return taskID;
+    }
 
-	// ================================================================
-	// Setters method to support CommandParser methods
-	// ================================================================
-	public void setTaskDescription(String taskDescription) {
-		this.taskDescription = taskDescription;
-	}
+    public String getTaskType() {
+        return taskType;
+    }
 
-	public void setTaskDeadline(String taskDeadline) {
-		this.taskDeadline = taskDeadline;
-	}
+    // ================================================================
+    // Setters method to support CommandParser methods
+    // ================================================================
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
 
-	public void setTaskEventDate(String taskEventDate) {
-		this.taskEventDate = taskEventDate;
-	}
+    public void setTaskDeadline(String taskDeadline) {
+        this.taskDeadline = taskDeadline;
+    }
 
-	public void setTaskEventTime(String taskEventTime) {
-		this.taskEventTime = taskEventTime;
-	}
+    public void setTaskEventDate(String taskEventDate) {
+        this.taskEventDate = taskEventDate;
+    }
 
-	public void setSearchKeyword(ArrayList<String> searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
+    public void setTaskEventTime(String taskEventTime) {
+        this.taskEventTime = taskEventTime;
+    }
 
-	public void setTaskID(int taskID) {
-		this.taskID = taskID;
-	}
+    public void setSearchKeyword(ArrayList<String> searchKeyword) {
+        this.searchKeyword = searchKeyword;
+    }
 
-	public void setTaskType(String taskType) {
-		this.taskType = taskType;
-	}
+    public void setTaskID(int taskID) {
+        this.taskID = taskID;
+    }
 
-	public String getFilePath() {
-		return filePath;
-	}
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
+    }
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
+    public String getFilePath() {
+        return filePath;
+    }
 
-	public String getTaskEventStart() {
-		return taskEventStart;
-	}
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
-	public void setTaskEventStart(String taskEventStart) {
-		this.taskEventStart = taskEventStart;
-	}
+    public String getTaskEventStart() {
+        return taskEventStart;
+    }
 
-	public String getTaskEventEnd() {
-		return taskEventEnd;
-	}
+    public void setTaskEventStart(String taskEventStart) {
+        this.taskEventStart = taskEventStart;
+    }
 
-	public void setTaskEventEnd(String taskEventEnd) {
-		this.taskEventEnd = taskEventEnd;
-	}
+    public String getTaskEventEnd() {
+        return taskEventEnd;
+    }
 
-	public String getRepeatType() {
-		return repeatType;
-	}
+    public void setTaskEventEnd(String taskEventEnd) {
+        this.taskEventEnd = taskEventEnd;
+    }
 
-	public void setRepeatType(String repeatType) {
-		this.repeatType = repeatType;
-	}
+    public String getRepeatType() {
+        return repeatType;
+    }
 
-	public String getDayInterval() {
-		return dayInterval;
-	}
+    public void setRepeatType(String repeatType) {
+        this.repeatType = repeatType;
+    }
 
-	public void setDayInterval(String dayInterval) {
-		this.dayInterval = dayInterval;
-	}
+    public String getDayInterval() {
+        return dayInterval;
+    }
 
-	public String getYearInterval() {
-		return yearInterval;
-	}
+    public void setDayInterval(String dayInterval) {
+        this.dayInterval = dayInterval;
+    }
 
-	public void setYearInterval(String yearInterval) {
-		this.yearInterval = yearInterval;
-	}
+    public String getYearInterval() {
+        return yearInterval;
+    }
 
-	public Date getDateAdded() {
-		return dateAdded;
-	}
+    public void setYearInterval(String yearInterval) {
+        this.yearInterval = yearInterval;
+    }
 
-	public void setDateAdded(Date dateAdded) {
-		this.dateAdded = dateAdded;
-	}
+    public Date getDateAdded() {
+        return dateAdded;
+    }
 
-	public String getRepeatStartTime() {
-		return repeatStartTime;
-	}
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
 
-	public void setRepeatStartTime(String repeatStartTime) {
-		this.repeatStartTime = repeatStartTime;
-	}
+    public String getRepeatStartTime() {
+        return repeatStartTime;
+    }
 
-	public String getRepeatEndTime() {
-		return repeatEndTime;
-	}
+    public void setRepeatStartTime(String repeatStartTime) {
+        this.repeatStartTime = repeatStartTime;
+    }
 
-	public void setRepeatEndTime(String repeatEndTime) {
-		this.repeatEndTime = repeatEndTime;
-	}
+    public String getRepeatEndTime() {
+        return repeatEndTime;
+    }
 
-	public Date getRepeatUntil() {
-		return repeatUntil;
-	}
+    public void setRepeatEndTime(String repeatEndTime) {
+        this.repeatEndTime = repeatEndTime;
+    }
 
-	public void setRepeatUntil(Date repeatUntil) {
-		this.repeatUntil = repeatUntil;
-	}
+    public Date getRepeatUntil() {
+        return repeatUntil;
+    }
 
-	public String getWeekInterval() {
-		return weekInterval;
-	}
+    public void setRepeatUntil(Date repeatUntil) {
+        this.repeatUntil = repeatUntil;
+    }
 
-	public void setWeekInterval(String weekInterval) {
-		this.weekInterval = weekInterval;
-	}
+    public String getWeekInterval() {
+        return weekInterval;
+    }
 
-	public Boolean[] getIsDaySelected() {
-		return isDaySelected;
-	}
+    public void setWeekInterval(String weekInterval) {
+        this.weekInterval = weekInterval;
+    }
 
-	public void setIsDaySelected(Boolean[] isDaySelected) {
-		this.isDaySelected = isDaySelected;
-	}
+    public Boolean[] getIsDaySelected() {
+        return isDaySelected;
+    }
 
-	public String getMonthInterval() {
-		return monthInterval;
-	}
+    public void setIsDaySelected(Boolean[] isDaySelected) {
+        this.isDaySelected = isDaySelected;
+    }
 
-	public void setMonthInterval(String monthInterval) {
-		this.monthInterval = monthInterval;
-	}
+    public String getMonthInterval() {
+        return monthInterval;
+    }
 
-	public ArrayList<Date> getStopRepeat() {
-		return stopRepeat;
-	}
+    public void setMonthInterval(String monthInterval) {
+        this.monthInterval = monthInterval;
+    }
 
-	public void setStopRepeat(ArrayList<Date> stopRepeat) {
-		this.stopRepeat = stopRepeat;
-	}
+    public ArrayList<Date> getStopRepeat() {
+        return stopRepeat;
+    }
 
-	public String getDaySelectedString() {
-		return daySelectedString;
-	}
+    public void setStopRepeat(ArrayList<Date> stopRepeat) {
+        this.stopRepeat = stopRepeat;
+    }
 
-	public void setDaySelectedString() {
-		String index = "";
-		
-		for (int i = 1; i < this.isDaySelected.length; i++) {
-			if (isDaySelected[i] == true) {
-				if (i != this.isDaySelected.length - 1) {
-					index += i + " ";
-				} else {
-					index += i;
-				}
-			}
-		}
-		
-		this.daySelectedString = index;
-	}
+    public String getDaySelectedString() {
+        return daySelectedString;
+    }
 
-	public String getStopRepeatInString() {
-		return stopRepeatInString;
-	}
+    public void setDaySelectedString() {
+        String index = "";
 
-	public void setStopRepeatInString() {
-		String dates = "";
-		
-		for (int i = 0; i < stopRepeat.size(); i++) {
-			if (i != stopRepeat.size() - 1) {
-				dates += stopRepeat.get(i).toString() + "@";
-			} else {
-				dates += stopRepeat.get(i).toString();
-			}
-		}
-		
-		this.stopRepeatInString = dates;
-	}
+        for (int i = 1; i < this.isDaySelected.length; i++) {
+            if (isDaySelected[i] == true) {
+                if (i != this.isDaySelected.length - 1) {
+                    index += i + " ";
+                } else {
+                    index += i;
+                }
+            }
+        }
+
+        this.daySelectedString = index;
+    }
+
+    public String getStopRepeatInString() {
+        return stopRepeatInString;
+    }
+
+    public void setStopRepeatInString() {
+        String dates = "";
+
+        for (int i = 0; i < stopRepeat.size(); i++) {
+            if (i != stopRepeat.size() - 1) {
+                dates += stopRepeat.get(i).toString() + "@";
+            } else {
+                dates += stopRepeat.get(i).toString();
+            }
+        }
+
+        this.stopRepeatInString = dates;
+    }
 }

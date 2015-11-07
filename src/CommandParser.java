@@ -66,72 +66,72 @@ public class CommandParser {
     private static final String MSG_NULL_POINTER = "Error: Null pointer";
 
     public static Command parse(String userInput) throws Exception {
-	addToParserLogger(userInput);
-	return initCommand(userInput);
+        addToParserLogger(userInput);
+        return initCommand(userInput);
     }
 
     private static Command initCommand(String userInput) throws Exception {
-	Command command;
-	ArrayList<String> parameters = getUserCommandAndArguments(userInput);
-	String userCommand = getUserCommand(parameters);
-	ArrayList<String> arguments = getUserArguments(parameters);
+        Command command;
+        ArrayList<String> parameters = getUserCommandAndArguments(userInput);
+        String userCommand = getUserCommand(parameters);
+        ArrayList<String> arguments = getUserArguments(parameters);
 
-	switch (userCommand.toLowerCase()) {
-	case USER_COMMAND_ADD :
-	    command = initAddCommand(arguments);
-	    break;
+        switch (userCommand.toLowerCase()) {
+            case USER_COMMAND_ADD :
+                command = initAddCommand(arguments);
+                break;
 
-	case USER_COMMAND_DELETE :
-	    command = initDeleteCommand(arguments);
-	    break;
+            case USER_COMMAND_DELETE :
+                command = initDeleteCommand(arguments);
+                break;
 
-	case USER_COMMAND_UPDATE :
-	    command = initUpdateCommand(arguments);
-	    break;
+            case USER_COMMAND_UPDATE :
+                command = initUpdateCommand(arguments);
+                break;
 
-	case USER_COMMAND_COMPLETE :
-	    command = initCompleteCommand(arguments);
-	    break;
+            case USER_COMMAND_COMPLETE :
+                command = initCompleteCommand(arguments);
+                break;
 
-	case USER_COMMAND_SEARCH :
-	    command = initSearchCommand(arguments);
-	    break;
+            case USER_COMMAND_SEARCH :
+                command = initSearchCommand(arguments);
+                break;
 
-	case USER_COMMAND_REPEAT :
-	    command = initRepeatCommand(arguments);
-	    break;
+            case USER_COMMAND_REPEAT :
+                command = initRepeatCommand(arguments);
+                break;
 
-	case USER_COMMAND_STOP_REPEAT :
-	    command = initStopRepeatCommand(arguments);
-	    break;
+            case USER_COMMAND_STOP_REPEAT :
+                command = initStopRepeatCommand(arguments);
+                break;
 
-	case USER_COMMAND_UNDO :
-	    command = initUndoCommand();
-	    break;
+            case USER_COMMAND_UNDO :
+                command = initUndoCommand();
+                break;
 
-	case USER_COMMAND_REDO :
-	    command = initRedoCommand();
-	    break;
+            case USER_COMMAND_REDO :
+                command = initRedoCommand();
+                break;
 
-	case USER_COMMAND_SET_FILEPATH :
-	    command = initSetFilePathCommand(arguments);
-	    break;
+            case USER_COMMAND_SET_FILEPATH :
+                command = initSetFilePathCommand(arguments);
+                break;
 
-	case USER_COMMAND_VIEW :
-	    command = initViewDateCommand(arguments);
-	    break;
+            case USER_COMMAND_VIEW :
+                command = initViewDateCommand(arguments);
+                break;
 
-	case USER_COMMAND_EXIT :
-	    command = initExitCommand();
-	    break;
+            case USER_COMMAND_EXIT :
+                command = initExitCommand();
+                break;
 
-	default:
-	    command = initInvalidCommand();
-	    break;
-	}
+            default:
+                command = initInvalidCommand();
+                break;
+        }
 
-	assert command != null : MSG_NULL_POINTER;
-	return command;
+        assert command != null : MSG_NULL_POINTER;
+        return command;
     }
 
     /******************************************************************/
@@ -145,14 +145,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initAddCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.ADD);
-	    setAddCommandAttribute(command, arguments);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.ADD);
+            setAddCommandAttribute(command, arguments);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -160,14 +160,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initDeleteCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.DELETE);
-	    setDeleteCommandAttribute(command, arguments);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.DELETE);
+            setDeleteCommandAttribute(command, arguments);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -175,14 +175,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initUpdateCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.UPDATE);   
-	    setUpdateCommandAttribute(command, arguments);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.UPDATE);   
+            setUpdateCommandAttribute(command, arguments);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -190,14 +190,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initCompleteCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.COMPLETE);
-	    setCompleteCommandAttribute(arguments, command);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.COMPLETE);
+            setCompleteCommandAttribute(arguments, command);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -205,14 +205,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initSearchCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.SEARCH);
-	    setSearchCommandAttribute(arguments, command);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.SEARCH);
+            setSearchCommandAttribute(arguments, command);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -220,14 +220,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initRepeatCommand(ArrayList<String> arguments) throws Exception {
-	try {     
-	    Command command = new Command(Command.Type.REPEAT);          
-	    setRepeatCommandAttribute(command, arguments);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {     
+            Command command = new Command(Command.Type.REPEAT);          
+            setRepeatCommandAttribute(command, arguments);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -235,14 +235,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initStopRepeatCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.STOP_REPEAT);
-	    setStopRepeatCommandAttribute(command, arguments);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.STOP_REPEAT);
+            setStopRepeatCommandAttribute(command, arguments);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -250,12 +250,12 @@ public class CommandParser {
     // ================================================================
 
     private static Command initUndoCommand() throws Exception {
-	try {
-	    return new Command(Command.Type.UNDO);
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            return new Command(Command.Type.UNDO);
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -263,12 +263,12 @@ public class CommandParser {
     // ================================================================
 
     private static Command initRedoCommand() throws Exception {
-	try {
-	    return new Command(Command.Type.REDO);
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            return new Command(Command.Type.REDO);
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -276,14 +276,14 @@ public class CommandParser {
     // ================================================================
 
     private static Command initSetFilePathCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.SETFILEPATH);
-	    setFilePathCommandAttribute(command, arguments);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.SETFILEPATH);
+            setFilePathCommandAttribute(command, arguments);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -291,7 +291,7 @@ public class CommandParser {
     // ================================================================
 
     private static Command initInvalidCommand() {
-	return new Command(Command.Type.INVALID);
+        return new Command(Command.Type.INVALID);
     }
 
     // ================================================================
@@ -299,13 +299,13 @@ public class CommandParser {
     // ================================================================
 
     private static Command initViewDateCommand(ArrayList<String> arguments) throws Exception {
-	try {
-	    Command command = new Command(Command.Type.VIEW);
-	    return command;
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            Command command = new Command(Command.Type.VIEW);
+            return command;
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     // ================================================================
@@ -313,7 +313,7 @@ public class CommandParser {
     // ================================================================
 
     private static Command initExitCommand() {
-	return new Command(Command.Type.EXIT);
+        return new Command(Command.Type.EXIT);
     }
 
     /******************************************************************/
@@ -327,9 +327,9 @@ public class CommandParser {
     // ================================================================
 
     private static void setAddCommandAttribute(Command command, ArrayList<String> arguments) {
-	com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-	List<DateGroup> dateGroup = parseDate.parse(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	setAttributeForAddType(command, arguments, dateGroup);
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup = parseDate.parse(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        setAttributeForAddType(command, arguments, dateGroup);
     }
 
     // ================================================================
@@ -337,9 +337,9 @@ public class CommandParser {
     // ================================================================
 
     private static void setDeleteCommandAttribute(Command command, ArrayList<String> arguments) throws Exception {
-	String taskType = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
-	setCommandTaskType(command, taskType);
-	setCommandTaskID(command, arguments);
+        String taskType = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+        setCommandTaskType(command, taskType);
+        setCommandTaskID(command, arguments);
     }
 
     // ================================================================
@@ -347,9 +347,9 @@ public class CommandParser {
     // ================================================================
 
     private static void setUpdateCommandAttribute(Command command, ArrayList<String> arguments) throws Exception {    
-	String type = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
-	ArrayList<String> parameters = splitStringIntoTwoWithWhiteSpaces(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	setAttributeForUpdateType(command, type, parameters);
+        String type = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+        ArrayList<String> parameters = splitStringIntoTwoWithWhiteSpaces(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        setAttributeForUpdateType(command, type, parameters);
     }
 
     // ================================================================
@@ -357,9 +357,9 @@ public class CommandParser {
     // ================================================================
 
     private static void setCompleteCommandAttribute(ArrayList<String> arguments, Command command) throws Exception {
-	String taskType = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
-	setCommandTaskType(command, taskType);    
-	setCommandTaskID(command, arguments);
+        String taskType = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
+        setCommandTaskType(command, taskType);    
+        setCommandTaskID(command, arguments);
     }
 
     // ================================================================
@@ -367,7 +367,7 @@ public class CommandParser {
     // ================================================================
 
     private static void setSearchCommandAttribute(ArrayList<String> arguments, Command command) {
-	setSearchKeyword(command, arguments);
+        setSearchKeyword(command, arguments);
     }
 
     // ================================================================
@@ -375,7 +375,7 @@ public class CommandParser {
     // ================================================================
 
     private static void setFilePathCommandAttribute(Command command, ArrayList<String> arguments) {
-	setFilePath(command, arguments);
+        setFilePath(command, arguments);
     }
 
     // ================================================================
@@ -383,18 +383,18 @@ public class CommandParser {
     // ================================================================
 
     private static void setRepeatCommandAttribute(Command command, ArrayList<String> arguments) 
-	    throws Exception{
+            throws Exception{
 
-	String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(KEYWORD_START);
-	command.setTaskDescription(param[POSITION_ZERO_PARAM_ARGUMENT].trim());
+        String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(KEYWORD_START);
+        command.setTaskDescription(param[POSITION_ZERO_PARAM_ARGUMENT].trim());
 
-	param = param[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_EVERY);
-	String dateTimeLine = param[POSITION_ZERO_PARAM_ARGUMENT].trim();
+        param = param[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_EVERY);
+        String dateTimeLine = param[POSITION_ZERO_PARAM_ARGUMENT].trim();
 
-	setStartAndEndTime(command, dateTimeLine);
-	setDateAdded(command, dateTimeLine);
-	setStopRepeatToInfinityDate(command);
-	setAttributeForRepeatType(command, param[POSITION_FIRST_PARAM_ARGUMENT].trim());
+        setStartAndEndTime(command, dateTimeLine);
+        setDateAdded(command, dateTimeLine);
+        setStopRepeatToInfinityDate(command);
+        setAttributeForRepeatType(command, param[POSITION_FIRST_PARAM_ARGUMENT].trim());
     }
 
     // ================================================================
@@ -402,16 +402,16 @@ public class CommandParser {
     // ================================================================
 
     private static void setStopRepeatCommandAttribute(Command command, ArrayList<String> arguments) throws Exception {
-	try {
-	    String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(REGEX_WHITESPACES, SIZE_2);
-	    setCommandTaskType(command, param[POSITION_ZERO_PARAM_ARGUMENT]);    
-	    setCommandTaskID(command, param);
-	    String[] dateParam = param[POSITION_FIRST_PARAM_ARGUMENT].split(",");
-	    setStopRepeatDate(command, dateParam);
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            String[] param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(REGEX_WHITESPACES, SIZE_2);
+            setCommandTaskType(command, param[POSITION_ZERO_PARAM_ARGUMENT]);    
+            setCommandTaskID(command, param);
+            String[] dateParam = param[POSITION_FIRST_PARAM_ARGUMENT].split(",");
+            setStopRepeatDate(command, dateParam);
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     /******************************************************************/
@@ -425,159 +425,159 @@ public class CommandParser {
     // ================================================================
 
     private static void setAttributeForAddType(Command command, ArrayList<String> arguments,
-	    List<DateGroup> dateGroup) {
-	if (dateGroup.size() == SIZE_0) {
-	    command.setTaskType(FLOATING);
-	    command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	} else {
-	    DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-	    List<Date> dates = group.getDates();
-	    String[] date = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+            List<DateGroup> dateGroup) {
+        if (dateGroup.size() == SIZE_0) {
+            command.setTaskType(FLOATING);
+            command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        } else {
+            DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+            List<Date> dates = group.getDates();
+            String[] date = dates.toString().replace("[", "").replace("]", "").split(",\\s");
 
-	    if (date.length == SIZE_1) {
-		command.setTaskType(DEADLINE);
-		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("by")[0].trim());
-		command.setTaskDeadline(date[0]);
-	    } else if (date.length == SIZE_2) {
-		command.setTaskType(EVENT);
-		command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("on")[0].trim());
-		command.setTaskEventStart(date[POSITION_ZERO_PARAM_ARGUMENT]);
-		command.setTaskEventEnd(date[POSITION_FIRST_PARAM_ARGUMENT]);
-	    }
-	}
+            if (date.length == SIZE_1) {
+                command.setTaskType(DEADLINE);
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("by")[0].trim());
+                command.setTaskDeadline(date[0]);
+            } else if (date.length == SIZE_2) {
+                command.setTaskType(EVENT);
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("on")[0].trim());
+                command.setTaskEventStart(date[POSITION_ZERO_PARAM_ARGUMENT]);
+                command.setTaskEventEnd(date[POSITION_FIRST_PARAM_ARGUMENT]);
+            }
+        }
     }
 
     private static void setCommandTaskID(Command command, String[] param) {
-	command.setTaskID(Integer.parseInt(param[POSITION_ZERO_PARAM_ARGUMENT].replaceAll("[a-zA-Z]", "")));
+        command.setTaskID(Integer.parseInt(param[POSITION_ZERO_PARAM_ARGUMENT].replaceAll("[a-zA-Z]", "")));
     }
 
     private static void setStopRepeatDate(Command command, ArrayList<Date> list) throws Exception {
-	try {
-	    command.setStopRepeat(list);
-	    command.setStopRepeatInString();
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        try {
+            command.setStopRepeat(list);
+            command.setStopRepeatInString();
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
 
     }
 
     private static void setStopRepeatToInfinityDate(Command command) throws ParseException, Exception {
-	ArrayList<Date> list = new ArrayList<Date>();
-	list.add(dateFormat.parse(INFINITY_DATE));
-	setStopRepeatDate(command, list);
+        ArrayList<Date> list = new ArrayList<Date>();
+        list.add(dateFormat.parse(INFINITY_DATE));
+        setStopRepeatDate(command, list);
     }
 
     private static void setDateAdded(Command command, String dateTimeLine) throws Exception {
-	ArrayList<Date> date = extractNattyTwoDates(dateTimeLine);
-	command.setDateAdded(date.get(0));
+        ArrayList<Date> date = extractNattyTwoDates(dateTimeLine);
+        command.setDateAdded(date.get(0));
     }
 
     private static void setStartAndEndTime(Command command, String dateTimeLine) throws Exception {
-	ArrayList<String> time = extractTime(dateTimeLine);
-	command.setRepeatStartTime(time.get(0));
-	command.setRepeatEndTime(time.get(1));
+        ArrayList<String> time = extractTime(dateTimeLine);
+        command.setRepeatStartTime(time.get(0));
+        command.setRepeatEndTime(time.get(1));
     }
 
     private static void setAttributeForRepeatType(Command command, String inputOfRecurrence)
-	    throws Exception, ParseException {
-	if (inputOfRecurrence.contains("day")) {
-	    setAttributeForDay(command, inputOfRecurrence);
-	} else if (inputOfRecurrence.contains("week")) {
-	    setAttributeForWeek(command, inputOfRecurrence);
-	} else if (inputOfRecurrence.contains("month")) {
-	    setAttributeForMonth(command, inputOfRecurrence);
-	} else if (inputOfRecurrence.contains("year")) {
-	    setAttributeForYear(command, inputOfRecurrence);
-	}
+            throws Exception, ParseException {
+        if (inputOfRecurrence.contains("day")) {
+            setAttributeForDay(command, inputOfRecurrence);
+        } else if (inputOfRecurrence.contains("week")) {
+            setAttributeForWeek(command, inputOfRecurrence);
+        } else if (inputOfRecurrence.contains("month")) {
+            setAttributeForMonth(command, inputOfRecurrence);
+        } else if (inputOfRecurrence.contains("year")) {
+            setAttributeForYear(command, inputOfRecurrence);
+        }
     }
 
     private static void setAttributeForYear(Command command, String inputOfRecurrence)
-	    throws Exception, ParseException {
-	command.setRepeatType("year");
-	String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
-	command.setYearInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
-	remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
-	setRepeatUntil(command, remainingParam);
+            throws Exception, ParseException {
+        command.setRepeatType("year");
+        String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
+        command.setYearInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+        remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
+        setRepeatUntil(command, remainingParam);
     }
 
     private static void setAttributeForMonth(Command command, String inputOfRecurrence)
-	    throws Exception, ParseException {
-	command.setRepeatType("month");
-	String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
-	command.setMonthInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
-	remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
-	setRepeatUntil(command, remainingParam);
+            throws Exception, ParseException {
+        command.setRepeatType("month");
+        String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
+        command.setMonthInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+        remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
+        setRepeatUntil(command, remainingParam);
     }
 
     private static void setAttributeForWeek(Command command, String inputOfRecurrence)
-	    throws Exception, ParseException {
-	command.setRepeatType("week");
-	String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
-	command.setWeekInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
-	remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_ON);
-	remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
-	String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
-	command.setIsDaySelected(setSelectedDay(line));
-	command.setDaySelectedString();
-	setRepeatUntil(command, remainingParam);
+            throws Exception, ParseException {
+        command.setRepeatType("week");
+        String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
+        command.setWeekInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+        remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_ON);
+        remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
+        String line = remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim();
+        command.setIsDaySelected(setSelectedDay(line));
+        command.setDaySelectedString();
+        setRepeatUntil(command, remainingParam);
     }
 
     private static void setAttributeForDay(Command command, String inputOfRecurrence) throws Exception, ParseException {
-	command.setRepeatType("day");
-	String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
-	command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
-	remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
-	setRepeatUntil(command, remainingParam);
+        command.setRepeatType("day");
+        String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
+        command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+        remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
+        setRepeatUntil(command, remainingParam);
     }
 
     private static void setStopRepeatDate(Command command, String[] dateParam) throws Exception {
-	ArrayList<Date> listOfDates;
-	try {
-	    listOfDates = extractDatesIntoArrayList(dateParam);
-	    command.setStopRepeat(listOfDates);
-	    command.setStopRepeatInString();
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        ArrayList<Date> listOfDates;
+        try {
+            listOfDates = extractDatesIntoArrayList(dateParam);
+            command.setStopRepeat(listOfDates);
+            command.setStopRepeatInString();
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     private static void setSearchKeyword(Command command, ArrayList<String> arguments) {
-	ArrayList<String> keywords = splitStringBySpace(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-	command.setSearchKeyword(keywords);
+        ArrayList<String> keywords = splitStringBySpace(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setSearchKeyword(keywords);
     }
 
     private static void setCommandTaskID(Command command, ArrayList<String> arguments) throws Exception {
-	command.setTaskID(extractTaskIdParam(arguments));
+        command.setTaskID(extractTaskIdParam(arguments));
     }
 
     private static void setCommandTaskType(Command command, String taskType) throws Exception {
-	if (isDeadlineType(taskType)) {
-	    command.setTaskType(DEADLINE);
-	} else if (isEventType(taskType)) {
-	    command.setTaskType(EVENT);
-	} else if (isFloatingType(taskType)) {
-	    command.setTaskType(FLOATING);
-	} else if (isRepeatType(taskType)) {
-	    command.setTaskType(REPEAT);
-	} else {
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        if (isDeadlineType(taskType)) {
+            command.setTaskType(DEADLINE);
+        } else if (isEventType(taskType)) {
+            command.setTaskType(EVENT);
+        } else if (isFloatingType(taskType)) {
+            command.setTaskType(FLOATING);
+        } else if (isRepeatType(taskType)) {
+            command.setTaskType(REPEAT);
+        } else {
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     private static void setRepeatUntil(Command command, String[] remainingParam)
-	    throws Exception, ParseException {
-	if (remainingParam.length > SIZE_1) {
-	    ArrayList<Date> line = extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
-	    command.setRepeatUntil(line.get(POSITION_ZERO_PARAM_ARGUMENT));
-	} else {
-	    command.setRepeatUntil(dateFormat.parse(INFINITY_DATE));
-	}
+            throws Exception, ParseException {
+        if (remainingParam.length > SIZE_1) {
+            ArrayList<Date> line = extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
+            command.setRepeatUntil(line.get(POSITION_ZERO_PARAM_ARGUMENT));
+        } else {
+            command.setRepeatUntil(dateFormat.parse(INFINITY_DATE));
+        }
     }
 
     private static void setFilePath(Command command, ArrayList<String> arguments) {
-	command.setFilePath(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        command.setFilePath(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
     }
 
     // ================================================================
@@ -585,278 +585,300 @@ public class CommandParser {
     // ================================================================
 
     private static void setAttributeForUpdateType(Command command, String type, ArrayList<String> parameters)
-	    throws Exception{
-	if (isDeadlineType(type)) {
-	    updateDeadlineTask(command, parameters);
-	} else if (isEventType(type)) {
-	    updateEventTask(command, parameters);
-	} else if (isFloatingType(type)) {
-	    updateFloatingTask(command, parameters);
-	} else if (isRepeatType(type)) {
-	    updateRepeatTask(command, parameters);
-	} else {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+            throws Exception{
+        if (isDeadlineType(type)) {
+            updateDeadlineTask(command, parameters);
+        } else if (isEventType(type)) {
+            updateEventTask(command, parameters);
+        } else if (isFloatingType(type)) {
+            updateFloatingTask(command, parameters);
+        } else if (isRepeatType(type)) {
+            updateRepeatTask(command, parameters);
+        } else {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     private static void updateFloatingTask(Command command, ArrayList<String> parameters) 
-	    throws Exception {
-	command.setTaskType(FLOATING);
-	setCommandTaskID(command, parameters);
-	command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+            throws Exception {
+        command.setTaskType(FLOATING);
+        setCommandTaskID(command, parameters);
+        command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
     }
 
     private static void updateEventTask(Command command, ArrayList<String> parameters) 
-	    throws Exception {
-	command.setTaskType(EVENT);
-	setCommandTaskID(command, parameters);
+            throws Exception {
+        command.setTaskType(EVENT);
+        setCommandTaskID(command, parameters);
 
-	String line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
-	System.out.println(line);
+        String line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
 
-	if (line.contains("-on")) {
-	    String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split("-on");
-	    if (param.length == 2) {
-		if (!param[0].trim().isEmpty()) {
-		    command.setTaskDescription(param[0].trim());
-		}
-		ArrayList<String> list = extractTime(param[1]);
-		command.setTaskEventStart(list.get(0));
-		command.setTaskEventEnd(list.get(1));
-	    } else {
-		ArrayList<String> list = extractTime(param[1]);
-		command.setTaskEventStart(list.get(0));
-		command.setTaskEventEnd(list.get(1));
-	    }
-	} else {
-	    command.setTaskDescription(line.trim());
-	}
-	
+        if (line.contains("-on")) {
+            String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split("-on");
+            if (param.length == 2) {
+                if (!param[0].trim().isEmpty()) {
+                    command.setTaskDescription(param[0].trim());
+                }
+                ArrayList<String> list = extractTime(param[1]);
+                command.setTaskEventStart(list.get(0));
+                command.setTaskEventEnd(list.get(1));
+            } else {
+                ArrayList<String> list = extractTime(param[1]);
+                command.setTaskEventStart(list.get(0));
+                command.setTaskEventEnd(list.get(1));
+            }
+        } else {
+            command.setTaskDescription(line.trim());
+        }
+
     }
 
     private static String getDateInString(String string) {
-	com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-	List<DateGroup> dateGroup = parseDate.parse(string);
-	DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-	List<Date> dates = group.getDates();
-	String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
-	return arr[0];
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup = parseDate.parse(string);
+        DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+        List<Date> dates = group.getDates();
+        String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+        return arr[0];
     }
 
     private static void updateDeadlineTask(Command command, ArrayList<String> parameters) throws Exception {
-	command.setTaskType(DEADLINE);
-	setCommandTaskID(command, parameters);
-	String line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
-	
-	if (line.contains("-by")) {
-	    String date;
-	    String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split("-by");
-	    if (param.length == 2) {
-		if (!param[0].trim().isEmpty()) {
-		    command.setTaskDescription(param[0].trim());
-		}
-		date =  getDateInString(param[1]);
-		command.setTaskDeadline(date);
-	    } else {
-		date =  getDateInString(param[1]);
-		command.setTaskDeadline(date);
-	    }
-	} else {
-	    command.setTaskDescription(line.trim());
-	}
+        command.setTaskType(DEADLINE);
+        setCommandTaskID(command, parameters);
+        String line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
+
+        if (line.contains("-by")) {
+            String date;
+            String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split("-by");
+            if (param.length == 2) {
+                if (!param[0].trim().isEmpty()) {
+                    command.setTaskDescription(param[0].trim());
+                }
+                date =  getDateInString(param[1]);
+                command.setTaskDeadline(date);
+            } else {
+                date =  getDateInString(param[1]);
+                command.setTaskDeadline(date);
+            }
+        } else {
+            command.setTaskDescription(line.trim());
+        }
 
     }
 
     private static void updateRepeatTask(Command command, ArrayList<String> parameters)
-	    throws ParseException, Exception {
-	command.setTaskType(REPEAT);
-	setCommandTaskID(command, parameters);
-	command.setTaskDescription(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
-	String input = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
-	
-	System.out.println(input);
-	
-	if (input.contains(KEYWORD_UNTIL)) {
-	    String[] line = input.split(KEYWORD_UNTIL);
-	    com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-	    List<DateGroup> dateGroup = parseDate.parse(line[POSITION_FIRST_PARAM_ARGUMENT]);
-	    DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-	    List<Date> dates = group.getDates();
-	    String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
-	    String[] param = arr[0].split(" ");
-	    int mth = monthInString.indexOf(param[1]) + 1;
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	    command.setRepeatUntil(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
-	    input = line[0];
-	}
+            throws ParseException, Exception {
+        command.setTaskType(REPEAT);
+        String[] line;
 
-	if (input.contains(KEYWORD_ON)) {
-	    String[] paramArr = input.split(KEYWORD_ON);
-	    String line = paramArr[POSITION_FIRST_PARAM_ARGUMENT].trim();
-	    command.setIsDaySelected(setSelectedDay(line));
-	    command.setDaySelectedString();
-	    input = paramArr[0];
-	}
+        setCommandTaskID(command, parameters);
+        String input = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
 
-	if (input.contains(KEYWORD_EVERY)) {
-	    String[] paramArr = input.split(KEYWORD_EVERY);
-	    String[] remainingParam = paramArr[1].trim().split(REGEX_WHITESPACES, SIZE_2);
-	    String type = remainingParam[1];
+        if (input.contains(KEYWORD_UNTIL)) {
+            line = input.split(KEYWORD_UNTIL);
 
-	    if (type.equals("day")) {
-		command.setDayInterval(remainingParam[0]);
-	    } else if (type.equals("week")) {
-		command.setWeekInterval(remainingParam[0]);
-	    } else if (type.equals("month")) {
-		command.setMonthInterval(remainingParam[0]);
-	    } else if (type.equals("year")) {
-		command.setYearInterval(remainingParam[0]);
-	    }
+            com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+            List<DateGroup> dateGroup = parseDate.parse(line[POSITION_FIRST_PARAM_ARGUMENT]);
+            DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+            List<Date> dates = group.getDates();
 
-	    input = paramArr[0];
-	}
+            String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+            String[] param = arr[0].split(" ");
+            int mth = monthInString.indexOf(param[1]) + 1;
 
-	if (input.contains(KEYWORD_START)) {
-	    String[] line = input.split(KEYWORD_START);
-	    String dateTimeLine = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
-	    setStartAndEndTime(command, dateTimeLine);
-	    setDateAdded(command, dateTimeLine);
-	    input = line[0];
-	}
-	
-	command.setTaskDescription(input.trim());
-	
+            command.setRepeatUntil(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
+            input = line[0];
+        }
+
+        if (input.contains(KEYWORD_ON)) {
+            line = input.split(KEYWORD_ON);
+            String paramArr = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
+            command.setIsDaySelected(setSelectedDay(paramArr));
+            command.setDaySelectedString();
+            input = line[0];
+        }
+
+        if (input.contains(KEYWORD_EVERY)) {
+            line = input.split(KEYWORD_EVERY);
+            String[] remainingParam = line[1].trim().split(REGEX_WHITESPACES, SIZE_2);
+            String type = remainingParam[1];
+
+            if (type.equals("day")) {
+                command.setDayInterval(remainingParam[0]);
+                command.setRepeatType("day");
+            } else if (type.equals("week")) {
+                command.setWeekInterval(remainingParam[0]);
+                command.setRepeatType("week");
+            } else if (type.equals("month")) {
+                command.setMonthInterval(remainingParam[0]);
+                command.setRepeatType("month");
+            } else if (type.equals("year")) {
+                command.setYearInterval(remainingParam[0]);
+                command.setRepeatType("year");
+            }
+
+            input = line[0];
+        }
+
+        if (input.contains(KEYWORD_START)) {
+            line = input.split(KEYWORD_START);
+            String dateTimeLine = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
+            setStartAndEndTime(command, dateTimeLine);
+            setDateAdded(command, dateTimeLine);
+            input = line[0];
+        }
+
+        String param = input.trim();
+        if(isDescription(param)) {
+            if(!param.isEmpty()) {
+                command.setTaskDescription(param);
+            } 
+        } 
+
     }
 
     // ================================================================
     // Support checking of task type
     // ================================================================
 
+    private static boolean isDescription(String param) {
+        if (param.contains(KEYWORD_START)) {
+            return false;
+        } else if (param.contains(KEYWORD_EVERY)) {
+            return false;
+        } else if (param.contains(KEYWORD_ON)) {
+            return false;
+        } else if (param.contains(KEYWORD_UNTIL)) {
+            return false;
+        } 
+        return true;
+    }
+
     private static boolean isRepeatType(String taskTypeIndicator) {
-	return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_R);
+        return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_R);
     }
 
     private static boolean isFloatingType(String taskTypeIndicator) {
-	return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_F);
+        return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_F);
     }
 
     private static boolean isEventType(String taskTypeIndicator) {
-	return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_E);
+        return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_E);
     }
 
     private static boolean isDeadlineType(String taskTypeIndicator) {
-	return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_D);
+        return taskTypeIndicator.toLowerCase().startsWith(SMALL_CAP_D);
     }
 
     private static int extractTaskIdParam(ArrayList<String> parameters) throws Exception {
-	int id = Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")) ;
-	if (id <= 0) {
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
-	return id;
+        int id = Integer.parseInt(parameters.get(POSITION_ZERO_PARAM_ARGUMENT).replaceAll("[a-zA-Z]", "")) ;
+        if (id <= 0) {
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
+        return id;
     }
 
     private static ArrayList<Date> extractNattyTwoDates(String dateTime) throws Exception {
-	try {
-	    ArrayList<Date> dateStartEnd = new ArrayList<Date>(3);
+        try {
+            ArrayList<Date> dateStartEnd = new ArrayList<Date>(3);
 
-	    com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-	    List<DateGroup> dateGroup = parseDate.parse(dateTime);
+            com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+            List<DateGroup> dateGroup = parseDate.parse(dateTime);
 
-	    DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-	    List<Date> dates = group.getDates();
+            DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+            List<Date> dates = group.getDates();
 
-	    String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
-	    String[] param = arr[0].split(" ");
-	    int mth = monthInString.indexOf(param[1]) + 1;
+            String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+            String[] param = arr[0].split(" ");
+            int mth = monthInString.indexOf(param[1]) + 1;
 
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	    dateStartEnd.add(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
-	    return dateStartEnd;
-	} catch (ParseException e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            dateStartEnd.add(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
+            return dateStartEnd;
+        } catch (ParseException e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     private static ArrayList<String> extractTime(String dateTime) throws Exception {
-	ArrayList<String> dateStartEnd = new ArrayList<String>(SIZE_3);
-	
-	com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-	List<DateGroup> dateGroup = parseDate.parse(dateTime);
-	DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-	List<Date> dates = group.getDates();
+        ArrayList<String> dateStartEnd = new ArrayList<String>(SIZE_3);
 
-	String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup = parseDate.parse(dateTime);
+        DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+        List<Date> dates = group.getDates();
 
-	//String[] start = arr[POSITION_ZERO_PARAM_ARGUMENT].split(" ");
-	//dateStartEnd.add(start[SIZE_3]);
+        String[] arr = dates.toString().replace("[", "").replace("]", "").split(",\\s");
 
-	//String[] end = arr[POSITION_FIRST_PARAM_ARGUMENT].split(" ");
-	//dateStartEnd.add(end[POSITION_THREE_PARAM_ARGUMENT]);
-	
-	dateStartEnd.add(arr[0]);
-	dateStartEnd.add(arr[1]);
-	
-	return dateStartEnd;
+        //String[] start = arr[POSITION_ZERO_PARAM_ARGUMENT].split(" ");
+        //dateStartEnd.add(start[SIZE_3]);
+
+        //String[] end = arr[POSITION_FIRST_PARAM_ARGUMENT].split(" ");
+        //dateStartEnd.add(end[POSITION_THREE_PARAM_ARGUMENT]);
+
+        dateStartEnd.add(arr[0]);
+        dateStartEnd.add(arr[1]);
+
+        return dateStartEnd;
     }
 
     private static ArrayList<Date> extractDatesIntoArrayList(String[] dateParam) throws ParseException {
-	ArrayList<Date> list = new ArrayList<Date>();
-	com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-	List<DateGroup> dateGroup;
-	DateGroup group;
-	List<Date> dates;
+        ArrayList<Date> list = new ArrayList<Date>();
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup;
+        DateGroup group;
+        List<Date> dates;
 
-	for (int i = 0; i < dateParam.length; i++) {
-	    dateGroup = parseDate.parse(dateParam[i].trim());
-	    group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
-	    dates = group.getDates();
-	    String[] param = dates.toString().replace("[", "").replace("]", "").split(" ");
-	    int mth = monthInString.indexOf(param[SIZE_1]) + 1;
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	    list.add(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
-	}
+        for (int i = 0; i < dateParam.length; i++) {
+            dateGroup = parseDate.parse(dateParam[i].trim());
+            group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
+            dates = group.getDates();
+            String[] param = dates.toString().replace("[", "").replace("]", "").split(" ");
+            int mth = monthInString.indexOf(param[SIZE_1]) + 1;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            list.add(dateFormat.parse(param[2] + "/" + mth + "/" + param[5]));
+        }
 
-	return list;
+        return list;
     }
 
     private static Boolean[] setSelectedDay(String line) throws Exception {
-	String[] days = line.split(",");
-	Boolean[] isSelected = new Boolean[WEEKSIZE];
-	Arrays.fill(isSelected, false);
-	int dayNum;
-	isSelected[0] = null;
+        String[] days = line.split(",");
+        Boolean[] isSelected = new Boolean[WEEKSIZE];
+        Arrays.fill(isSelected, false);
+        int dayNum;
+        isSelected[0] = null;
 
-	for (int i = 0; i < days.length; i++) {
-	    days[i] = days[i].trim();
-	    dayNum = getDayIndex(days[i]);
-	    isSelected[dayNum] = true;
-	}
+        for (int i = 0; i < days.length; i++) {
+            days[i] = days[i].trim();
+            dayNum = getDayIndex(days[i]);
+            isSelected[dayNum] = true;
+        }
 
-	return isSelected;
+        return isSelected;
     }
 
     private static int getDayIndex(String day) throws Exception {
-	if (day.toLowerCase().equals("mon")) {
-	    return 2;
-	} else if (day.toLowerCase().equals("tue")) {
-	    return 3;
-	} else if (day.toLowerCase().equals("wed")) {
-	    return 4;
-	} else if (day.toLowerCase().equals("thu")) {
-	    return 5;
-	} else if (day.toLowerCase().equals("fri")) {
-	    return 6;
-	} else if (day.toLowerCase().equals("sat")) {
-	    return 7;
-	} else if (day.toLowerCase().equals("sun")) {
-	    return 1;
-	} else {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        if (day.toLowerCase().equals("mon")) {
+            return 2;
+        } else if (day.toLowerCase().equals("tue")) {
+            return 3;
+        } else if (day.toLowerCase().equals("wed")) {
+            return 4;
+        } else if (day.toLowerCase().equals("thu")) {
+            return 5;
+        } else if (day.toLowerCase().equals("fri")) {
+            return 6;
+        } else if (day.toLowerCase().equals("sat")) {
+            return 7;
+        } else if (day.toLowerCase().equals("sun")) {
+            return 1;
+        } else {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     /******************************************************************/
@@ -866,52 +888,52 @@ public class CommandParser {
     /******************************************************************/
 
     private static ArrayList<String> getUserCommandAndArguments(String userInput) throws Exception {
-	ArrayList<String> parameters = splitStringIntoTwoWithWhiteSpaces(userInput);
-	return parameters;
+        ArrayList<String> parameters = splitStringIntoTwoWithWhiteSpaces(userInput);
+        return parameters;
     }
 
     private static ArrayList<String> getUserArguments(ArrayList<String> parameters) {
-	assert parameters != null;
-	ArrayList<String> list = new ArrayList<>();
-	if (parameters.size() == 1) {
-	    return list;
-	}
-	list.add(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
-	return list;
+        assert parameters != null;
+        ArrayList<String> list = new ArrayList<>();
+        if (parameters.size() == 1) {
+            return list;
+        }
+        list.add(parameters.get(POSITION_FIRST_PARAM_ARGUMENT));
+        return list;
     }
 
     private static String getUserCommand(ArrayList<String> parameters) {
-	return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
+        return parameters.get(POSITION_ZERO_PARAM_ARGUMENT);
     }
 
     private static ArrayList<String> splitStringBySpace(String arguments) {
-	assert arguments != null : "Input is not entered correctly";
-	String[] strArray = arguments.trim().split(REGEX_WHITESPACES);
-	return new ArrayList<String>(Arrays.asList(strArray));
+        assert arguments != null : "Input is not entered correctly";
+        String[] strArray = arguments.trim().split(REGEX_WHITESPACES);
+        return new ArrayList<String>(Arrays.asList(strArray));
     }
 
     private static ArrayList<String> splitStringIntoTwoWithWhiteSpaces(String arguments) throws Exception {
-	assert arguments != null : MSG_NULL_POINTER;
-	try {
-	    String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
-	    return new ArrayList<String>(Arrays.asList(strArray));
-	} catch (Exception e) {
-	    addToParserLogger(MSG_INVALID_FORMAT);
-	    throw new Exception(MSG_INVALID_FORMAT);
-	}
+        assert arguments != null : MSG_NULL_POINTER;
+        try {
+            String[] strArray = arguments.trim().split(REGEX_WHITESPACES, TWOPARTS);
+            return new ArrayList<String>(Arrays.asList(strArray));
+        } catch (Exception e) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
     }
 
     private static void addToParserLogger(String userInput) {
-	DateFormat dateFormat = new SimpleDateFormat(DATEFORMAT_YYYY_MM_DD_HH_MM_SS);
-	Date date = new Date();
-	parserLogger.add(dateFormat.format(date) + REGEX_WHITESPACES + MSG_COMMAND + userInput);
+        DateFormat dateFormat = new SimpleDateFormat(DATEFORMAT_YYYY_MM_DD_HH_MM_SS);
+        Date date = new Date();
+        parserLogger.add(dateFormat.format(date) + REGEX_WHITESPACES + MSG_COMMAND + userInput);
     }
 
     public static void viewCommandParserLog() {
-	System.out.println(MSG_PARSER_LOG_HEADER);
-	for (int i = 0; i < parserLogger.size(); i++) {
-	    System.out.println(parserLogger.get(i));
-	}
+        System.out.println(MSG_PARSER_LOG_HEADER);
+        for (int i = 0; i < parserLogger.size(); i++) {
+            System.out.println(parserLogger.get(i));
+        }
     }
 
 }
