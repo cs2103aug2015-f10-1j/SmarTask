@@ -39,7 +39,7 @@ public class CommandParserStubTest {
 	    Command repeat = CommandParser.parse("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
 	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
 	    + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
-	    + " ==Year Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+	    + " ==Year Interval: " + repeat.getYearInterval() + " ==Until:" + repeat.getRepeatUntil());
 	} catch (Exception e) {
 	    System.out.println(e.getMessage());
 	}
@@ -49,7 +49,7 @@ public class CommandParserStubTest {
 		    .parse("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
 	    System.out.println(repeat.getCommandType() + " " + repeat.getTaskDescription() + " " + repeat.getDateAdded()
 	    + " " + repeat.getRepeatStartTime() + " " + repeat.getRepeatEndTime() + " " + repeat.getRepeatType()
-	    + " ==Year Interval: " + repeat.getDayInterval() + " ==Until:" + repeat.getRepeatUntil());
+	    + " ==Year Interval: " + repeat.getYearInterval() + " ==Until:" + repeat.getRepeatUntil());
 	} catch (Exception e) {
 	    System.out.println(e.getMessage());
 	}
@@ -78,7 +78,6 @@ public class CommandParserStubTest {
 	} catch (Exception e) {
 	    System.out.println(e.getMessage());
 	}
-	
 	
 
 	// ==================================================

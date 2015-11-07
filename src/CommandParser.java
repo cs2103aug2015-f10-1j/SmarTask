@@ -496,7 +496,7 @@ public class CommandParser {
 	    throws Exception, ParseException {
 	command.setRepeatType("year");
 	String[] remainingParam = inputOfRecurrence.split(REGEX_WHITESPACES, SIZE_2);
-	command.setDayInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
+	command.setYearInterval(remainingParam[POSITION_ZERO_PARAM_ARGUMENT].trim());
 	remainingParam = remainingParam[POSITION_FIRST_PARAM_ARGUMENT].split(KEYWORD_UNTIL);
 	setRepeatUntil(command, remainingParam);
     }
