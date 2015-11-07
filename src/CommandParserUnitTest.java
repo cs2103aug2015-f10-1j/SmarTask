@@ -8,22 +8,43 @@ import org.junit.Test;
 /**
  * Unit test for CommandParser
  * 
+ * Testing is divided into two main parts:
+ * 1) Testing whether input can be processed correctly
+ * 2) How CommandParser handles errors in inputs
+ * 
  * @author A0108235M
  */
 
 public class CommandParserUnitTest {
 
-    private static final String HEADER_TWO_PARAM_COMMANDS = "\n----Two param commands----";
-    private static final String HEADER_SPECIAL_CASES_IN_SINGLE_PARAM = "\n----Special cases - single param ----";
-    private static final String HEADER_SINGLE_PARAM_COMMANDS = "\n----Single param commands----";
-    private static final String HEADER_ADD_COMMAND = "\n----ADD commands----";
-    private static final String HEADER_UPDATE_COMMAND = "\n----UPDATE commands----";
-    private static final String HEADER_UPDATE_COMMAND_SELECTED_PARAM = "\n----UPDATE commands selected param----";
+    // Command testing
+
+    private static final String HEADER_TWO_PARAM_COMMANDS = "\n----Two param----";
+    private static final String HEADER_SINGLE_PARAM_COMMANDS = "\n----Single param----";
+
+    private static final String HEADER_ADD_COMMAND = "\n----Add----";
     private static final String HEADER_REPEAT_COMMAND = "\n----REPEAT commands----";
-    private static final String HEADER_UPDATE_REPEAT_COMMAND = "\n----UPDATE repeat commands----";
-    private static final String HEADER_UPDATE_REPEAT_COMMAND_SELECTED_PARAM = "\n----UPDATE repeat commands selected param----";
-    private static final String HEADER_STOP_REPEAT_COMMAND = "\n----STOP_REPEAT commands----";
-    private static final String HEADER_ERRORS = "\n----ERRORS inputs----";
+    private static final String HEADER_UPDATE_COMMAND = "\n----Update----";
+    private static final String HEADER_UPDATE_COMMAND_SELECTED_PARAM = "\n----Update selected param----";
+
+    private static final String HEADER_UPDATE_REPEAT_COMMAND = "\n----Update: all param of repeat ----";
+    private static final String HEADER_STOP_REPEAT_COMMAND = "\n----Stop repeat----";
+    private static final String HEADER_UPDATE_REPEAT_DAY_PARAM = "\n----Update: selected param of Day repeat----";
+    private static final String HEADER_UPDATE_REPEAT_WEEK_PARAM = "\n----Update: selected param of Week repeat----";
+    private static final String HEADER_UPDATE_REPEAT_MONTH_PARAM = "\n----Update: selected param of Month repeat----";
+    private static final String HEADER_UPDATE_REPEAT_YEAR_PARAM = "\n----Update: selected param of Year repeat----";
+
+    // Error testing
+
+    private static final String HEADER_ERRORS_TWO_PARAM = "\n----Errors: Two param----";
+    private static final String HEADER_ERRORS_SETFILEPATH = "\n----Errors: Set Filepath----";
+    private static final String HEADER_ERRORS_ADD = "\n----Errors: Add----";
+    private static final String HEADER_ERRORS_REPEAT = "\n----Error: Repeat----";
+    private static final String HEADER_ERRORS_UPDATE = "\n----Error: Update----";
+    private static final String HEADER_ERRORS_UPDATE_DAY_PARAM = "\n----Error: Day update----";
+    private static final String HEADER_ERRORS_UPDATE_WEEK_PARAM = "\n----Error: Week update----";
+    private static final String HEADER_ERRORS_UPDATE_MONTH_PARAM = "\n----Error: Month update----";
+    private static final String HEADER_ERRORS_UPDATE_YEAR_PARAM = "\n----Error: Year update----";
 
     String input;
     public ArrayList<String> actual; 
@@ -103,34 +124,6 @@ public class CommandParserUnitTest {
         executeUnitTest();
 
         input = "EXIT";
-        actual = new ArrayList<String>();
-        Command exit = CommandParser.parse(input);
-        actual.add(exit.getCommandType().toString());
-        expected = new ArrayList<String>(Arrays.asList("EXIT"));
-        executeUnitTest();
-
-    }
-
-    @Test
-    public final void testSpecialCasesForSingleParamCommand() throws Exception {
-
-        System.out.println(HEADER_SPECIAL_CASES_IN_SINGLE_PARAM);
-
-        input = "undo aaaaaaaaaaaaaa";
-        actual = new ArrayList<String>();
-        Command undo = CommandParser.parse(input);
-        actual.add(undo.getCommandType().toString());
-        expected = new ArrayList<String>(Arrays.asList("UNDO"));
-        executeUnitTest();
-
-        input = "redo aaaaaaaaaaaaaaaaa";
-        actual = new ArrayList<String>();
-        Command redo = CommandParser.parse(input);
-        actual.add(redo.getCommandType().toString());
-        expected = new ArrayList<String>(Arrays.asList("REDO"));
-        executeUnitTest();
-
-        input = "exit aaaaaaaaaaaa";
         actual = new ArrayList<String>();
         Command exit = CommandParser.parse(input);
         actual.add(exit.getCommandType().toString());
@@ -257,7 +250,7 @@ public class CommandParserUnitTest {
 
         // Add event
 
-        input = "add Meeting with Boss on 26 Nov 5 to 6pm";
+        input = "add Meeting with Boss -on 26 Nov 5 to 6pm";
         actual = new ArrayList<String>();
         Command addEvent = CommandParser.parse(input);
         actual.add(addEvent.getCommandType().toString());
@@ -271,7 +264,7 @@ public class CommandParserUnitTest {
 
         // Add deadline
 
-        input = "add Finish assignment by 10 Dec 12pm";
+        input = "add Finish assignment -by 10 Dec 12pm";
         actual = new ArrayList<String>();
         Command addDeadline = CommandParser.parse(input);
         actual.add(addDeadline.getCommandType().toString());
@@ -501,19 +494,8 @@ public class CommandParserUnitTest {
         // Update day
 
         input = "update r1 email daily report -start 15 Nov 5 to 6 pm -every 1 day -until 15 Dec 2016";
-        actual = new ArrayList<String>();
         Command repeatDay = CommandParser.parse(input);
-        actual.add(repeatDay.getCommandType().toString());
-        actual.add(repeatDay.getTaskType());
-        actual.add(repeatDay.getRepeatType());
-        actual.add(String.valueOf(repeatDay.getTaskID()));
-        actual.add(repeatDay.getTaskDescription());
-        actual.add(repeatDay.getDateAdded().toString());
-        actual.add(repeatDay.getRepeatStartTime());
-        actual.add(repeatDay.getRepeatEndTime());
-        actual.add(repeatDay.getDayInterval());
-        actual.add(repeatDay.getRepeatUntil().toString());
-        actual.add(repeatDay.getStopRepeatInString());
+        actual = initDayRepeat(repeatDay);
         expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","day", "1","email daily report",
                 "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
                 "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016",
@@ -522,41 +504,19 @@ public class CommandParserUnitTest {
 
         // Update week
 
-        input = "update r2 email weekly report -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec";
-        actual = new ArrayList<String>();
+        input = "update r2 email weekly report -start 25 Dec 9 to 11am -every 2 week -on mon,fri -until 25 Dec";
         Command repeatWeek = CommandParser.parse(input);
-        actual.add(repeatWeek.getCommandType().toString());
-        actual.add(repeatWeek.getTaskType());
-        actual.add(repeatWeek.getRepeatType());
-        actual.add(String.valueOf(repeatWeek.getTaskID()));
-        actual.add(repeatWeek.getTaskDescription());
-        actual.add(repeatWeek.getDateAdded().toString());
-        actual.add(repeatWeek.getRepeatStartTime());
-        actual.add(repeatWeek.getRepeatEndTime());
-        actual.add(repeatWeek.getWeekInterval());
-        actual.add(repeatWeek.getRepeatUntil().toString());
-        actual.add(repeatWeek.getStopRepeatInString());
+        actual = initWeekRepeat(repeatWeek);
         expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", "week", "2","email weekly report",
                 "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
-                "Fri Dec 25 11:00:00 SGT 2015", "2", "Fri Dec 25 00:00:00 SGT 2015", null));
+                "Fri Dec 25 11:00:00 SGT 2015","2", "2 6", "Fri Dec 25 00:00:00 SGT 2015", null));
         executeUnitTest();
 
         // Update month
 
         input = "update r3 email monthly report -start 15 Nov 5 to 6 pm -every 1 month -until 15 Dec 2016";
-        actual = new ArrayList<String>();
         Command repeatMonth = CommandParser.parse(input);
-        actual.add(repeatMonth.getCommandType().toString());
-        actual.add(repeatMonth.getTaskType());
-        actual.add(repeatMonth.getRepeatType());
-        actual.add(String.valueOf(repeatMonth.getTaskID()));
-        actual.add(repeatMonth.getTaskDescription());
-        actual.add(repeatMonth.getDateAdded().toString());
-        actual.add(repeatMonth.getRepeatStartTime());
-        actual.add(repeatMonth.getRepeatEndTime());
-        actual.add(repeatMonth.getMonthInterval());
-        actual.add(repeatMonth.getRepeatUntil().toString());
-        actual.add(repeatMonth.getStopRepeatInString());
+        actual = initMonthRepeat(repeatMonth);
         expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", "month", "3","email monthly report",
                 "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
                 "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
@@ -565,19 +525,8 @@ public class CommandParserUnitTest {
         // Update year
 
         input = "update r4 email yearly report -start 15 Nov 5 to 6 pm -every 1 year -until 15 Dec 2016";
-        actual = new ArrayList<String>();
         Command repeatYear = CommandParser.parse(input);
-        actual.add(repeatYear.getCommandType().toString());
-        actual.add(repeatYear.getTaskType());
-        actual.add(repeatYear.getRepeatType());
-        actual.add(String.valueOf(repeatYear.getTaskID()));
-        actual.add(repeatYear.getTaskDescription());
-        actual.add(repeatYear.getDateAdded().toString());
-        actual.add(repeatYear.getRepeatStartTime());
-        actual.add(repeatYear.getRepeatEndTime());
-        actual.add(String.valueOf(repeatYear.getYearInterval()));
-        actual.add(repeatYear.getRepeatUntil().toString());
-        actual.add(repeatYear.getStopRepeatInString());
+        actual = initYearRepeat(repeatYear);
         expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", "year", "4", "email yearly report",
                 "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
                 "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
@@ -586,23 +535,407 @@ public class CommandParserUnitTest {
     }
 
     @Test
-    public final void testUpdateRepeatCommandWithSelectedParam() throws Exception {
+    public final void testStopRepeatCommand() throws Exception {
 
-        System.out.println(HEADER_UPDATE_REPEAT_COMMAND_SELECTED_PARAM);
-        //"update r1 email daily report -start 15 Nov 5 to 6 pm -every 1 day -until 15 Dec 2016";
+        System.out.println(HEADER_STOP_REPEAT_COMMAND);
 
-        // Update all day attributes
+        // Stop at a date
+
+        input = "stop r2 15 oct";
+        actual = new ArrayList<String>();
+        Command stop1 = CommandParser.parse(input);
+        actual.add(stop1.getCommandType().toString());
+        actual.add(stop1.getTaskType());
+        actual.add(String.valueOf(stop1.getTaskID()));
+        actual.add(stop1.getStopRepeatInString());
+        expected = new ArrayList<String>(Arrays.asList("STOP_REPEAT","repeat", "2", 
+                "Thu Oct 15 00:00:00 SGT 2015"));
+        executeUnitTest();
+
+        // Stop at more than one dates
+
+        input = "stop r1 15 oct, 25 nov, 6 aug";
+        actual = new ArrayList<String>();
+        Command stop = CommandParser.parse(input);
+        actual.add(stop.getCommandType().toString());
+        actual.add(stop.getTaskType());
+        actual.add(String.valueOf(stop.getTaskID()));
+        actual.add(stop.getStopRepeatInString());
+        expected = new ArrayList<String>(Arrays.asList("STOP_REPEAT","repeat", "1", 
+                "Thu Oct 15 00:00:00 SGT 2015@Wed Nov 25 00:00:00 SGT 2015@Thu Aug 06 00:00:00 SGT 2015"));
+        executeUnitTest();
+
+        // Stop at more than one dates
+
+        input = "stop r1 15 oct, 25 nov";
+        actual = new ArrayList<String>();
+        Command stop2 = CommandParser.parse(input);
+        actual.add(stop2.getCommandType().toString());
+        actual.add(stop2.getTaskType());
+        actual.add(String.valueOf(stop2.getTaskID()));
+        actual.add(stop2.getStopRepeatInString());
+        expected = new ArrayList<String>(Arrays.asList("STOP_REPEAT","repeat", "1", 
+                "Thu Oct 15 00:00:00 SGT 2015@Wed Nov 25 00:00:00 SGT 2015"));
+        executeUnitTest();
+
+    }
+
+    @Test
+    public final void testUpdateDayRepeatCommand() throws Exception {
+
+        Command repeatDay;
+
+        System.out.println(HEADER_UPDATE_REPEAT_DAY_PARAM);
+
         // Excluding: repeatUntil
 
         input = "update r1 email daily report -start 15 Nov 5 to 6 pm -every 1 day";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", "day", "1","email daily report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, interval, repeat type
+
+        input = "update r1 email daily report -start 15 Nov 5 to 6 pm";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "1","email daily report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", null, null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, interval, repeat type, repeatStartTime, repeatEndtime,
+        //            dateAdded
+
+        input = "update r1 email daily report";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "1","email daily report",
+                null, null, 
+                null, null, null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, description
+
+        input = "update r1 -start 15 Nov 5 to 6 pm -every 1 day";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", "day", "1", null,
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, description
+
+        input = "update r1 -every 1 day";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", "day", "1", null,
+                null, null, null, "1", null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, description
+
+        input = "update r5 -until 15 Dec 2016";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", null, "5", null,
+                null, null, null, null, "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        // Excluding: description, interval, repeat type
+
+        input = "update r1 -start 15 Nov 5 to 6 pm -until 15 Dec 2016";
+        repeatDay = CommandParser.parse(input);
+        actual = initDayRepeat(repeatDay);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", null, "1", null,
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", null, "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        //"update r1 email daily report -start 15 Nov 5 to 6 pm -every 1 day -until 15 Dec 2016";
+
+    }
+
+    @Test
+    public final void testUpdateRepeatCommandWithSelectedParam() throws Exception {
+
+        Command repeatWeek;
+
+        System.out.println(HEADER_UPDATE_REPEAT_WEEK_PARAM);
+
+        input = "update r2 email weekly report -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec";
+        repeatWeek = CommandParser.parse(input);
+        actual = initWeekRepeat(repeatWeek);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", "week", "2","email weekly report",
+                "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
+                "Fri Dec 25 11:00:00 SGT 2015", "2", "1 4 7", "Fri Dec 25 00:00:00 SGT 2015", null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil
+
+        input = "update r2 email weekly report -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed";
+        repeatWeek = CommandParser.parse(input);
+        actual = initWeekRepeat(repeatWeek);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","week", "2","email weekly report",
+                "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
+                "Fri Dec 25 11:00:00 SGT 2015", "2", "1 4 7", null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, interval, repeat type
+
+        input = "update r2 email weekly report -start 25 Dec 9 to 11am -on tue, thu";
+        repeatWeek = CommandParser.parse(input);
+        actual = initWeekRepeat(repeatWeek);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "2","email weekly report",
+                "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
+                "Fri Dec 25 11:00:00 SGT 2015", null, "3 5" ,null, null));
+        executeUnitTest();
+
+    }
+
+    @Test
+    public final void testUpdateMonthRepeatCommand() throws Exception {
+
+        System.out.println(HEADER_UPDATE_REPEAT_MONTH_PARAM);
+
+        // All attributes
+
+        input = "update r3 email monthly report -start 15 Nov 5 to 6 pm -every 1 month -until 15 Dec 2016";
+
+        Command repeatMonth = CommandParser.parse(input);
+        actual = initMonthRepeat(repeatMonth);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", "month", "3","email monthly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil
+
+        input = "update r3 email monthly report -start 15 Nov 5 to 6 pm -every 1 month";
         actual = new ArrayList<String>();
-        Command repeatDay = CommandParser.parse(input);
+        Command repeatMonth1 = CommandParser.parse(input);
+        actual = initMonthRepeat(repeatMonth1);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","month", "3","email monthly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, interval, repeat type
+
+        input = "update r3 email monthly report -start 15 Nov 5 to 6 pm";
+        actual = new ArrayList<String>();
+        Command repeatMonth2 = CommandParser.parse(input);
+        actual = initMonthRepeat(repeatMonth2);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", null, "3","email monthly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", null, null, null));
+        executeUnitTest();
+
+    }
+
+    @Test
+    public final void testUpdateYearRepeatCommand() throws Exception {
+
+        Command repeatYear;
+
+        System.out.println(HEADER_UPDATE_REPEAT_YEAR_PARAM);
+
+        // All attributes
+
+        input = "update r4 email yearly report -start 15 Nov 5 to 6 pm -every 1 year -until 15 Dec 2016";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","year", "4", "email yearly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, interval, repeat type
+
+        input = "update r4 email yearly report -start 15 Nov 5 to 6 pm -every 1 year";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","year", "4", "email yearly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", null, null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, interval, repeat type  
+
+        input = "update r4 email yearly report -start 15 Nov 5 to 6 pm";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat",null, "4", "email yearly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", null, null, null));
+        executeUnitTest();
+
+
+        // Only description
+
+        input = "update r4 email yearly report";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat",null, "4", "email yearly report",
+                null, null, null, null, null, null));
+        executeUnitTest();
+
+        // Excluding: interval, repeat type
+
+        input = "update r4 email yearly report -start 15 Nov 5 to 6 pm -until 15 Dec 2016";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "4", "email yearly report",
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", null, "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        // Excluding: description
+
+        input = "update r4 -start 15 Nov 5 to 6 pm -every 1 year -until 15 Dec 2016";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","year", "4", null,
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        // Excluding: description, interval, repeatType
+
+        input = "update r4 -start 15 Nov 5 to 6 pm -until 15 Dec 2016";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat",null, "4", null,
+                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
+                "Sun Nov 15 18:00:00 SGT 2015", null, "Thu Dec 15 00:00:00 SGT 2016", null));
+        executeUnitTest();
+
+        // Excluding: repeatUntil, dateAdded, startTime, endTime
+
+        input = "update r4 email yearly report -every 1 year";
+        repeatYear = CommandParser.parse(input);
+        actual = initYearRepeat(repeatYear);
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat","year", "4", "email yearly report",
+                null, null, null, "1", null, null));
+        executeUnitTest();
+
+    }
+
+    // =========================================================================
+    // Errors testing
+    // =========================================================================
+
+    @Test
+    public final void testTwoParamErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_TWO_PARAM);
+
+        input = "undo aaaaaaaaaaaaaa";
+        actual = new ArrayList<String>();
+        Command undo = CommandParser.parse(input);
+        actual.add(undo.getCommandType().toString());
+        expected = new ArrayList<String>(Arrays.asList("UNDO"));
+        executeUnitTest();
+
+        input = "redo aaaaaaaaaaaaaaaaa";
+        actual = new ArrayList<String>();
+        Command redo = CommandParser.parse(input);
+        actual.add(redo.getCommandType().toString());
+        expected = new ArrayList<String>(Arrays.asList("REDO"));
+        executeUnitTest();
+
+        input = "exit aaaaaaaaaaaa";
+        actual = new ArrayList<String>();
+        Command exit = CommandParser.parse(input);
+        actual.add(exit.getCommandType().toString());
+        expected = new ArrayList<String>(Arrays.asList("EXIT"));
+        executeUnitTest();
+
+    }
+
+    @Test
+    public final void testSetFilePathErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_SETFILEPATH);
+
+    }
+
+    @Test
+    public final void testAddErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_ADD);
+
+        input = "add -on 26 Nov 5 to 6pm";
+
+    }
+
+    @Test
+    public final void testRepeatErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_REPEAT);
+
+    }
+
+    @Test
+    public final void testUpdateErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_UPDATE);
+
+    }
+
+    @Test
+    public final void testRepeatDayErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_UPDATE_DAY_PARAM);
+
+
+    }
+
+    @Test
+    public final void testRepeatWeekErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_UPDATE_WEEK_PARAM);
+
+
+    }
+
+    @Test
+    public final void testRepeatMonthErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_UPDATE_MONTH_PARAM);
+
+
+    }
+
+    @Test
+    public final void testRepeatYearErrors() throws Exception {
+
+        System.out.println(HEADER_ERRORS_UPDATE_YEAR_PARAM);
+
+
+    }
+
+    // ========================================================================
+    // Methods to initialize ArrayList during testing
+    // ========================================================================
+
+    private ArrayList<String> initDayRepeat(Command repeatDay) {
+        ArrayList<String> actual = new ArrayList<String>();
+
         actual.add(repeatDay.getCommandType().toString());
         actual.add(repeatDay.getTaskType());
         actual.add(repeatDay.getRepeatType());
         actual.add(String.valueOf(repeatDay.getTaskID()));
         actual.add(repeatDay.getTaskDescription());
-        actual.add(repeatDay.getDateAdded().toString());
+        if(repeatDay.getDateAdded() != null) {
+            actual.add(repeatDay.getDateAdded().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatDay.getRepeatStartTime());
         actual.add(repeatDay.getRepeatEndTime());
         actual.add(repeatDay.getDayInterval());
@@ -612,171 +945,87 @@ public class CommandParserUnitTest {
             actual.add(null);
         }
         actual.add(repeatDay.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", "day", "1","email daily report",
-                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
-                "Sun Nov 15 18:00:00 SGT 2015", "1", null, null));
-        executeUnitTest();
 
-        // Update all day attributes
-        // Excluding: repeatUntil, interval, repeat type
+        return actual;
+    }
 
-        input = "update r1 email daily report -start 15 Nov 5 to 6 pm";
-        actual = new ArrayList<String>();
-        Command repeatDay1 = CommandParser.parse(input);
-        actual.add(repeatDay1.getCommandType().toString());
-        actual.add(repeatDay1.getTaskType());
-        actual.add(repeatDay1.getRepeatType());
-        actual.add(String.valueOf(repeatDay1.getTaskID()));
-        actual.add(repeatDay1.getTaskDescription());
-        actual.add(repeatDay1.getDateAdded().toString());
-        actual.add(repeatDay1.getRepeatStartTime());
-        actual.add(repeatDay1.getRepeatEndTime());
-        actual.add(repeatDay1.getDayInterval());
-        if(repeatDay1.getRepeatUntil() != null) {
-            actual.add(repeatDay1.getRepeatUntil().toString());
-        } else {
-            actual.add(null);
-        }
-        actual.add(repeatDay1.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "1","email daily report",
-                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
-                "Sun Nov 15 18:00:00 SGT 2015", null, null, null));
-        executeUnitTest();
+    private ArrayList<String> initWeekRepeat(Command repeatWeek) {
+        ArrayList<String> actual = new ArrayList<String>(); 
 
-        // Update all day attributes
-        // Excluding: repeatUntil, interval, repeat type, repeatStartTime, repeatEndtime,
-        //            dateAdded
-
-        input = "update r1 email daily report";
-        actual = new ArrayList<String>();
-        Command repeatDay2 = CommandParser.parse(input);
-        actual.add(repeatDay2.getCommandType().toString());
-        actual.add(repeatDay2.getTaskType());
-        actual.add(repeatDay2.getRepeatType());
-        actual.add(String.valueOf(repeatDay2.getTaskID()));
-        actual.add(repeatDay2.getTaskDescription());
-        if(repeatDay2.getDateAdded() != null) {
-            actual.add(repeatDay2.getDateAdded().toString());
-        } else {
-            actual.add(null);
-        }
-        actual.add(repeatDay2.getRepeatStartTime());
-        actual.add(repeatDay2.getRepeatEndTime());
-        actual.add(repeatDay2.getDayInterval());
-        if(repeatDay2.getRepeatUntil() != null) {
-            actual.add(repeatDay2.getRepeatUntil().toString());
-        } else {
-            actual.add(null);
-        }
-        actual.add(repeatDay2.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "1","email daily report",
-                null, null, 
-                null, null, null, null));
-        executeUnitTest();
-
-        // Update all day attributes
-        // Excluding: repeatUntil, description
-
-        input = "update r1 -start 15 Nov 5 to 6 pm -every 1 day";
-        actual = new ArrayList<String>();
-        Command repeatDay3 = CommandParser.parse(input);
-        actual.add(repeatDay3.getCommandType().toString());
-        actual.add(repeatDay3.getTaskType());
-        actual.add(repeatDay3.getRepeatType());
-        actual.add(String.valueOf(repeatDay3.getTaskID()));
-        actual.add(repeatDay3.getTaskDescription());
-        actual.add(repeatDay3.getDateAdded().toString());
-        actual.add(repeatDay3.getRepeatStartTime());
-        actual.add(repeatDay3.getRepeatEndTime());
-        actual.add(repeatDay3.getDayInterval());
-        if(repeatDay3.getRepeatUntil() != null) {
-            actual.add(repeatDay3.getRepeatUntil().toString());
-        } else {
-            actual.add(null);
-        }
-        actual.add(repeatDay3.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE", "repeat", "day", "1", null,
-                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
-                "Sun Nov 15 18:00:00 SGT 2015", "1", null, null));
-        executeUnitTest();
-
-        /*
-        // Update week
-
-        input = "update r2 email weekly report -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec";
-        actual = new ArrayList<String>();
-        Command repeatWeek = CommandParser.parse(input);
         actual.add(repeatWeek.getCommandType().toString());
+        actual.add(repeatWeek.getTaskType());
         actual.add(repeatWeek.getRepeatType());
         actual.add(String.valueOf(repeatWeek.getTaskID()));
         actual.add(repeatWeek.getTaskDescription());
-        actual.add(repeatWeek.getDateAdded().toString());
+        if(repeatWeek.getDateAdded() != null) {
+            actual.add(repeatWeek.getDateAdded().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatWeek.getRepeatStartTime());
         actual.add(repeatWeek.getRepeatEndTime());
         actual.add(repeatWeek.getWeekInterval());
-        actual.add(repeatWeek.getRepeatUntil().toString());
+        actual.add(repeatWeek.getDaySelectedString());
+        if(repeatWeek.getRepeatUntil() != null) {
+            actual.add(repeatWeek.getRepeatUntil().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatWeek.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE","week", "2","email weekly report",
-                "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
-                "Fri Dec 25 11:00:00 SGT 2015", "2", "Fri Dec 25 00:00:00 SGT 2015", null));
-        executeUnitTest();
 
-        // Update month
+        return actual;
+    }
 
-        input = "update r3 email monthly report -start 15 Nov 5 to 6 pm -every 1 month -until 15 Dec 2016";
-        actual = new ArrayList<String>();
-        Command repeatMonth = CommandParser.parse(input);
+    private ArrayList<String> initMonthRepeat(Command repeatMonth) {
+        ArrayList<String> actual = new ArrayList<String>();
+
         actual.add(repeatMonth.getCommandType().toString());
+        actual.add(repeatMonth.getTaskType());
         actual.add(repeatMonth.getRepeatType());
         actual.add(String.valueOf(repeatMonth.getTaskID()));
         actual.add(repeatMonth.getTaskDescription());
-        actual.add(repeatMonth.getDateAdded().toString());
+        if(repeatMonth.getDateAdded() != null) {
+            actual.add(repeatMonth.getDateAdded().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatMonth.getRepeatStartTime());
         actual.add(repeatMonth.getRepeatEndTime());
         actual.add(repeatMonth.getMonthInterval());
-        actual.add(repeatMonth.getRepeatUntil().toString());
+        if(repeatMonth.getRepeatUntil() != null) {
+            actual.add(repeatMonth.getRepeatUntil().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatMonth.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE","month", "3","email monthly report",
-                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
-                "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
-        executeUnitTest();
 
-        // Update year
+        return actual;
+    }
 
-        input = "update r4 email yearly report -start 15 Nov 5 to 6 pm -every 1 year -until 15 Dec 2016";
-        actual = new ArrayList<String>();
-        Command repeatYear = CommandParser.parse(input);
+    private ArrayList<String> initYearRepeat(Command repeatYear) {
+        ArrayList<String> actual = new ArrayList<String>();
+
         actual.add(repeatYear.getCommandType().toString());
+        actual.add(repeatYear.getTaskType());
         actual.add(repeatYear.getRepeatType());
         actual.add(String.valueOf(repeatYear.getTaskID()));
         actual.add(repeatYear.getTaskDescription());
-        actual.add(repeatYear.getDateAdded().toString());
+        if(repeatYear.getDateAdded() != null) {
+            actual.add(repeatYear.getDateAdded().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatYear.getRepeatStartTime());
         actual.add(repeatYear.getRepeatEndTime());
-        actual.add(String.valueOf(repeatYear.getYearInterval()));
-        actual.add(repeatYear.getRepeatUntil().toString());
+        actual.add(repeatYear.getYearInterval());
+        if(repeatYear.getRepeatUntil() != null) {
+            actual.add(repeatYear.getRepeatUntil().toString());
+        } else {
+            actual.add(null);
+        }
         actual.add(repeatYear.getStopRepeatInString());
-        expected = new ArrayList<String>(Arrays.asList("UPDATE","year", "4", "email yearly report",
-                "Sun Nov 15 00:00:00 SGT 2015", "Sun Nov 15 17:00:00 SGT 2015", 
-                "Sun Nov 15 18:00:00 SGT 2015", "1", "Thu Dec 15 00:00:00 SGT 2016", null));
-        executeUnitTest();
 
-         */
-
-    }
-
-    @Test
-    public final void testStopRepeatCommand() throws Exception {
-
-        System.out.println(HEADER_STOP_REPEAT_COMMAND);
-
-    }
-
-    @Test
-    public final void testErrors() throws Exception {
-
-        System.out.println(HEADER_ERRORS);
-
+        return actual;
     }
 
 }

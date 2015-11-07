@@ -16,6 +16,7 @@ import com.joestelmach.natty.*;
 
 public class CommandParser {
 
+    private static final String KEYWORD_BY = "-by";
     private static final int SIZE_0 = 0;
     private static final int SIZE_1 = 1;
     private static final int SIZE_2 = 2;
@@ -436,11 +437,11 @@ public class CommandParser {
 
             if (date.length == SIZE_1) {
                 command.setTaskType(DEADLINE);
-                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("by")[0].trim());
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(KEYWORD_BY)[0].trim());
                 command.setTaskDeadline(date[0]);
             } else if (date.length == SIZE_2) {
                 command.setTaskType(EVENT);
-                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split("on")[0].trim());
+                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(KEYWORD_ON)[0].trim());
                 command.setTaskEventStart(date[POSITION_ZERO_PARAM_ARGUMENT]);
                 command.setTaskEventEnd(date[POSITION_FIRST_PARAM_ARGUMENT]);
             }
@@ -648,9 +649,9 @@ public class CommandParser {
         setCommandTaskID(command, parameters);
         String line = parameters.get(POSITION_FIRST_PARAM_ARGUMENT);
 
-        if (line.contains("-by")) {
+        if (line.contains(KEYWORD_BY)) {
             String date;
-            String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split("-by");
+            String[] param = parameters.get(POSITION_FIRST_PARAM_ARGUMENT).split(KEYWORD_BY);
             if (param.length == 2) {
                 if (!param[0].trim().isEmpty()) {
                     command.setTaskDescription(param[0].trim());

@@ -4,7 +4,7 @@ import java.util.*;
  * Command is a class that contains all the required information for Logic to
  * execute it. It is created by CommandParser's parse method.
  * 
- * @author Bobby Lin
+ * @author A0108235M
  */
 
 public class Command {
@@ -247,7 +247,7 @@ public class Command {
             }
         }
 
-        this.daySelectedString = index;
+        this.daySelectedString = index.trim();
     }
 
     public String getStopRepeatInString() {

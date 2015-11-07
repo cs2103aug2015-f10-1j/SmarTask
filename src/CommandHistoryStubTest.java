@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 
-import javax.print.attribute.standard.PrinterLocation;
+/**
+ * CommandHistoryStubTest checks if undo and redo works
+ * 
+ * @author A0108235M
+ */
 
 public class CommandHistoryStubTest {
 
