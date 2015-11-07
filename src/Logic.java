@@ -107,7 +107,7 @@ public class Logic {
 		    storage.setSavePath(command.getFilePath());
 		    break;
 
-		case INVALID:
+		default :
 		    msgLogger.add(MESSAGE_INVALID_COMMAND);
 		    break;
 
