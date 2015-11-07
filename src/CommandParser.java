@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.junit.internal.Throwables;
+
 import com.joestelmach.natty.*;
 
 /**
@@ -11,7 +14,7 @@ import com.joestelmach.natty.*;
  * appropriate fields initialised. For example, the "add" command requires the
  * taskDetail and taskTime field to be initialised.
  * 
- * @author A0108235M
+ * @author A0108235M-Sebastian Quek
  */
 
 public class CommandParser {
@@ -23,7 +26,6 @@ public class CommandParser {
     private static final int SIZE_3 = 3;
     private static final int POSITION_ZERO_PARAM_ARGUMENT = 0;
     private static final int POSITION_FIRST_PARAM_ARGUMENT = 1;
-    private static final int POSITION_THREE_PARAM_ARGUMENT = 3;
     private static final int TWOPARTS = 2;
     private static final int WEEKSIZE = 8;
     private static final String REGEX_WHITESPACES = " ";
@@ -62,8 +64,8 @@ public class CommandParser {
     private static final String USER_COMMAND_EXIT = "exit";
 
     private static final String MSG_COMMAND = "command: ";
-    private static final String MSG_PARSER_LOG_HEADER = "==============CommandParser Log=================";
-    private static final String MSG_INVALID_FORMAT = "exception: Error in attributes: Ensure attributes are entered in valid format";
+    private static final String MSG_PARSER_LOG_HEADER = "=====CommandParser Log=====";
+    private static final String MSG_INVALID_FORMAT = "Command format is invalid";
     private static final String MSG_NULL_POINTER = "Error: Null pointer";
 
     public static Command parse(String userInput) throws Exception {
@@ -327,10 +329,8 @@ public class CommandParser {
     // Set add command attributes
     // ================================================================
 
-    private static void setAddCommandAttribute(Command command, ArrayList<String> arguments) {
-        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
-        List<DateGroup> dateGroup = parseDate.parse(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
-        setAttributeForAddType(command, arguments, dateGroup);
+    private static void setAddCommandAttribute(Command command, ArrayList<String> arguments) throws Exception {
+        setAttributeForAddType(command, arguments);
     }
 
     // ================================================================
@@ -419,17 +419,22 @@ public class CommandParser {
     /******************************************************************
      Auxiliary methods to support set command attributes
      ******************************************************************/
-    /******************************************************************/
+    /*******************************************************************/
 
     // ================================================================
     // Setters of attribute
     // ================================================================
 
-    private static void setAttributeForAddType(Command command, ArrayList<String> arguments,
-            List<DateGroup> dateGroup) {
+    private static void setAttributeForAddType(Command command, 
+            ArrayList<String> arguments) throws Exception {
+
+        com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
+        List<DateGroup> dateGroup = parseDate.parse(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+
         if (dateGroup.size() == SIZE_0) {
+            checkKeywordUsed(arguments);
             command.setTaskType(FLOATING);
-            command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+            setFloatDescription(command, arguments);
         } else {
             DateGroup group = dateGroup.get(POSITION_ZERO_PARAM_ARGUMENT);
             List<Date> dates = group.getDates();
@@ -437,15 +442,86 @@ public class CommandParser {
 
             if (date.length == SIZE_1) {
                 command.setTaskType(DEADLINE);
-                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(KEYWORD_BY)[0].trim());
-                command.setTaskDeadline(date[0]);
+                setDeadlineDescription(command, arguments);
+                command.setTaskDeadline(checkForNull(date[POSITION_ZERO_PARAM_ARGUMENT]));
             } else if (date.length == SIZE_2) {
                 command.setTaskType(EVENT);
-                command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT).split(KEYWORD_ON)[0].trim());
-                command.setTaskEventStart(date[POSITION_ZERO_PARAM_ARGUMENT]);
-                command.setTaskEventEnd(date[POSITION_FIRST_PARAM_ARGUMENT]);
+                setEventDescription(command, arguments);    
+                command.setTaskEventStart(checkForNull(date[POSITION_ZERO_PARAM_ARGUMENT]));
+                command.setTaskEventEnd(checkForNull(date[POSITION_FIRST_PARAM_ARGUMENT]));
             }
         }
+    }
+
+    private static String checkForNull(String string) throws Exception {
+        if(string == null) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
+        return string;
+    }
+
+    private static void checkKeywordUsed(ArrayList<String> arguments) throws Exception {
+        if (isKeywordUsed(arguments)) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
+    }
+
+    private static boolean isKeywordUsed(ArrayList<String> arguments) {
+        return arguments.get(POSITION_ZERO_PARAM_ARGUMENT).contains(KEYWORD_ON) 
+                || arguments.get(POSITION_ZERO_PARAM_ARGUMENT).contains(KEYWORD_BY)||
+                arguments.get(POSITION_ZERO_PARAM_ARGUMENT).contains(KEYWORD_UNTIL)||
+                arguments.get(POSITION_ZERO_PARAM_ARGUMENT).contains(KEYWORD_START)||
+                arguments.get(POSITION_ZERO_PARAM_ARGUMENT).contains(KEYWORD_EVERY);
+    }
+
+    private static void setFloatDescription(Command command, ArrayList<String> arguments) throws Exception {
+        if(isNotFloatDescription(arguments)) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        } else {
+            command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT));
+        }
+    }
+
+    private static void setEventDescription(Command command, ArrayList<String> arguments) throws Exception {
+        if (isNotEventDescription(arguments)) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        } else {
+            command.setTaskDescription(arguments.get(POSITION_ZERO_PARAM_ARGUMENT)
+                    .split(KEYWORD_ON)[POSITION_ZERO_PARAM_ARGUMENT].trim());
+        }
+    }
+
+    private static boolean isNotEventDescription(ArrayList<String> arguments) {
+        return arguments.get(POSITION_ZERO_PARAM_ARGUMENT)
+                .split(KEYWORD_ON)[POSITION_ZERO_PARAM_ARGUMENT].trim().isEmpty();
+    }
+
+    private static void setDeadlineDescription(Command command, ArrayList<String> arguments) throws Exception {
+        String param = arguments.get(POSITION_ZERO_PARAM_ARGUMENT)
+                .split(KEYWORD_BY)[POSITION_ZERO_PARAM_ARGUMENT].trim();
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(param);
+        checkKeywordUsed(list);
+        
+        if (isNotDeadlineDescription(arguments)) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        } else {
+            command.setTaskDescription(param);
+        }
+    }
+
+    private static boolean isNotDeadlineDescription(ArrayList<String> arguments) {
+        return arguments.get(POSITION_ZERO_PARAM_ARGUMENT)
+                .split(KEYWORD_BY)[POSITION_ZERO_PARAM_ARGUMENT].trim().isEmpty();
+    }
+
+    private static boolean isNotFloatDescription(ArrayList<String> arguments) {
+        return arguments.get(POSITION_ZERO_PARAM_ARGUMENT).trim().isEmpty();
     }
 
     private static void setCommandTaskID(Command command, String[] param) {
@@ -678,6 +754,7 @@ public class CommandParser {
 
         if (input.contains(KEYWORD_UNTIL)) {
             line = input.split(KEYWORD_UNTIL);
+            checkAttributeValidity(line);
 
             com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
             List<DateGroup> dateGroup = parseDate.parse(line[POSITION_FIRST_PARAM_ARGUMENT]);
@@ -694,6 +771,7 @@ public class CommandParser {
 
         if (input.contains(KEYWORD_ON)) {
             line = input.split(KEYWORD_ON);
+            checkAttributeValidity(line);
             String paramArr = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
             command.setIsDaySelected(setSelectedDay(paramArr));
             command.setDaySelectedString();
@@ -702,6 +780,7 @@ public class CommandParser {
 
         if (input.contains(KEYWORD_EVERY)) {
             line = input.split(KEYWORD_EVERY);
+            checkAttributeValidity(line);
             String[] remainingParam = line[1].trim().split(REGEX_WHITESPACES, SIZE_2);
             String type = remainingParam[1];
 
@@ -724,6 +803,7 @@ public class CommandParser {
 
         if (input.contains(KEYWORD_START)) {
             line = input.split(KEYWORD_START);
+            checkAttributeValidity(line);
             String dateTimeLine = line[POSITION_FIRST_PARAM_ARGUMENT].trim();
             setStartAndEndTime(command, dateTimeLine);
             setDateAdded(command, dateTimeLine);
@@ -737,6 +817,18 @@ public class CommandParser {
             } 
         } 
 
+    }
+
+    private static void checkAttributeValidity(String[] line) throws Exception {
+        if(hasOtherKeywords(line[POSITION_FIRST_PARAM_ARGUMENT])) {
+            addToParserLogger(MSG_INVALID_FORMAT);
+            throw new Exception(MSG_INVALID_FORMAT);
+        }
+    }
+
+    private static boolean hasOtherKeywords(String string) {
+        return string.contains(KEYWORD_UNTIL) || string.contains(KEYWORD_ON) ||
+                string.contains(KEYWORD_EVERY) || string.contains(KEYWORD_START);
     }
 
     // ================================================================
