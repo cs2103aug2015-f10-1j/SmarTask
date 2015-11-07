@@ -1000,6 +1000,7 @@ public class CommandParserUnitTest {
         System.out.println(HEADER_ERRORS_SETFILEPATH);
 
         // setfilepath using whitespaces
+        
         try {
             input = "setfilepath            ";
             filePath = CommandParser.parse(input);
@@ -1011,6 +1012,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using random string
+        
         try {
             input = "setfilepath abcdefgh asdoaskjdkasld asjdlasldj";
             filePath = CommandParser.parse(input);
@@ -1022,6 +1024,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using MAC filepath
+        
         try {
             input = "setfilepath C:/Users/Jim/SmarTask/bin/storage.txt";
             filePath = CommandParser.parse(input);
@@ -1033,6 +1036,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using without naming text file
+        
         try {
             input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin";
             filePath = CommandParser.parse(input);
@@ -1044,6 +1048,7 @@ public class CommandParserUnitTest {
         }
 
         // setfilepath using without naming text file
+        
         try {
             input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin\\.txt";
             filePath = CommandParser.parse(input);
