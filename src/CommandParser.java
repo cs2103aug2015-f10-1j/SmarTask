@@ -92,7 +92,9 @@ public class CommandParser {
     private static final String REGEX_LEFT_SQBRACKET = "[";
     private static final String REGEX_COMMA = ",";
     private static final String REGEX_WHITESPACES = " ";
-    private static final String REGEX_WIN_MAC_FILEPATH = "([a-zA-Z]:)?(/[a-zA-Z0-9._-]+)+/"
+    private static final String REGEX_WIN_FILEPATH = "([a-zA-Z]:)?(\\\\[a-zA-Z0-9._-]+)+\\\\"
+            + "?[a-zA-Z0-9._-].(?i)(txt)";
+    private static final String REGEX_MAC_FILEPATH = "([a-zA-Z]:)?(/[a-zA-Z0-9._-]+)+/"
             + "?[a-zA-Z0-9._-].(?i)(txt)";
 
     // Integers constants
@@ -697,9 +699,19 @@ public class CommandParser {
     }
 
     private static boolean checkFilePath(String line) {
-        return Pattern.compile(REGEX_WIN_MAC_FILEPATH).matcher(line).find();
+        String OS = System.getProperty("os.name").toLowerCase();
+        if(isMac(OS)) {
+            return Pattern.compile(REGEX_MAC_FILEPATH).matcher(line).find();
+        } else {
+            return Pattern.compile(REGEX_WIN_FILEPATH).matcher(line).find();
+        }
+        
     }
-
+    
+    private static boolean isMac(String OS) {
+        return (OS.indexOf("mac") >= 0);
+    }
+    
     // ================================================================
     // Set attributes of individual update command
     // ================================================================ 

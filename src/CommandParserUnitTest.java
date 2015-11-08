@@ -300,13 +300,13 @@ public class CommandParserUnitTest {
 
         // Shortcut 'sfp' for set filepath command
 
-        input = "sfp C:/Users/Jim/Dropbox/SmarTask/worktask.txt";
+        input = "sfp C:\\Users\\Jim\\Dropbox\\SmarTask\\worktask.txt";
         actual = new ArrayList<String>();
         command = CommandParser.parse(input);
         actual.add(command.getCommandType().toString());
         actual.add(command.getFilePath());
         expected = new ArrayList<String>(Arrays.asList("SETFILEPATH",
-                "C:/Users/Jim/Dropbox/SmarTask/worktask.txt"));
+                "C:\\Users\\Jim\\Dropbox\\SmarTask\\worktask.txt"));
         executeTestWithArrayList();
 
         // Shortcut 'rp' for repeating command
@@ -378,26 +378,15 @@ public class CommandParserUnitTest {
 
         Command setFilepath;
 
-        // set MAC filepath command
-
-        input = "setfilepath C:/Users/Jim/Dropbox/SmarTask/Work/worktask.txt";
-        actual = new ArrayList<String>();
-        setFilepath = CommandParser.parse(input);
-        actual.add(setFilepath.getCommandType().toString());
-        actual.add(setFilepath.getFilePath());
-        expected = new ArrayList<String>(Arrays.asList("SETFILEPATH",
-                "C:/Users/Jim/Dropbox/SmarTask/Work/worktask.txt"));
-        executeTestWithArrayList();
-
         // set filepath command
 
-        input = "setfilepath C:/Users/Jim/Desktop/storage.txt";
+        input = "setfilepath C:\\Users\\Jim\\Desktop\\storage.txt";
         actual = new ArrayList<String>();
         setFilepath = CommandParser.parse(input);
         actual.add(setFilepath.getCommandType().toString());
         actual.add(setFilepath.getFilePath());
         expected = new ArrayList<String>(Arrays.asList(
-                "SETFILEPATH","C:/Users/Jim/Desktop/storage.txt"));
+                "SETFILEPATH","C:\\Users\\Jim\\Desktop\\storage.txt"));
         
     }
 
@@ -1146,18 +1135,6 @@ public class CommandParserUnitTest {
 
         try {
             input = "sfp abcdefgh asdoaskjdkasld asjdlasldj";
-            filePath = CommandParser.parse(input);
-            fail("Should have thrown exception but did not!");
-        } catch (Exception e) {
-            actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
-            executeTestWithString();
-        }
-
-        // setfilepath using MAC / UNIX filepath
-
-        try {
-            input = "setfilepath C:\\Users\\Jim\\SmarTask\\bin\\storage.txt";
             filePath = CommandParser.parse(input);
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
