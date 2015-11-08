@@ -95,6 +95,8 @@ public class CommandParser {
     private static final String REGEX_WHITESPACES = " ";
     private static final String REGEX_WINDOWS_FILEPATH = "([a-zA-Z]:)?(\\\\[a-zA-Z0-9._-]+)+\\\\"
             + "?[a-zA-Z0-9._-].(?i)(txt)";
+    private static final String REGEX_WIN_MAC_FILEPATH = "([a-zA-Z]:)?(/[a-zA-Z0-9._-]+)+/"
+            + "?[a-zA-Z0-9._-].(?i)(txt)";
 
     // Integers constants
 
@@ -687,8 +689,7 @@ public class CommandParser {
     }
 
     private static void setFilePath(Command command, ArrayList<String> arguments) throws Exception {
-        String line = arguments.get(POSITION_ZERO_PARAM_ARGUMENT)
-                .replaceAll(REGEX_SLASH, REGEX_BACKSLASH);
+        String line = arguments.get(POSITION_ZERO_PARAM_ARGUMENT);
         if(checkFilePath(line)) {
             command.setFilePath(line);
         } else {
@@ -699,7 +700,20 @@ public class CommandParser {
     }
 
     private static boolean checkFilePath(String line) {
-        return Pattern.compile(REGEX_WINDOWS_FILEPATH).matcher(line).find();
+        String OS = System.getProperty("os.name").toLowerCase();
+        
+        return Pattern.compile(REGEX_WIN_MAC_FILEPATH).matcher(line).find();
+        
+        /*if (!isMac(OS)) {
+            return Pattern.compile(REGEX_MAC_FILEPATH).matcher(line).find();   
+        } else {
+            return Pattern.compile(REGEX_WINDOWS_FILEPATH).matcher(line).find(); 
+        }*/
+        
+    }
+    
+    private static boolean isMac(String OS) {
+        return (OS.indexOf("mac") >= 0);
     }
 
     // ================================================================
