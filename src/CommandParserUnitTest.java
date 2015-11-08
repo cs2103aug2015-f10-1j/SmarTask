@@ -21,7 +21,6 @@ public class CommandParserUnitTest {
 
     // Used in Command testing
 
-    
     private static final String HEADER_TWO_PARAM_COMMANDS = "\n----Two param----";
     private static final String HEADER_SINGLE_PARAM_COMMANDS = "\n----Single param----";
     private static final String HEADER_SHORTCUT_COMMAND = "\n----Shortcuts command----";
@@ -390,7 +389,7 @@ public class CommandParserUnitTest {
         actual.add(setFilepath.getFilePath());
         expected = new ArrayList<String>(Arrays.asList(
                 "SETFILEPATH","C:\\Users\\Jim\\Desktop\\storage.txt"));
-        
+
     }
 
     @Test
