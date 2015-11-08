@@ -54,7 +54,7 @@ public class IntegrationTest {
         initialize();
 
         // add event tasks
-        logic.executeCommand("add Meeting with Boss on 10 Nov 5 to 6pm");
+        logic.executeCommand("add Meeting with Boss -on 10 Nov 5 to 6pm");
 
         outputCommand = logic.getMessageLog();
         expectedCommand = "add Meeting with Boss successful!";
@@ -68,7 +68,7 @@ public class IntegrationTest {
         initialize();
 
         // add deadline tasks
-        logic.executeCommand("add Finish assignment by 10 Dec 12pm");
+        logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
 
         outputCommand = logic.getMessageLog();
         expectedCommand = "add Finish assignment successful!";
@@ -86,6 +86,10 @@ public class IntegrationTest {
     // Test the features including modifying or deleting tasks
     public void testphase2() throws Exception {
         // update tasks
+        logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
+        logic.executeCommand("update d1 -by 6 Nov 10pm");
+        outputCommand = logic.getMessageLog();
+        expectedCommand = ""
 
         assertEquals(expectedCommand, outputCommand);
         assertEquals(expectedStorage, outputStorage);
@@ -106,7 +110,7 @@ public class IntegrationTest {
 
         // complete tasks
 
-        logic.executeCommand("add Finish assignment by 10 Dec 12pm");
+        logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
         logic.executeCommand("complete D1");
 
         outputCommand = logic.getMessageLog();
