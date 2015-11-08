@@ -15,7 +15,7 @@ import com.joestelmach.natty.*;
  */
 
 public class CommandParser {
-
+    
     // Main commands
 
     private static final String USER_COMMAND_ADD = "add";
@@ -69,6 +69,18 @@ public class CommandParser {
     private static final String KEYWORD_THU = "thu";
     private static final String KEYWORD_FRI = "fri";
     private static final String KEYWORD_SAT = "sat";
+    private static final String KEYWORD_JAN = "Jan";
+    private static final String KEYWORD_FEB = "Feb";
+    private static final String KEYWORD_MAR = "Mar";
+    private static final String KEYWORD_APR = "Apr";
+    private static final String KEYWORD_MAY = "May";
+    private static final String KEYWORD_JUN = "Jun";
+    private static final String KEYWORD_JUL = "Jul";
+    private static final String KEYWORD_AUG = "Aug";
+    private static final String KEYWORD_SEP = "Sep";
+    private static final String KEYWORD_OCT = "Oct";
+    private static final String KEYWORD_NOV = "Nov";
+    private static final String KEYWORD_DEC = "Dec";
 
     // Regex
 
@@ -106,11 +118,10 @@ public class CommandParser {
     private static final int WEEKSIZE = 8;
 
     // Dates formats
-
-    private static final String DATEFORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
     private static final String INFINITY_DATE = "12/12/9999";
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    private static final ArrayList<String> monthInString = new ArrayList<String>(Arrays.asList(createMonthArray()));
+    private static final String DATEFORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    private static final ArrayList<String> MONTH_ARRAYLIST = new ArrayList<String>(Arrays.asList(createMonthArray()));
     private static ArrayList<String> parserLogger = new ArrayList<String>();
     private static com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
 
@@ -558,7 +569,7 @@ public class CommandParser {
 
     private static void setStopRepeatToInfinityDate(Command command) throws ParseException, Exception {
         ArrayList<Date> list = new ArrayList<Date>();
-        list.add(dateFormat.parse(INFINITY_DATE));
+        list.add(DATE_FORMAT.parse(INFINITY_DATE));
         setStopRepeatDate(command, list);
     }
 
@@ -671,7 +682,7 @@ public class CommandParser {
             ArrayList<Date> line = extractNattyTwoDates(remainingParam[POSITION_FIRST_PARAM_ARGUMENT].trim());
             command.setRepeatUntil(line.get(POSITION_ZERO_PARAM_ARGUMENT));
         } else {
-            command.setRepeatUntil(dateFormat.parse(INFINITY_DATE));
+            command.setRepeatUntil(DATE_FORMAT.parse(INFINITY_DATE));
         }
     }
 
@@ -868,9 +879,9 @@ public class CommandParser {
             String[] arr = dates.toString().replace(REGEX_LEFT_SQBRACKET, REGEX_BLANK)
                     .replace(REGEX_RIGHT_SQBRACKET, REGEX_BLANK).split(REGEX_COMMA_WHITESPACE);
             String[] param = arr[POSITION_ZERO_PARAM_ARGUMENT].split(REGEX_WHITESPACES);
-            int mth = monthInString.indexOf(param[POSITION_FIRST_PARAM_ARGUMENT]) + SIZE_1;
+            int mth = MONTH_ARRAYLIST.indexOf(param[POSITION_FIRST_PARAM_ARGUMENT]) + SIZE_1;
 
-            command.setRepeatUntil(dateFormat.parse(param[POSITION_SECOND_PARAM_ARGUMENT] 
+            command.setRepeatUntil(DATE_FORMAT.parse(param[POSITION_SECOND_PARAM_ARGUMENT] 
                     + REGEX_SLASH + mth + REGEX_SLASH + param[POSITION_FIFTH_PARAM_ARGUMENT]));
             input = line[POSITION_ZERO_PARAM_ARGUMENT];
         }
@@ -990,9 +1001,9 @@ public class CommandParser {
             String[] arr = dates.toString().replace(REGEX_LEFT_SQBRACKET, REGEX_BLANK)
                     .replace(REGEX_RIGHT_SQBRACKET, REGEX_BLANK).split(REGEX_COMMA_WHITESPACE);
             String[] param = arr[POSITION_ZERO_PARAM_ARGUMENT].split(REGEX_WHITESPACES);
-            int mth = monthInString.indexOf(param[POSITION_FIRST_PARAM_ARGUMENT]) + SIZE_1;
+            int mth = MONTH_ARRAYLIST.indexOf(param[POSITION_FIRST_PARAM_ARGUMENT]) + SIZE_1;
 
-            dateStartEnd.add(dateFormat.parse(param[POSITION_SECOND_PARAM_ARGUMENT] 
+            dateStartEnd.add(DATE_FORMAT.parse(param[POSITION_SECOND_PARAM_ARGUMENT] 
                     + REGEX_SLASH + mth + REGEX_SLASH + param[POSITION_FIFTH_PARAM_ARGUMENT]));
             return dateStartEnd;
         } catch (ParseException e) {
@@ -1030,9 +1041,9 @@ public class CommandParser {
 
             String[] param = dates.toString().replace(REGEX_LEFT_SQBRACKET, REGEX_BLANK)
                     .replace(REGEX_RIGHT_SQBRACKET, REGEX_BLANK).split(REGEX_WHITESPACES);
-            int mth = monthInString.indexOf(param[SIZE_1]) + SIZE_1;
+            int mth = MONTH_ARRAYLIST.indexOf(param[SIZE_1]) + SIZE_1;
 
-            list.add(dateFormat.parse(param[POSITION_SECOND_PARAM_ARGUMENT] + REGEX_SLASH 
+            list.add(DATE_FORMAT.parse(param[POSITION_SECOND_PARAM_ARGUMENT] + REGEX_SLASH 
                     + mth + REGEX_SLASH + param[POSITION_FIFTH_PARAM_ARGUMENT]));
         }
 
@@ -1204,8 +1215,9 @@ public class CommandParser {
     }
     
     private static String[] createMonthArray() {
-        String[] month = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        String[] month = {KEYWORD_JAN, KEYWORD_FEB, KEYWORD_MAR, KEYWORD_APR, 
+                KEYWORD_MAY, KEYWORD_JUN,  KEYWORD_JUL, KEYWORD_AUG, 
+                KEYWORD_SEP, KEYWORD_OCT, KEYWORD_NOV, KEYWORD_DEC};
         return month;
     }
 
