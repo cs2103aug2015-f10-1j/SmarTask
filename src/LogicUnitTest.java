@@ -8,6 +8,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Unit test for Logic
+ * 
+ * Testing whether input can be processed correctly
+ * 
+ * @@author A0125994R
+ */
+
+
+
 public class LogicUnitTest {
 	/*
 	 * @BeforeClass public static void setUpBeforeClass() throws Exception { }
@@ -20,7 +30,6 @@ public class LogicUnitTest {
 
 	@Test
 	public final void testLogic() {
-		// fail("Not yet implemented"); // TODO
 		expectList = new ArrayList<String>();
 	}
 
@@ -40,12 +49,11 @@ public class LogicUnitTest {
 	 */
 	@Test
 	public final void testAddTask() throws Exception {
-		Logic logic = new Logic();
 		expectList = new ArrayList<String>();
 		expectList.add("command : add meeting with feifei");
 		expectList.add("add meeting with feifei successful!");
-		logic.executeCommand("add meeting with feifei");
-		assertEquals(expectList.get(0) + "\n" + expectList.get(1), logic.getMessageLog());
+		Logic.executeCommand("add meeting with feifei");
+		assertEquals(expectList.get(0) + "\n" + expectList.get(1), Logic.getMessageLog());
 
 	}
 

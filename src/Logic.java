@@ -179,11 +179,11 @@ public class Logic {
 	    }
 
 	    Boolean isColl = isCollision(task);
-
+        
 	    if (!isColl) {
 		taskStored.add(task);
-		storage.saveToFile(taskStored);
 		msgLogger.add("add " + command.getTaskDescription() + " successful!");
+		storage.saveToFile(taskStored);
 		history.addChangeToHistory(new ArrayList<Task>(taskStored));
 	    } else {
 		msgLogger.add(MESSAGE_COLLISION_TASK);
@@ -909,38 +909,50 @@ public class Logic {
 	boolean isToday = false;
 	// for daily comparison 
 	if (task.getTaskRepeatType().equals(DAY_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (getDifferenceDays(task.getDateAdded(), currentDateAndTime)
-			% Integer.parseInt(task.getTaskRepeatInterval_Day()) == 0) {
-		    isToday = true;
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else if (task.getTaskRepeatUntil().after(currentDateAndTime) 
+				   && task.getDateAdded().before(currentDateAndTime)) {
+			if (getDifferenceDays(task.getDateAdded(), currentDateAndTime)
+					% Integer.parseInt(task.getTaskRepeatInterval_Day()) == 0) {
+				isToday = true;
+				}
 		}
-	    }
 	// for weekly comparison
 	} else if (task.getTaskRepeatType().equals(WEEK_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (getWeeksBetween(task.getDateAdded(), currentDateAndTime)
-			% Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0) {
-		    if (isSameDay(task)) {
+		if (task.getDateAdded().equals(currentDateAndTime)){
 			isToday = true;
-		    }
+		} else if (task.getTaskRepeatUntil().after(currentDateAndTime)
+				&& task.getDateAdded().before(currentDateAndTime)) {
+			if (getWeeksBetween(task.getDateAdded(), currentDateAndTime)
+					% Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0) {
+				if (isSameDay(task)) {
+					isToday = true;
+					}
+				}
 		}
-	    }
 	// for monthly comparison
-	} else if (task.getTaskRepeatType().equals(MONTH_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (isNextMonth(task)) {
-		    isToday = true;
+	} else if (task.getTaskRepeatType().equals(MONTH_REC)){
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else if (task.getTaskRepeatUntil().after(currentDateAndTime)
+				&& task.getDateAdded().before(currentDateAndTime)) {
+			if (isNextMonth(task)) {
+				isToday = true;
+				}
 		}
-	    }
 	// for yearly comparison
-	} else if (task.getTaskRepeatType().equals(YEAR_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (getYearBetweenDates(task.getDateAdded(), currentDateAndTime) > 0) {
-		    isToday = true;
+	} else if (task.getTaskRepeatType().equals(YEAR_REC)){
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else 
+			if (task.getTaskRepeatUntil().after(currentDateAndTime)
+					&& task.getDateAdded().before(currentDateAndTime)) {
+				if (getYearBetweenDates(task.getDateAdded(), currentDateAndTime) > 0) {
+					isToday = true;
+					}
+				}
 		}
-	    }
-	}
-
 	return isToday;
     }
 
@@ -1208,7 +1220,7 @@ public class Logic {
 
 	for (int i = 0; i < repeatedTask.size(); i++) {
 	    String [] str = repeatedTask.get(i).split("#");
-	    messageToPrint += "R" + (i + 1) + ". " +str[6] + " " +str[1] + ", repeat " +str[0]  + "\n";
+	    messageToPrint += "R" + (i + 1) + ". " +str[6] + " " +str[2] + ", repeat every " +str[4]+" "+str[0]  + "\n";
 	}
 
 	return messageToPrint.trim();
