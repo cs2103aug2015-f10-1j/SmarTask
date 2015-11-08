@@ -14,11 +14,21 @@ add task for daily recurrent task: repeat <task title> -start <day> <month> <sta
 add task for weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
 add task for monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
 add task for yearly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+
 delete task for floating task : delete <index>
 delete task for event task with starting date and end date : delete <index>
 delete task for task that have a deadline : delete <index>
-update task:
+
+update a floating task: update <task title>
+update an event task: update <index> <task title> -on <day> <month> <start time> to <end time><am/pm>
+update a deadline task: update <index> <task title> -on <day> <month> <time><am/pm>
+update a daily recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
+update a weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
+update a monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
+update a yearly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+
 complete task: complete <index>
+
 search task: search <key word>
 
 undo: PRESS <ctrl + z> OR ENTER undo
