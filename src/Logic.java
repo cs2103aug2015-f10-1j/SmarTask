@@ -54,7 +54,6 @@ public class Logic {
     private static final String WEEK_REC = "week";
     private static final String MONTH_REC = "month";
     private static final String YEAR_REC = "year";
-    private static final String STOP_REC = "stop";
 
     private static int taskCode;
     private static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
