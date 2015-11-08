@@ -244,7 +244,7 @@ public class SmarTaskController implements Initializable {
         	System.err.println("Error! Cannot find help file!");
         }
         
-        updateWindows(displayWindow, helpManual);
+        updateWindows(taskWindow, helpManual);
     }
     
     private void upKeyEvent() {
