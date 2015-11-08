@@ -1,6 +1,25 @@
-add task for floating task : <add your task >
-add task for event task with starting date and end date : <>
-add task for task that have a deadline : <>
-delete task for floating task : <F>
-delete task for event task with starting date and end date : <E>
-delete task for task that have a deadline : <D>
+sample dates: 25 Dec 15, 
+			25 Dec 8 to 9am, 
+			8 July 3pm.
+sample repeating period: -every 2 day -until 15 Dec 16
+						-every 2 week -on sun, sat, wed -until 25 Dec 15
+						-every 2 week -on mon, wed, fri
+						-every 2 month -until 25 Dec
+						-every 1 year -until 25 Dec 20
+
+add task for floating task : add <task title>
+add task for event task with starting date and end date : add <task title> on <day> <month> <start time> to <end time><am/pm>
+add task for task that have a deadline : add <task title> by <day> <month> <time><am/pm>
+add task for daily recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
+add task for weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
+add task for monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
+add task for yearly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+delete task for floating task : delete <index>
+delete task for event task with starting date and end date : delete <index>
+delete task for task that have a deadline : delete <index>
+update task:
+complete task: complete <index>
+search task: search <key word>
+
+undo: PRESS <ctrl + z> OR ENTER undo
+redo: PRESS <ctrl + y> OR ENTER redo
