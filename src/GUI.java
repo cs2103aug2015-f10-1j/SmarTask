@@ -24,7 +24,7 @@ import javafx.stage.Stage;
  * program will serve as the main window of interaction between user and
  * SmarTask.
  * 
- * @author A0116633L
+ * @@author A0116633L
  */
 
 public class GUI extends Application {
@@ -99,7 +99,7 @@ public class GUI extends Application {
                 File file = fileChooser.showSaveDialog(primaryStage);
                 
                 if (file != null) {
-                    createFile(file);
+                    setFile(file);
                     
                     try {
                         stage.setScene(createSmarTaskScene());
@@ -115,7 +115,7 @@ public class GUI extends Application {
             public void handle(final ActionEvent e) {
                 try {
                     File file = new File(defaultFileLocation);
-                    defaultFile(file);
+                    setFile(file);
                     stage.setScene(createSmarTaskScene());
                 } catch (IOException e2) {
                     e2.printStackTrace();
@@ -144,7 +144,7 @@ public class GUI extends Application {
         return scene;
     }
     
-    private void createFile(File file) {
+    private void setFile(File file) {
         try {
             String command = COMMAND_FILEPATH + file.getAbsolutePath();
             Logic.executeCommand(command);
@@ -152,13 +152,4 @@ public class GUI extends Application {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
-    private void defaultFile(File file) {
-        try {
-            String command = COMMAND_FILEPATH + file.getAbsolutePath();
-            Logic.executeCommand(command);    
-        } catch (Exception e) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
-        }
-   }
 }
