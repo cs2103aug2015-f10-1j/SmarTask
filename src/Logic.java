@@ -1184,9 +1184,6 @@ public class Logic {
 
 	for (int i = 0; i < repeatedTask.size(); i++) {
 	    String [] str = repeatedTask.get(i).split("#");
-	    for (int k = 0; k < str.length ; k++){
-	    	System.out.println(str[k] + " " + k);
-	    }
 	    messageToPrint += "R" + (i + 1) + ". " +str[6] + " " +str[1] + ", repeat " +str[0]  + "\n";
 	}
 
