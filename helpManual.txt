@@ -8,8 +8,8 @@ sample repeating period: -every 2 day -until 15 Dec 16
 						-every 1 year -until 25 Dec 20
 
 add task for floating task : add <task title>
-add task for event task with starting date and end date : add <task title> on <day> <month> <start time> to <end time><am/pm>
-add task for task that have a deadline : add <task title> by <day> <month> <time><am/pm>
+add task for event task with starting date and end date : add <task title> -on <day> <month> <start time> to <end time><am/pm>
+add task for task that have a deadline : add <task title> -by <day> <month> <time><am/pm>
 add task for daily recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
 add task for weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
 add task for monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
@@ -21,7 +21,7 @@ delete task for task that have a deadline : delete <index>
 
 update a floating task: update <task title>
 update an event task: update <index> <task title> -on <day> <month> <start time> to <end time><am/pm>
-update a deadline task: update <index> <task title> -on <day> <month> <time><am/pm>
+update a deadline task: update <index> <task title> -by <day> <month> <time><am/pm>
 update a daily recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
 update a weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
 update a monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
