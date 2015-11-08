@@ -41,7 +41,7 @@ public class SmarTaskController implements Initializable {
     private static final String COMMAND_UNDO = "undo";
     private static final String COMMAND_REDO = "redo";
     private static final String COMMAND_EXIT = "exit";
-    private static final String FILE_HELPMANUAL = "../main/" + "helpManual.txt";
+    private static final String FILE_HELPMANUAL = "../SmarTask/" + "helpManual.txt";
     private static final String MESSAGE_WELCOME = "Welcome to SmarTask! In case you need a refresher, please type \"help\" to get a list of all the SmarTask commands.";
     private static final String MESSAGE_INVALIDCOMMAND = "Error! Invalid Command sent to Logic!";
     private static final String MESSAGE_INVALIDUNDO = "Error! Invalid Undo Command sent to Logic!";
