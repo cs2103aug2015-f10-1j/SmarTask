@@ -85,7 +85,6 @@ public class CommandParser {
     // Regex
 
     private static final String REGEX_SLASH = "/";
-    private static final String REGEX_BACKSLASH = "\\";
     private static final String REGEX_BLANK = "";
     private static final String REGEX_ALL_ALPHA = "[a-zA-Z]";
     private static final String REGEX_COMMA_WHITESPACE = ",\\s";
@@ -93,8 +92,6 @@ public class CommandParser {
     private static final String REGEX_LEFT_SQBRACKET = "[";
     private static final String REGEX_COMMA = ",";
     private static final String REGEX_WHITESPACES = " ";
-    private static final String REGEX_WINDOWS_FILEPATH = "([a-zA-Z]:)?(\\\\[a-zA-Z0-9._-]+)+\\\\"
-            + "?[a-zA-Z0-9._-].(?i)(txt)";
     private static final String REGEX_WIN_MAC_FILEPATH = "([a-zA-Z]:)?(/[a-zA-Z0-9._-]+)+/"
             + "?[a-zA-Z0-9._-].(?i)(txt)";
 
@@ -700,20 +697,7 @@ public class CommandParser {
     }
 
     private static boolean checkFilePath(String line) {
-        String OS = System.getProperty("os.name").toLowerCase();
-        
         return Pattern.compile(REGEX_WIN_MAC_FILEPATH).matcher(line).find();
-        
-        /*if (!isMac(OS)) {
-            return Pattern.compile(REGEX_MAC_FILEPATH).matcher(line).find();   
-        } else {
-            return Pattern.compile(REGEX_WINDOWS_FILEPATH).matcher(line).find(); 
-        }*/
-        
-    }
-    
-    private static boolean isMac(String OS) {
-        return (OS.indexOf("mac") >= 0);
     }
 
     // ================================================================
