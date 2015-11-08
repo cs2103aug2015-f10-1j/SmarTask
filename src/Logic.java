@@ -187,7 +187,6 @@ public class Logic {
 		history.addChangeToHistory(new ArrayList<Task>(taskStored));
 	    } else {
 		msgLogger.add(MESSAGE_COLLISION_TASK);
-		return;
 	    }
 	} catch (FileNotFoundException e) {
 	    msgLogger.add(e.toString());
