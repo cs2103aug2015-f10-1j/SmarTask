@@ -61,6 +61,13 @@ public class Logic {
     private static Date currentDateAndTime;
     private static Date currentDate;
     private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
+    
+    // // Regex
+    private static final String REGEX_HASH = "#";
+    private static final String REGEX_AT_SIGN = "@";
+    private static final String REGEX_BLANK = "";
+    private static final String REGEX_WHITESPACE = " ";
+    
 
     // ================================================================
     // "executeCommand" direct the command to method
@@ -150,7 +157,7 @@ public class Logic {
             Task task;
 
             if (taskType.equals(FLOATING_TASK)) {
-                detailTask.add(command.getTaskDescription() + "#" + taskCode);
+                detailTask.add(command.getTaskDescription() + REGEX_HASH + taskCode);
                 type = Task.Type.FLOATING;
                 task = new Task(type, detailTask);
                 if (!isCollision(task)) {
@@ -160,8 +167,8 @@ public class Logic {
                     msgLogger.add(MESSAGE_COLLISION_TASK);
                 }
             } else if (taskType.equals(EVENT_TASK)) {
-                detailTask.add(command.getTaskEventStart() + "#" + command.getTaskEventEnd() + "#"
-                        + command.getTaskDescription() + "#" + taskCode);
+                detailTask.add(command.getTaskEventStart() + REGEX_HASH + command.getTaskEventEnd() + REGEX_HASH
+                        + command.getTaskDescription() + REGEX_HASH + taskCode);
                 type = Task.Type.EVENT;
                 task = new Task(type, detailTask);
 
@@ -172,7 +179,7 @@ public class Logic {
                     msgLogger.add(MESSAGE_COLLISION_TASK);
                 }
             } else if (taskType.equals(DEADLINE_TASK)) {
-                detailTask.add(command.getTaskDeadline() + "#" + command.getTaskDescription() + "#" + taskCode);
+                detailTask.add(command.getTaskDeadline() + REGEX_HASH + command.getTaskDescription() + "#" + taskCode);
                 type = Task.Type.DEADLINE;
                 task = new Task(type, detailTask);
                 if (!isCollision(task)) {
@@ -205,9 +212,9 @@ public class Logic {
         Task task = null;
 
         if (taskType.equals(DAY_REC)) {
-            detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#"
-                    + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil().toString() + "#"
-                    + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+            detailStored.add(taskType + REGEX_HASH + com.getDateAdded().toString() + REGEX_HASH + com.getRepeatStartTime() + REGEX_HASH
+                    + com.getRepeatEndTime() + REGEX_HASH + com.getDayInterval() + REGEX_HASH + com.getRepeatUntil().toString() + REGEX_HASH
+                    + com.getTaskDescription() + REGEX_HASH + taskCode + REGEX_HASH + com.getStopRepeatInString());
             task = new Task(type, detailStored);
 
             if (!isCollision(task)) {
@@ -220,9 +227,9 @@ public class Logic {
                 msgLogger.add(MESSAGE_COLLISION_TASK);
             }
         } else if (taskType.equals(WEEK_REC)) {
-            detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#"
-                    + com.getRepeatEndTime() + "#" + com.getWeekInterval() + "#" + com.getDaySelectedString() + "#"
-                    + com.getRepeatUntil() + "#" + com.getTaskDescription() + "#" + taskCode + "#"
+            detailStored.add(taskType + REGEX_HASH + com.getDateAdded().toString() + REGEX_HASH + com.getRepeatStartTime() + REGEX_HASH
+                    + com.getRepeatEndTime() + REGEX_HASH + com.getWeekInterval() + REGEX_HASH + com.getDaySelectedString() + REGEX_HASH
+                    + com.getRepeatUntil() + REGEX_HASH + com.getTaskDescription() + REGEX_HASH + taskCode + REGEX_HASH
                     + com.getStopRepeatInString());
             task = new Task(type, detailStored);
 
@@ -236,9 +243,9 @@ public class Logic {
                 msgLogger.add(MESSAGE_COLLISION_TASK);
             }
         } else if (taskType.equals(MONTH_REC)) {
-            detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#"
-                    + com.getRepeatEndTime() + "#" + com.getMonthInterval() + "#" + com.getRepeatUntil() + "#"
-                    + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+            detailStored.add(taskType + REGEX_HASH + com.getDateAdded().toString() + REGEX_HASH + com.getRepeatStartTime() + REGEX_HASH
+                    + com.getRepeatEndTime() + REGEX_HASH + com.getMonthInterval() + REGEX_HASH + com.getRepeatUntil() + REGEX_HASH
+                    + com.getTaskDescription() + REGEX_HASH + taskCode + REGEX_HASH + com.getStopRepeatInString());
             task = new Task(type, detailStored);
 
             if (!isCollision(task)) {
@@ -253,9 +260,9 @@ public class Logic {
         }
 
         else if (taskType.equals(YEAR_REC)) {
-            detailStored.add(taskType + "#" + com.getDateAdded().toString() + "#" + com.getRepeatStartTime() + "#"
-                    + com.getRepeatEndTime() + "#" + com.getDayInterval() + "#" + com.getRepeatUntil() + "#"
-                    + com.getTaskDescription() + "#" + taskCode + "#" + com.getStopRepeatInString());
+            detailStored.add(taskType + REGEX_HASH + com.getDateAdded().toString() + REGEX_HASH + com.getRepeatStartTime() + REGEX_HASH
+                    + com.getRepeatEndTime() + REGEX_HASH + com.getDayInterval() + REGEX_HASH + com.getRepeatUntil() + REGEX_HASH
+                    + com.getTaskDescription() + REGEX_HASH + taskCode + REGEX_HASH + com.getStopRepeatInString());
             task = new Task(type, detailStored);
 
             if (!isCollision(task)) {
@@ -276,7 +283,7 @@ public class Logic {
     // ================================================================
     private static void searchTask(Command command) throws FileNotFoundException {
         ArrayList<String> keyWordList = command.getSearchKeyword();
-        String keyword = "";
+        String keyword = REGEX_BLANK;
         taskStored.clear();
         Task.Type taskType;
         int index = 1;
@@ -288,7 +295,7 @@ public class Logic {
             keyword = keyWordList.get(i).toLowerCase();
 
             for (int j = 0; j < taskStored.size(); j++) {
-                String[] arr = taskStored.get(j).getDescription().split(" ");
+                String[] arr = taskStored.get(j).getDescription().split(REGEX_WHITESPACE);
 
                 for (int k = 0; k < arr.length; k++) {
                     if (arr[k].toLowerCase().contains(keyword)) {
@@ -296,15 +303,15 @@ public class Logic {
                         taskType = taskStored.get(j).getType();
 
                         if (taskType.equals(Task.Type.DEADLINE)) {
-                            msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " deadline is : "
+                            msgLogger.add((index++) + REGEX_WHITESPACE + taskStored.get(j).getDescription() + " deadline is : "
                                     + taskStored.get(j).getDeadline());
                         } else if (taskType.equals(Task.Type.EVENT)) {
-                            msgLogger.add((index++) + " " + taskStored.get(j).getDescription() + " start time is : "
+                            msgLogger.add((index++) + REGEX_WHITESPACE + taskStored.get(j).getDescription() + " start time is : "
                                     + taskStored.get(j).getEventStart() + " " + taskStored.get(j).getEventEnd());
                         } else if (taskType.equals(Task.Type.FLOATING)) {
-                            msgLogger.add((index++) + " " + taskStored.get(j).getDescription());
+                            msgLogger.add((index++) + REGEX_WHITESPACE + taskStored.get(j).getDescription());
                         } else if (taskType.equals(Task.Type.REPEAT)) {
-                            msgLogger.add((index++) + " " + taskStored.get(j).getDescription()
+                            msgLogger.add((index++) + REGEX_WHITESPACE + taskStored.get(j).getDescription()
                                     + " repeating peroid end in : " + taskStored.get(i).getTaskRepeatEndTime());
                         }
                         searchList.add(taskCode);
@@ -325,29 +332,29 @@ public class Logic {
 
         try {
             int indexToRemove = command.getTaskID() - 1;
-            String removedItem = "";
-            String currentLine = "";
+            String removedItem = REGEX_BLANK;
+            String currentLine = REGEX_BLANK;
 
             if (taskType != null) {
                 if (taskType.equals(DEADLINE_TASK)) {
                     currentLine = deadline.get(indexToRemove);
                     removedItem = deadline.remove(indexToRemove);
-                    String str[] = currentLine.split("#");
+                    String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 } else if (taskType.equals(FLOATING_TASK)) {
                     currentLine = floating.get(indexToRemove);
                     removedItem = floating.remove(indexToRemove);
-                    String str[] = currentLine.split("#");
+                    String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 } else if (taskType.equals(EVENT_TASK)) {
                     currentLine = event.get(indexToRemove);
                     removedItem = event.remove(indexToRemove);
-                    String str[] = currentLine.split("#");
+                    String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 } else if (taskType.equals(RECURRING_TASK)) {
                     currentLine = repeatedTask.get(indexToRemove);
                     removedItem = repeatedTask.get(indexToRemove);
-                    String str[] = currentLine.split("#");
+                    String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 }
             } else {
@@ -371,11 +378,11 @@ public class Logic {
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
             msgLogger.add("deleted " + taskType + " index " + command.getTaskID() + " successfully!");
         } catch (Exception e) {
-            if (taskType.equals("deadline") && deadline.size() == 0) {
+            if (taskType.equals(DEADLINE_TASK) && deadline.size() == 0) {
                 msgLogger.add(MESSAGE_DEADLINE_EMPTY);
-            } else if (taskType.equals("floating") && floating.size() == 0) {
+            } else if (taskType.equals(FLOATING_TASK) && floating.size() == 0) {
                 msgLogger.add(MESSAGE_FLOATING_EMPTY);
-            } else if (taskType.equals("event") && event.size() == 0) {
+            } else if (taskType.equals(EVENT_TASK) && event.size() == 0) {
                 msgLogger.add(MESSAGE_EVENT_EMPTY);
             } else {
                 msgLogger.add(MESSAGE_NOTHING_TO_DELETE);
@@ -391,32 +398,32 @@ public class Logic {
 
         try {
             int indexToComplete = command.getTaskID() - 1;
-            String currentLine = " ";
+            String currentLine = REGEX_WHITESPACE;
 
-            if (taskType.equals("deadline")) {
+            if (taskType.equals(DEADLINE_TASK)) {
                 currentLine = deadline.get(indexToComplete);
                 deadline.remove(indexToComplete);
-            } else if (taskType.equals("floating")) {
+            } else if (taskType.equals(FLOATING_TASK)) {
                 currentLine = floating.get(indexToComplete);
                 floating.remove(indexToComplete);
-            } else if (taskType.equals("event")) {
+            } else if (taskType.equals(EVENT_TASK)) {
                 currentLine = event.get(indexToComplete);
                 event.remove(indexToComplete);
-            } else if (taskType.equals("repeat")) {
+            } else if (taskType.equals(RECURRING_TASK)) {
                 currentLine = repeatedTask.get(indexToComplete);
                 repeatedTask.remove(indexToComplete);
             }
 
-            String str[] = currentLine.split("#");
+            String str[] = currentLine.split(REGEX_HASH);
             taskCode = Integer.parseInt(str[str.length - 1]);
 
             for (int i = 0; i < taskStored.size(); i++) {
                 if (taskStored.get(i).getID() == taskCode) {
-                    if (taskType.equals("repeat")) {
-                        String stopStr = "";
+                    if (taskType.equals(RECURRING_TASK)) {
+                        String stopStr = REGEX_BLANK;
                         DateFormat df = new SimpleDateFormat(DATE_FORMAT);
                         if (taskStored.get(i).getStopRepeatInString() != null) {
-                            stopStr = taskStored.get(i).getStopRepeatInString() + "@" + df.format(currentDate);
+                            stopStr = taskStored.get(i).getStopRepeatInString() + REGEX_AT_SIGN + df.format(currentDate);
                         } else {
                             stopStr = df.format(currentDate);
                         }
@@ -454,7 +461,7 @@ public class Logic {
         int count=0;
 
         for (int i = 0; i < deadline.size(); i++) {
-            String[] str = deadline.get(i).split("#");
+            String[] str = deadline.get(i).split(REGEX_HASH);
             SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
             SimpleDateFormat getDate = new SimpleDateFormat("MMM dd yyyy");
             Date timeDue = df.parse(str[0]);
@@ -464,7 +471,7 @@ public class Logic {
             }
         }
         for (int i = 0; i < event.size(); i++) {
-            String[] str = event.get(i).split("#");
+            String[] str = event.get(i).split(REGEX_HASH);
             SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
             SimpleDateFormat getTime = new SimpleDateFormat("MMM dd");
             Date timeStart = df.parse(str[0]);
@@ -476,8 +483,8 @@ public class Logic {
             }
         }
         for (int i = 0; i < repeatedTask.size(); i++) {
-            String[] str = repeatedTask.get(i).split("#");
-            msgLogger.add("R" + (i + 1) + ". " + str[1] + " " + str[0]);
+            String[] str = repeatedTask.get(i).split(REGEX_HASH);
+            msgLogger.add("R" + (i + 1) + ". " + str[1] + REGEX_WHITESPACE + str[0]);
             count++;
         } 
         if (count==0) {
@@ -490,9 +497,9 @@ public class Logic {
     // ================================================================
     private static void updateTask(Command command) throws FileNotFoundException {
         String taskType = command.getTaskType();
-        String updatedItem = "";
-        String existingItem = "";
-        String updatedTask = "";
+        String updatedItem = REGEX_BLANK;
+        String existingItem = REGEX_BLANK;
+        String updatedTask = REGEX_BLANK;
         Task.Type type;
         ArrayList<String> updatedLine = new ArrayList<String>();
 
@@ -501,9 +508,9 @@ public class Logic {
 
             if (taskType.equals(FLOATING_TASK)) {
                 existingItem = floating.get(indexToUpdate);
-                String[] strArr = existingItem.split("#");
+                String[] strArr = existingItem.split(REGEX_HASH);
                 taskCode = Integer.parseInt(strArr[strArr.length - 1]);
-                updatedItem += strArr[0] + "#";
+                updatedItem += strArr[0] + REGEX_HASH;
 
                 if (command.getTaskDescription() != null) {
                     updatedItem += command.getTaskDescription();
@@ -513,22 +520,22 @@ public class Logic {
                     updatedTask += strArr[1];
                 }
 
-                updatedItem += "#" + Integer.toString(taskCode);
-                updatedTask += "#" + Integer.toString(taskCode);
+                updatedItem += REGEX_HASH + Integer.toString(taskCode);
+                updatedTask += REGEX_HASH + Integer.toString(taskCode);
                 type = Task.Type.FLOATING;
                 floating.set(indexToUpdate, updatedItem);
                 msgLogger.add(TASK_UPDATED);
             } else if (taskType.equals(DEADLINE_TASK)) {
                 existingItem = deadline.get(indexToUpdate);
-                String[] strArr = existingItem.split("#");
+                String[] strArr = existingItem.split(REGEX_HASH);
                 taskCode = Integer.parseInt(strArr[strArr.length - 1]);
 
                 if (command.getTaskDeadline() != null) {
-                    updatedItem += command.getTaskDeadline() + "#";
-                    updatedTask += command.getTaskDeadline() + "#";
+                    updatedItem += command.getTaskDeadline() + REGEX_HASH;
+                    updatedTask += command.getTaskDeadline() + REGEX_HASH;
                 } else {
-                    updatedItem += strArr[0] + "#";
-                    updatedTask += strArr[0] + "#";
+                    updatedItem += strArr[0] + REGEX_HASH;
+                    updatedTask += strArr[0] + REGEX_HASH;
                 }
 
                 if (command.getTaskDescription() != null) {
@@ -538,31 +545,31 @@ public class Logic {
                     updatedItem += strArr[1];
                     updatedTask += strArr[1];
                 }
-                updatedItem = updatedItem + "#" + Integer.toString(taskCode);
-                updatedTask = updatedTask + "#" + Integer.toString(taskCode);
+                updatedItem = updatedItem + REGEX_HASH + Integer.toString(taskCode);
+                updatedTask = updatedTask + REGEX_HASH + Integer.toString(taskCode);
                 type = Task.Type.DEADLINE;
                 deadline.set(indexToUpdate, updatedItem);
                 msgLogger.add(TASK_UPDATED);
             } else if (taskType.equals(EVENT_TASK)) {
                 existingItem = event.get(indexToUpdate);
-                String[] strArr = existingItem.split("#");
+                String[] strArr = existingItem.split(REGEX_HASH);
                 taskCode = Integer.parseInt(strArr[strArr.length - 1]);
 
                 if (command.getTaskEventStart() != null) {
-                    updatedItem += command.getTaskEventStart() + "#";
-                    updatedTask += command.getTaskEventStart().toString() + "#";
+                    updatedItem += command.getTaskEventStart() + REGEX_HASH;
+                    updatedTask += command.getTaskEventStart().toString() + REGEX_HASH;
 
                 } else {
-                    updatedItem += strArr[0] + "#";
-                    updatedTask += strArr[0] + "#";
+                    updatedItem += strArr[0] + REGEX_HASH;
+                    updatedTask += strArr[0] + REGEX_HASH;
                 }
 
                 if (command.getTaskEventEnd() != null) {
-                    updatedItem += command.getTaskEventEnd() + "#";
-                    updatedTask += command.getTaskEventEnd() + "#";
+                    updatedItem += command.getTaskEventEnd() + REGEX_HASH;
+                    updatedTask += command.getTaskEventEnd() + REGEX_HASH;
                 } else {
-                    updatedItem += strArr[1] + "#";
-                    updatedTask += strArr[1] + "#";
+                    updatedItem += strArr[1] + REGEX_HASH;
+                    updatedTask += strArr[1] + REGEX_HASH;
                 }
 
                 if (command.getTaskDescription() != null) {
@@ -573,163 +580,163 @@ public class Logic {
                     updatedTask += strArr[2];
                 }
 
-                updatedItem += "#" + Integer.toString(taskCode);
-                updatedTask += "#" + Integer.toString(taskCode);
+                updatedItem += REGEX_HASH + Integer.toString(taskCode);
+                updatedTask += REGEX_HASH + Integer.toString(taskCode);
                 event.set(indexToUpdate, updatedItem);
                 msgLogger.add(TASK_UPDATED);
                 type = Task.Type.EVENT;
             } else if (taskType.equals(RECURRING_TASK)) {
                 existingItem = repeatedTask.get(indexToUpdate);
 
-                String[] strArr = existingItem.split("#");
+                String[] strArr = existingItem.split(REGEX_HASH);
 
                 String repeatType = strArr[0];
-                updatedItem += strArr[0] + "#";
-                updatedTask += strArr[0] + "#";
+                updatedItem += strArr[0] + REGEX_HASH;
+                updatedTask += strArr[0] + REGEX_HASH;
 
                 if (command.getDateAdded() != null) {
-                    updatedItem += command.getDateAdded().toString() + "#";
-                    updatedTask += command.getDateAdded().toString() + "#";
+                    updatedItem += command.getDateAdded().toString() + REGEX_HASH;
+                    updatedTask += command.getDateAdded().toString() + REGEX_HASH;
                 } else {
-                    updatedItem += strArr[1] + "#";
-                    updatedTask += strArr[1] + "#";
+                    updatedItem += strArr[1] + REGEX_HASH;
+                    updatedTask += strArr[1] + REGEX_HASH;
                 }
 
                 if (command.getRepeatStartTime() != null) {
-                    updatedItem += command.getRepeatStartTime().toString() + "#";
-                    updatedTask += command.getRepeatStartTime().toString() + "#";
+                    updatedItem += command.getRepeatStartTime().toString() + REGEX_HASH;
+                    updatedTask += command.getRepeatStartTime().toString() + REGEX_HASH;
                 } else {
-                    updatedItem += strArr[2] + "#";
-                    updatedTask += strArr[2] + "#";
+                    updatedItem += strArr[2] + REGEX_HASH;
+                    updatedTask += strArr[2] + REGEX_HASH;
                 }
 
                 if (command.getRepeatEndTime() != null) {
-                    updatedItem += command.getRepeatEndTime().toString() + "#";
-                    updatedTask += command.getRepeatEndTime().toString() + "#";
+                    updatedItem += command.getRepeatEndTime().toString() + REGEX_HASH;
+                    updatedTask += command.getRepeatEndTime().toString() + REGEX_HASH;
                 } else {
-                    updatedItem += strArr[3] + "#";
-                    updatedTask += strArr[3] + "#";
+                    updatedItem += strArr[3] + REGEX_HASH;
+                    updatedTask += strArr[3] + REGEX_HASH;
                 }
 
                 if (repeatType.equals(DAY_REC)) {
                     if (command.getDayInterval() != null) {
-                        updatedItem += command.getDayInterval() + "#";
-                        updatedTask += command.getDayInterval() + "#";
+                        updatedItem += command.getDayInterval() + REGEX_HASH;
+                        updatedTask += command.getDayInterval() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[4] + "#";
-                        updatedTask += strArr[4] + "#";
+                        updatedItem += strArr[4] + REGEX_HASH;
+                        updatedTask += strArr[4] + REGEX_HASH;
                     }
 
                     if (command.getRepeatUntil() != null) {
-                        updatedItem += command.getRepeatUntil() + "#";
-                        updatedTask += command.getRepeatUntil() + "#";
+                        updatedItem += command.getRepeatUntil() + REGEX_HASH;
+                        updatedTask += command.getRepeatUntil() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[5] + "#";
-                        updatedTask += strArr[5] + "#";
+                        updatedItem += strArr[5] + REGEX_HASH;
+                        updatedTask += strArr[5] + REGEX_HASH;
                     }
 
                     if (command.getTaskDescription() != null) {
-                        updatedItem += command.getTaskDescription() + "#";
-                        updatedTask += command.getTaskDescription() + "#";
+                        updatedItem += command.getTaskDescription() + REGEX_HASH;
+                        updatedTask += command.getTaskDescription() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[6] + "#";
-                        updatedTask += strArr[6] + "#";
+                        updatedItem += strArr[6] + REGEX_HASH;
+                        updatedTask += strArr[6] + REGEX_HASH;
                     }
                     taskCode = Integer.parseInt(strArr[7].trim());
-                    updatedItem += Integer.toString(taskCode) + "#" + strArr[8];
-                    updatedTask += Integer.toString(taskCode) + "#" + strArr[8];
+                    updatedItem += Integer.toString(taskCode) + REGEX_HASH + strArr[8];
+                    updatedTask += Integer.toString(taskCode) + REGEX_HASH + strArr[8];
 
                 } else if (repeatType.equals(WEEK_REC)) {
                     if (command.getWeekInterval() != null) {
-                        updatedItem += command.getWeekInterval() + "#";
-                        updatedTask += command.getWeekInterval() + "#";
+                        updatedItem += command.getWeekInterval() + REGEX_HASH;
+                        updatedTask += command.getWeekInterval() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[4] + "#";
-                        updatedTask += strArr[4] + "#";
+                        updatedItem += strArr[4] + REGEX_HASH;
+                        updatedTask += strArr[4] + REGEX_HASH;
                     }
 
                     if (command.getDaySelectedString() != null) {
-                        updatedItem += command.getDaySelectedString() + "#";
-                        updatedTask += command.getDaySelectedString() + "#";
+                        updatedItem += command.getDaySelectedString() + REGEX_HASH;
+                        updatedTask += command.getDaySelectedString() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[5] + "#";
-                        updatedTask += strArr[5] + "#";
+                        updatedItem += strArr[5] + REGEX_HASH;
+                        updatedTask += strArr[5] + REGEX_HASH;
                     }
 
                     if (command.getRepeatUntil() != null) {
-                        updatedItem += command.getRepeatUntil() + "#";
-                        updatedTask += command.getRepeatUntil() + "#";
+                        updatedItem += command.getRepeatUntil() + REGEX_HASH;
+                        updatedTask += command.getRepeatUntil() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[6] + "#";
-                        updatedTask += strArr[6] + "#";
+                        updatedItem += strArr[6] + REGEX_HASH;
+                        updatedTask += strArr[6] + REGEX_HASH;
                     }
 
                     if (command.getTaskDescription() != null) {
-                        updatedItem += command.getTaskDescription() + "#";
-                        updatedTask += command.getTaskDescription() + "#";
+                        updatedItem += command.getTaskDescription() + REGEX_HASH;
+                        updatedTask += command.getTaskDescription() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[7] + "#";
-                        updatedTask += strArr[7] + "#";
+                        updatedItem += strArr[7] + REGEX_HASH;
+                        updatedTask += strArr[7] + REGEX_HASH;
                     }
                     taskCode = Integer.parseInt(strArr[8].trim());
-                    updatedItem += Integer.toString(taskCode) + "#" + strArr[9];
-                    updatedTask += Integer.toString(taskCode) + "#" + strArr[9];
+                    updatedItem += Integer.toString(taskCode) + REGEX_HASH + strArr[9];
+                    updatedTask += Integer.toString(taskCode) + REGEX_HASH + strArr[9];
 
                 } else if (repeatType.equals(MONTH_REC)) {
                     if (command.getMonthInterval() != null) {
-                        updatedItem += command.getMonthInterval() + "#";
-                        updatedTask += command.getMonthInterval() + "#";
+                        updatedItem += command.getMonthInterval() + REGEX_HASH;
+                        updatedTask += command.getMonthInterval() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[4] + "#";
-                        updatedTask += strArr[4] + "#";
+                        updatedItem += strArr[4] + REGEX_HASH;
+                        updatedTask += strArr[4] + REGEX_HASH;
                     }
 
                     if (command.getRepeatUntil() != null) {
-                        updatedItem += command.getRepeatUntil() + "#";
-                        updatedTask += command.getRepeatUntil() + "#";
+                        updatedItem += command.getRepeatUntil() + REGEX_HASH;
+                        updatedTask += command.getRepeatUntil() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[5] + "#";
-                        updatedTask += strArr[5] + "#";
+                        updatedItem += strArr[5] + REGEX_HASH;
+                        updatedTask += strArr[5] + REGEX_HASH;
                     }
 
                     if (command.getTaskDescription() != null) {
-                        updatedItem += command.getTaskDescription() + "#";
-                        updatedTask += command.getTaskDescription() + "#";
+                        updatedItem += command.getTaskDescription() + REGEX_HASH;
+                        updatedTask += command.getTaskDescription() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[6] + "#";
-                        updatedTask += strArr[6] + "#";
+                        updatedItem += strArr[6] + REGEX_HASH;
+                        updatedTask += strArr[6] + REGEX_HASH;
                     }
                     taskCode = Integer.parseInt(strArr[7].trim());
-                    updatedItem += Integer.toString(taskCode) + "#" + strArr[8];
-                    updatedTask += Integer.toString(taskCode) + "#" + strArr[8];
+                    updatedItem += Integer.toString(taskCode) + REGEX_HASH + strArr[8];
+                    updatedTask += Integer.toString(taskCode) + REGEX_HASH + strArr[8];
 
                 } else if (repeatType.equals(YEAR_REC)) {
                     if (command.getYearInterval() != null) {
-                        updatedItem += command.getYearInterval() + "#";
-                        updatedTask += command.getYearInterval() + "#";
+                        updatedItem += command.getYearInterval() + REGEX_HASH;
+                        updatedTask += command.getYearInterval() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[4] + "#";
-                        updatedTask += strArr[4] + "#";
+                        updatedItem += strArr[4] + REGEX_HASH;
+                        updatedTask += strArr[4] + REGEX_HASH;
                     }
 
                     if (command.getRepeatUntil() != null) {
-                        updatedItem += command.getRepeatUntil() + "#";
-                        updatedTask += command.getRepeatUntil() + "#";
+                        updatedItem += command.getRepeatUntil() + REGEX_HASH;
+                        updatedTask += command.getRepeatUntil() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[5] + "#";
-                        updatedTask += strArr[5] + "#";
+                        updatedItem += strArr[5] + REGEX_HASH;
+                        updatedTask += strArr[5] + REGEX_HASH;
                     }
 
                     if (command.getTaskDescription() != null) {
-                        updatedItem += command.getTaskDescription() + "#";
-                        updatedTask += command.getTaskDescription() + "#";
+                        updatedItem += command.getTaskDescription() + REGEX_HASH;
+                        updatedTask += command.getTaskDescription() + REGEX_HASH;
                     } else {
-                        updatedItem += strArr[6] + "#";
-                        updatedTask += strArr[6] + "#";
+                        updatedItem += strArr[6] + REGEX_HASH;
+                        updatedTask += strArr[6] + REGEX_HASH;
                     }
                     taskCode = Integer.parseInt(strArr[7].trim());
-                    updatedItem += Integer.toString(taskCode) + "#" + strArr[8];
-                    updatedTask += Integer.toString(taskCode) + "#" + strArr[8];
+                    updatedItem += Integer.toString(taskCode) + REGEX_HASH + strArr[8];
+                    updatedTask += Integer.toString(taskCode) + REGEX_HASH + strArr[8];
                 }
 
                 repeatedTask.set(indexToUpdate, updatedItem);
@@ -765,14 +772,14 @@ public class Logic {
     private static void stopRec(Command command) throws ParseException {
         int taskID = command.getTaskID() - 1;
         String stopItem = repeatedTask.get(taskID);
-        String[] stop = stopItem.split("#");
+        String[] stop = stopItem.split(REGEX_HASH);
         taskID = Integer.parseInt(stop[stop.length - 2]);
 
         for (int i = 0; i < taskStored.size(); i++) {
             if (taskStored.get(i).getID() == taskID) {
-                String str = "";
+                String str = REGEX_BLANK;
                 if (taskStored.get(i).getStopRepeatInString() != null) {
-                    str = taskStored.get(i).getStopRepeatInString() + "@" + command.getStopRepeatInString();
+                    str = taskStored.get(i).getStopRepeatInString() + REGEX_AT_SIGN + command.getStopRepeatInString();
                 } else {
                     str = command.getStopRepeatInString();
                 }
@@ -791,7 +798,7 @@ public class Logic {
     // redo command method
     // ================================================================
     private static void redoCommand() throws FileNotFoundException {
-        String message = "";
+        String message = REGEX_BLANK;
 
         try {
             message = REDO_SUCCESSFUL;
@@ -810,7 +817,7 @@ public class Logic {
     // undo command method
     // ================================================================
     private static void undoCommand() throws FileNotFoundException {
-        String message = "";
+        String message = REGEX_BLANK;
 
         try {
             message = UNDO_SUCCESSFUL;
@@ -1178,7 +1185,7 @@ public class Logic {
     // Getter methods to retrieve lists for UI
     // ================================================================
     public static String getMessageLog() {
-        String messageToPrint = "";
+        String messageToPrint = REGEX_BLANK;
 
         for (int i = 0; i < msgLogger.size(); i++) {
             if (msgLogger.get(i) != null){
@@ -1191,14 +1198,14 @@ public class Logic {
 
     public static String getEvents() throws ParseException {
         event = initList(EVENT_TASK, taskStored);
-        String messageToPrint = "";
+        String messageToPrint = REGEX_BLANK;
 
         if (event.size() == 0) {
             return messageToPrint = MESSAGE_NO_TASK;
         }
 
         for (int i = 0; i < event.size(); i++) {
-            String[] str = event.get(i).split("#");
+            String[] str = event.get(i).split(REGEX_HASH);
             SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
             SimpleDateFormat getTime = new SimpleDateFormat("dd MMM, HH:mm");
             Date timeStart = df.parse(str[0]);
@@ -1212,14 +1219,14 @@ public class Logic {
 
     public static String getDeadline() throws ParseException {
         deadline = initList(DEADLINE_TASK, taskStored);
-        String messageToPrint = "";
+        String messageToPrint = REGEX_BLANK;
 
         if (deadline.size() == 0) {
             return messageToPrint = MESSAGE_NO_TASK;
         }
 
         for (int i = 0; i < deadline.size(); i++) {
-            String[] str = deadline.get(i).split("#");
+            String[] str = deadline.get(i).split(REGEX_HASH);
             messageToPrint += "D" + (i + 1) + ". " + str[1] + " due on " + str[0] + "\n";
         }
 
@@ -1229,13 +1236,13 @@ public class Logic {
     public static String getFloatingTask() throws ParseException {
         floating = initList(FLOATING_TASK, taskStored);
 
-        String messageToPrint = "";
+        String messageToPrint = REGEX_BLANK;
 
         if (floating.size() == 0) {
             return messageToPrint = MESSAGE_NO_TASK;
         }
         for (int i = 0; i < floating.size(); i++) {
-            String[] str = floating.get(i).split("#");
+            String[] str = floating.get(i).split(REGEX_HASH);
             messageToPrint += "F" + (i + 1) + ". " + str[0] + "\n";
         }
 
@@ -1244,15 +1251,15 @@ public class Logic {
 
     public static String getRecurringTask() throws ParseException {
         repeatedTask = initList(RECURRING_TASK, taskStored);
-        String messageToPrint = "";
+        String messageToPrint = REGEX_BLANK;
 
         if (repeatedTask.size() == 0) {
             return messageToPrint = MESSAGE_NO_TASK;
         }
 
         for (int i = 0; i < repeatedTask.size(); i++) {
-            String[] str = repeatedTask.get(i).split("#");
-            messageToPrint += "R" + (i + 1) + ". " + str[6] + " " + str[2] + ", repeat every " + str[4] + " " + str[0]
+            String[] str = repeatedTask.get(i).split(REGEX_HASH);
+            messageToPrint += "R" + (i + 1) + ". " + str[6] + REGEX_WHITESPACE + str[2] + ", repeat every " + str[4] + REGEX_WHITESPACE + str[0]
                     + "\n";
         }
 
