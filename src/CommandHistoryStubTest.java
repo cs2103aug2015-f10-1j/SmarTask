@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * CommandHistoryStubTest checks if undo and redo works
  * 
- * @author A0108235M
+ * @@author A0108235M
  */
 
 public class CommandHistoryStubTest {

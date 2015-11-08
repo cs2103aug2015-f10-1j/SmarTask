@@ -19,11 +19,12 @@ import org.junit.Test;
 
 public class CommandParserUnitTest {
 
-    // Command testing
+    // Used in Command testing
 
     private static final String INVALID_FORMAT = "Command format is invalid";
     private static final String HEADER_TWO_PARAM_COMMANDS = "\n----Two param----";
     private static final String HEADER_SINGLE_PARAM_COMMANDS = "\n----Single param----";
+    private static final String HEADER_SHORTCUT_COMMAND = "\n----Shortcuts command----";
 
     private static final String HEADER_ADD_COMMAND = "\n----Add----";
     private static final String HEADER_SETFILEPATH_COMMAND = "\n----SetFilePath commands----";
@@ -38,7 +39,7 @@ public class CommandParserUnitTest {
     private static final String HEADER_UPDATE_REPEAT_MONTH_PARAM = "\n----Update: selected param of Month repeat----";
     private static final String HEADER_UPDATE_REPEAT_YEAR_PARAM = "\n----Update: selected param of Year repeat----";
 
-    // Error testing
+    // Used in Error testing
 
     private static final String HEADER_ERRORS_TWO_PARAM = "\n----Errors: Two param----";
     private static final String HEADER_ERRORS_SETFILEPATH = "\n----Errors: Set Filepath----";
@@ -49,6 +50,7 @@ public class CommandParserUnitTest {
     private static final String HEADER_ERRORS_UPDATE_WEEK_PARAM = "\n----Error: Week update----";
     private static final String HEADER_ERRORS_UPDATE_MONTH_PARAM = "\n----Error: Month update----";
     private static final String HEADER_ERRORS_UPDATE_YEAR_PARAM = "\n----Error: Year update----";
+
 
     String input;
     public ArrayList<String> actual; 
@@ -104,6 +106,13 @@ public class CommandParserUnitTest {
         Command invalid = CommandParser.parse(input);
         actual.add(invalid.getCommandType().toString());
         expected = new ArrayList<String>(Arrays.asList("INVALID"));
+        executeTestWithArrayList();
+
+        input = "view";
+        actual = new ArrayList<String>();
+        Command view = CommandParser.parse(input);
+        actual.add(view.getCommandType().toString());
+        expected = new ArrayList<String>(Arrays.asList("VIEW"));
         executeTestWithArrayList();
 
         input = "exit";
@@ -249,8 +258,126 @@ public class CommandParserUnitTest {
         expected = new ArrayList<String>(Arrays.asList("SEARCH","meeting","office"));
         executeTestWithArrayList();
 
+    }
+
+    @Test
+    public final void testCommandShortcuts() throws Exception {
+
+        Command command;
+
+        System.out.println(HEADER_SHORTCUT_COMMAND);
+
+        // Shortcut 'cp' for complete command
+
+        input = "cp d1";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.add(command.getTaskType());
+        actual.add(String.valueOf(command.getTaskID()));
+        expected = new ArrayList<String>(Arrays.asList("COMPLETE","deadline","1"));
+        executeTestWithArrayList();
+
+        // Shortcut 'q!' for exit command
+
+        input = "q!";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        expected = new ArrayList<String>(Arrays.asList("EXIT"));
+        executeTestWithArrayList();
+
+        // Shortcut 'sh' for search command
+
+        input = "sh meeting office";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.addAll(command.getSearchKeyword());
+        expected = new ArrayList<String>(Arrays.asList("SEARCH","meeting","office"));
+        executeTestWithArrayList();
+
+        // Using 'de' for delete command
+
+        input = "de e2";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.add(command.getTaskType());
+        actual.add(String.valueOf(command.getTaskID()));
+        expected = new ArrayList<String>(Arrays.asList("DELETE","event","2"));
+        executeTestWithArrayList();
+
+        // Shortcut 'sfp' for set filepath command
+
+        input = "sfp C:\\Users\\Jim\\Dropbox\\SmarTask\\Work\\worktask.txt";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.add(command.getFilePath());
+        expected = new ArrayList<String>(Arrays.asList("SETFILEPATH",
+                "C:\\Users\\Jim\\Dropbox\\SmarTask\\Work\\worktask.txt"));
+        executeTestWithArrayList();
+
+        // Shortcut 'rp' for repeating command
+
+        input = "rp submit weekly report -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.add(command.getTaskDescription());
+        actual.add(command.getDateAdded().toString());
+        actual.add(command.getRepeatStartTime());
+        actual.add(command.getRepeatEndTime());
+        actual.add(command.getWeekInterval());
+        actual.add(command.getRepeatUntil().toString());
+        actual.add(command.getStopRepeatInString());
+        expected = new ArrayList<String>(Arrays.asList("REPEAT","submit weekly report",
+                "Fri Dec 25 00:00:00 SGT 2015", "Fri Dec 25 09:00:00 SGT 2015", 
+                "Fri Dec 25 11:00:00 SGT 2015", "2", "Fri Dec 25 00:00:00 SGT 2015",
+                "Sun Dec 12 00:00:00 SGT 9999"));
+        executeTestWithArrayList();
+
+        // Shortcut 'ud' to update
+
+        input = "ud e2 Meeting with CEO -on 26 Nov 5 to 6pm";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.add(command.getTaskType());
+        actual.add(String.valueOf(command.getTaskID()));
+        actual.add(command.getTaskDescription());
+        actual.add(command.getTaskEventStart());
+        actual.add(command.getTaskEventEnd());
+        expected = new ArrayList<String>(Arrays.asList("UPDATE","event", "2", 
+                "Meeting with CEO", "Thu Nov 26 17:00:00 SGT 2015", 
+                "Thu Nov 26 18:00:00 SGT 2015"));
+        executeTestWithArrayList();
+
+        // Shortcut 'sr' to stop repeat
+
+        input = "sr r2 15 oct";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        actual.add(command.getTaskType());
+        actual.add(String.valueOf(command.getTaskID()));
+        actual.add(command.getStopRepeatInString());
+        expected = new ArrayList<String>(Arrays.asList("STOP_REPEAT","repeat", "2", 
+                "Thu Oct 15 00:00:00 SGT 2015"));
+        executeTestWithArrayList();
+
+        // Shortcut 'vd' to stop repeat
+
+        input = "vd";
+        actual = new ArrayList<String>();
+        command = CommandParser.parse(input);
+        actual.add(command.getCommandType().toString());
+        expected = new ArrayList<String>(Arrays.asList("VIEW"));
+        executeTestWithArrayList();
 
     }
+
 
     @Test
     public final void testSetFilePathCommand() throws Exception {
@@ -1033,7 +1160,7 @@ public class CommandParserUnitTest {
         // setfilepath using random string
 
         try {
-            input = "setfilepath abcdefgh asdoaskjdkasld asjdlasldj";
+            input = "sfp abcdefgh asdoaskjdkasld asjdlasldj";
             filePath = CommandParser.parse(input);
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
@@ -1482,9 +1609,9 @@ public class CommandParserUnitTest {
             expectedMsg = INVALID_FORMAT;
             executeTestWithString();
         }
-        
+
         // Wrong keywords
-        
+
         try {
             input = "update r4 email weekly report -onnnnnnn mon, sun -every 1 month email daily report "
                     + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
@@ -1495,7 +1622,7 @@ public class CommandParserUnitTest {
             expectedMsg = INVALID_FORMAT;
             executeTestWithString();
         }
-        
+
         try {
             input = "update r4 email weekly report -on mon, sun -every 1 month email daily report "
                     + "-starting 15 Nov 5 to 6 pm untilwwwwww 15 Dec 2016 ";
@@ -1563,9 +1690,9 @@ public class CommandParserUnitTest {
             expectedMsg = INVALID_FORMAT;
             executeTestWithString();
         }
-        
+
         // Random String in attributes
-        
+
         try {
             input = "update r4 email monthly report -every 1 afsasfsfafs "
                     + "-start 15 Nov 5 to 6 pm -until 15 Dec 2016 ";
@@ -1576,7 +1703,7 @@ public class CommandParserUnitTest {
             expectedMsg = INVALID_FORMAT;
             executeTestWithString();
         }
-        
+
         try {
             input = "update r4 email monthly report -every adssadsadasd "
                     + "-start asdadasdasd -until asdasdasd ";
@@ -1587,7 +1714,7 @@ public class CommandParserUnitTest {
             expectedMsg = INVALID_FORMAT;
             executeTestWithString();
         }
-        
+
         try {
             input = "update r4 -every adssadsadasd -start asdadasdasd ";
             repeatMonth = CommandParser.parse(input);

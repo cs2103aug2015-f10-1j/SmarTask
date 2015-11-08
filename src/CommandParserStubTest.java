@@ -2,7 +2,7 @@
  * CommandParserStubTest checks if the CommandParser returns the correct Command
  * object by using stubs command.
  * 
- * @author A0108235M
+ * @@author A0108235M
  */
 
 public class CommandParserStubTest {

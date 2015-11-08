@@ -11,7 +11,7 @@ import com.joestelmach.natty.*;
  * appropriate fields initialised. For example, the "add" command requires the
  * taskDetail and taskTime field to be initialised.
  * 
- * @author A0108235M-Sebastian Quek (Collate Project)
+ * @@author A0108235M-Sebastian Quek (Collate Project)
  */
 
 public class CommandParser {
@@ -73,7 +73,7 @@ public class CommandParser {
     private static Command initCommand(String userInput) throws Exception {
         Command command;
         ArrayList<String> parameters = getUserCommandAndArguments(userInput);
-        String userCommand = getUserCommand(parameters);
+        String userCommand = checkUserCommandShortcut(getUserCommand(parameters));
         ArrayList<String> arguments = getUserArguments(parameters);
 
         switch (userCommand.toLowerCase()) {
@@ -134,11 +134,14 @@ public class CommandParser {
         return command;
     }
 
-    /******************************************************************/
-    /******************************************************************
-     Main command methods
-     ******************************************************************/
-    /******************************************************************/
+
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+    // Main command methods
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
 
     // ================================================================
     // Create add command method
@@ -316,11 +319,15 @@ public class CommandParser {
         return new Command(Command.Type.EXIT);
     }
 
-    /******************************************************************/
-    /******************************************************************
-     Methods to set command attributes
-     ******************************************************************/
-    /******************************************************************/
+
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+    // Methods to set command attributes
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+
 
     // ================================================================
     // Set add command attributes
@@ -503,7 +510,7 @@ public class CommandParser {
         ArrayList<String> list = new ArrayList<String>();
         list.add(param);
         checkKeywordUsed(list);
-        
+
         if (isNotDeadlineDescription(arguments)) {
             addToParserLogger(MSG_INVALID_FORMAT);
             throw new Exception(MSG_INVALID_FORMAT);
@@ -655,13 +662,12 @@ public class CommandParser {
         if(checkFilePath(line)) {
             command.setFilePath(line);
         } else {
-            System.out.println(line);
             addToParserLogger(MSG_INVALID_FORMAT);
             throw new Exception(MSG_INVALID_FORMAT);
         };                
-        
+
     }
-    
+
     private static boolean checkFilePath(String line) {
         return Pattern.compile("([a-zA-Z]:)?(\\\\[a-zA-Z0-9._-]+)+\\\\?[a-zA-Z0-9._-].(?i)(txt)").matcher(line).find();
     }
@@ -983,11 +989,66 @@ public class CommandParser {
         }
     }
 
-    /******************************************************************/
-    /******************************************************************
-     Other auxiliary methods
-     ******************************************************************/
-    /******************************************************************/
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+    // Other auxiliary methods
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+
+    private static String checkUserCommandShortcut(String userCommand) {
+        String actualCommand;
+
+        switch (userCommand.toLowerCase()) {
+            case "ad" :
+                actualCommand = USER_COMMAND_ADD;
+                break;
+
+            case "de" :
+                actualCommand = USER_COMMAND_DELETE;
+                break;
+
+            case "ud" :
+                actualCommand = USER_COMMAND_UPDATE;
+                break;
+
+            case "cp" :
+                actualCommand = USER_COMMAND_COMPLETE;
+                break;
+
+            case "sh" :
+                actualCommand = USER_COMMAND_SEARCH;
+                break;
+
+            case "rp" :
+                actualCommand = USER_COMMAND_REPEAT;
+                break;
+
+            case "sr" :
+                actualCommand = USER_COMMAND_STOP_REPEAT;
+                break;
+
+            case "sfp" :
+                actualCommand = USER_COMMAND_SET_FILEPATH;
+                break;
+
+            case "vd" :
+                actualCommand = USER_COMMAND_VIEW;
+                break;
+
+            case "q!" :
+                actualCommand = USER_COMMAND_EXIT;
+                break;
+
+            default:
+                actualCommand = userCommand;
+                break;
+        }
+
+        return actualCommand;
+
+    }
 
     private static ArrayList<String> getUserCommandAndArguments(String userInput) throws Exception {
         ArrayList<String> parameters = splitStringIntoTwoWithWhiteSpaces(userInput);

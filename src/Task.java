@@ -8,13 +8,13 @@ import java.util.Date;
 /**
  * Task is an object class that contains all attributes of a task
  * 
- * @author a0108235m
+ * @@author A0108235M
  */
 
 public class Task {
 
     public enum Type {
-	EVENT, DEADLINE, FLOATING, REPEAT
+        EVENT, DEADLINE, FLOATING, REPEAT
     }
 
     private Type type;
@@ -54,368 +54,368 @@ public class Task {
     }
 
     public Task(Type type, ArrayList<String> attributeList) throws Exception {
-	setType(type);
-	setAttributes(type, attributeList);
+        setType(type);
+        setAttributes(type, attributeList);
     }
 
     public static Type getTypeFromString(String type) {
-	if (type == "floating") {
-	    return Type.FLOATING;
-	} else if (type == "event") {
-	    return Type.EVENT;
-	} else if (type == "deadline") {
-	    return Type.DEADLINE;
-	} else if (type == "repeat") {
-	    return Type.REPEAT;
-	} else {
-	    return null;
-	}
+        if (type == "floating") {
+            return Type.FLOATING;
+        } else if (type == "event") {
+            return Type.EVENT;
+        } else if (type == "deadline") {
+            return Type.DEADLINE;
+        } else if (type == "repeat") {
+            return Type.REPEAT;
+        } else {
+            return null;
+        }
     }
 
     public String getFloatingString() {
-	return this.description + "#" + this.id;
+        return this.description + "#" + this.id;
     }
 
     public String getEventString() {
-	return this.eventStart + "#" + this.eventEnd + "#" + this.description + "#" + this.id;
+        return this.eventStart + "#" + this.eventEnd + "#" + this.description + "#" + this.id;
     }
 
     public String getDeadlineString() {
-	return this.deadline + "#" + this.description + "#" + this.id;
+        return this.deadline + "#" + this.description + "#" + this.id;
     }
 
     public String getRepeatString() {
-	if (this.taskRepeatType.equals("day")) {		
-	    return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Day + "#"
-		    + this.taskRepeatUntil + "#" + this.description + " #" + this.id + "#" + this.stopRepeat.toString().replace("[", "").replace("]","");
-	} else if (this.taskRepeatType.equals("week")) {
-	    return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Week + "#"
-		    + this.convertBooleanDaySelectedToString() + "#" + this.taskRepeatUntil + "#" + this.description + " #" + this.id + " #" + this.stopRepeat.toString().replace("[", "").replace("]","");
-	} else if (this.taskRepeatType.equals("month")) {
-	    return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Month + "#"
-		    + this.taskRepeatUntil + "#" + this.description + " #" + this.id+ " #" + this.stopRepeat.toString().replace("[", "").replace("]","");
-	} else if (this.taskRepeatType.equals("year")) {
-	    return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Year + "#"
-		    + this.taskRepeatUntil + "#" + this.description + " #" + this.id + " #" + this.stopRepeat.toString().replace("[", "").replace("]","");
-	}	    
-	return null;
+        if (this.taskRepeatType.equals("day")) {		
+            return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Day + "#"
+                    + this.taskRepeatUntil + "#" + this.description + " #" + this.id + "#" + this.stopRepeat.toString().replace("[", "").replace("]","");
+        } else if (this.taskRepeatType.equals("week")) {
+            return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Week + "#"
+                    + this.convertBooleanDaySelectedToString() + "#" + this.taskRepeatUntil + "#" + this.description + " #" + this.id + " #" + this.stopRepeat.toString().replace("[", "").replace("]","");
+        } else if (this.taskRepeatType.equals("month")) {
+            return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Month + "#"
+                    + this.taskRepeatUntil + "#" + this.description + " #" + this.id+ " #" + this.stopRepeat.toString().replace("[", "").replace("]","");
+        } else if (this.taskRepeatType.equals("year")) {
+            return this.taskRepeatType + "#" + this.dateAdded + "#" + this.taskRepeatStartTime + "#" + this.taskRepeatEndTime + "#" + this.taskRepeatInterval_Year + "#"
+                    + this.taskRepeatUntil + "#" + this.description + " #" + this.id + " #" + this.stopRepeat.toString().replace("[", "").replace("]","");
+        }	    
+        return null;
     }
 
     private void setAttributes(Type type, ArrayList<String> attributeList) throws Exception {
-	this.type = type;
-	String[] list = null;
+        this.type = type;
+        String[] list = null;
 
-	if (attributeList.size() > 0) {
-	    list = attributeList.get(0).trim().split("#");
-	}
+        if (attributeList.size() > 0) {
+            list = attributeList.get(0).trim().split("#");
+        }
 
-	if (type.equals(Task.Type.EVENT)) {
-	    this.eventStart = list[0];
-	    this.eventEnd = list[1];
-	    this.description = list[2];
-	    this.id = Integer.parseInt(list[3]);
-	    this.isComplete = false;
-	} else if (type.equals(Task.Type.DEADLINE)) {
-	    this.deadline = list[0];
-	    this.description = list[1];
-	    this.id = Integer.parseInt(list[2]);
-	    this.isComplete = false;
-	} else if (type.equals(Task.Type.FLOATING)) {
-	    this.description = list[0];
-	    this.id = Integer.parseInt(list[1]);
-	    this.isComplete = false;
-	} else if (type.equals(Task.Type.REPEAT)) {
-	    try {
-		if (list[0].equals("day")) {
-		    this.taskRepeatType = list[0];
-		    setDateAdded(list[1]);
-		    this.taskRepeatStartTime = list[2];
-		    this.taskRepeatEndTime = list[3];
-		    this.taskRepeatInterval_Day = list[4];
-		    setTaskRepeatUntil(list[5]);
-		    this.description = list[6];
-		    this.id = Integer.parseInt(list[7]);
+        if (type.equals(Task.Type.EVENT)) {
+            this.eventStart = list[0];
+            this.eventEnd = list[1];
+            this.description = list[2];
+            this.id = Integer.parseInt(list[3]);
+            this.isComplete = false;
+        } else if (type.equals(Task.Type.DEADLINE)) {
+            this.deadline = list[0];
+            this.description = list[1];
+            this.id = Integer.parseInt(list[2]);
+            this.isComplete = false;
+        } else if (type.equals(Task.Type.FLOATING)) {
+            this.description = list[0];
+            this.id = Integer.parseInt(list[1]);
+            this.isComplete = false;
+        } else if (type.equals(Task.Type.REPEAT)) {
+            try {
+                if (list[0].equals("day")) {
+                    this.taskRepeatType = list[0];
+                    setDateAdded(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.taskRepeatInterval_Day = list[4];
+                    setTaskRepeatUntil(list[5]);
+                    this.description = list[6];
+                    this.id = Integer.parseInt(list[7]);
 
-		    String param = list[8];
-		    if(param.contains("@")) {
-			setStopRepeat(list[8]);
-		    } else {
-			setDefaultStopRepeat(list[8]);
-		    }
+                    String param = list[8];
+                    if(param.contains("@")) {
+                        setStopRepeat(list[8]);
+                    } else {
+                        setDefaultStopRepeat(list[8]);
+                    }
 
-		    this.isComplete = false;
-		} else if (list[0].equals("year")) {
-		    this.taskRepeatType = list[0];
-		    setDateAdded(list[1]);
-		    this.taskRepeatStartTime = list[2];
-		    this.taskRepeatEndTime = list[3];
-		    this.taskRepeatInterval_Year = list[4];
-		    setTaskRepeatUntil(list[5]);
-		    this.description = list[6];
-		    this.id = Integer.parseInt(list[7]);
-		    String param = list[8];
-		    if(param.contains("@")) {
-			setStopRepeat(list[8]);
-		    } else {
-			setDefaultStopRepeat(list[8]);
-		    }
-		    this.isComplete = false;
-		} else if (list[0].equals("week")) {
-		    this.taskRepeatType = list[0];
-		    setDateAdded(list[1]);
-		    this.taskRepeatStartTime = list[2];
-		    this.taskRepeatEndTime = list[3];
-		    this.setTaskRepeatInterval_Week(list[4]);
-		    setIsDaySelected(list[5]); // list[5] contains selected day index {0,1,2...6}
-		    setTaskRepeatUntil(list[6]);
-		    this.description = list[7];
-		    this.id = Integer.parseInt(list[8]);
-		    String param = list[9];
-		    if(param.contains("@")) {
-			setStopRepeat(param);
-		    } else {
-			setDefaultStopRepeat(param);
-		    }
-		    this.isComplete = false;
-		} else if (list[0].equals("month")) {
-		    this.taskRepeatType = list[0];
-		    setDateAdded(list[1]);
-		    this.taskRepeatStartTime = list[2];
-		    this.taskRepeatEndTime = list[3];
-		    this.setTaskRepeatInterval_Month(list[4]);
-		    setTaskRepeatUntil(list[5]);
-		    this.description = list[6];
-		    this.id = Integer.parseInt(list[7]);
-		    String param = list[8];
-		    if(param.contains("@")) {
-			setStopRepeat(list[8]);
-		    } else {
-			setDefaultStopRepeat(list[8]);
-		    }
-		    this.isComplete = false;
-		}
-	    } catch (ParseException e) {
-		throw new Exception("invalid format");
-	    }
-	}
+                    this.isComplete = false;
+                } else if (list[0].equals("year")) {
+                    this.taskRepeatType = list[0];
+                    setDateAdded(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.taskRepeatInterval_Year = list[4];
+                    setTaskRepeatUntil(list[5]);
+                    this.description = list[6];
+                    this.id = Integer.parseInt(list[7]);
+                    String param = list[8];
+                    if(param.contains("@")) {
+                        setStopRepeat(list[8]);
+                    } else {
+                        setDefaultStopRepeat(list[8]);
+                    }
+                    this.isComplete = false;
+                } else if (list[0].equals("week")) {
+                    this.taskRepeatType = list[0];
+                    setDateAdded(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.setTaskRepeatInterval_Week(list[4]);
+                    setIsDaySelected(list[5]); // list[5] contains selected day index {0,1,2...6}
+                    setTaskRepeatUntil(list[6]);
+                    this.description = list[7];
+                    this.id = Integer.parseInt(list[8]);
+                    String param = list[9];
+                    if(param.contains("@")) {
+                        setStopRepeat(param);
+                    } else {
+                        setDefaultStopRepeat(param);
+                    }
+                    this.isComplete = false;
+                } else if (list[0].equals("month")) {
+                    this.taskRepeatType = list[0];
+                    setDateAdded(list[1]);
+                    this.taskRepeatStartTime = list[2];
+                    this.taskRepeatEndTime = list[3];
+                    this.setTaskRepeatInterval_Month(list[4]);
+                    setTaskRepeatUntil(list[5]);
+                    this.description = list[6];
+                    this.id = Integer.parseInt(list[7]);
+                    String param = list[8];
+                    if(param.contains("@")) {
+                        setStopRepeat(list[8]);
+                    } else {
+                        setDefaultStopRepeat(list[8]);
+                    }
+                    this.isComplete = false;
+                }
+            } catch (ParseException e) {
+                throw new Exception("invalid format");
+            }
+        }
     }
 
     // ================================================================
     // Getter methods to get attributes of Task object
     // ================================================================
     public Type getType() {
-	return type;
+        return type;
     }
 
     public int getID() {
-	return id;
+        return id;
     }
 
     public String getDescription() {
-	return description;
+        return description;
     }
 
     public String getDeadline() {
-	return deadline;
+        return deadline;
     }
 
     public String getEventStart() {
-	return eventStart;
+        return eventStart;
     }
 
     public String getEventEnd() {
-	return eventEnd;
+        return eventEnd;
     }
 
     public String getTimeAdded() {
-	return timeAdded;
+        return timeAdded;
     }
 
     public Boolean getIsComplete() {
-	return isComplete;
+        return isComplete;
     }
 
     // ================================================================
     // Setter methods to initialize Task object
     // ================================================================
     public void setType(Type type) {
-	this.type = type;
+        this.type = type;
     }
 
     public void setID(int id) {
-	this.id = id;
+        this.id = id;
     }
 
     public void setDescription(String description) {
-	this.description = description;
+        this.description = description;
     }
 
     public void setDeadline(String deadline) {
-	this.deadline = deadline;
+        this.deadline = deadline;
     }
 
     public void setEventStart(String eventStart) {
-	this.eventStart = eventStart;
+        this.eventStart = eventStart;
     }
 
     public void setEventEnd(String eventEnd) {
-	this.eventEnd = eventEnd;
+        this.eventEnd = eventEnd;
     }
 
     public void setTimeAdded(String timeAdded) {
-	this.timeAdded = timeAdded;
+        this.timeAdded = timeAdded;
     }
 
     public void setIsComplete(Boolean bo) {
-	this.isComplete = bo;
+        this.isComplete = bo;
     }
 
     public String getTaskRepeatType() {
-	return taskRepeatType;
+        return taskRepeatType;
     }
 
     public void setTaskRepeatType(String taskRepeatType) {
-	this.taskRepeatType = taskRepeatType;
+        this.taskRepeatType = taskRepeatType;
     }
 
     public Date getTaskRepeatUntil() {
-	return taskRepeatUntil;
+        return taskRepeatUntil;
     }
 
     public void setTaskRepeatUntil(String taskRepeatUntil) throws ParseException {
-	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-	Date date = sdf.parse(taskRepeatUntil);
-	this.taskRepeatUntil = date;
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date = sdf.parse(taskRepeatUntil);
+        this.taskRepeatUntil = date;
     }
 
     public String getTaskNextOccurrence() {
-	return taskNextOccurrence;
+        return taskNextOccurrence;
     }
 
     public void setTaskNextOccurrence(String taskNextOccurrence) {
-	this.taskNextOccurrence = taskNextOccurrence;
+        this.taskNextOccurrence = taskNextOccurrence;
     }
 
     public String getTaskRepeatInterval_Day() {
-	return taskRepeatInterval_Day;
+        return taskRepeatInterval_Day;
     }
 
     public void setTaskRepeatInterval_Day(String taskRepeatInterval_Day) {
-	this.taskRepeatInterval_Day = taskRepeatInterval_Day;
+        this.taskRepeatInterval_Day = taskRepeatInterval_Day;
     }
 
     public String getTaskRepeatInterval_Year() {
-	return taskRepeatInterval_Year;
+        return taskRepeatInterval_Year;
     }
 
     public void setTaskRepeatInterval_Year(String taskRepeatInterval_Year) {
-	this.taskRepeatInterval_Year = taskRepeatInterval_Year;
+        this.taskRepeatInterval_Year = taskRepeatInterval_Year;
     }
 
     public String getTaskRepeatStartTime() {
-	return taskRepeatStartTime;
+        return taskRepeatStartTime;
     }
 
     public void setTaskRepeatStartTime(String taskRepeatStartTime) {
-	this.taskRepeatStartTime = taskRepeatStartTime;
+        this.taskRepeatStartTime = taskRepeatStartTime;
     }
 
     public String getTaskRepeatEndTime() {
-	return taskRepeatEndTime;
+        return taskRepeatEndTime;
     }
 
     public void setTaskRepeatEndTime(String taskRepeatEndTime) {
-	this.taskRepeatEndTime = taskRepeatEndTime;
+        this.taskRepeatEndTime = taskRepeatEndTime;
     }
 
     public Date getDateAdded() {
-	return dateAdded;
+        return dateAdded;
     }
 
     public void setDateAdded(String dateAdded) throws ParseException {
-	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-	Date date = sdf.parse(dateAdded);
-	this.dateAdded = date;
+        DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date = sdf.parse(dateAdded);
+        this.dateAdded = date;
     }
 
     public String getTaskRepeatInterval_Week() {
-	return taskRepeatInterval_Week;
+        return taskRepeatInterval_Week;
     }
 
     public void setTaskRepeatInterval_Week(String taskRepeatInterval_Week) {
-	this.taskRepeatInterval_Week = taskRepeatInterval_Week;
+        this.taskRepeatInterval_Week = taskRepeatInterval_Week;
     }
 
     public String getTaskRepeatInterval_Month() {
-	return taskRepeatInterval_Month;
+        return taskRepeatInterval_Month;
     }
 
     public void setTaskRepeatInterval_Month(String taskRepeatInterval_Month) {
-	this.taskRepeatInterval_Month = taskRepeatInterval_Month;
+        this.taskRepeatInterval_Month = taskRepeatInterval_Month;
     }
 
     public Boolean[] getIsDaySelected() {
-	return isDaySelected;
+        return isDaySelected;
     }
 
     public void setIsDaySelected(String list) {
-	isDaySelected = new Boolean[8];
-	Arrays.fill(isDaySelected, false);
-	String[] days = list.split(" ");
-	this.isDaySelected[0] = null;
+        isDaySelected = new Boolean[8];
+        Arrays.fill(isDaySelected, false);
+        String[] days = list.split(" ");
+        this.isDaySelected[0] = null;
 
-	for (int i = 0; i < days.length; i++) {
-	    this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
-	}
+        for (int i = 0; i < days.length; i++) {
+            this.isDaySelected[Integer.parseInt(days[i].trim())] = true;
+        }
     }
 
     public String getStopRepeatInString() {
-	return stopRepeatInString;
+        return stopRepeatInString;
     }
 
     public void setStopRepeatInString(String stopRepeatInString) {
-	this.stopRepeatInString = stopRepeatInString;
+        this.stopRepeatInString = stopRepeatInString;
     }
 
     public ArrayList<Date> getStopRepeat() {
-	return stopRepeat;
+        return stopRepeat;
     }
 
     public void setStopRepeat(String input) throws ParseException {
-	String[] dateArr = input.split("@");
-	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-	Date date;
-	this.stopRepeat = new ArrayList<Date>();
+        String[] dateArr = input.split("@");
+        DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        Date date;
+        this.stopRepeat = new ArrayList<Date>();
 
-	for (int i = 0; i < dateArr.length; i++) {
-	    date = sdf.parse(dateArr[i]);
-	    this.stopRepeat.add(date);
-	}
+        for (int i = 0; i < dateArr.length; i++) {
+            date = sdf.parse(dateArr[i]);
+            this.stopRepeat.add(date);
+        }
     }
 
     public void setDefaultStopRepeat(String input) throws ParseException {
-	DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-	this.stopRepeat = new ArrayList<Date>();
-	if (input.contains(",")) {
-	    String[] param = input.split(",");
-	    for(int i =0; i <param.length; i++) {
-		Date date = sdf.parse(param[i].trim());
-		this.stopRepeat.add(date);
-	    }
-	} else {
-	    Date date = sdf.parse(input);
-	    this.stopRepeat.add(date);
-	}
+        DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+        this.stopRepeat = new ArrayList<Date>();
+        if (input.contains(",")) {
+            String[] param = input.split(",");
+            for(int i =0; i <param.length; i++) {
+                Date date = sdf.parse(param[i].trim());
+                this.stopRepeat.add(date);
+            }
+        } else {
+            Date date = sdf.parse(input);
+            this.stopRepeat.add(date);
+        }
 
     }
-    
+
     public String convertBooleanDaySelectedToString() {
-	String index = "";
-	for(int i=0; i < this.isDaySelected.length; i++) {
-	    if(this.isDaySelected[i]) {
-		index += i + " ";
-	    }
-	}
-	return index.trim();
+        String index = "";
+        for(int i=0; i < this.isDaySelected.length; i++) {
+            if(this.isDaySelected[i]) {
+                index += i + " ";
+            }
+        }
+        return index.trim();
     }
 }
