@@ -39,7 +39,7 @@ public class GUI extends Application {
 
     private Stage stage;
     private String defaultFileLocation = GUI.class.getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + "storage.txt";
-    private static String filePath = "../main/" + "filepath.txt";
+    private static String filePath = "../SmarTask/" + "filepath.txt";
     
     public static void main(String[] args) {
         launch(args);
