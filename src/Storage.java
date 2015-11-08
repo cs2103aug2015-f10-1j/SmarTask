@@ -34,7 +34,19 @@ public class Storage {
     public Storage() {
         System.out.println("Storage initialized");
         gson = new Gson();
-        pathFile = new File(DEFAULT_PATHFILENAME);
+        resetStorageLocation();
+    }
+
+    public static Storage getInstance() {
+        if (taskOrganiser == null) {
+            taskOrganiser = new Storage();
+        }
+        
+        return taskOrganiser;
+    }
+
+    private void resetStorageLocation() {
+    	pathFile = new File(DEFAULT_PATHFILENAME);
         checkPathFile(pathFile);
  
         if (retrieveSavePath() == null) {
@@ -46,15 +58,7 @@ public class Storage {
         	taskFile = new File(retrieveSavePath());
         }
     }
-
-    public static Storage getInstance() {
-        if (taskOrganiser == null) {
-            taskOrganiser = new Storage();
-        }
-        
-        return taskOrganiser;
-    }
-
+    
     private void checkPathFile(File taskFile) {
         try {
             if (!taskFile.exists()) {
@@ -162,6 +166,7 @@ public class Storage {
             closeReader();
             
             if (taskFile.renameTo(new File(savePath))) {
+            	resetStorageLocation();
                 System.out.println(savePath);
                 System.out.println("Moved successful!");
             } else {
