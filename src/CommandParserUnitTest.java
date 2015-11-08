@@ -50,8 +50,7 @@ public class CommandParserUnitTest {
     private static final String HEADER_ERRORS_UPDATE_WEEK_PARAM = "\n----Error: Week update----";
     private static final String HEADER_ERRORS_UPDATE_MONTH_PARAM = "\n----Error: Month update----";
     private static final String HEADER_ERRORS_UPDATE_YEAR_PARAM = "\n----Error: Year update----";
-
-
+    
     String input;
     public ArrayList<String> actual; 
     public ArrayList<String> expected;
@@ -276,15 +275,6 @@ public class CommandParserUnitTest {
         actual.add(command.getTaskType());
         actual.add(String.valueOf(command.getTaskID()));
         expected = new ArrayList<String>(Arrays.asList("COMPLETE","deadline","1"));
-        executeTestWithArrayList();
-
-        // Shortcut 'q!' for exit command
-
-        input = "q!";
-        actual = new ArrayList<String>();
-        command = CommandParser.parse(input);
-        actual.add(command.getCommandType().toString());
-        expected = new ArrayList<String>(Arrays.asList("EXIT"));
         executeTestWithArrayList();
 
         // Shortcut 'sh' for search command
@@ -947,6 +937,10 @@ public class CommandParserUnitTest {
         expected = new ArrayList<String>(Arrays.asList("UPDATE","repeat", null, "2",null,
                 null, null, null, null, "3 5", null, null));
         executeTestWithArrayList();
+
+
+
+        input = "update r2 email weekly report -st 25 Dec 9-11am -ev 2 week -on sun, sat, wed -ut 25 Dec";
 
     }
 

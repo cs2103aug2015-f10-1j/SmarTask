@@ -11,24 +11,29 @@ import java.util.Stack;
 
 public class CommandHistory {
 
-    private final String MSG_UNDO_FAIL = "cannot undo!!!";
-    private final String MSG_REDO_FAIL = "cannot redo!!!";
+    private static final int SIZE_1 = 1;
+    private static final String MSG_UNDO_FAIL = "Fail to undo.";
+    private static final String MSG_REDO_FAIL = "Fail to redo.";
 
-    public Stack<ArrayList<Task>> undoStack;
-    public Stack<ArrayList<Task>> redoStack;
+    public Stack <ArrayList<Task>> undoStack;
+    public Stack <ArrayList<Task>> redoStack;
 
     public CommandHistory(ArrayList<Task> storedTask) {
-        undoStack = new Stack<ArrayList<Task>>();
+        undoStack = new Stack <ArrayList<Task>>();
         undoStack.push(storedTask);
-        redoStack = new Stack<ArrayList<Task>>();
+        redoStack = new Stack <ArrayList<Task>>();
     }
 
     public void addChangeToHistory(ArrayList<Task> storedTask) {
         undoStack.push(storedTask);
     }
 
+    // =========================================================================
+    // Execute undo
+    // =========================================================================
+
     public ArrayList<Task> undo() throws Exception {
-        if (undoStack.empty() || undoStack.peek() == null || undoStack.size() == 1) {
+        if (isInvalidUndoStack()) {
             throw new Exception(MSG_UNDO_FAIL);
         }
 
@@ -41,8 +46,12 @@ public class CommandHistory {
         return undoStack.peek();
     }
 
+    // =========================================================================
+    // Execute redo
+    // =========================================================================
+
     public ArrayList<Task> redo() throws Exception {
-        if (redoStack.empty() || redoStack.peek() == null) {
+        if (isInvalidRedoStack()) {
             throw new Exception(MSG_REDO_FAIL);
         }
 
@@ -54,4 +63,17 @@ public class CommandHistory {
 
         return undoStack.peek();
     }
+
+    // =========================================================================
+    // Auxiliary methods
+    // =========================================================================
+
+    private boolean isInvalidRedoStack() {
+        return redoStack.empty() || redoStack.peek() == null;
+    }
+
+    private boolean isInvalidUndoStack() {
+        return undoStack.empty() || undoStack.peek() == null || undoStack.size() == SIZE_1;
+    }
+
 }
