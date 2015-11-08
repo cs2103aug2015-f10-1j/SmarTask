@@ -43,7 +43,7 @@ public class Storage {
             checkPathFile(taskFile);
         } else {
         	System.out.println("The save path retrieved from path file is not null, task file is created in a set location");
-        	taskFile = new File(retrieveSavePath() + File.separator + DEFAULT_FILENAME);
+        	taskFile = new File(retrieveSavePath());
         }
     }
 
