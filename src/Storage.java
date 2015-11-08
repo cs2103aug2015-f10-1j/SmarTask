@@ -34,17 +34,7 @@ public class Storage {
     public Storage() {
         System.out.println("Storage initialized");
         gson = new Gson();
-        pathFile = new File(DEFAULT_PATHFILENAME);
-        checkPathFile(pathFile);
- 
-        if (retrieveSavePath() == null) {
-            System.out.println("The save path retrieved from path file is null, task file is created in main folder");
-            taskFile = new File(DEFAULT_PATH + File.separator + DEFAULT_FILENAME);
-            checkPathFile(taskFile);
-        } else {
-        	System.out.println("The save path retrieved from path file is not null, task file is created in a set location");
-        	taskFile = new File(retrieveSavePath() + File.separator + DEFAULT_FILENAME);
-        }
+        resetStorageLocation();
     }
 
     public static Storage getInstance() {
@@ -55,6 +45,20 @@ public class Storage {
         return taskOrganiser;
     }
 
+    private void resetStorageLocation() {
+    	pathFile = new File(DEFAULT_PATHFILENAME);
+        checkPathFile(pathFile);
+ 
+        if (retrieveSavePath() == null) {
+            System.out.println("The save path retrieved from path file is null, task file is created in main folder");
+            taskFile = new File(DEFAULT_PATH + File.separator + DEFAULT_FILENAME);
+            checkPathFile(taskFile);
+        } else {
+        	System.out.println("The save path retrieved from path file is not null, task file is created in a set location");
+        	taskFile = new File(retrieveSavePath());
+        }
+    }
+    
     private void checkPathFile(File taskFile) {
         try {
             if (!taskFile.exists()) {
@@ -162,6 +166,7 @@ public class Storage {
             closeReader();
             
             if (taskFile.renameTo(new File(savePath))) {
+            	resetStorageLocation();
                 System.out.println(savePath);
                 System.out.println("Moved successful!");
             } else {

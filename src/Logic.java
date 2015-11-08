@@ -54,12 +54,12 @@ public class Logic {
     private static final String WEEK_REC = "week";
     private static final String MONTH_REC = "month";
     private static final String YEAR_REC = "year";
-    private static final String STOP_REC = "stop";
 
     private static int taskCode;
     private static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
     private static Date currentDateAndTime;
     private static Date currentDate;
+    private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
 
  // ================================================================
     // "executeCommand" direct the command to method
@@ -127,248 +127,18 @@ public class Logic {
 		msgLogger.add(e.getMessage());
 	    }
 	}
-    }
-
-    private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) throws ParseException {
-	ArrayList<String> list = new ArrayList<String>();
-	Task task = null;
-	initDate();
-
-	for (int i = 0; i < taskStored.size(); i++) {
-	    if (taskStored.get(i).getType().equals(Task.getTypeFromString(type))
-		    && taskStored.get(i).getIsComplete() == false) {
-		task = taskStored.get(i);
-		if (!isOverdue(task)) {
-		    if (type.equals(FLOATING_TASK)) {
-			list.add(taskStored.get(i).getFloatingString());
-		    } else if (type.equals(EVENT_TASK)) {
-			    list.add(taskStored.get(i).getEventString());
-		    } else if (type.equals(DEADLINE_TASK)) {
-			list.add(taskStored.get(i).getDeadlineString());
-		    } else if (type.equals(RECURRING_TASK)) {
-			if (!isStop(task)) {
-			    if (compareDate(task)) {
-				list.add(taskStored.get(i).getRepeatString());
-			    }
-			}
-		    }
-		}
-	    }
-	}
-	return list;
-    }
-
-    // Check whether the recurring task need to stop today
-    private static boolean isStop(Task task) {
-	boolean boo = false;
-	ArrayList<Date> stopDate = new ArrayList<Date>();
-	stopDate = task.getStopRepeat();
-
-	Calendar calCur = Calendar.getInstance();
-	calCur.setTime(currentDateAndTime);
-	int monthCur = calCur.get(Calendar.MONTH);
-	int dayCur = calCur.get(Calendar.DAY_OF_MONTH);
-
-	for (int i = 0; i < stopDate.size(); i++) {
-	    Calendar calTask = Calendar.getInstance();
-	    calTask.setTime(stopDate.get(i));
-	    int monthForTask = calTask.get(Calendar.MONTH);
-	    int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
-
-	    if (stopDate.get(i).before(currentDate)) {
-		stopDate.remove(i);
-		task.getStopRepeat().remove(i);
-	    }
-
-	    if (monthForTask == monthCur && dayForTask == dayCur) {
-		boo = true;
-		break;
-	    }
-	}
-	return boo;
-    }
-
-    // Check whether the task is overdue
-    private static boolean isOverdue(Task task) throws ParseException {
-	boolean isOver = false;
-	initDate();
-
-	if (task.getType().equals(Task.Type.FLOATING)) {
-	} else if (task.getType().equals(Task.Type.EVENT)) {
-	    Date date = convertStringToDate(task.getEventEnd());
-	    if (date.before(currentDateAndTime)) {
-		isOver = true;
-	    }
-	} else if (task.getType().equals(Task.Type.DEADLINE)) {
-	    Date date = convertStringToDate(task.getDeadline());
-	    if (date.before(currentDateAndTime)) {
-		isOver = true;
-	    }
-	} else if (task.getType().equals(Task.Type.REPEAT)) {
-	}
-
-	return isOver;
-    }
-
-    private static Date convertStringToDate(String dateStr) throws ParseException {
-	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-	Date date = sdf.parse(dateStr);
-	return date;
-    }
-
-    private static boolean compareDate(Task task) {
-	boolean isToday = false;
-	if (task.getTaskRepeatType().equals(DAY_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (getDifferenceDays(task.getDateAdded(), currentDateAndTime)
-			% Integer.parseInt(task.getTaskRepeatInterval_Day()) == 0) {
-		    isToday = true;
-		}
-	    }
-	} else if (task.getTaskRepeatType().equals(WEEK_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (getWeeksBetween(task.getDateAdded(), currentDateAndTime)
-			% Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0) {
-		    if (isSameDay(task)) {
-			isToday = true;
-		    }
-		}
-	    }
-	} else if (task.getTaskRepeatType().equals(MONTH_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (isNextMonth(task)) {
-		    isToday = true;
-		}
-	    }
-	} else if (task.getTaskRepeatType().equals(YEAR_REC)) {
-	    if (task.getTaskRepeatUntil().after(currentDateAndTime)) {
-		if (getYearBetweenDates(task.getDateAdded(), currentDateAndTime) > 0) {
-		    isToday = true;
-		}
-	    }
-	}
-
-	return isToday;
-    }
-
-    // Check the month recurring task
-    private static boolean isNextMonth(Task task) {
-	boolean boo = false;
-	Calendar calTask = Calendar.getInstance();
-	calTask.setTime(task.getDateAdded());
-	int monthForTask = calTask.get(Calendar.MONTH);
-	int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
-	Calendar calCur = Calendar.getInstance();
-	calCur.setTime(currentDateAndTime);
-	int monthCur = calCur.get(Calendar.MONTH);
-	int dayCur = calCur.get(Calendar.DAY_OF_MONTH);
-
-	if ((Math.abs(monthForTask - monthCur) % Integer.parseInt(task.getTaskRepeatInterval_Month())) == 0) {
-	    if (dayForTask == dayCur) {
-		boo = true;
-	    }
-	}
-
-	return boo;
-    }
-
-    // Check the date
-    private static boolean isSameDay(Task task) {
-	boolean boo = false;
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(currentDateAndTime);
-	int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-
-	if (task.getIsDaySelected()[dayOfWeek] == true) {
-	    boo = true;
-	}
-
-	return boo;
-    }
-
-    // Get the week difference between two dates
-    private static int getWeeksBetween(Date a, Date b) {
-	if (b.before(a)) {
-	    return -getWeeksBetween(b, a);
-	}
-
-	a = resetTime(a);
-	b = resetTime(b);
-	Calendar cal = new GregorianCalendar();
-	cal.setTime(a);
-	int weeks = 0;
-
-	while (cal.getTime().before(b)) {
-	    // add another week
-	    cal.add(Calendar.WEEK_OF_YEAR, 1);
-	    weeks++;
-	}
-	return weeks;
-    }
-
-    private static Date resetTime(Date d) {
-	Calendar cal = new GregorianCalendar();
-	cal.setTime(d);
-	cal.set(Calendar.HOUR_OF_DAY, 0);
-	cal.set(Calendar.MINUTE, 0);
-	cal.set(Calendar.SECOND, 0);
-	cal.set(Calendar.MILLISECOND, 0);
-	return cal.getTime();
-    }
-
-    // Get the year difference between two dates
-    private static int getYearBetweenDates(Date d1, Date d2) {
-	Calendar a = getCalendar(d1);
-	Calendar b = getCalendar(d2);
-	int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
-
-	if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
-	    diff--;
-	}
-
-	return diff;
-    }
-
-    // Convert the date to calendar format
-    public static Calendar getCalendar(Date date) {
-	Calendar cal = Calendar.getInstance(Locale.US);
-	cal.setTime(date);
-	return cal;
-    }
-
-    // Get the number of days different between current date and the recurring task starting date
-    private static int getDifferenceDays(Date d1, Date d2) {
-	int daysDiff = 0;
-	long diff = d1.getTime() - d2.getTime();
-	long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-	daysDiff = (int) diffDays;
-	return daysDiff;
-    }
-
-    // Get the unique task code
-    private static int getID() {
-	DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
-	Calendar cal = Calendar.getInstance();
-	String s = dateFormat.format(cal.getTime());
-	DateFormat dateFormat2 = new SimpleDateFormat("HHmmss");
-	Date date = new Date();
-	String sID = dateFormat2.format(date);
-	int sNum = Integer.parseInt(s);
-	int sIDNum = Integer.parseInt(sID);
-	taskCode = sNum + sIDNum;
-	return taskCode;
-    }
-
-    // Get the current date, time
-    private static void initDate() throws ParseException {
-	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	Calendar cal = Calendar.getInstance();
-	currentDateAndTime = dateFormat.parse(dateFormat.format((cal.getTime())));
-	DateFormat dateFormat2 = new SimpleDateFormat("dd/MM");
-	currentDate = dateFormat2.parse(dateFormat.format(cal.getTime()));
-    }
-
-    // ================================================================
+    }   
+    
+    
+ // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+    // Main command methods
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+    
+ // ================================================================
     // "Add" command methods
     // ================================================================
     private static void addTask(Command command) throws Exception {
@@ -409,91 +179,21 @@ public class Logic {
 	    }
 
 	    Boolean isColl = isCollision(task);
-
+        
 	    if (!isColl) {
 		taskStored.add(task);
-		storage.saveToFile(taskStored);
 		msgLogger.add("add " + command.getTaskDescription() + " successful!");
+		storage.saveToFile(taskStored);
 		history.addChangeToHistory(new ArrayList<Task>(taskStored));
 	    } else {
 		msgLogger.add(MESSAGE_COLLISION_TASK);
-		return;
 	    }
 	} catch (FileNotFoundException e) {
 	    msgLogger.add(e.toString());
 	}
     }
-
-    private static Boolean isCollision(Task task) {
-	Boolean boo = false;
-
-	for (int i = 0; i < taskStored.size(); i++) {
-	    if (taskStored.get(i).getDescription().equals(task.getDescription())) {
-		if (taskStored.get(i).getType().equals(task.getType())) {
-		    if (taskStored.get(i).getType().equals(Task.getTypeFromString(DEADLINE_TASK))) {
-			if (taskStored.get(i).getDeadline().equals(task.getDeadline())) {
-			    boo = true;
-			    break;
-			}
-		    } else if (taskStored.get(i).getType().equals(Task.getTypeFromString(FLOATING_TASK))) {
-			boo = true;
-			break;
-		    } else if (taskStored.get(i).getType().equals(Task.getTypeFromString(EVENT_TASK))) {
-			if (taskStored.get(i).getEventStart().equals(task.getEventStart())
-				&& taskStored.get(i).getEventEnd().equals(task.getEventEnd())) {
-			    boo = true;
-			    break;
-			}
-		    } else {
-			// Handle recurring task
-			String recurringType = task.getTaskRepeatType();
-			if (taskStored.get(i).getTaskRepeatType().equals(recurringType)) {
-			    if (recurringType.equals(DAY_REC)) {
-				if (taskStored.get(i).getTaskRepeatInterval_Day().equals(task.getTaskRepeatInterval_Day())) {
-				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
-					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
-					    boo = true;
-					    break;
-					}
-				    }
-				}
-			    } else if (recurringType.equals(WEEK_REC)) {
-				if (taskStored.get(i).getTaskRepeatInterval_Week().equals(task.getTaskRepeatInterval_Week())) {
-				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
-					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
-					    boo = true;
-					    break;
-					}
-				    }
-				}
-			    } else if (recurringType.equals(MONTH_REC)) {
-				if (taskStored.get(i).getTaskRepeatInterval_Month().equals(task.getTaskRepeatInterval_Month())) {
-				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
-					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
-					    boo = true;
-					    break;
-					}
-				    }
-				}
-			    } else if (recurringType.equals(YEAR_REC)) {
-				if (taskStored.get(i).getTaskRepeatInterval_Year().equals(task.getTaskRepeatInterval_Year())) {
-				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
-					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
-					    boo = true;
-					    break;
-					}
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-	return boo;
-    }
-
-    // ================================================================
+    
+ // ================================================================
     // "Repeat task" command methods
     // ================================================================
     private static void addRepeatTask(Command com) throws Exception {
@@ -568,8 +268,8 @@ public class Logic {
 	}
 
     }
-
-    // ================================================================
+    
+ // ================================================================
     // "search" command methods
     // ================================================================
     private static void searchTask(Command command) throws FileNotFoundException {
@@ -705,7 +405,7 @@ public class Logic {
 		if (taskStored.get(i).getID() == taskCode) {
 		    if (taskType.equals("repeat")) {
 			String stopStr = "";
-			DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+			DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 			if (taskStored.get(i).getStopRepeatInString() != null) {
 			    stopStr = taskStored.get(i).getStopRepeatInString() + "@" + df.format(currentDate);
 			} else {
@@ -747,7 +447,7 @@ public class Logic {
     	
     	for (int i = 0; i < deadline.size(); i++){
     		String [] str = deadline.get(i).split("#");
-    	    SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+    	    SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
     	    SimpleDateFormat getDate = new SimpleDateFormat("MMM dd yyyy");
     	    Date timeDue = df.parse(str[0]);
     	    if (getDate.format(timeDue).equals(getDate.format(currentDateAndTime))){
@@ -756,7 +456,7 @@ public class Logic {
     	}
     	for (int i = 0; i <event.size(); i++){
     		String [] str = event.get(i).split("#");
-    	    SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+    	    SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
     	    SimpleDateFormat getTime = new SimpleDateFormat("MMM dd");
     	    Date timeStart = df.parse(str[0]);
     	    Date timeEnd = df.parse(str[1]);
@@ -893,7 +593,6 @@ public class Logic {
 		    updatedTask += strArr[3] + "#";
 		}		
 
-		//msgLogger.add(repeatType);
 
 		if (repeatType.equals(DAY_REC)) {
 		    if (command.getDayInterval() != null) {
@@ -1108,7 +807,343 @@ public class Logic {
 	    msgLogger.add(e.getMessage());
 	}
     }
+   
+    
+ // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
+    // helping method for main methods of logic 
+    // *************************************************************************
+    // *************************************************************************
+    // *************************************************************************
 
+    private static ArrayList<String> initList(String type, ArrayList<Task> taskStored) throws ParseException {
+	ArrayList<String> list = new ArrayList<String>();
+	Task task = null;
+	initDate();
+
+	for (int i = 0; i < taskStored.size(); i++) {
+	    if (taskStored.get(i).getType().equals(Task.getTypeFromString(type))
+		    && taskStored.get(i).getIsComplete() == false) {
+		task = taskStored.get(i);
+		if (!isOverdue(task)) {
+		    if (type.equals(FLOATING_TASK)) {
+			list.add(taskStored.get(i).getFloatingString());
+		    } else if (type.equals(EVENT_TASK)) {
+			    list.add(taskStored.get(i).getEventString());
+		    } else if (type.equals(DEADLINE_TASK)) {
+			list.add(taskStored.get(i).getDeadlineString());
+		    } else if (type.equals(RECURRING_TASK)) {
+			if (!isStop(task)) {
+			    if (compareDate(task)) {
+				list.add(taskStored.get(i).getRepeatString());
+			    }
+			}
+		    }
+		}
+	    }
+	}
+	return list;
+    }
+
+    // Check whether the recurring task need to stop today
+    private static boolean isStop(Task task) {
+	boolean boo = false;
+	ArrayList<Date> stopDate = new ArrayList<Date>();
+	stopDate = task.getStopRepeat();
+
+	Calendar calCur = Calendar.getInstance();
+	calCur.setTime(currentDateAndTime);
+	int monthCur = calCur.get(Calendar.MONTH);
+	int dayCur = calCur.get(Calendar.DAY_OF_MONTH);
+
+	for (int i = 0; i < stopDate.size(); i++) {
+	    Calendar calTask = Calendar.getInstance();
+	    calTask.setTime(stopDate.get(i));
+	    int monthForTask = calTask.get(Calendar.MONTH);
+	    int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
+
+	    if (stopDate.get(i).before(currentDate)) {
+		stopDate.remove(i);
+		task.getStopRepeat().remove(i);
+	    }
+
+	    if (monthForTask == monthCur && dayForTask == dayCur) {
+		boo = true;
+		break;
+	    }
+	}
+	return boo;
+    }
+
+    // Check whether the task is overdue
+    private static boolean isOverdue(Task task) throws ParseException {
+	boolean isOver = false;
+	initDate();
+
+	if (task.getType().equals(Task.Type.FLOATING)) {
+	} else if (task.getType().equals(Task.Type.EVENT)) {
+	    Date date = convertStringToDate(task.getEventEnd());
+	    if (date.before(currentDateAndTime)) {
+		isOver = true;
+	    }
+	} else if (task.getType().equals(Task.Type.DEADLINE)) {
+	    Date date = convertStringToDate(task.getDeadline());
+	    if (date.before(currentDateAndTime)) {
+		isOver = true;
+	    }
+	} else if (task.getType().equals(Task.Type.REPEAT)) {
+	}
+
+	return isOver;
+    }
+    // convert the string date into a Date type 
+    private static Date convertStringToDate(String dateStr) throws ParseException {
+	SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+	Date date = sdf.parse(dateStr);
+	return date;
+    }
+    // compare the task date with the current date
+    private static boolean compareDate(Task task) {
+	boolean isToday = false;
+	// for daily comparison 
+	if (task.getTaskRepeatType().equals(DAY_REC)) {
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else if (task.getTaskRepeatUntil().after(currentDateAndTime) 
+				   && task.getDateAdded().before(currentDateAndTime)) {
+			if (getDifferenceDays(task.getDateAdded(), currentDateAndTime)
+					% Integer.parseInt(task.getTaskRepeatInterval_Day()) == 0) {
+				isToday = true;
+				}
+		}
+	// for weekly comparison
+	} else if (task.getTaskRepeatType().equals(WEEK_REC)) {
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else if (task.getTaskRepeatUntil().after(currentDateAndTime)
+				&& task.getDateAdded().before(currentDateAndTime)) {
+			if (getWeeksBetween(task.getDateAdded(), currentDateAndTime)
+					% Integer.parseInt(task.getTaskRepeatInterval_Week()) == 0) {
+				if (isSameDay(task)) {
+					isToday = true;
+					}
+				}
+		}
+	// for monthly comparison
+	} else if (task.getTaskRepeatType().equals(MONTH_REC)){
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else if (task.getTaskRepeatUntil().after(currentDateAndTime)
+				&& task.getDateAdded().before(currentDateAndTime)) {
+			if (isNextMonth(task)) {
+				isToday = true;
+				}
+		}
+	// for yearly comparison
+	} else if (task.getTaskRepeatType().equals(YEAR_REC)){
+		if (task.getDateAdded().equals(currentDateAndTime)){
+			isToday = true;
+		} else 
+			if (task.getTaskRepeatUntil().after(currentDateAndTime)
+					&& task.getDateAdded().before(currentDateAndTime)) {
+				if (getYearBetweenDates(task.getDateAdded(), currentDateAndTime) > 0) {
+					isToday = true;
+					}
+				}
+		}
+	return isToday;
+    }
+
+    // Check whether this month should prompt this task
+    private static boolean isNextMonth(Task task) {
+	boolean boo = false;
+	Calendar calTask = Calendar.getInstance();
+	calTask.setTime(task.getDateAdded());
+	int monthForTask = calTask.get(Calendar.MONTH);
+	int dayForTask = calTask.get(Calendar.DAY_OF_MONTH);
+	Calendar calCur = Calendar.getInstance();
+	calCur.setTime(currentDateAndTime);
+	int monthCur = calCur.get(Calendar.MONTH);
+	int dayCur = calCur.get(Calendar.DAY_OF_MONTH);
+
+	if ((Math.abs(monthForTask - monthCur) % Integer.parseInt(task.getTaskRepeatInterval_Month())) == 0) {
+	    if (dayForTask == dayCur) {
+		boo = true;
+	    }
+	}
+
+	return boo;
+    }
+
+    // Check the date with the current day of week
+    private static boolean isSameDay(Task task) {
+	boolean boo = false;
+	Calendar cal = Calendar.getInstance();
+	cal.setTime(currentDateAndTime);
+	int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+	if (task.getIsDaySelected()[dayOfWeek] == true) {
+	    boo = true;
+	}
+
+	return boo;
+    }
+
+    // Get the week difference between two dates
+    private static int getWeeksBetween(Date a, Date b) {
+	if (b.before(a)) {
+	    return -getWeeksBetween(b, a);
+	}
+
+	a = resetTime(a);
+	b = resetTime(b);
+	Calendar cal = new GregorianCalendar();
+	cal.setTime(a);
+	int weeks = 0;
+
+	while (cal.getTime().before(b)) {
+	    // add another week
+	    cal.add(Calendar.WEEK_OF_YEAR, 1);
+	    weeks++;
+	}
+	return weeks;
+    }
+
+    private static Date resetTime(Date d) {
+	Calendar cal = new GregorianCalendar();
+	cal.setTime(d);
+	cal.set(Calendar.HOUR_OF_DAY, 0);
+	cal.set(Calendar.MINUTE, 0);
+	cal.set(Calendar.SECOND, 0);
+	cal.set(Calendar.MILLISECOND, 0);
+	return cal.getTime();
+    }
+
+    // Get the year difference between two dates
+    private static int getYearBetweenDates(Date d1, Date d2) {
+	Calendar a = getCalendar(d1);
+	Calendar b = getCalendar(d2);
+	int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+
+	if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
+	    diff--;
+	}
+
+	return diff;
+    }
+
+    // Convert the date to calendar format
+    public static Calendar getCalendar(Date date) {
+	Calendar cal = Calendar.getInstance(Locale.US);
+	cal.setTime(date);
+	return cal;
+    }
+
+    // Get the number of days different between current date and the recurring task starting date
+    private static int getDifferenceDays(Date d1, Date d2) {
+	int daysDiff = 0;
+	long diff = d1.getTime() - d2.getTime();
+	long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	daysDiff = (int) diffDays;
+	return daysDiff;
+    }
+
+    // Get the unique task code
+    private static int getID() {
+	DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+	Calendar cal = Calendar.getInstance();
+	String s = dateFormat.format(cal.getTime());
+	DateFormat dateFormat2 = new SimpleDateFormat("HHmmss");
+	Date date = new Date();
+	String sID = dateFormat2.format(date);
+	int sNum = Integer.parseInt(s);
+	int sIDNum = Integer.parseInt(sID);
+	taskCode = sNum + sIDNum;
+	return taskCode;
+    }
+
+    // Get the current date, time
+    private static void initDate() throws ParseException {
+	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	Calendar cal = Calendar.getInstance();
+	currentDateAndTime = dateFormat.parse(dateFormat.format((cal.getTime())));
+	DateFormat dateFormat2 = new SimpleDateFormat("dd/MM");
+	currentDate = dateFormat2.parse(dateFormat.format(cal.getTime()));
+    }
+
+    
+    // check whether there is collision task
+    private static Boolean isCollision(Task task) {
+	Boolean boo = false;
+
+	for (int i = 0; i < taskStored.size(); i++) {
+	    if (taskStored.get(i).getDescription().equals(task.getDescription())) {
+		if (taskStored.get(i).getType().equals(task.getType())) {
+		    if (taskStored.get(i).getType().equals(Task.getTypeFromString(DEADLINE_TASK))) {
+			if (taskStored.get(i).getDeadline().equals(task.getDeadline())) {
+			    boo = true;
+			    break;
+			}
+		    } else if (taskStored.get(i).getType().equals(Task.getTypeFromString(FLOATING_TASK))) {
+			boo = true;
+			break;
+		    } else if (taskStored.get(i).getType().equals(Task.getTypeFromString(EVENT_TASK))) {
+			if (taskStored.get(i).getEventStart().equals(task.getEventStart())
+				&& taskStored.get(i).getEventEnd().equals(task.getEventEnd())) {
+			    boo = true;
+			    break;
+			}
+		    } else {
+			// Handle recurring task
+			String recurringType = task.getTaskRepeatType();
+			if (taskStored.get(i).getTaskRepeatType().equals(recurringType)) {
+			    if (recurringType.equals(DAY_REC)) {
+				if (taskStored.get(i).getTaskRepeatInterval_Day().equals(task.getTaskRepeatInterval_Day())) {
+				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
+					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
+					    boo = true;
+					    break;
+					}
+				    }
+				}
+			    } else if (recurringType.equals(WEEK_REC)) {
+				if (taskStored.get(i).getTaskRepeatInterval_Week().equals(task.getTaskRepeatInterval_Week())) {
+				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
+					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
+					    boo = true;
+					    break;
+					}
+				    }
+				}
+			    } else if (recurringType.equals(MONTH_REC)) {
+				if (taskStored.get(i).getTaskRepeatInterval_Month().equals(task.getTaskRepeatInterval_Month())) {
+				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
+					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
+					    boo = true;
+					    break;
+					}
+				    }
+				}
+			    } else if (recurringType.equals(YEAR_REC)) {
+				if (taskStored.get(i).getTaskRepeatInterval_Year().equals(task.getTaskRepeatInterval_Year())) {
+				    if (taskStored.get(i).getTaskRepeatUntil().compareTo(task.getTaskRepeatUntil()) == 0) {
+					if (taskStored.get(i).getDateAdded().compareTo(task.getDateAdded()) == 0) {
+					    boo = true;
+					    break;
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		}
+	    }
+	}
+	return boo;
+    }
+
+    
     // ================================================================
     // Getter methods to retrieve lists for UI
     // ================================================================
@@ -1132,7 +1167,7 @@ public class Logic {
 
 	for (int i = 0; i < event.size(); i++) {
 	    String [] str = event.get(i).split("#");
-	    SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+	    SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
 	    SimpleDateFormat getTime = new SimpleDateFormat("dd MMM, HH:mm");
 	    Date timeStart = df.parse(str[0]);
 	    Date timeEnd = df.parse(str[1]);
@@ -1184,7 +1219,7 @@ public class Logic {
 
 	for (int i = 0; i < repeatedTask.size(); i++) {
 	    String [] str = repeatedTask.get(i).split("#");
-	    messageToPrint += "R" + (i + 1) + ". " +str[6] + " " +str[1] + ", repeat " +str[0]  + "\n";
+	    messageToPrint += "R" + (i + 1) + ". " +str[6] + " " +str[2] + ", repeat every " +str[4]+" "+str[0]  + "\n";
 	}
 
 	return messageToPrint.trim();

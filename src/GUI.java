@@ -32,6 +32,7 @@ public class GUI extends Application {
     private static final String BUTTON_CHOOSELOCATION = "Choose Storage Location";
     private static final String BUTTON_DEFAULTLOCATION = "Use Default Location";
     private static final String COMMAND_FILEPATH = "setfilepath ";
+    private static final String FILE_FILEPATH = ".." + File.separator + "SmarTask" + File.separator + "filepath.txt";
     private static final String FILE_SMARTASKUI = "SmarTaskUI.fxml";
     private static final String MESSAGE_FXMLERROR = "Error! SmarTaskUI.fxml cannot be found!";
     private static final String MESSAGE_FILEPATHERROR = "Error! Filepath.txt cannot be read!";
@@ -39,14 +40,13 @@ public class GUI extends Application {
 
     private Stage stage;
     private String defaultFileLocation = GUI.class.getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + "storage.txt";
-    private static String filePath = "../SmarTask/" + "filepath.txt";
     
     public static void main(String[] args) {
         launch(args);
     }
     
     public void start(Stage primaryStage) {
-        if (checkFile(filePath)) {
+        if (checkFile(FILE_FILEPATH)) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
                 Scene scene = new Scene(root, 700, 800);
