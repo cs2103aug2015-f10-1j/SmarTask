@@ -300,13 +300,13 @@ public class CommandParserUnitTest {
 
         // Shortcut 'sfp' for set filepath command
 
-        input = "sfp C:/Users/Jim/Dropbox/worktask.txt";
+        input = "sfp C:/Users/Jim/Dropbox/SmarTask/worktask.txt";
         actual = new ArrayList<String>();
         command = CommandParser.parse(input);
         actual.add(command.getCommandType().toString());
         actual.add(command.getFilePath());
         expected = new ArrayList<String>(Arrays.asList("SETFILEPATH",
-                "C:/Users/Jim/Dropbox/worktask.txt"));
+                "C:/Users/Jim/Dropbox/SmarTask/worktask.txt"));
         executeTestWithArrayList();
 
         // Shortcut 'rp' for repeating command
