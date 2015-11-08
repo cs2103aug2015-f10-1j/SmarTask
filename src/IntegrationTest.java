@@ -89,7 +89,7 @@ public class IntegrationTest {
         logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
         logic.executeCommand("update d1 -by 6 Nov 10pm");
         outputCommand = logic.getMessageLog();
-        expectedCommand = ""
+        expectedCommand = "";
 
         assertEquals(expectedCommand, outputCommand);
         assertEquals(expectedStorage, outputStorage);
