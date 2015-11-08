@@ -87,9 +87,12 @@ public class IntegrationTest {
     public void testphase2() throws Exception {
         // update tasks
         logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
-        logic.executeCommand("update d1 -by 6 Nov 10pm");
+        logic.executeCommand("update d1 -by 9 Nov 10pm");
+        
         outputCommand = logic.getMessageLog();
-        expectedCommand = ""
+        expectedCommand = "task is successfully updated!!";
+        outputStorage = readFile(testFile);
+        expectedStorage = "{\"type\":\"DEADLINE\",\"id\":8324231,\"description\":\"Finish assignment\",\"deadline\":\"Mon Nov 09 22:00:00 SGT 2015\",\"isComplete\":false}";
 
         assertEquals(expectedCommand, outputCommand);
         assertEquals(expectedStorage, outputStorage);
