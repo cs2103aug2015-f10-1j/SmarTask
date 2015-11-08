@@ -131,6 +131,8 @@ public class CommandParser {
     private static final String MSG_COMMAND = "command: ";
     private static final String MSG_PARSER_LOG_HEADER = "=====CommandParser Log=====";
     private static final String MSG_INVALID_FORMAT = "Command format is invalid";
+    private static final String MSG_INVALID_FILEPATH = "Invalid filepath."
+            + " Ensure filepath format '...\\...\\<yourfilename>.txt' is followed";
     private static final String MSG_NULL_POINTER = "Error found: Please try again";
 
 
@@ -369,8 +371,8 @@ public class CommandParser {
             setFilePathCommandAttribute(command, arguments);
             return command;
         } catch (Exception e) {
-            addToParserLogger(MSG_INVALID_FORMAT);
-            throw new Exception(MSG_INVALID_FORMAT);
+            addToParserLogger(MSG_INVALID_FILEPATH);
+            throw new Exception(MSG_INVALID_FILEPATH);
         }
     }
 
@@ -692,8 +694,8 @@ public class CommandParser {
         if(checkFilePath(line)) {
             command.setFilePath(line);
         } else {
-            addToParserLogger(MSG_INVALID_FORMAT);
-            throw new Exception(MSG_INVALID_FORMAT);
+            addToParserLogger(MSG_INVALID_FILEPATH);
+            throw new Exception(MSG_INVALID_FILEPATH);
         };                
 
     }

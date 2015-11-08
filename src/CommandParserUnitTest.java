@@ -50,6 +50,8 @@ public class CommandParserUnitTest {
     private static final String HEADER_ERRORS_UPDATE_WEEK_PARAM = "\n----Error: Week update----";
     private static final String HEADER_ERRORS_UPDATE_MONTH_PARAM = "\n----Error: Month update----";
     private static final String HEADER_ERRORS_UPDATE_YEAR_PARAM = "\n----Error: Year update----";
+    private static final String HEADER_ERRORS_INVALID_FILEPATH = "Invalid filepath."
+            + " Ensure filepath format '...\\...\\<yourfilename>.txt' is followed";
 
     String input;
     public ArrayList<String> actual; 
@@ -1127,7 +1129,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FILEPATH;
             executeTestWithString();
         }
 
@@ -1139,7 +1141,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FILEPATH;
             executeTestWithString();
         }
 
@@ -1151,7 +1153,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FILEPATH;
             executeTestWithString();
         }
 
@@ -1163,7 +1165,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FILEPATH;
             executeTestWithString();
         }
 
