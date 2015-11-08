@@ -21,7 +21,7 @@ public class CommandParserUnitTest {
 
     // Used in Command testing
 
-    private static final String INVALID_FORMAT = "Command format is invalid";
+    
     private static final String HEADER_TWO_PARAM_COMMANDS = "\n----Two param----";
     private static final String HEADER_SINGLE_PARAM_COMMANDS = "\n----Single param----";
     private static final String HEADER_SHORTCUT_COMMAND = "\n----Shortcuts command----";
@@ -52,6 +52,7 @@ public class CommandParserUnitTest {
     private static final String HEADER_ERRORS_UPDATE_YEAR_PARAM = "\n----Error: Year update----";
     private static final String HEADER_ERRORS_INVALID_FILEPATH = "Invalid filepath."
             + " Ensure filepath format '...\\...\\<yourfilename>.txt' is followed";
+    private static final String HEADER_ERRORS_INVALID_FORMAT = "Command format is invalid";
 
     String input;
     public ArrayList<String> actual; 
@@ -1186,7 +1187,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1197,7 +1198,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1208,7 +1209,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1219,7 +1220,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1230,7 +1231,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1241,7 +1242,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1252,7 +1253,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1263,7 +1264,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1274,7 +1275,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1296,7 +1297,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1306,7 +1307,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1316,7 +1317,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1328,7 +1329,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1338,7 +1339,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1348,7 +1349,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1358,7 +1359,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1368,7 +1369,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1378,7 +1379,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1389,7 +1390,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1399,7 +1400,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1421,7 +1422,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1431,7 +1432,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1443,7 +1444,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1453,7 +1454,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1475,7 +1476,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1485,7 +1486,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1495,7 +1496,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1505,7 +1506,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1517,7 +1518,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1527,7 +1528,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1537,7 +1538,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1547,7 +1548,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1570,7 +1571,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1583,7 +1584,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1594,7 +1595,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1607,7 +1608,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1618,7 +1619,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1628,7 +1629,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1651,7 +1652,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1664,7 +1665,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1675,7 +1676,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1685,7 +1686,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1707,7 +1708,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
@@ -1719,7 +1720,7 @@ public class CommandParserUnitTest {
             fail("Should have thrown exception but did not!");
         } catch (Exception e) {
             actualMsg = e.getMessage();
-            expectedMsg = INVALID_FORMAT;
+            expectedMsg = HEADER_ERRORS_INVALID_FORMAT;
             executeTestWithString();
         }
 
