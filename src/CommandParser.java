@@ -110,9 +110,7 @@ public class CommandParser {
     private static final String DATEFORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
     private static final String INFINITY_DATE = "12/12/9999";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    private static String[] arr = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    private static final ArrayList<String> monthInString = new ArrayList<String>(Arrays.asList(arr));
+    private static final ArrayList<String> monthInString = new ArrayList<String>(Arrays.asList(createMonthArray()));
     private static ArrayList<String> parserLogger = new ArrayList<String>();
     private static com.joestelmach.natty.Parser parseDate = new com.joestelmach.natty.Parser();
 
@@ -1203,6 +1201,12 @@ public class CommandParser {
         for (int i = 0; i < parserLogger.size(); i++) {
             System.out.println(parserLogger.get(i));
         }
+    }
+    
+    private static String[] createMonthArray() {
+        String[] month = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        return month;
     }
 
 }
