@@ -6,7 +6,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
+ * Perform all the commands that include add, view, delete, search, add recurring task,
+ * stop recurring task, complete task, update task. 
  * @@author A0125994R
  * 
  */
