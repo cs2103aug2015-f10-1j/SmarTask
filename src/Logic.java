@@ -181,7 +181,7 @@ public class Logic {
                     msgLogger.add(MESSAGE_COLLISION_TASK);
                 }
             } else if (taskType.equals(DEADLINE_TASK)) {
-                detailTask.add(command.getTaskDeadline() + REGEX_HASH + command.getTaskDescription() + "#" + taskCode);
+                detailTask.add(command.getTaskDeadline() + REGEX_HASH + command.getTaskDescription() + REGEX_HASH + taskCode);
                 type = Task.Type.DEADLINE;
                 task = new Task(type, detailTask);
                 if (!isCollision(task)) {
@@ -785,7 +785,7 @@ public class Logic {
                     str = command.getStopRepeatInString();
                 }
 
-                taskStored.get(i).setStopRepeat(command.getStopRepeatInString());
+                taskStored.get(i).setStopRepeat(str);
                 break;
             }
         }
