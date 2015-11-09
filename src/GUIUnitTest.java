@@ -1,3 +1,4 @@
+import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
 import javafx.fxml.FXMLLoader;
@@ -16,4 +17,8 @@ public class GUIUnitTest extends GuiTest {
         }
         return parent;
     }
+	
+	@Test
+	public void setInputForTextField() {
+	}
 }

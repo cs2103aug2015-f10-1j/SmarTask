@@ -22,8 +22,7 @@ import javafx.stage.Stage;
 
 /**
  * SmarTask Controller acts as a initializer and gives the action properties to
- * the fxml file. It determines the behavior of the fxml file and is the main
- * class to add UI enhancements.
+ * the UI. It determines the behavior of the text areas and text fields.
  * 
  * @@author A0116633L
  */
@@ -92,12 +91,14 @@ public class SmarTaskController implements Initializable {
                 displayWindow.selectPositionCaret(displayWindow.getLength());
                 displayWindow.deselect();
             }
-        });    
+        });
     }
 
     /**
      * Method updates the information display from Logic to the user so they can
      * preview the information stored in SmarTask.
+     * 
+     * Calls on the updateWindows method, which is a mutator method.
      * 
      * @throws ParseException
      */
@@ -144,19 +145,20 @@ public class SmarTaskController implements Initializable {
     private void updateWindows(TextArea display, ArrayList<String> toDisplay) {
         display.clear();
         String lineBreak = "\n";
+        String emptyString = "";
         
         for (int i = 0; i< toDisplay.size(); i++) {
             String tempString = toDisplay.get(i);
             display.appendText(tempString);
             display.appendText(lineBreak);
         }
-        String emptyString = "";
+        
         display.appendText(emptyString);
     }
 
     /**
      * Checks the keys pressed by the user and activates certain events
-     * according to which keys have been pressed.
+     * depending on which keys have been pressed.
      * 
      * @param ke
      *            the key pressed by the user as recorded by the system
@@ -175,29 +177,10 @@ public class SmarTaskController implements Initializable {
             controlYKeyEvent();
         }
     }
-
-    /**
-     * Checks the keys pressed by the user and activates certain events
-     * according to which keys have been pressed.
-     * 
-     * @param ke
-     *            the key pressed by the user as recorded by the system
-     */
-    @FXML
-    public void specialKeyboardLog(KeyEvent ke) {
-        if (ke.getCode() == KeyCode.UP) {
-            upKeyEvent();
-        } else if (ke.getCode() == KeyCode.DOWN) {
-            downKeyEvent();
-        } else if (crtlZ.match(ke)) {
-            controlZKeyEvent();
-        } else if (crtlY.match(ke)) {
-            controlYKeyEvent();
-        }
-    }
     
     private void enterKeyEvent() {
         String userCommand = inputWindow.getText();
+        inputWindow.clear();
         
         if (!poppedCommands.isEmpty()) {
             String poppedCommand = poppedCommands.pop();
@@ -205,9 +188,9 @@ public class SmarTaskController implements Initializable {
         }
         
         pastCommands.push(userCommand);
-        inputWindow.clear();
         
-        if (userCommand.toLowerCase().equals(COMMAND_EXIT)) {
+        if (userCommand.isEmpty()) {
+        } else if (userCommand.toLowerCase().equals(COMMAND_EXIT)) {
             exitCommand();
         } else if (userCommand.toLowerCase().equals(COMMAND_HELP)) {
             helpCommand();
@@ -241,7 +224,7 @@ public class SmarTaskController implements Initializable {
                 helpManual.add(fileOutput);
             }
         } catch (IOException e) {
-            System.err.println("Error! Cannot find help file!");
+            System.err.println("Error! Cannot find helpManual.txt!");
         }
         
         updateWindows(taskWindow, helpManual);

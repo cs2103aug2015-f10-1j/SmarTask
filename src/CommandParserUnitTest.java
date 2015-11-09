@@ -14,7 +14,7 @@ import org.junit.Test;
  * 1) Testing whether input can be processed correctly
  * 2) How CommandParser handles errors in inputs
  * 
- * @@author A0108235M-reused A0121795B
+ * @@author A0108235M-reused
  */
 
 public class CommandParserUnitTest {

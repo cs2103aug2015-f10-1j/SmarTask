@@ -11,7 +11,7 @@ import com.joestelmach.natty.*;
  * appropriate fields initialised. For example, the "add" command requires the
  * taskDetail and taskTime field to be initialised.
  * 
- * @@author A0108235M-Sebastian Quek (Collate Project)
+ * @@author A0108235M-reused
  */
 
 public class CommandParser {

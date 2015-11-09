@@ -1,35 +1,132 @@
-sample dates: 25 Dec 15, 
-			25 Dec 8 to 9am, 
-			8 July 3pm.
-sample repeating period: -every 2 day -until 15 Dec 16
-						-every 2 week -on sun, sat, wed -until 25 Dec 15
-						-every 2 week -on mon, wed, fri
-						-every 2 month -until 25 Dec
-						-every 1 year -until 25 Dec 20
+===========================================
+***********************Command References************************
+===========================================
 
-add task for floating task : add <task title>
-add task for event task with starting date and end date : add <task title> -on <day> <month> <start time> to <end time><am/pm>
-add task for task that have a deadline : add <task title> -by <day> <month> <time><am/pm>
-add task for daily recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
-add task for weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
-add task for monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
-add task for yearly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+===Sample Dates=== 
+- 25 Dec 2015
+- 25 Dec 8 to 9am
+- 25 Nov 9 am to 1 pm
+- 8 July 3pm
 
-delete task for floating task : delete <index>
-delete task for event task with starting date and end date : delete <index>
-delete task for task that have a deadline : delete <index>
+===Sample Repeating Periods===
+- every 2 day -until 15 Dec 2016
+- every 2 week -on sun, sat, wed -until 25 Dec 2020
+- every 2 week -on mon, wed, fri
+- every 2 month -until 25 Dec
+- every 1 year -until 25 Dec 2016
 
-update a floating task: update <task title>
-update an event task: update <index> <task title> -on <day> <month> <start time> to <end time><am/pm>
-update a deadline task: update <index> <task title> -by <day> <month> <time><am/pm>
-update a daily recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
-update a weekly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week on <days> -until <day> <month> <year>
-update a monthly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
-update a yearly recurrent task: repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+===Adding a Task Command===
+Shortcut Example : 
+ad <task title>
 
-complete task: complete <index>
+Tasks with a description only :  
+add <task title>
 
-search task: search <key word>
+Event Tasks : 
+add <task title> -on <day> <month> <start time> to <end time><am/pm>
 
-undo: PRESS <ctrl + z> OR ENTER undo
-redo: PRESS <ctrl + y> OR ENTER redo
+Tasks with a deadline : 
+add <task title> -by <day> <month> <time><am/pm>
+
+===Adding a Recurring Task Command===
+
+Shortcut Example : 
+rp <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year -until <day> <month> <year>
+
+Repeat Tasks without end date (excluding '-until') : 
+repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+
+Daily Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
+
+Weekly Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week -on <days> -until <day> <month> <year>
+
+Monthly Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
+
+Yearly Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+
+===Delete Tasks Command===
+Shortcut Example : 
+de f<index>
+
+Delete Floating Tasks : 
+delete f<index>
+
+Delete Event Tasks : 
+delete e<index>
+
+Delete Deadline Tasks : 
+delete d<index>
+
+Delete Recurring Tasks Permanently : 
+delete r<index>
+
+===Stop Instances of Recurrence===
+Shortcuts example : 
+sr <day month 1>, <day month 2>, ...
+
+Stop Recurring Tasks at Specific Dates : 
+stop <day month 1>, <day month 2>, ...
+
+===Update Tasks Command===
+Shortcut Example : 
+ud f<index> <task title>
+
+Update Floating Tasks : 
+update f<index> <task title>
+
+Update Event Tasks : 
+update e<index> <task title> -on <day> <month> <start time> to <end time><am/pm>
+
+Update Deadline Tasks : 
+update d<index> <task title> -by <day> <month> <time><am/pm>
+
+Update Daily Recurring Tasks : 
+update r<index> <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
+
+Update Weekly Recurring Tasks : 
+update  r<index> <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week -on <days> -until <day> <month> <year>
+
+Update Monthly Recurring Tasks : 
+update r<index> <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
+
+Update Yearly Recurring Tasks : 
+update r<index> <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
+
+===Other Useful Commands===
+
+Indicate Completion of a Task : 
+complete <e/f/d/r><index>
+
+Complete Shortcut Example : 
+cp <e/f/d/r<<index>
+
+Searching for a Task : 
+search <key word>
+
+Search Shortcut Example : 
+sh <keywords>
+
+Setting a File Path : 
+setfilepath ...\...\<filename>.txt
+
+Setting a File Path Shortcut Example : 
+sfp ...\...\<filename>.txt
+
+Undo a Previous Command : 
+undo
+
+Undo Shortcut : 
+PRESS <ctrl + z>
+
+Redo a Previous Command : 
+redo
+
+Redo Shortcut : 
+PRESS <ctrl + y>
+
+Exit SmarTask : 
+exit
