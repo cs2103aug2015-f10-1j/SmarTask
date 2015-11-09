@@ -13,6 +13,6 @@
 		<Text fx:id="commandInput" layoutX="12.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Command Input:" />
 		<Text fx:id="smartaskLog" layoutX="14.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SmarTask Log:" />
 		<TextArea fx:id="taskWindow" editable="false" layoutX="12.0" layoutY="268.0" onKeyPressed="#keyboardLog" prefHeight="525.0" prefWidth="675.0" />
-		<Text fx:id="taskDisplay" layoutX="14.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Task Display" />
+		<Text fx:id="display" layoutX="14.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Display:" />
 	</children>
 </Pane>
