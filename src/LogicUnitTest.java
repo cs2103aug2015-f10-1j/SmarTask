@@ -8,7 +8,7 @@ import org.junit.Test;
  * Unit test for Logic
  * 
  * Testing whether input can be processed correctly
- * Only cover add,update,delete,view and search functions
+ * Only cover add,update,delete,view, search, complete
  * 
  * @@author A0125994R
  */
@@ -30,6 +30,9 @@ public class LogicUnitTest {
 	public static final String MESSAGE_DEADLINE_EMPTY = "There is no deadline task to delete!!";
     public static final String MESSAGE_EVENT_EMPTY = "There is no event task to delete!!";
     public static final String MESSAGE_NOTHING_TO_DELETE = "Cannot find the item to delete!!";
+    public static final String MESSAGE_NO_FLOATING_TO_DELETE = "There is no floating task to delete!!";
+    public static final String MESSAGE_NOTHING_TO_UPDATE = "Please enter a valid index. There is nothing to update.";
+    public static final String MESSAGE_NO_FLOATING_TO_COMPLETE = "There is no floating task to complete!!";
 	
 	
 	public ArrayList<String> actual; 
@@ -79,7 +82,7 @@ public class LogicUnitTest {
 	    input = "update F1 haha";
 		expected = new ArrayList<String>();
 		expected.add(output);
-		expected.add("command : "+input+"\n"+"task is successfully updated!!");
+		expected.add("command : "+input+"\n"+MESSAGE_NOTHING_TO_UPDATE);
 		System.out.println(Logic.getFloatingTask());
 		Logic.executeCommand(input);
 		output =expected.get(0) + "\n" + expected.get(1);
@@ -92,7 +95,7 @@ public class LogicUnitTest {
 		actual = new ArrayList<String>();
 		expected = new ArrayList<String>();
 		expected.add(output+"\ncommand : "+input);
-		expected.add(MESSAGE_INVALID_INDEX);
+		expected.add(MESSAGE_NO_FLOATING_TO_DELETE);
 		Logic.executeCommand(input);
 		output = expected.get(0) + "\n" + expected.get(1);
 		assertEquals(output, Logic.getMessageLog());
@@ -146,6 +149,17 @@ public class LogicUnitTest {
         input = "search baby";
         expected.add(output+"\n"+"command : "+input);
         expected.add(MESSAGE_SEARCH_NOT_FOUND);
+        Logic.executeCommand(input);
+        output = expected.get(0) + "\n" + expected.get(1);
+        assertEquals(output, Logic.getMessageLog());
+    }
+	
+	@Test
+    public final void testCompleteTask() throws Exception {
+        expected = new ArrayList<String>();
+        input = "complete f1";
+        expected.add(output+"\n"+"command : "+input);
+        expected.add(MESSAGE_NO_FLOATING_TO_COMPLETE);
         Logic.executeCommand(input);
         output = expected.get(0) + "\n" + expected.get(1);
         assertEquals(output, Logic.getMessageLog());
