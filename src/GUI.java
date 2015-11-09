@@ -20,8 +20,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * GUI is a class that loads up the fxml file to display to the user. This
- * program will serve as the main window of interaction between user and
+ * GUI is a class that loads up the SmarTask UI to display to the user. This
+ * class will serve as the main window of interaction between user and
  * SmarTask.
  * 
  * @@author A0116633L
@@ -45,6 +45,13 @@ public class GUI extends Application {
         launch(args);
     }
     
+    /**
+     * Method loads up the program and chooses which screen to display depending on 
+     * input in filepath.txt
+     * 
+     * @param primaryStage
+     *            The stage that will be used to display the SmarTask UI
+     */
     public void start(Stage primaryStage) {
         if (checkFile(FILE_FILEPATH)) {
             try {
@@ -64,6 +71,14 @@ public class GUI extends Application {
         }
     }
     
+    /**
+     * This method checks for input in filepath.txt.
+     * If there is input, there exists a file where user's tasks will be stored
+     * If there is no input, this is the user's first time accessing SmarTask
+     * 
+     * @param fileName
+     *            The file name of filepath.txt
+     */
     private static boolean checkFile(String fileName) {
         File file = new File(fileName);
         FileReader fr = null;
@@ -87,12 +102,22 @@ public class GUI extends Application {
         return false;
     }
     
+    /**
+     * Loads up the SmarTask UI main window for the user
+     */
     protected Scene createSmarTaskScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
         Scene scene = new Scene(root, 700, 800);
         return scene;
     }
     
+    /**
+     * Loads up the screen where user has to choose the location to store the file
+     * with his tasks.
+     * 
+     * @param primaryStage
+     *            The stage that will be used to display the SmarTask UI
+     */
     private Scene chooseFileScene(Stage primaryStage) {
         final FileChooser fileChooser = new FileChooser();
         final Button createFileButton = new Button(BUTTON_CHOOSELOCATION);
@@ -142,6 +167,12 @@ public class GUI extends Application {
         return scene;
     }
     
+    /**
+     * Passes to the Logic component the name and path of the file to be created.
+     * 
+     * @param file
+     *            The file object with its path as determined by the user
+     */
     private void setFile(File file) {
         try {
             String command = COMMAND_FILEPATH + file.getAbsolutePath();

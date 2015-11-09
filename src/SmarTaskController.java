@@ -22,8 +22,7 @@ import javafx.stage.Stage;
 
 /**
  * SmarTask Controller acts as a initializer and gives the action properties to
- * the fxml file. It determines the behavior of the fxml file and is the main
- * class to add UI enhancements.
+ * the UI. It determines the behavior of the text areas and text fields.
  * 
  * @@author A0116633L
  */
@@ -99,6 +98,8 @@ public class SmarTaskController implements Initializable {
      * Method updates the information display from Logic to the user so they can
      * preview the information stored in SmarTask.
      * 
+     * Calls on the updateWindows method, which is a mutator method.
+     * 
      * @throws ParseException
      */
     private void updateDisplay() throws ParseException {
@@ -156,7 +157,7 @@ public class SmarTaskController implements Initializable {
 
     /**
      * Checks the keys pressed by the user and activates certain events
-     * according to which keys have been pressed.
+     * depending on which keys have been pressed.
      * 
      * @param ke
      *            the key pressed by the user as recorded by the system
