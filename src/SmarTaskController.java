@@ -92,6 +92,14 @@ public class SmarTaskController implements Initializable {
                 displayWindow.deselect();
             }
         });
+        
+        taskWindow.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+                taskWindow.setScrollLeft(Double.MIN_VALUE);
+                taskWindow.setScrollTop(Double.MIN_VALUE);
+            }
+        });
     }
 
     /**
@@ -145,13 +153,14 @@ public class SmarTaskController implements Initializable {
     private void updateWindows(TextArea display, ArrayList<String> toDisplay) {
         display.clear();
         String lineBreak = "\n";
+        String emptyString = "";
         
         for (int i = 0; i< toDisplay.size(); i++) {
             String tempString = toDisplay.get(i);
             display.appendText(tempString);
             display.appendText(lineBreak);
         }
-        String emptyString = "";
+        
         display.appendText(emptyString);
     }
 
@@ -179,6 +188,7 @@ public class SmarTaskController implements Initializable {
     
     private void enterKeyEvent() {
         String userCommand = inputWindow.getText();
+        inputWindow.clear();
         
         if (!poppedCommands.isEmpty()) {
             String poppedCommand = poppedCommands.pop();
@@ -186,7 +196,6 @@ public class SmarTaskController implements Initializable {
         }
         
         pastCommands.push(userCommand);
-        inputWindow.clear();
         
         if (userCommand.isEmpty()) {
         } else if (userCommand.toLowerCase().equals(COMMAND_EXIT)) {
@@ -223,7 +232,7 @@ public class SmarTaskController implements Initializable {
                 helpManual.add(fileOutput);
             }
         } catch (IOException e) {
-            System.err.println("Error! Cannot find help file!");
+            System.err.println("Error! Cannot find helpManual.txt!");
         }
         
         updateWindows(taskWindow, helpManual);

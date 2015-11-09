@@ -1,137 +1,132 @@
-==========================================
+===========================================
 ***********************Command References************************
 ===========================================
 
-===Sample dates=== 
-
+===Sample Dates=== 
 - 25 Dec 2015
 - 25 Dec 8 to 9am
 - 25 Nov 9 am to 1 pm
 - 8 July 3pm
 
-===Sample repeating period===
-
+===Sample Repeating Periods===
 - every 2 day -until 15 Dec 2016
 - every 2 week -on sun, sat, wed -until 25 Dec 2020
 - every 2 week -on mon, wed, fri
 - every 2 month -until 25 Dec
 - every 1 year -until 25 Dec 2016
 
-===Add task command===
-
-Shortcut example : 
+===Adding a Task Command===
+Shortcut Example : 
 ad <task title>
 
-Task with description only : 
+Tasks with a description only :  
 add <task title>
 
-Event task : 
-add <task title> -on <day> <month> 
-<start time> to <end time><am/pm>
+Event Tasks : 
+add <task title> -on <day> <month> <start time> to <end time><am/pm>
 
-Deadline : 
+Tasks with a deadline : 
 add <task title> -by <day> <month> <time><am/pm>
 
-===Add a recurrence command===
+===Adding a Recurring Task Command===
 
-Shortcut example :
- rp <task title> -start <day> <month> 
-<start time> to <end time> <am/pm> 
--every <number> year -until <day> <month> <year>
+Shortcut Example : 
+rp <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year -until <day> <month> <year>
 
-Repeat forever (exclude '-until') :
- rp <task title> -start <day> <month> 
-<start time> to <end time> <am/pm> 
--every <number> year
+Repeat Tasks without end date (excluding '-until') : 
+repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
 
-Daily recurrence : 
-repeat <task title> -start <day> <month> 
-<start time> to <end time><am/pm> 
--every <number> day -until <day> <month> <year>
+Daily Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
 
-Weekly recurrence : 
-repeat <task title> -start <day> <month> 
-<start time> to <end time><am/pm> 
--every <number> week -on <days> -until <day> <month> <year>
+Weekly Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week -on <days> -until <day> <month> <year>
 
-Monthly recurrence : 
-repeat <task title> -start <day> <month> 
-<start time> to <end time><am/pm> 
--every <number> month -until <day> <month>
+Monthly Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
 
-Yearly recurrence : 
-repeat <task title> -start <day> <month> 
-<start time> to <end time> <am/pm> 
--every <number> year
+Yearly Recurring Tasks : 
+repeat <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
 
-===Delete task command===
+===Delete Tasks Command===
+Shortcut Example : 
+de f<index>
 
-Shortcut example : de f<index>
+Delete Floating Tasks : 
+delete f<index>
 
-Floating task : delete f<index>
+Delete Event Tasks : 
+delete e<index>
 
-Event task : delete e<index>
+Delete Deadline Tasks : 
+delete d<index>
 
-Deadline task : delete d<index>
+Delete Recurring Tasks Permanently : 
+delete r<index>
 
-Recurrence (entirely) : delete r<index>
-
-===Stop instances of recurrence===
-
-Shortcuts example : sr <day month 1>,  <day month 2>, ...
-
-Stop at specifice date : stop <day month 1>,  <day month 2>, ...
-
-===Update task command===
-
+===Stop Instances of Recurrence===
 Shortcuts example : 
+sr <day month 1>, <day month 2>, ...
+
+Stop Recurring Tasks at Specific Dates : 
+stop <day month 1>, <day month 2>, ...
+
+===Update Tasks Command===
+Shortcut Example : 
 ud f<index> <task title>
 
-Floating task : 
+Update Floating Tasks : 
 update f<index> <task title>
 
-Event task : 
-update e<index> <task title> -on <day> <month> 
-<start time> to <end time><am/pm>
+Update Event Tasks : 
+update e<index> <task title> -on <day> <month> <start time> to <end time><am/pm>
 
-Deadline task : 
+Update Deadline Tasks : 
 update d<index> <task title> -by <day> <month> <time><am/pm>
 
-Daily recurrence : 
-update r<index> <task title> -start <day> <month> 
-<start time> to <end time><am/pm> 
--every <number> day -until <day> <month> <year>
+Update Daily Recurring Tasks : 
+update r<index> <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> day -until <day> <month> <year>
 
-Weekly recurrence : 
-update  r<index> <task title> -start <day> <month> 
-<start time> to <end time><am/pm> 
--every <number> week -on <days> -until <day> <month> <year>
+Update Weekly Recurring Tasks : 
+update  r<index> <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> week -on <days> -until <day> <month> <year>
 
-Monthly recurrence : 
-update r<index> <task title> -start <day> <month> 
-<start time> to <end time><am/pm> 
--every <number> month -until <day> <month>
+Update Monthly Recurring Tasks : 
+update r<index> <task title> -start <day> <month> <start time> to <end time><am/pm> -every <number> month -until <day> <month>
 
-Yearly recurrence : 
-update r<index> <task title> -start <day> <month> 
-<start time> to <end time> <am/pm>
- -every <number> year
+Update Yearly Recurring Tasks : 
+update r<index> <task title> -start <day> <month> <start time> to <end time> <am/pm> -every <number> year
 
-===Other commands===
+===Other Useful Commands===
 
-Indicate completion of task :  complete <e/f/d/r><index>
-Shortcut : cp <e/f/d/r<<index>
+Indicate Completion of a Task : 
+complete <e/f/d/r><index>
 
-Search for a task : search <key word>
-Shortcut : sh <keywords>
+Complete Shortcut Example : 
+cp <e/f/d/r<<index>
 
-Set a filepath : setfilepath ...\...\<filename>.txt
-Shortcut : sfp ...\...\<filename>.txt
+Searching for a Task : 
+search <key word>
 
-Undo command : undo
-Shortcut :  PRESS <ctrl + z>
+Search Shortcut Example : 
+sh <keywords>
 
-Redo command : redo
-Shortcut : PRESS <ctrl + y>
+Setting a File Path : 
+setfilepath ...\...\<filename>.txt
 
-Quit program : exit
+Setting a File Path Shortcut Example : 
+sfp ...\...\<filename>.txt
+
+Undo a Previous Command : 
+undo
+
+Undo Shortcut : 
+PRESS <ctrl + z>
+
+Redo a Previous Command : 
+redo
+
+Redo Shortcut : 
+PRESS <ctrl + y>
+
+Exit SmarTask : 
+exit
