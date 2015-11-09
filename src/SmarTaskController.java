@@ -92,7 +92,7 @@ public class SmarTaskController implements Initializable {
                 displayWindow.selectPositionCaret(displayWindow.getLength());
                 displayWindow.deselect();
             }
-        });    
+        });
     }
 
     /**

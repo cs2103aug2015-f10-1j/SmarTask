@@ -48,8 +48,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) {
         if (checkFile(FILE_FILEPATH)) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
-                Scene scene = new Scene(root, 700, 800);
+                Scene scene = createSmarTaskScene();
                 primaryStage.setTitle(SCENE_TITLE);
                 primaryStage.setScene(scene);
                 primaryStage.show();
@@ -88,6 +87,12 @@ public class GUI extends Application {
         return false;
     }
     
+    protected Scene createSmarTaskScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
+        Scene scene = new Scene(root, 700, 800);
+        return scene;
+    }
+    
     private Scene chooseFileScene(Stage primaryStage) {
         final FileChooser fileChooser = new FileChooser();
         final Button createFileButton = new Button(BUTTON_CHOOSELOCATION);
@@ -99,9 +104,8 @@ public class GUI extends Application {
                 File file = fileChooser.showSaveDialog(primaryStage);
                 
                 if (file != null) {
-                    setFile(file);
-                    
                     try {
+                    	setFile(file);
                         stage.setScene(createSmarTaskScene());
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -135,12 +139,6 @@ public class GUI extends Application {
         rootGroup.setPadding(new Insets(12, 12, 12, 12));
         
         Scene scene = new Scene(rootGroup);
-        return scene;
-    }
-    
-    protected Scene createSmarTaskScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(FILE_SMARTASKUI));
-        Scene scene = new Scene(root, 700, 800);
         return scene;
     }
     
