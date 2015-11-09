@@ -9,10 +9,10 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SmarTaskController">
 	<children>
 		<TextField fx:id="inputWindow" layoutX="12.0" layoutY="32.0" onKeyPressed="#keyboardLog" prefHeight="51.0" prefWidth="675.0" />
-		<TextArea fx:id="displayWindow" editable="false" layoutX="12.0" layoutY="118.0" onKeyPressed="#specialKeyboardLog" prefHeight="115.0" prefWidth="675.0" />
+		<TextArea fx:id="displayWindow" editable="false" layoutX="12.0" layoutY="118.0" onKeyPressed="#keyboardLog" prefHeight="115.0" prefWidth="675.0" />
 		<Text fx:id="commandInput" layoutX="12.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Command Input:" />
 		<Text fx:id="smartaskLog" layoutX="14.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SmarTask Log:" />
-		<TextArea fx:id="taskWindow" editable="false" layoutX="12.0" layoutY="268.0" onKeyPressed="#specialKeyboardLog" prefHeight="525.0" prefWidth="675.0" />
+		<TextArea fx:id="taskWindow" editable="false" layoutX="12.0" layoutY="268.0" onKeyPressed="#keyboardLog" prefHeight="525.0" prefWidth="675.0" />
 		<Text fx:id="taskDisplay" layoutX="14.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Task Display" />
 	</children>
 </Pane>

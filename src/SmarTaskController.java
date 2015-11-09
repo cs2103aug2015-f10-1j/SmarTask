@@ -175,26 +175,6 @@ public class SmarTaskController implements Initializable {
             controlYKeyEvent();
         }
     }
-
-    /**
-     * Checks the keys pressed by the user and activates certain events
-     * according to which keys have been pressed.
-     * 
-     * @param ke
-     *            the key pressed by the user as recorded by the system
-     */
-    @FXML
-    public void specialKeyboardLog(KeyEvent ke) {
-        if (ke.getCode() == KeyCode.UP) {
-            upKeyEvent();
-        } else if (ke.getCode() == KeyCode.DOWN) {
-            downKeyEvent();
-        } else if (crtlZ.match(ke)) {
-            controlZKeyEvent();
-        } else if (crtlY.match(ke)) {
-            controlYKeyEvent();
-        }
-    }
     
     private void enterKeyEvent() {
         String userCommand = inputWindow.getText();
@@ -207,7 +187,8 @@ public class SmarTaskController implements Initializable {
         pastCommands.push(userCommand);
         inputWindow.clear();
         
-        if (userCommand.toLowerCase().equals(COMMAND_EXIT)) {
+        if (userCommand.isEmpty()) {
+        } else if (userCommand.toLowerCase().equals(COMMAND_EXIT)) {
             exitCommand();
         } else if (userCommand.toLowerCase().equals(COMMAND_HELP)) {
             helpCommand();
