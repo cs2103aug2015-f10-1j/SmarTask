@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Logic {
 
-    private static Storage storage = new Storage();
+    private static Storage storage = Storage.getInstance();
     private static ArrayList<Task> taskStored = storage.retrieveFile();
     private static ArrayList<String> msgLogger = new ArrayList<String>();
     private static ArrayList<String> event;
