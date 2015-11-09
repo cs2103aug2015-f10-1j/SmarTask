@@ -33,8 +33,8 @@ public class StorageUnitTest {
 
         Storage storageTest = Storage.getInstance();
 
-        assertEquals(true, taskFile.exists());
-        assertEquals(true, pathFile.exists());
+        assertEquals(false, taskFile.exists());
+        assertEquals(false, pathFile.exists());
     }
 
     @Test
