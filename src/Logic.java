@@ -60,7 +60,9 @@ public class Logic {
     private static CommandHistory history = new CommandHistory(new ArrayList<Task>(taskStored));
     private static Date currentDateAndTime;
     private static Date currentDate;
-    private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
+    private static final String DATE_FORMAT_FOR_SAVE = "EEE MMM dd HH:mm:ss Z yyyy";
+    private static final String DATE_AND_TIME_FOR_EVENT_DISPLAY = "dd MMM, HH:mm";
+    private static final String CURRENT_DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
     
     // // Regex
     private static final String REGEX_HASH = "#";
@@ -332,28 +334,27 @@ public class Logic {
 
         try {
             int indexToRemove = command.getTaskID() - 1;
-            String removedItem = REGEX_BLANK;
             String currentLine = REGEX_BLANK;
 
             if (taskType != null) {
                 if (taskType.equals(DEADLINE_TASK)) {
                     currentLine = deadline.get(indexToRemove);
-                    removedItem = deadline.remove(indexToRemove);
+                    deadline.remove(indexToRemove);
                     String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 } else if (taskType.equals(FLOATING_TASK)) {
                     currentLine = floating.get(indexToRemove);
-                    removedItem = floating.remove(indexToRemove);
+                    floating.remove(indexToRemove);
                     String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 } else if (taskType.equals(EVENT_TASK)) {
                     currentLine = event.get(indexToRemove);
-                    removedItem = event.remove(indexToRemove);
+                    event.remove(indexToRemove);
                     String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 } else if (taskType.equals(RECURRING_TASK)) {
                     currentLine = repeatedTask.get(indexToRemove);
-                    removedItem = repeatedTask.get(indexToRemove);
+                    repeatedTask.get(indexToRemove);
                     String str[] = currentLine.split(REGEX_HASH);
                     taskCode = Integer.parseInt(str[str.length - 1]);
                 }
@@ -421,7 +422,7 @@ public class Logic {
                 if (taskStored.get(i).getID() == taskCode) {
                     if (taskType.equals(RECURRING_TASK)) {
                         String stopStr = REGEX_BLANK;
-                        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                        DateFormat df = new SimpleDateFormat(DATE_FORMAT_FOR_SAVE);
                         if (taskStored.get(i).getStopRepeatInString() != null) {
                             stopStr = taskStored.get(i).getStopRepeatInString() + REGEX_AT_SIGN + df.format(currentDate);
                         } else {
@@ -462,7 +463,7 @@ public class Logic {
 
         for (int i = 0; i < deadline.size(); i++) {
             String[] str = deadline.get(i).split(REGEX_HASH);
-            SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+            SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_FOR_SAVE);
             SimpleDateFormat getDate = new SimpleDateFormat("MMM dd yyyy");
             Date timeDue = df.parse(str[0]);
             if (getDate.format(timeDue).equals(getDate.format(currentDateAndTime))) {
@@ -472,7 +473,7 @@ public class Logic {
         }
         for (int i = 0; i < event.size(); i++) {
             String[] str = event.get(i).split(REGEX_HASH);
-            SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+            SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_FOR_SAVE);
             SimpleDateFormat getTime = new SimpleDateFormat("MMM dd");
             Date timeStart = df.parse(str[0]);
             Date timeEnd = df.parse(str[1]);
@@ -929,7 +930,7 @@ public class Logic {
 
     // convert the string date into a Date type
     private static Date convertStringToDate(String dateStr) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_FOR_SAVE);
         Date date = sdf.parse(dateStr);
         return date;
     }
@@ -1097,7 +1098,7 @@ public class Logic {
 
     // Get the current date, time
     private static void initDate() throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(CURRENT_DATE_TIME_FORMAT);
         Calendar cal = Calendar.getInstance();
         currentDateAndTime = dateFormat.parse(dateFormat.format((cal.getTime())));
         DateFormat dateFormat2 = new SimpleDateFormat("dd/MM");
@@ -1206,8 +1207,8 @@ public class Logic {
 
         for (int i = 0; i < event.size(); i++) {
             String[] str = event.get(i).split(REGEX_HASH);
-            SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
-            SimpleDateFormat getTime = new SimpleDateFormat("dd MMM, HH:mm");
+            SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_FOR_SAVE);
+            SimpleDateFormat getTime = new SimpleDateFormat(DATE_AND_TIME_FOR_EVENT_DISPLAY);
             Date timeStart = df.parse(str[0]);
             Date timeEnd = df.parse(str[1]);
             messageToPrint += "E" + (i + 1) + ". " + str[2] + " from " + getTime.format(timeStart) + " to "
