@@ -92,14 +92,6 @@ public class SmarTaskController implements Initializable {
                 displayWindow.deselect();
             }
         });
-        
-        taskWindow.textProperty().addListener(new ChangeListener<Object>() {
-            @Override
-            public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-                taskWindow.setScrollLeft(Double.MIN_VALUE);
-                taskWindow.setScrollTop(Double.MIN_VALUE);
-            }
-        });
     }
 
     /**
