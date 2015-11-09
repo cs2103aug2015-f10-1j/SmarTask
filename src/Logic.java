@@ -40,6 +40,7 @@ public class Logic {
     private static final String MESSAGE_ASK_FOR_COMMAND = "Please enter a command.";
     private static final String MESSAGE_NO_TODAY_TASK = "There is no task due on today.";
     private static final String MESSAGE_SEARCH_NOT_FOUND ="Results not found!";
+    private static final String MESSAGE_NOTHING_TO_UPDATE = "Please enter a valid index. There is nothing to update.";
 
     // Successful messages to display to the user
     private static final String ADD_STOP_SUC = "Add stop command to recurring task successfully!";
@@ -766,7 +767,7 @@ public class Logic {
             storage.saveToFile(taskStored);
             history.addChangeToHistory(new ArrayList<Task>(taskStored));
         } catch (Exception e) {
-            msgLogger.add(e.getMessage());
+            msgLogger.add(MESSAGE_NOTHING_TO_UPDATE);
         }
     }
 
