@@ -31,7 +31,7 @@ public class Storage {
     private PrintWriter writer;
     private Gson gson;
 
-    public Storage() {
+    private Storage() {
         System.out.println("Storage initialized");
         gson = new Gson();
         resetStorageLocation();

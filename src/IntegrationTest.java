@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  * 
- * @@author A0130034A and A0116633L
+ * @@author A0130034A and A0116633L    
  */
 
 public class IntegrationTest {
