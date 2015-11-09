@@ -20,9 +20,7 @@ import org.junit.Test;
 
 public class IntegrationTest {
 
-    Logic logic = new Logic();
-
-    File testFile;
+    public static final File FILE_TASKFILE = new File(".." + File.separator + "SmarTask" + File.separator + "bin" + File.separator + "storage.txt");
 
     private BufferedReader reader;
     private PrintWriter writer;
@@ -39,13 +37,13 @@ public class IntegrationTest {
     public void testphase1() throws Exception {
 
         // add floating tasks
-        logic.executeCommand("add buy potatoes");
+        Logic.executeCommand("add buy potatoes");
 
-        outputCommand = logic.getMessageLog();
+        outputCommand = Logic.getMessageLog();
         expectedCommand = "add buy potatoes successful!";
         //		initialize();
         //		logic.executeCommand("add buy potatoes");
-        outputStorage = readFile(testFile);
+        outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "{\"type\":\"FLOATING\",\"id\":4284924,\"description\":\"buy patatoes\",\"isComplete\":false}";
 
         assertEquals(expectedCommand, outputCommand);
@@ -54,12 +52,12 @@ public class IntegrationTest {
         initialize();
 
         // add event tasks
-        logic.executeCommand("add Meeting with Boss -on 10 Nov 5 to 6pm");
+        Logic.executeCommand("add Meeting with Boss -on 10 Nov 5 to 6pm");
 
-        outputCommand = logic.getMessageLog();
+        outputCommand = Logic.getMessageLog();
         expectedCommand = "add Meeting with Boss successful!";
 
-        outputStorage = readFile(testFile);
+        outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
 
         assertEquals(expectedCommand, outputCommand);
@@ -68,12 +66,12 @@ public class IntegrationTest {
         initialize();
 
         // add deadline tasks
-        logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
+        Logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
 
-        outputCommand = logic.getMessageLog();
+        outputCommand = Logic.getMessageLog();
         expectedCommand = "add Finish assignment successful!";
 
-        outputStorage = readFile(testFile);
+        outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "{\"type\":\"EVENT\",\"id\":4312564,\"description\":\"Meeting with Boss\",\"eventStart\":\"Tue Nov 10 17:00:00 SGT 2015\",\"eventEnd\":\"Tue Nov 10 18:00:00 SGT 2015\",\"isComplete\":false}";
 
         assertEquals(expectedCommand, outputCommand);
@@ -86,24 +84,24 @@ public class IntegrationTest {
     // Test the features including modifying or deleting tasks
     public void testphase2() throws Exception {
         // update tasks
-        logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
-        logic.executeCommand("update d1 -by 9 Nov 10pm");
+        Logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
+        Logic.executeCommand("update d1 -by 9 Nov 10pm");
         
-        outputCommand = logic.getMessageLog();
+        outputCommand = Logic.getMessageLog();
         expectedCommand = "task is successfully updated!!";
-        outputStorage = readFile(testFile);
+        outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "{\"type\":\"DEADLINE\",\"id\":8324231,\"description\":\"Finish assignment\",\"deadline\":\"Mon Nov 09 22:00:00 SGT 2015\",\"isComplete\":false}";
 
         assertEquals(expectedCommand, outputCommand);
         assertEquals(expectedStorage, outputStorage);
         initialize();
         // delete tasks
-        logic.executeCommand("add buy potatoes");
-        logic.executeCommand("delete F1");
+        Logic.executeCommand("add buy potatoes");
+        Logic.executeCommand("delete F1");
 
-        outputCommand = logic.getMessageLog();
+        outputCommand = Logic.getMessageLog();
         expectedCommand = "deleted floating index 1 successfully!";
-        outputStorage = readFile(testFile);
+        outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "";
 
         assertEquals(expectedCommand, outputCommand);
@@ -113,12 +111,12 @@ public class IntegrationTest {
 
         // complete tasks
 
-        logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
-        logic.executeCommand("complete D1");
+        Logic.executeCommand("add Finish assignment -by 10 Dec 12pm");
+        Logic.executeCommand("complete D1");
 
-        outputCommand = logic.getMessageLog();
+        outputCommand = Logic.getMessageLog();
         expectedCommand = "completed deadline index 1";
-        outputStorage = readFile(testFile);
+        outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "{\"type\":\"DEADLINE\",\"id\":4336029,\"description\":\"Finish assignment\",\"deadline\":\"Thu Dec 10 12:00:00 SGT 2015\",\"isComplete\":true}";
 
         assertEquals(expectedCommand, outputCommand);
@@ -131,124 +129,124 @@ public class IntegrationTest {
     // Test the features including recurring tasks
     public void testphase3() throws Exception {
         // add daily recurring tasks
-        logic.executeCommand("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
+        output = Logic.getMessageLog();
         expected = "addrc daily successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat daily -start 15 Nov 5 to 6 pm -every 2 day -until 15 Dec 2016");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6115646,\"description\":\"daily\",\"taskRepeatType\":\"day\",\"dateAdded\":\"Nov 15, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"17:00:00\",\"taskRepeatEndTime\":\"18:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Day\":\"2\",\"taskRepeatUntil\":\"Dec 15, 2016 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
+        output = Logic.getMessageLog();
         expected = "addrc daily successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat daily -start 15 Dec 8 to 9 pm -every 2 day");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6115750,\"description\":\"daily\",\"taskRepeatType\":\"day\",\"dateAdded\":\"Dec 15, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"20:00:00\",\"taskRepeatEndTime\":\"21:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Day\":\"2\",\"taskRepeatUntil\":\"Dec 1, 9999 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
         // add weekly recurring tasks
-        logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
+        output = Logic.getMessageLog();
         expected = "addrc weekly successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on sun, sat, wed -until 25 Dec 15");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6123533,\"description\":\"weekly\",\"taskRepeatType\":\"week\",\"dateAdded\":\"Dec 25, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"09:00:00\",\"taskRepeatEndTime\":\"11:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Week\":\"2\",\"isDaySelected\":[null,true,false,false,true,false,false,true],\"taskRepeatUntil\":\"Dec 25, 2015 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon, wed, fri");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon, wed, fri");
+        output = Logic.getMessageLog();
         expected = "addrc weekly successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon, wed, fri");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat weekly -start 25 Dec 9 to 11am -every 2 week -on mon, wed, fri");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6123551,\"description\":\"weekly\",\"taskRepeatType\":\"week\",\"dateAdded\":\"Dec 25, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"09:00:00\",\"taskRepeatEndTime\":\"11:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Week\":\"2\",\"isDaySelected\":[null,false,true,false,true,false,true,false],\"taskRepeatUntil\":\"Dec 1, 9999 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
         // add monthly recurring tasks
-        logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -until 25 Dec");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -until 25 Dec");
+        output = Logic.getMessageLog();
         expected = "addrc meeting successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -until 25 Dec");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 2 month -until 25 Dec");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6124826,\"description\":\"meeting\",\"taskRepeatType\":\"month\",\"dateAdded\":\"Dec 27, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"13:00:00\",\"taskRepeatEndTime\":\"14:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Month\":\"2\",\"taskRepeatUntil\":\"Dec 25, 2015 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 1 month -until 25 Dec");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 1 month -until 25 Dec");
+        output = Logic.getMessageLog();
         expected = "addrc meeting successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 1 month -until 25 Dec");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat meeting -start 27 Dec 1 to 2pm -every 1 month -until 25 Dec");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6124845,\"description\":\"meeting\",\"taskRepeatType\":\"month\",\"dateAdded\":\"Dec 27, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"13:00:00\",\"taskRepeatEndTime\":\"14:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Month\":\"1\",\"taskRepeatUntil\":\"Dec 25, 2015 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
         // add yearly recurring tasks
-        logic.executeCommand("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
+        output = Logic.getMessageLog();
         expected = "addrc yearly successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat yearly -start 15 Dec 2 to 5 pm -every 1 year");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6116773,\"description\":\"yearly\",\"taskRepeatType\":\"year\",\"dateAdded\":\"Dec 15, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"14:00:00\",\"taskRepeatEndTime\":\"17:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Year\":\"1\",\"taskRepeatUntil\":\"Dec 1, 9999 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
-        output = logic.getMessageLog();
+        Logic.executeCommand("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
+        output = Logic.getMessageLog();
         expected = "addrc yearly successful!";
 
         assertEquals(expected, output);
         initialize();
 
-        logic.executeCommand("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
-        output = readFile(testFile);
+        Logic.executeCommand("repeat yearly -start 15 Nov 5 to 6 pm -every 1 year -until 25 Dec 2020");
+        output = readFile(FILE_TASKFILE);
         expected = "{\"type\":\"REPEAT\",\"id\":6117167,\"description\":\"yearly\",\"taskRepeatType\":\"year\",\"dateAdded\":\"Nov 15, 2015 12:00:00 AM\",\"taskRepeatStartTime\":\"17:00:00\",\"taskRepeatEndTime\":\"18:00:00\",\"stopRepeat\":[\"Dec 12, 9999 12:00:00 AM\"],\"taskRepeatInterval_Year\":\"1\",\"taskRepeatUntil\":\"Dec 25, 2020 12:00:00 AM\",\"isComplete\":false}";
 
         assertEquals(expected, output);
         initialize();
 
         // delete recurring tasks
-        logic.executeCommand("delete R1");
-        output = logic.getMessageLog();
+        Logic.executeCommand("delete R1");
+        output = Logic.getMessageLog();
         expected = "deleted repeat index 1 successfully!";
 
         assertEquals(expected, output);
@@ -298,12 +296,12 @@ public class IntegrationTest {
 
     // -------------------Initialization methods -----------------------------
     private void initialize() {
-        File tempFile = new File(testFile.getAbsolutePath());
+        File tempFile = new File(FILE_TASKFILE.getAbsolutePath());
         // PrintWriter pw = new PrintWriter(tempFile);
         writer.print("");
         writer.close();
-        testFile.delete();
-        tempFile.renameTo(testFile);
+        FILE_TASKFILE.delete();
+        tempFile.renameTo(FILE_TASKFILE);
 
 
         outputCommand = "";
