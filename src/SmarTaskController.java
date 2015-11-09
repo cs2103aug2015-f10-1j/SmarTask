@@ -25,7 +25,7 @@ import javafx.stage.Stage;
  * the fxml file. It determines the behavior of the fxml file and is the main
  * class to add UI enhancements.
  * 
- * @author A0116633L
+ * @@author A0116633L
  */
 
 public class SmarTaskController implements Initializable {
@@ -146,9 +146,9 @@ public class SmarTaskController implements Initializable {
         String lineBreak = "\n";
         
         for (int i = 0; i< toDisplay.size(); i++) {
-        	String tempString = toDisplay.get(i);
-        	display.appendText(tempString);
-        	display.appendText(lineBreak);
+            String tempString = toDisplay.get(i);
+            display.appendText(tempString);
+            display.appendText(lineBreak);
         }
         String emptyString = "";
         display.appendText(emptyString);
@@ -238,10 +238,10 @@ public class SmarTaskController implements Initializable {
             String fileOutput = null;
             
             while ((fileOutput = br.readLine()) != null) {
-            	helpManual.add(fileOutput);
+                helpManual.add(fileOutput);
             }
         } catch (IOException e) {
-        	System.err.println("Error! Cannot find help file!");
+            System.err.println("Error! Cannot find help file!");
         }
         
         updateWindows(taskWindow, helpManual);

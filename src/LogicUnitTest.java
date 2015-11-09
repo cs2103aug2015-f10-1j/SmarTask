@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,6 +13,7 @@ import org.junit.Test;
  * Unit test for Logic
  * 
  * Testing whether input can be processed correctly
+ * Only cover add,update,delete,view and search functions
  * 
  * @@author A0125994R
  */
@@ -26,12 +28,21 @@ public class LogicUnitTest {
 	 * @After public void tearDown() throws Exception { }
 	 */
 	// expectList contains the answer that are expected in the operation
-	static ArrayList<String> expectList;
-
-	@Test
-	public final void testLogic() {
-		expectList = new ArrayList<String>();
-	}
+	
+	public static final String MESSAGE_INVALID_INDEX = "Cannot find the item to delete!!";
+	public static final String MESSAGE_NO_CURRENT_TASK = "There is no task due on today.";
+	public static final String MESSAGE_SEARCH_NOT_FOUND = "Results not found!";
+	public static final String MESSAGE_DEADLINE_EMPTY = "There is no deadline task to delete!!";
+    public static final String MESSAGE_EVENT_EMPTY = "There is no event task to delete!!";
+    public static final String MESSAGE_NOTHING_TO_DELETE = "Cannot find the item to delete!!";
+	
+	
+	public ArrayList<String> actual; 
+    public ArrayList<String> expected;
+    public String actualMsg;
+    public String expectedMsg;
+    String input;
+    public static String output;
 
 	// @Test
 	/*
@@ -49,72 +60,101 @@ public class LogicUnitTest {
 	 */
 	@Test
 	public final void testAddTask() throws Exception {
-		expectList = new ArrayList<String>();
-		expectList.add("command : add meeting with feifei");
-		expectList.add("add meeting with feifei successful!");
-		Logic.executeCommand("add meeting with feifei");
-		assertEquals(expectList.get(0) + "\n" + expectList.get(1), Logic.getMessageLog());
-
+		input = "add meeting with feifei";
+		actual = new ArrayList<String>();
+		expected = new ArrayList<String>();
+		expected.add("command : add meeting with feifei");
+		expected.add("add meeting with feifei successful!");
+		Logic.executeCommand(input);
+		output=expected.get(0) + "\n" + expected.get(1);
+		assertEquals(output, Logic.getMessageLog());
+		
+		input = "add Meeting with Boss -on 10 Nov 5 to 6pm";
+        actual = new ArrayList<String>();
+        expected = new ArrayList<String>();
+        expected.add(output +"\n"+"command : add Meeting with Boss -on 10 Nov 5 to 6pm");
+        expected.add("add Meeting with Boss successful!");
+        Logic.executeCommand(input);
+        output=expected.get(0) + "\n" + expected.get(1);
+        assertEquals(output, Logic.getMessageLog());
 	}
-
+	
+	@Test
+	public final void testUpdateTask() throws Exception {
+	    input = "update F1 haha";
+		expected = new ArrayList<String>();
+		expected.add(output);
+		expected.add("command : "+input+"\n"+"task is successfully updated!!");
+		System.out.println(Logic.getFloatingTask());
+		Logic.executeCommand(input);
+		output =expected.get(0) + "\n" + expected.get(1);
+		assertEquals(output, Logic.getMessageLog());
+	}
 
 	@Test
 	public final void testDeleteTask() throws Exception {
-		expectList = new ArrayList<String>();
-		expectList.add("command : add meeting with feifei" + "\n" + "add meeting with feifei successful!" + "\n"
-				+ "command : add meeting with feifei" + "\n" + "add meeting with feifei successful!" + "\n"
-				+ "command : update F1 haha" + "\n" + "task updated!");
-		expectList.add("command : delete F1" + "\n" + "deleted floating index 1 successfully!");
-		Logic.executeCommand("delete F1");
-		assertEquals(expectList.get(0) + "\n" + expectList.get(1), Logic.getMessageLog());
+		input = "delete F2";
+		actual = new ArrayList<String>();
+		expected = new ArrayList<String>();
+		expected.add(output+"\ncommand : "+input);
+		expected.add(MESSAGE_INVALID_INDEX);
+		Logic.executeCommand(input);
+		output = expected.get(0) + "\n" + expected.get(1);
+		assertEquals(output, Logic.getMessageLog());
+		
+		input = "delete d1";
+		actual = new ArrayList<String>();
+        expected = new ArrayList<String>();
+        expected.add(output+"\ncommand : "+input);
+        expected.add(MESSAGE_DEADLINE_EMPTY);
+        System.out.println(Logic.getDeadline());
+        Logic.executeCommand(input);
+        output = expected.get(0) + "\n" + expected.get(1);
+        assertEquals(output, Logic.getMessageLog());
+        
+        input = "delete E1";
+        actual = new ArrayList<String>();
+        expected = new ArrayList<String>();
+        expected.add(output+"\ncommand : "+input);
+        expected.add(MESSAGE_EVENT_EMPTY);
+        System.out.println(Logic.getEvents());
+        Logic.executeCommand(input);
+        output = expected.get(0) + "\n" + expected.get(1);
+        assertEquals(output, Logic.getMessageLog());
+        
+        input = "delete r1";
+        actual = new ArrayList<String>();
+        expected = new ArrayList<String>();
+        expected.add(output+"\ncommand : "+input);
+        expected.add(MESSAGE_NOTHING_TO_DELETE);
+        System.out.println(Logic.getEvents());
+        Logic.executeCommand(input);
+        output = expected.get(0) + "\n" + expected.get(1);
+        assertEquals(output, Logic.getMessageLog());
+     
 	}
 
 	@Test
-	public final void testUpdateTask() throws Exception {
-		Logic logic = new Logic();
-		expectList = new ArrayList<String>();
-		expectList.add("command : add meeting with feifei" + "\n" + "add meeting with feifei successful!");
-		expectList.add("command : add meeting with feifei" + "\n" + "add meeting with feifei successful!" + "\n"
-				+ "command : update F1 haha" + "\n" + "task updated!");
-		logic.executeCommand("add meeting with feifei");
-		logic.executeCommand("update F1 haha");
-		assertEquals(expectList.get(0) + "\n" + expectList.get(1), logic.getMessageLog());
+	public final void testViewTask() throws Exception {
+		expected = new ArrayList<String>();
+		input = "view";
+		expected.add(output+"\n"+"command : "+input);
+		expected.add(MESSAGE_NO_CURRENT_TASK);
+		Logic.executeCommand(input);
+		output = expected.get(0) + "\n" + expected.get(1);
+		assertEquals(output, Logic.getMessageLog());
 	}
+	
+	@Test
+    public final void testSearchTask() throws Exception {
+        expected = new ArrayList<String>();
+        input = "search baby";
+        expected.add(output+"\n"+"command : "+input);
+        expected.add(MESSAGE_SEARCH_NOT_FOUND);
+        Logic.executeCommand(input);
+        output = expected.get(0) + "\n" + expected.get(1);
+        assertEquals(output, Logic.getMessageLog());
+    }
 
-	/*
-	 * @Test public final void testPrintArrayList() { fail("Not yet implemented"
-	 * ); // TODO }
-	 * @Test public final void testGetMessageLog() { fail("Not yet implemented"
-	 * ); // TODO }
-	 * @Test public final void testGetEvents() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testGetDeadline() { fail("Not yet implemented");
-	 * // TODO }
-	 * @Test public final void testGetFloatingTask() { fail(
-	 * "Not yet implemented"); // TODO }
-	 * @Test public final void testObject() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testGetClass() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testHashCode() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testEquals() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testClone() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testToString() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testNotify() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testNotifyAll() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testWaitLong() { fail("Not yet implemented"); //
-	 * TODO }
-	 * @Test public final void testWaitLongInt() { fail("Not yet implemented");
-	 * // TODO }
-	 * @Test public final void testWait() { fail("Not yet implemented"); // TODO
-	 * }
-	 * @Test public final void testFinalize() { fail("Not yet implemented"); //
-	 * TODO }
-	 */
+	
 }
