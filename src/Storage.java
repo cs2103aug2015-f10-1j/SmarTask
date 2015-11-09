@@ -15,7 +15,7 @@ import com.google.gson.JsonSyntaxException;
 /**
  * Storage component - Nothing should be stored in Storage
  * 
- * @@author A0130034A
+ * @@author A0130034A - reused
  */
 
 public class Storage {
@@ -32,7 +32,6 @@ public class Storage {
     private Gson gson;
 
     private Storage() {
-        System.out.println("Storage initialized");
         gson = new Gson();
         resetStorageLocation();
     }
@@ -50,11 +49,9 @@ public class Storage {
         checkPathFile(pathFile);
  
         if (retrieveSavePath() == null) {
-            System.out.println("The save path retrieved from path file is null, task file is created in main folder");
             taskFile = new File(DEFAULT_PATH + File.separator + DEFAULT_FILENAME);
             checkPathFile(taskFile);
         } else {
-        	System.out.println("The save path retrieved from path file is not null, task file is created in a set location");
         	taskFile = new File(retrieveSavePath());
         }
     }
@@ -96,7 +93,6 @@ public class Storage {
         try {
             savePath = reader.readLine();
             if (!(savePath == null)) {
-                System.out.println(savePath);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,8 +105,6 @@ public class Storage {
     public ArrayList<Task> retrieveFile() {
         String text;
         ArrayList<Task> taskList = new ArrayList<Task>();
-        System.out.println("retrieve from " + taskFile.getAbsolutePath());
-        
         try {
             if (!initializeReader(taskFile)) {
                 return taskList;
@@ -134,8 +128,6 @@ public class Storage {
     }
 
     public void saveToFile(ArrayList<Task> taskList) {
-        System.out.println("save to " + taskFile.getAbsolutePath());
-         
         try {
             writer = new PrintWriter(taskFile, "UTF-8");
             
@@ -167,10 +159,6 @@ public class Storage {
             
             if (taskFile.renameTo(new File(savePath))) {
             	resetStorageLocation();
-                System.out.println(savePath);
-                System.out.println("Moved successful!");
-            } else {
-                System.out.println("Failed to move!");
             }
         } catch (IOException e) {
             e.printStackTrace();

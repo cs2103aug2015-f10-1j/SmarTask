@@ -31,6 +31,7 @@ public class IntegrationTest {
     private String expectedStorage = "";
     private String output = "";
     private String expected = "";
+    private String taskID = "";
 
     @Test
     // Test the features including add different types of tasks
@@ -40,7 +41,8 @@ public class IntegrationTest {
         Logic.executeCommand("add buy potatoes");
 
         outputCommand = Logic.getMessageLog();
-        expectedCommand = "add buy potatoes successful!";
+        expectedCommand = "command : add buy potatoes\n"
+                + "add buy potatoes successful!";
  
         outputStorage = readFile(FILE_TASKFILE);
         expectedStorage = "{\"type\":\"FLOATING\",\"id\":4284924,\"description\":\"buy patatoes\",\"isComplete\":false}";
@@ -270,7 +272,7 @@ public class IntegrationTest {
         initialize();
     }
 
-    @Test
+    /*@Test
     // Test the features including storage functions
     public void testphase4() throws IOException {
         // search task
@@ -279,7 +281,7 @@ public class IntegrationTest {
         // set file path
 
         initialize();
-    }
+    }*/
 
     // ----------------Utility methods------------------------------
     private String readFile(File testFile) {
