@@ -70,6 +70,7 @@ public class Logic {
     private static final String REGEX_AT_SIGN = "@";
     private static final String REGEX_BLANK = "";
     private static final String REGEX_WHITESPACE = " ";
+    private static final String REGEX_NEXTLINE = "\n";
     
 
     // ================================================================
@@ -1182,6 +1183,7 @@ public class Logic {
         }
         return boo;
     }
+      
 
     // ================================================================
     // Getter methods to retrieve lists for UI
@@ -1191,7 +1193,7 @@ public class Logic {
 
         for (int i = 0; i < msgLogger.size(); i++) {
             if (msgLogger.get(i) != null){
-                 messageToPrint += msgLogger.get(i) + "\n";
+                 messageToPrint += msgLogger.get(i) + REGEX_NEXTLINE;
             }
         }
 
@@ -1213,7 +1215,7 @@ public class Logic {
             Date timeStart = df.parse(str[0]);
             Date timeEnd = df.parse(str[1]);
             messageToPrint += "E" + (i + 1) + ". " + str[2] + " from " + getTime.format(timeStart) + " to "
-                    + getTime.format(timeEnd) + "\n";
+                    + getTime.format(timeEnd) + REGEX_NEXTLINE;
         }
 
         return messageToPrint.trim();
@@ -1229,7 +1231,7 @@ public class Logic {
 
         for (int i = 0; i < deadline.size(); i++) {
             String[] str = deadline.get(i).split(REGEX_HASH);
-            messageToPrint += "D" + (i + 1) + ". " + str[1] + " due on " + str[0] + "\n";
+            messageToPrint += "D" + (i + 1) + ". " + str[1] + " due on " + str[0] + REGEX_NEXTLINE;
         }
 
         return messageToPrint.trim();
@@ -1245,7 +1247,7 @@ public class Logic {
         }
         for (int i = 0; i < floating.size(); i++) {
             String[] str = floating.get(i).split(REGEX_HASH);
-            messageToPrint += "F" + (i + 1) + ". " + str[0] + "\n";
+            messageToPrint += "F" + (i + 1) + ". " + str[0] + REGEX_NEXTLINE;
         }
 
         return messageToPrint.trim();
@@ -1262,7 +1264,7 @@ public class Logic {
         for (int i = 0; i < repeatedTask.size(); i++) {
             String[] str = repeatedTask.get(i).split(REGEX_HASH);
             messageToPrint += "R" + (i + 1) + ". " + str[6] + REGEX_WHITESPACE + str[2] + ", repeat every " + str[4] + REGEX_WHITESPACE + str[0]
-                    + "\n";
+                    + REGEX_NEXTLINE;
         }
 
         return messageToPrint.trim();
