@@ -77,6 +77,7 @@ public class Logic {
     // "executeCommand" direct the command to method
     // ================================================================
 
+    @SuppressWarnings("incomplete-switch")
     public static void executeCommand(String userInput) throws Exception {
 
         if (userInput.trim().isEmpty()) {
