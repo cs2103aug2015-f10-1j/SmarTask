@@ -6,7 +6,7 @@ import java.util.Stack;
  * are used to store different versions of the data at a specific time of
  * command execution.
  * 
- * @@author A0108235M-reused A0121284N
+ * @@author A0108235M-reused
  */
 
 public class CommandHistory {
