@@ -22,7 +22,7 @@ public class Logic {
     private static ArrayList<String> floating;
     private static ArrayList<String> repeatedTask = new ArrayList<String>();
     private static ArrayList<Integer> searchList;
-
+    
     // Error messages to display to the user
     private static final String MESSAGE_DEADLINE_EMPTY = "There is no deadline task to delete!!";
     private static final String MESSAGE_FLOATING_EMPTY = "There is no floating task to delete!!";
